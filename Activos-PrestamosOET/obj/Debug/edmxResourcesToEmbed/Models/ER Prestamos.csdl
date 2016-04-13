@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="ER_x0020_Prestamos" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="ER_x0020_PrestamosContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="PrestamosSet" EntityType="ER_x0020_Prestamos.Prestamos" />
+    <EntitySet Name="EquipoSolicitadoSet" EntityType="ER_x0020_Prestamos.EquipoSolicitado" />
+    <AssociationSet Name="PrestamosEquipoSolicitado" Association="ER_x0020_Prestamos.PrestamosEquipoSolicitado">
+      <End Role="Prestamos" EntitySet="PrestamosSet" />
+      <End Role="EquipoSolicitado" EntitySet="EquipoSolicitadoSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Prestamos">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NumeroBoleta" Type="String" Nullable="false" />
+    <Property Name="Motivo" Type="String" Nullable="false" />
+    <Property Name="FechaSolicitud" Type="String" Nullable="false" />
+    <Property Name="FechaRetiro" Type="String" Nullable="false" />
+    <Property Name="PeriodoUso" Type="String" Nullable="false" />
+    <Property Name="SoftwareReq" Type="String" Nullable="false" />
+    <Property Name="ObservacionesSolicitante" Type="String" Nullable="false" />
+    <Property Name="ObservacionesAprobado" Type="String" Nullable="false" />
+    <Property Name="ObservacionesRecibido" Type="String" Nullable="false" />
+    <Property Name="EstadoSolicitud" Type="String" Nullable="false" />
+    <NavigationProperty Name="EquipoSolicitado" Relationship="ER_x0020_Prestamos.PrestamosEquipoSolicitado" FromRole="Prestamos" ToRole="EquipoSolicitado" />
+  </EntityType>
+  <EntityType Name="EquipoSolicitado">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Categoria" Type="String" Nullable="false" />
+    <Property Name="Cantidad" Type="String" Nullable="false" />
+    <NavigationProperty Name="Prestamos" Relationship="ER_x0020_Prestamos.PrestamosEquipoSolicitado" FromRole="EquipoSolicitado" ToRole="Prestamos" />
+  </EntityType>
+  <Association Name="PrestamosEquipoSolicitado">
+    <End Type="ER_x0020_Prestamos.Prestamos" Role="Prestamos" Multiplicity="*" />
+    <End Type="ER_x0020_Prestamos.EquipoSolicitado" Role="EquipoSolicitado" Multiplicity="*" />
+  </Association>
+</Schema>
