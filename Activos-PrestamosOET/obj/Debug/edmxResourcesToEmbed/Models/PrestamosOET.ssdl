@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PrestamosModel.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="EQUIPO_SOLICITADO">
+    <Key>
+      <PropertyRef Name="ID_PRESTAMO" />
+      <PropertyRef Name="TIPO_ACTIVO" />
+      <PropertyRef Name="CANTIDAD" />
+    </Key>
+    <Property Name="ID_PRESTAMO" Type="varchar2" MaxLength="8" Nullable="false" />
+    <Property Name="TIPO_ACTIVO" Type="varchar2" MaxLength="50" Nullable="false" />
+    <Property Name="CANTIDAD" Type="number" Precision="38" Scale="0" Nullable="false" />
+  </EntityType>
+  <EntityType Name="PRESTAMOS">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="varchar2" MaxLength="8" Nullable="false" />
+    <Property Name="NUMERO_BOLETA" Type="number" Precision="38" Scale="0" />
+    <Property Name="MOTIVO" Type="varchar2" MaxLength="250" />
+    <Property Name="FECHA_SOLICITUD" Type="date" />
+    <Property Name="FECHA_RETIRO" Type="date" />
+    <Property Name="PERIODO_USO" Type="number" Precision="38" Scale="0" />
+    <Property Name="SOFTWARE_REQUERIDO" Type="varchar2" MaxLength="250" />
+    <Property Name="OBSERVACIONES_SOLICITANTE" Type="varchar2" MaxLength="250" />
+    <Property Name="OBSERVACIONES_APROBADO" Type="varchar2" MaxLength="250" />
+    <Property Name="OBSERVACIONES_RECIBIDO" Type="varchar2" MaxLength="250" />
+    <Property Name="CEDULA_USUARIO" Type="number" Precision="38" Scale="0" />
+    <Property Name="SIGLA_CURSO" Type="char" MaxLength="8" />
+  </EntityType>
+  <Association Name="FK_A_PRESTAMOS">
+    <End Role="PRESTAMOS" Type="Self.PRESTAMOS" Multiplicity="1" />
+    <End Role="EQUIPO_SOLICITADO" Type="Self.EQUIPO_SOLICITADO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PRESTAMOS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="EQUIPO_SOLICITADO">
+        <PropertyRef Name="ID_PRESTAMO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="PrestamosModelStoreContainer">
+    <EntitySet Name="EQUIPO_SOLICITADO" EntityType="Self.EQUIPO_SOLICITADO" Schema="SYSTEM" store:Type="Tables" />
+    <EntitySet Name="PRESTAMOS" EntityType="Self.PRESTAMOS" Schema="SYSTEM" store:Type="Tables" />
+    <AssociationSet Name="FK_A_PRESTAMOS" Association="Self.FK_A_PRESTAMOS">
+      <End Role="PRESTAMOS" EntitySet="PRESTAMOS" />
+      <End Role="EQUIPO_SOLICITADO" EntitySet="EQUIPO_SOLICITADO" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

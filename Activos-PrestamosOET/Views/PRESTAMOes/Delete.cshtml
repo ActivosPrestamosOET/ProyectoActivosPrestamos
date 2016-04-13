@@ -1,0 +1,112 @@
+﻿@model Activos_PrestamosOET.Models.PRESTAMO
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>PRESTAMO</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NUMERO_BOLETA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NUMERO_BOLETA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MOTIVO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MOTIVO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_SOLICITUD)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_SOLICITUD)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_RETIRO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_RETIRO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PERIODO_USO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PERIODO_USO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SOFTWARE_REQUERIDO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OBSERVACIONES_SOLICITANTE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OBSERVACIONES_SOLICITANTE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OBSERVACIONES_APROBADO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OBSERVACIONES_APROBADO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OBSERVACIONES_RECIBIDO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OBSERVACIONES_RECIBIDO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CEDULA_USUARIO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CEDULA_USUARIO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SIGLA_CURSO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SIGLA_CURSO)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

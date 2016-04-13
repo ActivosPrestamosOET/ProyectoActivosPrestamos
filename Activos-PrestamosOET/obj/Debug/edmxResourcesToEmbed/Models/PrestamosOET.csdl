@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PrestamosModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="EQUIPO_SOLICITADO">
+    <Key>
+      <PropertyRef Name="ID_PRESTAMO" />
+      <PropertyRef Name="TIPO_ACTIVO" />
+      <PropertyRef Name="CANTIDAD" />
+    </Key>
+    <Property Name="ID_PRESTAMO" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TIPO_ACTIVO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CANTIDAD" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+    <NavigationProperty Name="PRESTAMO" Relationship="Self.FK_A_PRESTAMOS" FromRole="EQUIPO_SOLICITADO" ToRole="PRESTAMOS" />
+  </EntityType>
+  <EntityType Name="PRESTAMO">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NUMERO_BOLETA" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="MOTIVO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="FECHA_SOLICITUD" Type="DateTime" />
+    <Property Name="FECHA_RETIRO" Type="DateTime" />
+    <Property Name="PERIODO_USO" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="SOFTWARE_REQUERIDO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="OBSERVACIONES_SOLICITANTE" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="OBSERVACIONES_APROBADO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="OBSERVACIONES_RECIBIDO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="CEDULA_USUARIO" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="SIGLA_CURSO" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
+    <NavigationProperty Name="EQUIPO_SOLICITADO" Relationship="Self.FK_A_PRESTAMOS" FromRole="PRESTAMOS" ToRole="EQUIPO_SOLICITADO" />
+  </EntityType>
+  <Association Name="FK_A_PRESTAMOS">
+    <End Role="PRESTAMOS" Type="Self.PRESTAMO" Multiplicity="1" />
+    <End Role="EQUIPO_SOLICITADO" Type="Self.EQUIPO_SOLICITADO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PRESTAMOS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="EQUIPO_SOLICITADO">
+        <PropertyRef Name="ID_PRESTAMO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="PrestamosEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="EQUIPO_SOLICITADO" EntityType="Self.EQUIPO_SOLICITADO" />
+    <EntitySet Name="PRESTAMOS" EntityType="Self.PRESTAMO" />
+    <AssociationSet Name="FK_A_PRESTAMOS" Association="Self.FK_A_PRESTAMOS">
+      <End Role="PRESTAMOS" EntitySet="PRESTAMOS" />
+      <End Role="EQUIPO_SOLICITADO" EntitySet="EQUIPO_SOLICITADO" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

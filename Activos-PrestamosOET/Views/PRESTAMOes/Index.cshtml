@@ -1,0 +1,93 @@
+﻿@model IEnumerable<Activos_PrestamosOET.Models.PRESTAMO>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.NUMERO_BOLETA)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MOTIVO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FECHA_SOLICITUD)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FECHA_RETIRO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PERIODO_USO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OBSERVACIONES_SOLICITANTE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OBSERVACIONES_APROBADO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OBSERVACIONES_RECIBIDO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CEDULA_USUARIO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SIGLA_CURSO)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MOTIVO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PERIODO_USO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SOFTWARE_REQUERIDO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OBSERVACIONES_SOLICITANTE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OBSERVACIONES_APROBADO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OBSERVACIONES_RECIBIDO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CEDULA_USUARIO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SIGLA_CURSO)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,122 @@
+﻿@model Activos_PrestamosOET.Models.PRESTAMO
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>PRESTAMO</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ID)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NUMERO_BOLETA, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NUMERO_BOLETA, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.NUMERO_BOLETA, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MOTIVO, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MOTIVO, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MOTIVO, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FECHA_SOLICITUD, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FECHA_SOLICITUD, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FECHA_SOLICITUD, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FECHA_RETIRO, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FECHA_RETIRO, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FECHA_RETIRO, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PERIODO_USO, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PERIODO_USO, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PERIODO_USO, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SOFTWARE_REQUERIDO, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SOFTWARE_REQUERIDO, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SOFTWARE_REQUERIDO, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.OBSERVACIONES_SOLICITANTE, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.OBSERVACIONES_SOLICITANTE, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.OBSERVACIONES_SOLICITANTE, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.OBSERVACIONES_APROBADO, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.OBSERVACIONES_APROBADO, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.OBSERVACIONES_APROBADO, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.OBSERVACIONES_RECIBIDO, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.OBSERVACIONES_RECIBIDO, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.OBSERVACIONES_RECIBIDO, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CEDULA_USUARIO, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CEDULA_USUARIO, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CEDULA_USUARIO, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.SIGLA_CURSO, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SIGLA_CURSO, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.SIGLA_CURSO, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

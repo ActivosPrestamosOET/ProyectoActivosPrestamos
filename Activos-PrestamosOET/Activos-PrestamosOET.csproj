@@ -200,12 +200,17 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\EQUIPO_SOLICITADOController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PRESTAMOesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\EQUIPO_SOLICITADO.cs">
+      <DependentUpon>PrestamosOET.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ER Prestamos.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -213,6 +218,24 @@
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\PRESTAMO.cs">
+      <DependentUpon>PrestamosOET.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PrestamosOET.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PrestamosOET.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PrestamosOET.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PrestamosOET.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\PrestamosOET.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PrestamosOET.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -223,6 +246,16 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Models\PrestamosOET.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PrestamosOET.edmx</DependentUpon>
+      <LastGenOutput>PrestamosOET.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\PrestamosOET.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PrestamosOET.edmx</DependentUpon>
+      <LastGenOutput>PrestamosOET.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -236,6 +269,13 @@
     </EntityDeploy>
     <Content Include="Models\ER Prestamos.edmx.diagram">
       <DependentUpon>ER Prestamos.edmx</DependentUpon>
+    </Content>
+    <EntityDeploy Include="Models\PrestamosOET.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PrestamosOET.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\PrestamosOET.edmx.diagram">
+      <DependentUpon>PrestamosOET.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -283,6 +323,16 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\PRESTAMOes\Create.cshtml" />
+    <Content Include="Views\PRESTAMOes\Delete.cshtml" />
+    <Content Include="Views\PRESTAMOes\Details.cshtml" />
+    <Content Include="Views\PRESTAMOes\Edit.cshtml" />
+    <Content Include="Views\PRESTAMOes\Index.cshtml" />
+    <Content Include="Views\EQUIPO_SOLICITADO\Create.cshtml" />
+    <Content Include="Views\EQUIPO_SOLICITADO\Delete.cshtml" />
+    <Content Include="Views\EQUIPO_SOLICITADO\Details.cshtml" />
+    <Content Include="Views\EQUIPO_SOLICITADO\Edit.cshtml" />
+    <Content Include="Views\EQUIPO_SOLICITADO\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -294,6 +344,9 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
