@@ -211,11 +211,6 @@
     <Compile Include="Models\EQUIPO_SOLICITADO.cs">
       <DependentUpon>PrestamosOET.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\ER Prestamos.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ER Prestamos.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PRESTAMO.cs">
@@ -262,13 +257,6 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <EntityDeploy Include="Models\ER Prestamos.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>ER Prestamos.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\ER Prestamos.edmx.diagram">
-      <DependentUpon>ER Prestamos.edmx</DependentUpon>
     </Content>
     <EntityDeploy Include="Models\PrestamosOET.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
