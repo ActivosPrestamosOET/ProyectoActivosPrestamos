@@ -2,7 +2,7 @@
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="PrestamosModelStoreContainer" CdmEntityContainer="PrestamosEntities">
     <EntitySetMapping Name="EQUIPO_SOLICITADO">
-      <EntityTypeMapping TypeName="PrestamosModel.EQUIPO_SOLICITADO">
+      <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.EQUIPO_SOLICITADO)">
         <MappingFragment StoreEntitySet="EQUIPO_SOLICITADO">
           <ScalarProperty Name="ID_PRESTAMO" ColumnName="ID_PRESTAMO" />
           <ScalarProperty Name="TIPO_ACTIVO" ColumnName="TIPO_ACTIVO" />
@@ -11,7 +11,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="PRESTAMOS">
-      <EntityTypeMapping TypeName="PrestamosModel.PRESTAMO">
+      <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.PRESTAMO)">
         <MappingFragment StoreEntitySet="PRESTAMOS">
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="NUMERO_BOLETA" ColumnName="NUMERO_BOLETA" />

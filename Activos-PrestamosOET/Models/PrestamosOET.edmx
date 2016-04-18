@@ -4,55 +4,57 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="PrestamosModel.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="PrestamosModel.Store" Alias="Self" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator">
+        <EntityContainer Name="PrestamosModelStoreContainer">
+            <EntitySet Name="EQUIPO_SOLICITADO" EntityType="PrestamosModel.Store.EQUIPO_SOLICITADO" store:Type="Tables" Schema="Prestamo" />
+            <EntitySet Name="PRESTAMOS" EntityType="PrestamosModel.Store.PRESTAMOS" store:Type="Tables" Schema="Prestamo" />
+            <AssociationSet Name="FK_A_PRESTAMOS" Association="PrestamosModel.Store.FK_A_PRESTAMOS">
+                <End Role="PRESTAMOS" EntitySet="PRESTAMOS" />
+                <End Role="EQUIPO_SOLICITADO" EntitySet="EQUIPO_SOLICITADO" />
+            </AssociationSet>
+        </EntityContainer>
         <EntityType Name="EQUIPO_SOLICITADO">
-          <Key>
-            <PropertyRef Name="ID_PRESTAMO" />
-            <PropertyRef Name="TIPO_ACTIVO" />
-            <PropertyRef Name="CANTIDAD" />
-          </Key>
-          <Property Name="ID_PRESTAMO" Type="varchar2" MaxLength="8" Nullable="false" />
-          <Property Name="TIPO_ACTIVO" Type="varchar2" MaxLength="50" Nullable="false" />
-          <Property Name="CANTIDAD" Type="number" Precision="38" Scale="0" Nullable="false" />
+            <Key>
+                <PropertyRef Name="ID_PRESTAMO" />
+                <PropertyRef Name="TIPO_ACTIVO" />
+                <PropertyRef Name="CANTIDAD" />
+            </Key>
+            <Property Name="ID_PRESTAMO" Type="varchar2" Nullable="false" MaxLength="8" />
+            <Property Name="TIPO_ACTIVO" Type="varchar2" Nullable="false" MaxLength="50" />
+            <Property Name="CANTIDAD" Type="number" Nullable="false" Precision="38" />
         </EntityType>
         <EntityType Name="PRESTAMOS">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="varchar2" MaxLength="8" Nullable="false" />
-          <Property Name="NUMERO_BOLETA" Type="number" Precision="38" Scale="0" />
-          <Property Name="MOTIVO" Type="varchar2" MaxLength="250" />
-          <Property Name="FECHA_SOLICITUD" Type="date" />
-          <Property Name="FECHA_RETIRO" Type="date" />
-          <Property Name="PERIODO_USO" Type="number" Precision="38" Scale="0" />
-          <Property Name="SOFTWARE_REQUERIDO" Type="varchar2" MaxLength="250" />
-          <Property Name="OBSERVACIONES_SOLICITANTE" Type="varchar2" MaxLength="250" />
-          <Property Name="OBSERVACIONES_APROBADO" Type="varchar2" MaxLength="250" />
-          <Property Name="OBSERVACIONES_RECIBIDO" Type="varchar2" MaxLength="250" />
-          <Property Name="CEDULA_USUARIO" Type="number" Precision="38" Scale="0" />
-          <Property Name="SIGLA_CURSO" Type="char" MaxLength="8" />
+            <Key>
+                <PropertyRef Name="ID" />
+            </Key>
+            <Property Name="ID" Type="varchar2" Nullable="false" MaxLength="8" />
+            <Property Name="NUMERO_BOLETA" Type="number" Nullable="true" Precision="38" />
+            <Property Name="MOTIVO" Type="varchar2" Nullable="true" MaxLength="250" />
+            <Property Name="FECHA_SOLICITUD" Type="date" Nullable="true" />
+            <Property Name="FECHA_RETIRO" Type="date" Nullable="true" />
+            <Property Name="PERIODO_USO" Type="number" Nullable="true" Precision="38" />
+            <Property Name="SOFTWARE_REQUERIDO" Type="varchar2" Nullable="true" MaxLength="250" />
+            <Property Name="OBSERVACIONES_SOLICITANTE" Type="varchar2" Nullable="true" MaxLength="250" />
+            <Property Name="OBSERVACIONES_APROBADO" Type="varchar2" Nullable="true" MaxLength="250" />
+            <Property Name="OBSERVACIONES_RECIBIDO" Type="varchar2" Nullable="true" MaxLength="250" />
+            <Property Name="CEDULA_USUARIO" Type="number" Nullable="true" Precision="38" />
+            <Property Name="SIGLA_CURSO" Type="char" Nullable="true" MaxLength="8" />
         </EntityType>
-        <Association Name="FK_A_PRESTAMOS">
-          <End Role="PRESTAMOS" Type="Self.PRESTAMOS" Multiplicity="1" />
-          <End Role="EQUIPO_SOLICITADO" Type="Self.EQUIPO_SOLICITADO" Multiplicity="*" />
-          <ReferentialConstraint>
+    <Association Name="FK_A_PRESTAMOS">
+        <End Role="PRESTAMOS" Type="PrestamosModel.Store.PRESTAMOS" Multiplicity="1">
+        </End>
+        <End Role="EQUIPO_SOLICITADO" Type="PrestamosModel.Store.EQUIPO_SOLICITADO" Multiplicity="*">
+        </End>
+        <ReferentialConstraint>
             <Principal Role="PRESTAMOS">
-              <PropertyRef Name="ID" />
+                <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="EQUIPO_SOLICITADO">
-              <PropertyRef Name="ID_PRESTAMO" />
+                <PropertyRef Name="ID_PRESTAMO" />
             </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityContainer Name="PrestamosModelStoreContainer">
-          <EntitySet Name="EQUIPO_SOLICITADO" EntityType="Self.EQUIPO_SOLICITADO" Schema="SYSTEM" store:Type="Tables" />
-          <EntitySet Name="PRESTAMOS" EntityType="Self.PRESTAMOS" Schema="SYSTEM" store:Type="Tables" />
-          <AssociationSet Name="FK_A_PRESTAMOS" Association="Self.FK_A_PRESTAMOS">
-            <End Role="PRESTAMOS" EntitySet="PRESTAMOS" />
-            <End Role="EQUIPO_SOLICITADO" EntitySet="EQUIPO_SOLICITADO" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema></edmx:StorageModels>
+        </ReferentialConstraint>
+    </Association>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="PrestamosModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -109,38 +111,37 @@
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="PrestamosModelStoreContainer" CdmEntityContainer="PrestamosEntities">
-          <EntitySetMapping Name="EQUIPO_SOLICITADO">
-            <EntityTypeMapping TypeName="PrestamosModel.EQUIPO_SOLICITADO">
-              <MappingFragment StoreEntitySet="EQUIPO_SOLICITADO">
-                <ScalarProperty Name="ID_PRESTAMO" ColumnName="ID_PRESTAMO" />
-                <ScalarProperty Name="TIPO_ACTIVO" ColumnName="TIPO_ACTIVO" />
-                <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
-              </MappingFragment>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+    <EntityContainerMapping StorageEntityContainer="PrestamosModelStoreContainer" CdmEntityContainer="PrestamosEntities">
+        <EntitySetMapping Name="EQUIPO_SOLICITADO">
+            <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.EQUIPO_SOLICITADO)">
+                <MappingFragment StoreEntitySet="EQUIPO_SOLICITADO">
+                    <ScalarProperty Name="ID_PRESTAMO" ColumnName="ID_PRESTAMO" />
+                    <ScalarProperty Name="TIPO_ACTIVO" ColumnName="TIPO_ACTIVO" />
+                    <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+                </MappingFragment>
             </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="PRESTAMOS">
-            <EntityTypeMapping TypeName="PrestamosModel.PRESTAMO">
-              <MappingFragment StoreEntitySet="PRESTAMOS">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="NUMERO_BOLETA" ColumnName="NUMERO_BOLETA" />
-                <ScalarProperty Name="MOTIVO" ColumnName="MOTIVO" />
-                <ScalarProperty Name="FECHA_SOLICITUD" ColumnName="FECHA_SOLICITUD" />
-                <ScalarProperty Name="FECHA_RETIRO" ColumnName="FECHA_RETIRO" />
-                <ScalarProperty Name="PERIODO_USO" ColumnName="PERIODO_USO" />
-                <ScalarProperty Name="SOFTWARE_REQUERIDO" ColumnName="SOFTWARE_REQUERIDO" />
-                <ScalarProperty Name="OBSERVACIONES_SOLICITANTE" ColumnName="OBSERVACIONES_SOLICITANTE" />
-                <ScalarProperty Name="OBSERVACIONES_APROBADO" ColumnName="OBSERVACIONES_APROBADO" />
-                <ScalarProperty Name="OBSERVACIONES_RECIBIDO" ColumnName="OBSERVACIONES_RECIBIDO" />
-                <ScalarProperty Name="CEDULA_USUARIO" ColumnName="CEDULA_USUARIO" />
-                <ScalarProperty Name="SIGLA_CURSO" ColumnName="SIGLA_CURSO" />
-              </MappingFragment>
+        </EntitySetMapping>
+        <EntitySetMapping Name="PRESTAMOS">
+            <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.PRESTAMO)">
+                <MappingFragment StoreEntitySet="PRESTAMOS">
+                    <ScalarProperty Name="ID" ColumnName="ID" />
+                    <ScalarProperty Name="NUMERO_BOLETA" ColumnName="NUMERO_BOLETA" />
+                    <ScalarProperty Name="MOTIVO" ColumnName="MOTIVO" />
+                    <ScalarProperty Name="FECHA_SOLICITUD" ColumnName="FECHA_SOLICITUD" />
+                    <ScalarProperty Name="FECHA_RETIRO" ColumnName="FECHA_RETIRO" />
+                    <ScalarProperty Name="PERIODO_USO" ColumnName="PERIODO_USO" />
+                    <ScalarProperty Name="SOFTWARE_REQUERIDO" ColumnName="SOFTWARE_REQUERIDO" />
+                    <ScalarProperty Name="OBSERVACIONES_SOLICITANTE" ColumnName="OBSERVACIONES_SOLICITANTE" />
+                    <ScalarProperty Name="OBSERVACIONES_APROBADO" ColumnName="OBSERVACIONES_APROBADO" />
+                    <ScalarProperty Name="OBSERVACIONES_RECIBIDO" ColumnName="OBSERVACIONES_RECIBIDO" />
+                    <ScalarProperty Name="CEDULA_USUARIO" ColumnName="CEDULA_USUARIO" />
+                    <ScalarProperty Name="SIGLA_CURSO" ColumnName="SIGLA_CURSO" />
+                </MappingFragment>
             </EntityTypeMapping>
-          </EntitySetMapping>
-        </EntityContainerMapping>
-      </Mapping>
-    </edmx:Mappings>
+        </EntitySetMapping>
+    </EntityContainerMapping>
+</Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
@@ -154,8 +155,11 @@
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
-        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="DatabaseGenerationWorkflow" Value="$(VSEFTools)\DBGen\Generate Oracle Via T4 (TPT).xaml" />
+        <DesignerProperty Name="DefaultDatabaseSchema" Value="Prestamo" />
+        <DesignerProperty Name="DDLGenerationTemplate" Value="$(VSEFTools)\DBGen\SSDLToOracle.tt" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

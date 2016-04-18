@@ -252,6 +252,7 @@
       <DependentUpon>PrestamosOET.edmx</DependentUpon>
       <LastGenOutput>PrestamosOET.Context.cs</LastGenOutput>
     </Content>
+    <Content Include="Models\PrestamosOET.edmx.sql" />
     <Content Include="Models\PrestamosOET.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>PrestamosOET.edmx</DependentUpon>
