@@ -1,7 +1,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for Oracle database
 -- --------------------------------------------------
--- Date Created: 4/17/2016 11:39:44 PM
+-- Date Created: 4/18/2016 7:48:22 AM
 -- Generated from EDMX file: C:\Users\Daniel\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\Models\PrestamosOET.edmx
 -- --------------------------------------------------
 
@@ -23,14 +23,14 @@
 -- --------------------------------------------------
 
 -- Creating table 'EQUIPO_SOLICITADO'
-CREATE TABLE "Prestamo"."EQUIPO_SOLICITADO" (
+CREATE TABLE "PRESTAMO"."EQUIPO_SOLICITADO" (
    "ID_PRESTAMO" VARCHAR2(8 ) NOT NULL,
    "TIPO_ACTIVO" VARCHAR2(50 ) NOT NULL,
    "CANTIDAD" NUMBER(38) NOT NULL
 );
 
 -- Creating table 'PRESTAMOS'
-CREATE TABLE "Prestamo"."PRESTAMOS" (
+CREATE TABLE "PRESTAMO"."PRESTAMOS" (
    "ID" VARCHAR2(8 ) NOT NULL,
    "NUMERO_BOLETA" NUMBER(38) ,
    "MOTIVO" VARCHAR2(250 ) ,
@@ -51,7 +51,7 @@ CREATE TABLE "Prestamo"."PRESTAMOS" (
 -- --------------------------------------------------
 
 -- Creating primary key on "ID_PRESTAMO", "TIPO_ACTIVO", "CANTIDAD"in table 'EQUIPO_SOLICITADO'
-ALTER TABLE "Prestamo"."EQUIPO_SOLICITADO"
+ALTER TABLE "PRESTAMO"."EQUIPO_SOLICITADO"
 ADD CONSTRAINT "PK_EQUIPO_SOLICITADO"
    PRIMARY KEY ("ID_PRESTAMO", "TIPO_ACTIVO", "CANTIDAD" )
    ENABLE
@@ -59,7 +59,7 @@ ADD CONSTRAINT "PK_EQUIPO_SOLICITADO"
 
 
 -- Creating primary key on "ID"in table 'PRESTAMOS'
-ALTER TABLE "Prestamo"."PRESTAMOS"
+ALTER TABLE "PRESTAMO"."PRESTAMOS"
 ADD CONSTRAINT "PK_PRESTAMOS"
    PRIMARY KEY ("ID" )
    ENABLE
@@ -71,15 +71,18 @@ ADD CONSTRAINT "PK_PRESTAMOS"
 -- --------------------------------------------------
 
 -- Creating foreign key on "ID_PRESTAMO" in table 'EQUIPO_SOLICITADO'
-ALTER TABLE "Prestamo"."EQUIPO_SOLICITADO"
+ALTER TABLE "PRESTAMO"."EQUIPO_SOLICITADO"
 ADD CONSTRAINT "FK_A_PRESTAMOS"
    FOREIGN KEY ("ID_PRESTAMO")
-   REFERENCES "Prestamo"."PRESTAMOS"
-       ("ID");
+   REFERENCES "PRESTAMO"."PRESTAMOS"
+       ("ID")
+   --ENABLE
+   --VALIDATE;
+   ;
 
 -- Creating index for FOREIGN KEY 'FK_A_PRESTAMOS'
 CREATE INDEX "IX_FK_A_PRESTAMOS"
-ON "Prestamo"."EQUIPO_SOLICITADO"
+ON "PRESTAMO"."EQUIPO_SOLICITADO"
    ("ID_PRESTAMO");
 
 -- --------------------------------------------------
