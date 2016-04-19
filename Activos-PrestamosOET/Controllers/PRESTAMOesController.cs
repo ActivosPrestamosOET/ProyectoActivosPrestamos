@@ -3,6 +3,8 @@ using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using Activos_PrestamosOET.Models;
+using System.Data;
+using System.Web.UI.WebControls;
 
 namespace Activos_PrestamosOET.Controllers
 {
@@ -13,12 +15,15 @@ namespace Activos_PrestamosOET.Controllers
         // GET: PRESTAMOes
         public ActionResult Index()
         {
+            View comodin;
             if (true)
-                return View(db.PRESTAMOS.ToList());
+                comodin = View(db.PRESTAMOS.ToList());
             else
             {
-                return View(db.PRESTAMOS.ToList());
+                comodin = View(db.PRESTAMOS.ToList());
             }
+
+            return comodin;
            
            
         }
@@ -51,11 +56,18 @@ namespace Activos_PrestamosOET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO pRESTAMO)
         {
-            if (ModelState.IsValid)
+            try
             {
-                db.PRESTAMOS.Add(pRESTAMO);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    db.PRESTAMOS.Add(pRESTAMO);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (DataException)
+            {
+                ModelState.AddModelError("", "No se pudo realizar la solicitud. Por favor trate nuevamente y si el problema persiste comuníquese con el administrador") ;
             }
 
             return View(pRESTAMO);
