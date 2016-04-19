@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Activos_PrestamosOET.Models;
 using System.Data;
 using System.Web.UI.WebControls;
+using System;
 
 namespace Activos_PrestamosOET.Controllers
 {
@@ -15,18 +16,19 @@ namespace Activos_PrestamosOET.Controllers
         // GET: PRESTAMOes
         public ActionResult Index()
         {
-            View comodin;
+            ActionResult comodin;
+           
             if (true)
                 comodin = View(db.PRESTAMOS.ToList());
             else
             {
                 comodin = View(db.PRESTAMOS.ToList());
             }
-
+           
             return comodin;
            
            
-        }
+        }       
 
         // GET: PRESTAMOes/Details/5
         public ActionResult Details(string id)
