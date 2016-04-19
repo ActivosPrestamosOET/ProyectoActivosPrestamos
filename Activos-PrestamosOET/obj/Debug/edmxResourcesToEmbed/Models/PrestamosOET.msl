@@ -23,9 +23,10 @@
           <ScalarProperty Name="OBSERVACIONES_SOLICITANTE" ColumnName="OBSERVACIONES_SOLICITANTE" />
           <ScalarProperty Name="OBSERVACIONES_APROBADO" ColumnName="OBSERVACIONES_APROBADO" />
           <ScalarProperty Name="OBSERVACIONES_RECIBIDO" ColumnName="OBSERVACIONES_RECIBIDO" />
-          <ScalarProperty Name="CEDULA_USUARIO" ColumnName="CEDULA_USUARIO" />
           <ScalarProperty Name="SIGLA_CURSO" ColumnName="SIGLA_CURSO" />
           <ScalarProperty Name="Estado" ColumnName="Estado" />
+          <ScalarProperty Name="CEDULA_SOLICITANTE" ColumnName="CEDULA_SOLICITANTE" />
+          <ScalarProperty Name="CEDULA_APRUEBA" ColumnName="CEDULA_APRUEBA" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

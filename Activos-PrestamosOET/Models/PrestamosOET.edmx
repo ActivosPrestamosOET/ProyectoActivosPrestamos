@@ -37,9 +37,10 @@
             <Property Name="OBSERVACIONES_SOLICITANTE" Type="varchar2" Nullable="true" MaxLength="250" />
             <Property Name="OBSERVACIONES_APROBADO" Type="varchar2" Nullable="true" MaxLength="250" />
             <Property Name="OBSERVACIONES_RECIBIDO" Type="varchar2" Nullable="true" MaxLength="250" />
-            <Property Name="CEDULA_USUARIO" Type="number" Nullable="true" Precision="38" />
             <Property Name="SIGLA_CURSO" Type="char" Nullable="true" MaxLength="8" />
             <Property Name="Estado" Type="number" Nullable="false" Precision="5" />
+            <Property Name="CEDULA_SOLICITANTE" Type="number" Nullable="false" Precision="10" />
+            <Property Name="CEDULA_APRUEBA" Type="number" Nullable="false" Precision="10" />
         </EntityType>
     <Association Name="FK_A_PRESTAMOS">
         <End Role="PRESTAMOS" Type="PrestamosModel.Store.PRESTAMOS" Multiplicity="1">
@@ -84,10 +85,11 @@
           <Property Name="OBSERVACIONES_SOLICITANTE" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="OBSERVACIONES_APROBADO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="OBSERVACIONES_RECIBIDO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-          <Property Name="CEDULA_USUARIO" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="SIGLA_CURSO" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="EQUIPO_SOLICITADO" Relationship="Self.FK_A_PRESTAMOS" FromRole="PRESTAMOS" ToRole="EQUIPO_SOLICITADO" />
           <Property Name="Estado" Type="Int16" Nullable="false" />
+          <Property Name="CEDULA_SOLICITANTE" Type="Int32" Nullable="false" />
+          <Property Name="CEDULA_APRUEBA" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="FK_A_PRESTAMOS">
           <End Role="PRESTAMOS" Type="Self.PRESTAMO" Multiplicity="1" />
@@ -137,9 +139,10 @@
                     <ScalarProperty Name="OBSERVACIONES_SOLICITANTE" ColumnName="OBSERVACIONES_SOLICITANTE" />
                     <ScalarProperty Name="OBSERVACIONES_APROBADO" ColumnName="OBSERVACIONES_APROBADO" />
                     <ScalarProperty Name="OBSERVACIONES_RECIBIDO" ColumnName="OBSERVACIONES_RECIBIDO" />
-                    <ScalarProperty Name="CEDULA_USUARIO" ColumnName="CEDULA_USUARIO" />
                     <ScalarProperty Name="SIGLA_CURSO" ColumnName="SIGLA_CURSO" />
                     <ScalarProperty Name="Estado" ColumnName="Estado" />
+                    <ScalarProperty Name="CEDULA_SOLICITANTE" ColumnName="CEDULA_SOLICITANTE" />
+                    <ScalarProperty Name="CEDULA_APRUEBA" ColumnName="CEDULA_APRUEBA" />
                 </MappingFragment>
             </EntityTypeMapping>
         </EntitySetMapping>

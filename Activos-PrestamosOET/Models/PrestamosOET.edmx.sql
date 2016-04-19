@@ -1,8 +1,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for Oracle database
 -- --------------------------------------------------
--- Date Created: 4/19/2016 10:11:29 AM
--- Generated from EDMX file: C:\Users\Daniel\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\Models\PrestamosOET.edmx
+-- Date Created: 19/04/2016 12:30:17
+-- Generated from EDMX file: C:\Users\Carolina\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\Models\PrestamosOET.edmx
 -- --------------------------------------------------
 
 -- --------------------------------------------------
@@ -41,9 +41,10 @@ CREATE TABLE "ACTIVOS"."PRESTAMOS" (
    "OBSERVACIONES_SOLICITANTE" VARCHAR2(250 ) ,
    "OBSERVACIONES_APROBADO" VARCHAR2(250 ) ,
    "OBSERVACIONES_RECIBIDO" VARCHAR2(250 ) ,
-   "CEDULA_USUARIO" NUMBER(38) ,
    "SIGLA_CURSO" CHAR(8 ) ,
-   "Estado" NUMBER(5) NOT NULL
+   "Estado" NUMBER(5) NOT NULL,
+   "CEDULA_SOLICITANTE" NUMBER(10) NOT NULL,
+   "CEDULA_APRUEBA" NUMBER(10) NOT NULL
 );
 
 
@@ -77,7 +78,7 @@ ADD CONSTRAINT "FK_A_PRESTAMOS"
    FOREIGN KEY ("ID_PRESTAMO")
    REFERENCES "ACTIVOS"."PRESTAMOS"
        ("ID")
-   ;
+;
 
 -- Creating index for FOREIGN KEY 'FK_A_PRESTAMOS'
 CREATE INDEX "IX_FK_A_PRESTAMOS"

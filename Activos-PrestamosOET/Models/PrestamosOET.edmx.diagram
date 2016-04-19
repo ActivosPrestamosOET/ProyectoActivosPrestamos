@@ -5,8 +5,8 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="7fd8eb393eb44ed3ae919eb3a83615fa" Name="Diagram1" DisplayType="true">
-        <EntityTypeShape EntityType="PrestamosModel.EQUIPO_SOLICITADO" Width="1.5" PointX="3" PointY="1.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="PrestamosModel.PRESTAMO" Width="1.5" PointX="0.875" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PrestamosModel.EQUIPO_SOLICITADO" Width="1.5" PointX="4.625" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="PrestamosModel.PRESTAMO" Width="2.75" PointX="0.875" PointY="0.625" IsExpanded="true" />
         <AssociationConnector Association="PrestamosModel.FK_A_PRESTAMOS" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>

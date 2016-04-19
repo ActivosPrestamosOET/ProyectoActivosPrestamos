@@ -25,10 +25,11 @@
     <Property Name="OBSERVACIONES_SOLICITANTE" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
     <Property Name="OBSERVACIONES_APROBADO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
     <Property Name="OBSERVACIONES_RECIBIDO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-    <Property Name="CEDULA_USUARIO" Type="Decimal" Precision="38" Scale="0" />
     <Property Name="SIGLA_CURSO" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
     <NavigationProperty Name="EQUIPO_SOLICITADO" Relationship="Self.FK_A_PRESTAMOS" FromRole="PRESTAMOS" ToRole="EQUIPO_SOLICITADO" />
     <Property Name="Estado" Type="Int16" Nullable="false" />
+    <Property Name="CEDULA_SOLICITANTE" Type="Int32" Nullable="false" />
+    <Property Name="CEDULA_APRUEBA" Type="Int32" Nullable="false" />
   </EntityType>
   <Association Name="FK_A_PRESTAMOS">
     <End Role="PRESTAMOS" Type="Self.PRESTAMO" Multiplicity="1" />

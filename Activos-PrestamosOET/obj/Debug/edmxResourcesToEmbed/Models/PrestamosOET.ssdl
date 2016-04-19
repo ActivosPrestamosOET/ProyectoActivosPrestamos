@@ -32,9 +32,10 @@
     <Property Name="OBSERVACIONES_SOLICITANTE" Type="varchar2" Nullable="true" MaxLength="250" />
     <Property Name="OBSERVACIONES_APROBADO" Type="varchar2" Nullable="true" MaxLength="250" />
     <Property Name="OBSERVACIONES_RECIBIDO" Type="varchar2" Nullable="true" MaxLength="250" />
-    <Property Name="CEDULA_USUARIO" Type="number" Nullable="true" Precision="38" />
     <Property Name="SIGLA_CURSO" Type="char" Nullable="true" MaxLength="8" />
     <Property Name="Estado" Type="number" Nullable="false" Precision="5" />
+    <Property Name="CEDULA_SOLICITANTE" Type="number" Nullable="false" Precision="10" />
+    <Property Name="CEDULA_APRUEBA" Type="number" Nullable="false" Precision="10" />
   </EntityType>
   <Association Name="FK_A_PRESTAMOS">
     <End Role="PRESTAMOS" Type="PrestamosModel.Store.PRESTAMOS" Multiplicity="1" />
