@@ -13,7 +13,12 @@ namespace Activos_PrestamosOET.Controllers
         // GET: PRESTAMOes
         public ActionResult Index()
         {
+            if (true)
                 return View(db.PRESTAMOS.ToList());
+            else
+            {
+                return View(db.PRESTAMOS.ToList());
+            }
            
            
         }
