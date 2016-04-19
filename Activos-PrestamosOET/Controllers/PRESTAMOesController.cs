@@ -16,16 +16,9 @@ namespace Activos_PrestamosOET.Controllers
         // GET: PRESTAMOes
         public ActionResult Index()
         {
-            ActionResult comodin;
+           return View(db.PRESTAMOS.ToList());
            
-            if (true)
-                comodin = View(db.PRESTAMOS.ToList());
-            else
-            {
-                comodin = View(db.PRESTAMOS.ToList());
-            }
            
-            return comodin;
            
            
         }       

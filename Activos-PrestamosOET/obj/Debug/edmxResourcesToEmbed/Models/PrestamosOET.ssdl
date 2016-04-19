@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="PrestamosModel.Store" Alias="Self" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator">
   <EntityContainer Name="PrestamosModelStoreContainer">
-    <EntitySet Name="EQUIPO_SOLICITADO" EntityType="PrestamosModel.Store.EQUIPO_SOLICITADO" store:Type="Tables" Schema="PRESTAMO" />
-    <EntitySet Name="PRESTAMOS" EntityType="PrestamosModel.Store.PRESTAMOS" store:Type="Tables" Schema="PRESTAMO" />
+    <EntitySet Name="EQUIPO_SOLICITADO" EntityType="PrestamosModel.Store.EQUIPO_SOLICITADO" store:Type="Tables" Schema="ACTIVOS" />
+    <EntitySet Name="PRESTAMOS" EntityType="PrestamosModel.Store.PRESTAMOS" store:Type="Tables" Schema="ACTIVOS" />
     <AssociationSet Name="FK_A_PRESTAMOS" Association="PrestamosModel.Store.FK_A_PRESTAMOS">
       <End Role="PRESTAMOS" EntitySet="PRESTAMOS" />
       <End Role="EQUIPO_SOLICITADO" EntitySet="EQUIPO_SOLICITADO" />
@@ -34,6 +34,7 @@
     <Property Name="OBSERVACIONES_RECIBIDO" Type="varchar2" Nullable="true" MaxLength="250" />
     <Property Name="CEDULA_USUARIO" Type="number" Nullable="true" Precision="38" />
     <Property Name="SIGLA_CURSO" Type="char" Nullable="true" MaxLength="8" />
+    <Property Name="Estado" Type="number" Nullable="false" Precision="5" />
   </EntityType>
   <Association Name="FK_A_PRESTAMOS">
     <End Role="PRESTAMOS" Type="PrestamosModel.Store.PRESTAMOS" Multiplicity="1" />
