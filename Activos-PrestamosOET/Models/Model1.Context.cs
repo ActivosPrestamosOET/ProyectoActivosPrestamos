@@ -27,5 +27,7 @@ namespace Activos_PrestamosOET.Models
     
         public virtual DbSet<EQUIPO_SOLICITADO> EQUIPO_SOLICITADO { get; set; }
         public virtual DbSet<PRESTAMO> PRESTAMOS { get; set; }
+        public virtual DbSet<ACTIVO> ACTIVOS { get; set; }
+        public virtual DbSet<USUARIO> USUARIOS { get; set; }
     }
 }

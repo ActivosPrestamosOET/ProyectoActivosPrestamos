@@ -8,9 +8,28 @@
         <EntityContainer Name="PrestamosModelStoreContainer">
             <EntitySet Name="EQUIPO_SOLICITADO" EntityType="PrestamosModel.Store.EQUIPO_SOLICITADO" store:Type="Tables" Schema="ACTIVOS" />
             <EntitySet Name="PRESTAMOS" EntityType="PrestamosModel.Store.PRESTAMOS" store:Type="Tables" Schema="ACTIVOS" />
+            <EntitySet Name="ACTIVOS" EntityType="PrestamosModel.Store.ACTIVOS" store:Type="Tables" Schema="ACTIVOS" />
+            <EntitySet Name="USUARIOS" EntityType="PrestamosModel.Store.USUARIOS" store:Type="Tables" Schema="ACTIVOS" />
+            <EntitySet Name="ACTIVOPRESTAMO" EntityType="PrestamosModel.Store.ACTIVOPRESTAMO" store:Type="Tables" Schema="ACTIVOS" />
             <AssociationSet Name="FK_A_PRESTAMOS" Association="PrestamosModel.Store.FK_A_PRESTAMOS">
                 <End Role="PRESTAMOS" EntitySet="PRESTAMOS" />
                 <End Role="EQUIPO_SOLICITADO" EntitySet="EQUIPO_SOLICITADO" />
+            </AssociationSet>
+            <AssociationSet Name="FK_ACTIVOPRESTAMO_ACTIVO" Association="PrestamosModel.Store.FK_ACTIVOPRESTAMO_ACTIVO">
+                <End Role="ACTIVO" EntitySet="ACTIVOS" />
+                <End Role="ACTIVOPRESTAMO" EntitySet="ACTIVOPRESTAMO" />
+            </AssociationSet>
+            <AssociationSet Name="FK_ACTIVOPRESTAMO_PRESTAMO" Association="PrestamosModel.Store.FK_ACTIVOPRESTAMO_PRESTAMO">
+                <End Role="PRESTAMO" EntitySet="PRESTAMOS" />
+                <End Role="ACTIVOPRESTAMO" EntitySet="ACTIVOPRESTAMO" />
+            </AssociationSet>
+            <AssociationSet Name="Solicita" Association="PrestamosModel.Store.Solicita">
+                <End Role="USUARIO" EntitySet="USUARIOS" />
+                <End Role="PRESTAMO" EntitySet="PRESTAMOS" />
+            </AssociationSet>
+            <AssociationSet Name="Aprueba" Association="PrestamosModel.Store.Aprueba">
+                <End Role="USUARIO" EntitySet="USUARIOS" />
+                <End Role="PRESTAMO" EntitySet="PRESTAMOS" />
             </AssociationSet>
         </EntityContainer>
         <EntityType Name="EQUIPO_SOLICITADO">
@@ -39,8 +58,61 @@
             <Property Name="OBSERVACIONES_RECIBIDO" Type="varchar2" Nullable="true" MaxLength="250" />
             <Property Name="SIGLA_CURSO" Type="char" Nullable="true" MaxLength="8" />
             <Property Name="Estado" Type="number" Nullable="false" Precision="5" />
-            <Property Name="CEDULA_SOLICITANTE" Type="number" Nullable="false" Precision="10" />
-            <Property Name="CEDULA_APRUEBA" Type="number" Nullable="false" Precision="10" />
+            <Property Name="CED_SOLICITA" Type="varchar2" Nullable="false" MaxLength="26" />
+            <Property Name="CED_APRUEBA" Type="varchar2" Nullable="true" MaxLength="26" />
+        </EntityType>
+        <EntityType Name="ACTIVOS">
+            <Key>
+                <PropertyRef Name="ID" />
+            </Key>
+            <Property Name="ID" Type="number" Nullable="false" Precision="10" />
+            <Property Name="NUMERO_SERIE" Type="nvarchar2" Nullable="true" MaxLength="64" />
+            <Property Name="FECHA_COMPRA" Type="date" Nullable="false" />
+            <Property Name="INICIO_SERVICIO" Type="date" Nullable="true" />
+            <Property Name="FECHA_INGRESO" Type="date" Nullable="false" />
+            <Property Name="FABRICANTE" Type="nvarchar2" Nullable="false" MaxLength="64" />
+            <Property Name="PRECIO" Type="number" Nullable="false" Precision="10" />
+            <Property Name="DESCRIPCION" Type="nvarchar2" Nullable="false" MaxLength="256" />
+            <Property Name="EXENTO" Type="number" Nullable="false" Precision="1" />
+            <Property Name="PRESTABLE" Type="number" Nullable="false" Precision="1" />
+            <Property Name="TIPO_CAPITAL" Type="number" Nullable="false" Precision="1" />
+            <Property Name="INGRESADO_POR" Type="nvarchar2" Nullable="false" MaxLength="128" />
+            <Property Name="NUMERO_DOCUMENTO" Type="nvarchar2" Nullable="false" MaxLength="32" />
+            <Property Name="NUMERO_LOTE" Type="nvarchar2" Nullable="true" MaxLength="32" />
+            <Property Name="TIPO_TRANSACCIONID" Type="number" Nullable="false" Precision="10" />
+            <Property Name="ESTADO_ACTIVOID" Type="number" Nullable="false" Precision="10" />
+            <Property Name="TIPO_ACTIVOID" Type="number" Nullable="false" Precision="10" />
+            <Property Name="ANFITRIONAID" Type="varchar2" Nullable="false" MaxLength="2" />
+            <Property Name="PROVEEDORIDPROVEEDOR" Type="varchar2" Nullable="false" MaxLength="50" />
+            <Property Name="COMENTARIO" Type="nvarchar2" Nullable="true" MaxLength="256" />
+            <Property Name="DESECHADO" Type="number" Nullable="false" Precision="1" />
+            <Property Name="USUARIOSIDUSUARIO" Type="varchar2" Nullable="true" MaxLength="26" />
+            <Property Name="ESTACIONID" Type="varchar2" Nullable="true" MaxLength="26" />
+            <Property Name="DEPARTAMENTOIDDEPARTAMENTO" Type="number" Nullable="true" Precision="8" Scale="2" />
+            <Property Name="MODELO" Type="nvarchar2" Nullable="true" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="USUARIOS">
+            <Key>
+                <PropertyRef Name="IDUSUARIO" />
+            </Key>
+            <Property Name="USUARIO1" Type="varchar2" Nullable="false" MaxLength="50" />
+            <Property Name="CLAVE" Type="varchar2" Nullable="true" MaxLength="50" />
+            <Property Name="ANFITRION" Type="varchar2" Nullable="false" MaxLength="2" />
+            <Property Name="IDCONTACTO" Type="varchar2" Nullable="false" MaxLength="26" />
+            <Property Name="IDUSUARIO" Type="varchar2" Nullable="false" MaxLength="26" />
+            <Property Name="DESCRIPCION" Type="varchar2" Nullable="true" MaxLength="255" />
+            <Property Name="NOMBRE" Type="varchar2" Nullable="false" MaxLength="100" />
+            <Property Name="IDESTACION" Type="varchar2" Nullable="false" MaxLength="26" />
+            <Property Name="ESTADO" Type="number" Nullable="false" Precision="38" />
+            <Property Name="CORREO" Type="varchar2" Nullable="true" MaxLength="400" />
+        </EntityType>
+        <EntityType Name="ACTIVOPRESTAMO">
+            <Key>
+                <PropertyRef Name="ACTIVOes_ID" />
+                <PropertyRef Name="PRESTAMOes_ID" />
+            </Key>
+            <Property Name="ACTIVOes_ID" Type="number" Nullable="false" Precision="10" />
+            <Property Name="PRESTAMOes_ID" Type="varchar2" Nullable="false" MaxLength="8" />
         </EntityType>
     <Association Name="FK_A_PRESTAMOS">
         <End Role="PRESTAMOS" Type="PrestamosModel.Store.PRESTAMOS" Multiplicity="1">
@@ -53,6 +125,58 @@
             </Principal>
             <Dependent Role="EQUIPO_SOLICITADO">
                 <PropertyRef Name="ID_PRESTAMO" />
+            </Dependent>
+        </ReferentialConstraint>
+    </Association>
+    <Association Name="Solicita">
+        <End Role="USUARIO" Type="PrestamosModel.Store.USUARIOS" Multiplicity="1">
+        </End>
+        <End Role="PRESTAMO" Type="PrestamosModel.Store.PRESTAMOS" Multiplicity="*">
+        </End>
+        <ReferentialConstraint>
+            <Principal Role="USUARIO">
+                <PropertyRef Name="IDUSUARIO" />
+            </Principal>
+            <Dependent Role="PRESTAMO">
+                <PropertyRef Name="CED_SOLICITA" />
+            </Dependent>
+        </ReferentialConstraint>
+    </Association>
+    <Association Name="Aprueba">
+        <End Role="USUARIO" Type="PrestamosModel.Store.USUARIOS" Multiplicity="0..1">
+        </End>
+        <End Role="PRESTAMO" Type="PrestamosModel.Store.PRESTAMOS" Multiplicity="*">
+        </End>
+        <ReferentialConstraint>
+            <Principal Role="USUARIO">
+                <PropertyRef Name="IDUSUARIO" />
+            </Principal>
+            <Dependent Role="PRESTAMO">
+                <PropertyRef Name="CED_APRUEBA" />
+            </Dependent>
+        </ReferentialConstraint>
+    </Association>
+    <Association Name="FK_ACTIVOPRESTAMO_ACTIVO">
+        <End Role="ACTIVO" Type="PrestamosModel.Store.ACTIVOS" Multiplicity="1" />
+        <End Role="ACTIVOPRESTAMO" Type="PrestamosModel.Store.ACTIVOPRESTAMO" Multiplicity="*" />
+        <ReferentialConstraint>
+            <Principal Role="ACTIVO">
+                <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ACTIVOPRESTAMO">
+                <PropertyRef Name="ACTIVOes_ID" />
+            </Dependent>
+        </ReferentialConstraint>
+    </Association>
+    <Association Name="FK_ACTIVOPRESTAMO_PRESTAMO">
+        <End Role="ACTIVOPRESTAMO" Type="PrestamosModel.Store.ACTIVOPRESTAMO" Multiplicity="*" />
+        <End Role="PRESTAMO" Type="PrestamosModel.Store.PRESTAMOS" Multiplicity="1" />
+        <ReferentialConstraint>
+            <Principal Role="PRESTAMO">
+                <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ACTIVOPRESTAMO">
+                <PropertyRef Name="PRESTAMOes_ID" />
             </Dependent>
         </ReferentialConstraint>
     </Association>
@@ -88,8 +212,11 @@
           <Property Name="SIGLA_CURSO" Type="String" MaxLength="8" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="EQUIPO_SOLICITADO" Relationship="Self.FK_A_PRESTAMOS" FromRole="PRESTAMOS" ToRole="EQUIPO_SOLICITADO" />
           <Property Name="Estado" Type="Int16" Nullable="false" />
-          <Property Name="CEDULA_SOLICITANTE" Type="Int32" Nullable="false" />
-          <Property Name="CEDULA_APRUEBA" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ACTIVOes" Relationship="PrestamosModel.ACTIVOPRESTAMO" FromRole="PRESTAMO" ToRole="ACTIVO" />
+          <NavigationProperty Name="USUARIO" Relationship="PrestamosModel.Solicita" FromRole="PRESTAMO" ToRole="USUARIO" />
+          <Property Name="CED_SOLICITA" Type="String" Nullable="false" MaxLength="26" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="USUARIO1" Relationship="PrestamosModel.Aprueba" FromRole="PRESTAMO" ToRole="USUARIO" />
+          <Property Name="CED_APRUEBA" Type="String" Nullable="true" MaxLength="26" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_A_PRESTAMOS">
           <End Role="PRESTAMOS" Type="Self.PRESTAMO" Multiplicity="1" />
@@ -110,7 +237,97 @@
             <End Role="PRESTAMOS" EntitySet="PRESTAMOS" />
             <End Role="EQUIPO_SOLICITADO" EntitySet="EQUIPO_SOLICITADO" />
           </AssociationSet>
+          <EntitySet Name="ACTIVOS" EntityType="PrestamosModel.ACTIVO" />
+          <EntitySet Name="USUARIOS" EntityType="PrestamosModel.USUARIO" />
+          <AssociationSet Name="ACTIVOPRESTAMO" Association="PrestamosModel.ACTIVOPRESTAMO">
+            <End Role="ACTIVO" EntitySet="ACTIVOS" />
+            <End Role="PRESTAMO" EntitySet="PRESTAMOS" />
+          </AssociationSet>
+          <AssociationSet Name="Solicita" Association="PrestamosModel.Solicita">
+            <End Role="USUARIO" EntitySet="USUARIOS" />
+            <End Role="PRESTAMO" EntitySet="PRESTAMOS" />
+          </AssociationSet>
+          <AssociationSet Name="Aprueba" Association="PrestamosModel.Aprueba">
+            <End Role="USUARIO" EntitySet="USUARIOS" />
+            <End Role="PRESTAMO" EntitySet="PRESTAMOS" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="ACTIVO">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="NUMERO_SERIE" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="FECHA_COMPRA" Type="DateTime" Nullable="false" />
+          <Property Name="INICIO_SERVICIO" Type="DateTime" />
+          <Property Name="FECHA_INGRESO" Type="DateTime" Nullable="false" />
+          <Property Name="FABRICANTE" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="PRECIO" Type="Int32" Nullable="false" />
+          <Property Name="DESCRIPCION" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EXENTO" Type="Boolean" Nullable="false" />
+          <Property Name="PRESTABLE" Type="Boolean" Nullable="false" />
+          <Property Name="TIPO_CAPITAL" Type="Boolean" Nullable="false" />
+          <Property Name="INGRESADO_POR" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="NUMERO_DOCUMENTO" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="NUMERO_LOTE" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
+          <Property Name="TIPO_TRANSACCIONID" Type="Int32" Nullable="false" />
+          <Property Name="ESTADO_ACTIVOID" Type="Int32" Nullable="false" />
+          <Property Name="TIPO_ACTIVOID" Type="Int32" Nullable="false" />
+          <Property Name="ANFITRIONAID" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="PROVEEDORIDPROVEEDOR" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="COMENTARIO" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="DESECHADO" Type="Boolean" Nullable="false" />
+          <Property Name="USUARIOSIDUSUARIO" Type="String" MaxLength="26" FixedLength="false" Unicode="false" />
+          <Property Name="ESTACIONID" Type="String" MaxLength="26" FixedLength="false" Unicode="false" />
+          <Property Name="DEPARTAMENTOIDDEPARTAMENTO" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="MODELO" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="PRESTAMOes" Relationship="PrestamosModel.ACTIVOPRESTAMO" FromRole="ACTIVO" ToRole="PRESTAMO" />
+        </EntityType>
+        <EntityType Name="USUARIO">
+          <Key>
+            <PropertyRef Name="IDUSUARIO" />
+          </Key>
+          <Property Name="USUARIO1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CLAVE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ANFITRION" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="IDCONTACTO" Type="String" Nullable="false" MaxLength="26" FixedLength="false" Unicode="false" />
+          <Property Name="IDUSUARIO" Type="String" Nullable="false" MaxLength="26" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIPCION" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="NOMBRE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IDESTACION" Type="String" Nullable="false" MaxLength="26" FixedLength="false" Unicode="false" />
+          <Property Name="ESTADO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="CORREO" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="PRESTAMOes" Relationship="PrestamosModel.Solicita" FromRole="USUARIO" ToRole="PRESTAMO" />
+          <NavigationProperty Name="PRESTAMOes1" Relationship="PrestamosModel.Aprueba" FromRole="USUARIO" ToRole="PRESTAMO" />
+        </EntityType>
+        <Association Name="ACTIVOPRESTAMO">
+          <End Type="PrestamosModel.ACTIVO" Role="ACTIVO" Multiplicity="*" />
+          <End Type="PrestamosModel.PRESTAMO" Role="PRESTAMO" Multiplicity="*" />
+        </Association>
+        <Association Name="Solicita">
+          <End Type="PrestamosModel.USUARIO" Role="USUARIO" Multiplicity="1" />
+          <End Type="PrestamosModel.PRESTAMO" Role="PRESTAMO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="IDUSUARIO" />
+            </Principal>
+            <Dependent Role="PRESTAMO">
+              <PropertyRef Name="CED_SOLICITA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="Aprueba">
+          <End Type="PrestamosModel.USUARIO" Role="USUARIO" Multiplicity="0..1" />
+          <End Type="PrestamosModel.PRESTAMO" Role="PRESTAMO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="IDUSUARIO" />
+            </Principal>
+            <Dependent Role="PRESTAMO">
+              <PropertyRef Name="CED_APRUEBA" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -141,11 +358,66 @@
                     <ScalarProperty Name="OBSERVACIONES_RECIBIDO" ColumnName="OBSERVACIONES_RECIBIDO" />
                     <ScalarProperty Name="SIGLA_CURSO" ColumnName="SIGLA_CURSO" />
                     <ScalarProperty Name="Estado" ColumnName="Estado" />
-                    <ScalarProperty Name="CEDULA_SOLICITANTE" ColumnName="CEDULA_SOLICITANTE" />
-                    <ScalarProperty Name="CEDULA_APRUEBA" ColumnName="CEDULA_APRUEBA" />
+                    <ScalarProperty Name="CED_SOLICITA" ColumnName="CED_SOLICITA" />
+                    <ScalarProperty Name="CED_APRUEBA" ColumnName="CED_APRUEBA" />
                 </MappingFragment>
             </EntityTypeMapping>
         </EntitySetMapping>
+        <EntitySetMapping Name="ACTIVOS">
+            <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.ACTIVO)">
+                <MappingFragment StoreEntitySet="ACTIVOS">
+                    <ScalarProperty Name="ID" ColumnName="ID" />
+                    <ScalarProperty Name="NUMERO_SERIE" ColumnName="NUMERO_SERIE" />
+                    <ScalarProperty Name="FECHA_COMPRA" ColumnName="FECHA_COMPRA" />
+                    <ScalarProperty Name="INICIO_SERVICIO" ColumnName="INICIO_SERVICIO" />
+                    <ScalarProperty Name="FECHA_INGRESO" ColumnName="FECHA_INGRESO" />
+                    <ScalarProperty Name="FABRICANTE" ColumnName="FABRICANTE" />
+                    <ScalarProperty Name="PRECIO" ColumnName="PRECIO" />
+                    <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+                    <ScalarProperty Name="EXENTO" ColumnName="EXENTO" />
+                    <ScalarProperty Name="PRESTABLE" ColumnName="PRESTABLE" />
+                    <ScalarProperty Name="TIPO_CAPITAL" ColumnName="TIPO_CAPITAL" />
+                    <ScalarProperty Name="INGRESADO_POR" ColumnName="INGRESADO_POR" />
+                    <ScalarProperty Name="NUMERO_DOCUMENTO" ColumnName="NUMERO_DOCUMENTO" />
+                    <ScalarProperty Name="NUMERO_LOTE" ColumnName="NUMERO_LOTE" />
+                    <ScalarProperty Name="TIPO_TRANSACCIONID" ColumnName="TIPO_TRANSACCIONID" />
+                    <ScalarProperty Name="ESTADO_ACTIVOID" ColumnName="ESTADO_ACTIVOID" />
+                    <ScalarProperty Name="TIPO_ACTIVOID" ColumnName="TIPO_ACTIVOID" />
+                    <ScalarProperty Name="ANFITRIONAID" ColumnName="ANFITRIONAID" />
+                    <ScalarProperty Name="PROVEEDORIDPROVEEDOR" ColumnName="PROVEEDORIDPROVEEDOR" />
+                    <ScalarProperty Name="COMENTARIO" ColumnName="COMENTARIO" />
+                    <ScalarProperty Name="DESECHADO" ColumnName="DESECHADO" />
+                    <ScalarProperty Name="USUARIOSIDUSUARIO" ColumnName="USUARIOSIDUSUARIO" />
+                    <ScalarProperty Name="ESTACIONID" ColumnName="ESTACIONID" />
+                    <ScalarProperty Name="DEPARTAMENTOIDDEPARTAMENTO" ColumnName="DEPARTAMENTOIDDEPARTAMENTO" />
+                    <ScalarProperty Name="MODELO" ColumnName="MODELO" />
+                </MappingFragment>
+            </EntityTypeMapping>
+        </EntitySetMapping>
+        <EntitySetMapping Name="USUARIOS">
+            <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.USUARIO)">
+                <MappingFragment StoreEntitySet="USUARIOS">
+                    <ScalarProperty Name="IDUSUARIO" ColumnName="IDUSUARIO" />
+                    <ScalarProperty Name="USUARIO1" ColumnName="USUARIO1" />
+                    <ScalarProperty Name="CLAVE" ColumnName="CLAVE" />
+                    <ScalarProperty Name="ANFITRION" ColumnName="ANFITRION" />
+                    <ScalarProperty Name="IDCONTACTO" ColumnName="IDCONTACTO" />
+                    <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+                    <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+                    <ScalarProperty Name="IDESTACION" ColumnName="IDESTACION" />
+                    <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+                    <ScalarProperty Name="CORREO" ColumnName="CORREO" />
+                </MappingFragment>
+            </EntityTypeMapping>
+        </EntitySetMapping>
+        <AssociationSetMapping Name="ACTIVOPRESTAMO" TypeName="PrestamosModel.ACTIVOPRESTAMO" StoreEntitySet="ACTIVOPRESTAMO">
+            <EndProperty Name="ACTIVO">
+                <ScalarProperty Name="ID" ColumnName="ACTIVOes_ID" />
+            </EndProperty>
+            <EndProperty Name="PRESTAMO">
+                <ScalarProperty Name="ID" ColumnName="PRESTAMOes_ID" />
+            </EndProperty>
+        </AssociationSetMapping>
     </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

@@ -25,10 +25,65 @@
           <ScalarProperty Name="OBSERVACIONES_RECIBIDO" ColumnName="OBSERVACIONES_RECIBIDO" />
           <ScalarProperty Name="SIGLA_CURSO" ColumnName="SIGLA_CURSO" />
           <ScalarProperty Name="Estado" ColumnName="Estado" />
-          <ScalarProperty Name="CEDULA_SOLICITANTE" ColumnName="CEDULA_SOLICITANTE" />
-          <ScalarProperty Name="CEDULA_APRUEBA" ColumnName="CEDULA_APRUEBA" />
+          <ScalarProperty Name="CED_SOLICITA" ColumnName="CED_SOLICITA" />
+          <ScalarProperty Name="CED_APRUEBA" ColumnName="CED_APRUEBA" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="ACTIVOS">
+      <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.ACTIVO)">
+        <MappingFragment StoreEntitySet="ACTIVOS">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NUMERO_SERIE" ColumnName="NUMERO_SERIE" />
+          <ScalarProperty Name="FECHA_COMPRA" ColumnName="FECHA_COMPRA" />
+          <ScalarProperty Name="INICIO_SERVICIO" ColumnName="INICIO_SERVICIO" />
+          <ScalarProperty Name="FECHA_INGRESO" ColumnName="FECHA_INGRESO" />
+          <ScalarProperty Name="FABRICANTE" ColumnName="FABRICANTE" />
+          <ScalarProperty Name="PRECIO" ColumnName="PRECIO" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="EXENTO" ColumnName="EXENTO" />
+          <ScalarProperty Name="PRESTABLE" ColumnName="PRESTABLE" />
+          <ScalarProperty Name="TIPO_CAPITAL" ColumnName="TIPO_CAPITAL" />
+          <ScalarProperty Name="INGRESADO_POR" ColumnName="INGRESADO_POR" />
+          <ScalarProperty Name="NUMERO_DOCUMENTO" ColumnName="NUMERO_DOCUMENTO" />
+          <ScalarProperty Name="NUMERO_LOTE" ColumnName="NUMERO_LOTE" />
+          <ScalarProperty Name="TIPO_TRANSACCIONID" ColumnName="TIPO_TRANSACCIONID" />
+          <ScalarProperty Name="ESTADO_ACTIVOID" ColumnName="ESTADO_ACTIVOID" />
+          <ScalarProperty Name="TIPO_ACTIVOID" ColumnName="TIPO_ACTIVOID" />
+          <ScalarProperty Name="ANFITRIONAID" ColumnName="ANFITRIONAID" />
+          <ScalarProperty Name="PROVEEDORIDPROVEEDOR" ColumnName="PROVEEDORIDPROVEEDOR" />
+          <ScalarProperty Name="COMENTARIO" ColumnName="COMENTARIO" />
+          <ScalarProperty Name="DESECHADO" ColumnName="DESECHADO" />
+          <ScalarProperty Name="USUARIOSIDUSUARIO" ColumnName="USUARIOSIDUSUARIO" />
+          <ScalarProperty Name="ESTACIONID" ColumnName="ESTACIONID" />
+          <ScalarProperty Name="DEPARTAMENTOIDDEPARTAMENTO" ColumnName="DEPARTAMENTOIDDEPARTAMENTO" />
+          <ScalarProperty Name="MODELO" ColumnName="MODELO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="USUARIOS">
+      <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.USUARIO)">
+        <MappingFragment StoreEntitySet="USUARIOS">
+          <ScalarProperty Name="IDUSUARIO" ColumnName="IDUSUARIO" />
+          <ScalarProperty Name="USUARIO1" ColumnName="USUARIO1" />
+          <ScalarProperty Name="CLAVE" ColumnName="CLAVE" />
+          <ScalarProperty Name="ANFITRION" ColumnName="ANFITRION" />
+          <ScalarProperty Name="IDCONTACTO" ColumnName="IDCONTACTO" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+          <ScalarProperty Name="IDESTACION" ColumnName="IDESTACION" />
+          <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+          <ScalarProperty Name="CORREO" ColumnName="CORREO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="ACTIVOPRESTAMO" TypeName="PrestamosModel.ACTIVOPRESTAMO" StoreEntitySet="ACTIVOPRESTAMO">
+      <EndProperty Name="ACTIVO">
+        <ScalarProperty Name="ID" ColumnName="ACTIVOes_ID" />
+      </EndProperty>
+      <EndProperty Name="PRESTAMO">
+        <ScalarProperty Name="ID" ColumnName="PRESTAMOes_ID" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping>

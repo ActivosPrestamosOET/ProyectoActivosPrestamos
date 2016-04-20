@@ -10,28 +10,97 @@
     <h4>PRESTAMO</h4>
     <hr />   
 <div class="form-group">
-<div class="col-lg-3">
-    <dl >
-        @Html.DisplayNameFor(model => model.NUMERO_BOLETA)
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NUMERO_BOLETA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NUMERO_BOLETA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MOTIVO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MOTIVO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_SOLICITUD)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_SOLICITUD)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_RETIRO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_RETIRO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PERIODO_USO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PERIODO_USO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SOFTWARE_REQUERIDO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OBSERVACIONES_SOLICITANTE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OBSERVACIONES_SOLICITANTE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OBSERVACIONES_APROBADO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OBSERVACIONES_APROBADO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OBSERVACIONES_RECIBIDO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OBSERVACIONES_RECIBIDO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SIGLA_CURSO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SIGLA_CURSO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Estado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estado)
+        </dd>
+
+
     </dl>
-    <dl>
-        @Html.DisplayNameFor(model => model.MOTIVO)
-    </dl>
-    <dl>
-        @Html.DisplayNameFor(model => model.MOTIVO)
-    </dl>
-</div>
-<div >
-    <dl >
-        @Html.ActionLink("Back to List", "Index")
-    </dl>
-    <dl>
-        @Html.DisplayNameFor(model => model.FECHA_SOLICITUD)
-    </dl>
-    <dl>
-        @Html.ActionLink("Back to List", "Index")
-    </dl>    
-    </div>
 <div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |

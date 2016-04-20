@@ -12,13 +12,13 @@ namespace Activos_PrestamosOET.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
     public partial class PRESTAMO
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PRESTAMO()
         {
             this.EQUIPO_SOLICITADO = new HashSet<EQUIPO_SOLICITADO>();
+            this.ACTIVOes = new HashSet<ACTIVO>();
         }
 
         [Display(Name = "Id de la boleta")]
@@ -33,12 +33,11 @@ namespace Activos_PrestamosOET.Models
         [Display(Name = "Fecha de retiro")]
         [Required(ErrorMessage = "Por favor ingrese una rango válido")]
         public Nullable<System.DateTime> FECHA_RETIRO { get; set; }
-        [Required(ErrorMessage = "Por favor ingrese una rango válido")]
         [Display(Name = "Periodo del préstamo")]
         public Nullable<decimal> PERIODO_USO { get; set; }
         [Display(Name = "Software requerido")]
         public string SOFTWARE_REQUERIDO { get; set; }
-        [Display(Name = "Observaciones del solicitante")]
+        [Display(Name = "Observaciones del Solicitante")]
         public string OBSERVACIONES_SOLICITANTE { get; set; }
         [Display(Name = "Observaciones al aprobar el préstamo")]
         public string OBSERVACIONES_APROBADO { get; set; }
@@ -48,11 +47,15 @@ namespace Activos_PrestamosOET.Models
         public string SIGLA_CURSO { get; set; }
         public short Estado { get; set; }
         [Display(Name = "Cédula del solicitante")]
-        public int CEDULA_SOLICITANTE { get; set; }
+        public string CED_SOLICITA { get; set; }
         [Display(Name = "Cédula de quién aprueba")]
-        public int CEDULA_APRUEBA { get; set; }
+        public string CED_APRUEBA { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EQUIPO_SOLICITADO> EQUIPO_SOLICITADO { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ACTIVO> ACTIVOes { get; set; }
+        public virtual USUARIO USUARIO { get; set; }
+        public virtual USUARIO USUARIO1 { get; set; }
     }
 }
