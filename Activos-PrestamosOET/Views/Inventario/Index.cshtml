@@ -5,8 +5,20 @@
 }
 <head>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Inventario</title>
+<<<<<<< HEAD
+=======
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+>>>>>>> parent of ca710d7... css inventario
     <!-- Js -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script>
@@ -55,9 +67,10 @@
             <div class="col-md-1">
             </div>
             <div class="col-md-10">
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label>Categoria</label>
                 </div>
+<<<<<<< HEAD
                 <div class="col-md-2">
                     <select class="form-control" style="width: 180px; margin-left: 40px;">
                         <option value="Inicio">Seleccione categoria</option>
@@ -115,6 +128,47 @@
                 </table>
             </div>
 
+=======
+                <div class="form-control" style="width: 170px; margin-left:90px;">
+                    @Html.DropDownList("Buscar", (SelectList)ViewData["People"])
+                </div>
+
+                <div class="col-md-1">
+                    <button type="button" value="Buscar" onclick="location.href='@Url.Action("Buscar", "Inventario")'"
+                            class="btn btn-default" style="margin-left: 90px;">
+                        Buscar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-8">
+            <table class="table table-striped table-hover" style="width:480px; margin-top:20px">
+                <thead>
+                    <tr>
+                        <th class="col-md-2">Marca</th>
+                        <th class="col-md-2">Modelo</th>
+                        <th class="col-md-2">Serie</th>
+                        <th class="col-md-2">Encargado</th>
+                        <th class="col-md-2">Prestado A</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (List<String> s in ViewBag.Courses)
+                    {
+                        <tr>
+                            @foreach (String hilera in s)
+                            {
+                                <td class="col-md-2">@hilera</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+>>>>>>> parent of ca710d7... css inventario
         </div>
         <br>
         <div class="row">
@@ -167,5 +221,33 @@
                 </table>
             </div>
         </div>
+<<<<<<< HEAD
+=======
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-8">
+            <table class="table table-striped table-hover " style="width:200px; margin-top:20px">
+                <thead>
+                    <tr>
+                        <th class="col-md-1">Categoria</th>
+                        <th class="col-md-1">Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-md-1">Pendiente</td>
+                        <td class="col-md-1">1</td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-1">Solicitado</td>
+                        <td class="col-md-1">2</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+>>>>>>> parent of ca710d7... css inventario
 
 </body>
