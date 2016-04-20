@@ -7,6 +7,8 @@
 <h2>Solicitudes de préstamo</h2>
 <br />
 
+<br />
+
 <fieldset>
     <label for="textArea" class="col-lg-2 control-label">Empresa </label>
     <div class="col-lg-10">
@@ -15,11 +17,8 @@
 
             <option value="1">OET</option>
 
-            <option value="2">Aceptado</option>
+            <option value="2">ESINTRO</option>
 
-            <option value="3">Cerrado</option>
-
-            <option value="4">Denegado</option>
         </select>
     </div>
 </fieldset>
@@ -31,13 +30,15 @@
         <select id="Estado" name="Estado" value="Estado" class="form-control">
             <option selected="selected" value="0">Todos</option>
 
-            <option value="1">Pendiente</option>
+            <option value="1">CRO</option>
 
-            <option value="2">Aceptado</option>
+            <option value="2">La Selva</option>
 
-            <option value="3">Cerrado</option>
+            <option value="3">Las Cruces</option>
 
-            <option value="4">Denegado</option>
+            <option value="4">Jardín Botánico Wilson</option>
+
+            <option value="5">Palo Verde</option>
         </select>
     </div>
 </fieldset>
@@ -56,7 +57,7 @@
     <div class="col-lg-10">
         <input type="text" class="form-control" id="inputDefault">
     </div>
-    </div>
+</div>
 <br />
 <br />
 <fieldset>
@@ -77,26 +78,30 @@
 </fieldset>
 <br />
 
+
+
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.NUMERO_BOLETA)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MOTIVO)
-        </th>
+
         <th>
             @Html.DisplayNameFor(model => model.FECHA_SOLICITUD)
         </th>
+
         <th>
             @Html.DisplayNameFor(model => model.FECHA_RETIRO)
         </th>
-        
-        <th>
-            @Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO)
-        </th>
+
         <th>
             @Html.DisplayNameFor(model => model.SIGLA_CURSO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PERIODO_USO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CEDULA_SOLICITANTE)
         </th>
         <th></th>
     </tr>
@@ -106,28 +111,29 @@
         <td>
             @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MOTIVO)
-        </td>
+
         <td>
             @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)            
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SOFTWARE_REQUERIDO)
-        </td>
        
         <td>
             @Html.DisplayFor(modelItem => item.SIGLA_CURSO)
         </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.PERIODO_USO)
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.CEDULA_SOLICITANTE)
+        </td>
         <td>
 
             <input type="submit" value="Detalles" class="btn btn-default btn-sm" />
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) 
         </td>
     </tr>
 }

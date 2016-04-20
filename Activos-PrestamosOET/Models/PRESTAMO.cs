@@ -30,11 +30,11 @@ namespace Activos_PrestamosOET.Models
         public string MOTIVO { get; set; }
         [Display(Name = "Fecha de solicitud")]
         public Nullable<System.DateTime> FECHA_SOLICITUD { get; set; }
-        [Display(Name = "Fecha de inicio del préstamo")]
+        [Display(Name = "Fecha de retiro")]
         [Required(ErrorMessage = "Por favor ingrese una rango válido")]
         public Nullable<System.DateTime> FECHA_RETIRO { get; set; }
         [Required(ErrorMessage = "Por favor ingrese una rango válido")]
-        [Display(Name = "Periodo del pr�stamo")]
+        [Display(Name = "Periodo del préstamo")]
         public Nullable<decimal> PERIODO_USO { get; set; }
         [Display(Name = "Software requerido")]
         public string SOFTWARE_REQUERIDO { get; set; }
@@ -44,6 +44,7 @@ namespace Activos_PrestamosOET.Models
         public string OBSERVACIONES_APROBADO { get; set; }
         [Display(Name = "Observaciones al recibir el préstamo")]
         public string OBSERVACIONES_RECIBIDO { get; set; }
+        [Display(Name = "Sigla del curso")]
         public string SIGLA_CURSO { get; set; }
         public short Estado { get; set; }
         [Display(Name = "Cédula del solicitante")]
