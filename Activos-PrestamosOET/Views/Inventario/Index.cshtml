@@ -5,17 +5,8 @@
 }
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Inventario</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSS -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css">
-
     <!-- Js -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script>
@@ -64,101 +55,117 @@
             <div class="col-md-1">
             </div>
             <div class="col-md-10">
-                <div class="col-md-2">
+                <div class="col-md-3">
                     <label>Categoria</label>
                 </div>
-                <div class="form-control" style="width: 170px; margin-left:90px;">
-                    @Html.DropDownList("Buscar", (SelectList)ViewData["People"])
-                </div>
+                <div class="col-md-2">
+                    <select class="form-control" style="width: 180px; margin-left: 40px;">
+                        <option value="Inicio">Seleccione categoria</option>
+                        <option value="Pendiente">Computadoras</option>
+                        <option value="Cancelada">Impresoras</option>
+                        <option value="Abierta">Proyectores</option>
+                    </select>
 
-                <div class="col-md-1">
-                    <button type="button" value="Buscar" onclick="location.href='@Url.Action("Buscar", "Inventario")'"
-                            class="btn btn-default" style="margin-left: 90px;">
-                        Buscar
-                    </button>
+                    <div class="col-md-1">
+                        <button type="button" value="Buscar" onclick="location.href='@Url.Action("Buscar", "Inventario")'"
+                                class="btn btn-default" style="margin-left: 70px;">
+                            Buscar
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-1">
-        </div>
-        <div class="col-md-8">
-            <table class="table table-striped table-hover" style="width:480px; margin-top:20px">
-                <thead>
-                    <tr>
-                        <th class="col-md-2">Marca</th>
-                        <th class="col-md-2">Modelo</th>
-                        <th class="col-md-2">Serie</th>
-                        <th class="col-md-2">Encargado</th>
-                        <th class="col-md-2">Prestado A</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (List<String> s in ViewBag.Courses)
-                    {
+        <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-6">
+                <table class="table" style="margin-top:20px">
+                    <thead>
                         <tr>
-                            @foreach (String hilera in s)
-                            {
-                                <td class="col-md-2">@hilera</td>
-                            }
+                            <th class="col-md-2">Marca</th>
+                            <th class="col-md-2">Modelo</th>
+                            <th class="col-md-2">Serie</th>
+                            <th class="col-md-2">Encargado</th>
+                            <th class="col-md-2">Prestado A</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="col-md-1">Toshiba</td>
+                            <td class="col-md-1">Satellite</td>
+                            <td class="col-md-1">jkd487</td>
+                            <td class="col-md-1">Carlos</td>
+                            <td class="col-md-1">Oscar</td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-1">HP</td>
+                            <td class="col-md-1">Inspiron</td>
+                            <td class="col-md-1">sid462</td>
+                            <td class="col-md-1">Oscar</td>
+                            <td class="col-md-1">No Prestado</td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-1">HP</td>
+                            <td class="col-md-1">Pavilion</td>
+                            <td class="col-md-1">smj273</td>
+                            <td class="col-md-1">Carlos</td>
+                            <td class="col-md-1">No Prestado</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-    </div>
-    <br>
-    <div class="row">
-        <div class="form-horizontal">
+        </div>
+        <br>
+        <div class="row">
+            <div class="form-horizontal">
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-5">
+                    <label class="col-md-4">Fecha inicial:</label>
+                    <div class="col-md-6">
+                        <input class="form-control" style="padding:10px" type="text" id="datepicker" />
+                        <br>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row">
             <div class="col-md-1">
             </div>
             <div class="col-md-5">
-                <label class="col-md-4">Fecha inicial:</label>
+                <label class="col-md-4">Fecha finalización:</label>
                 <div class="col-md-6">
-                    <input class="form-control" style="padding:10px" type="text" id="datepicker" />
+                    <input class="form-control" style="padding:10px" type="text" id="datepicker1" />
                     <br>
                 </div>
             </div>
-
         </div>
-
-    </div>
-    <div class="row">
-        <div class="col-md-1">
-        </div>
-        <div class="col-md-5">
-            <label class="col-md-4">Fecha finalización:</label>
-            <div class="col-md-6">
-                <input class="form-control" style="padding:10px" type="text" id="datepicker1" />
-                <br>
+        <div class="row">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-8">
+                <table class="table" style="width:200px; margin-top:20px">
+                    <thead>
+                        <tr>
+                            <th class="col-md-1">Categoria</th>
+                            <th class="col-md-1">Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="col-md-1">Pendiente</td>
+                            <td class="col-md-1">1</td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-1">Solicitado</td>
+                            <td class="col-md-1">2</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-1">
-        </div>
-        <div class="col-md-8">
-            <table class="table table-striped table-hover " style="width:200px; margin-top:20px">
-                <thead>
-                    <tr>
-                        <th class="col-md-1">Categoria</th>
-                        <th class="col-md-1">Cantidad</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="col-md-1">Pendiente</td>
-                        <td class="col-md-1">1</td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-1">Solicitado</td>
-                        <td class="col-md-1">2</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
 
 </body>
