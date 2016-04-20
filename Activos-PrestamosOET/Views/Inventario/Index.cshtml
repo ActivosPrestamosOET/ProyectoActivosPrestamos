@@ -1,0 +1,176 @@
+﻿@{
+    ViewBag.Title = "Inventario";
+}
+
+@model IEnumerable<Inventario.Models.ModeloInventario>
+
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Inventario</title>
+
+    <!-- Js -->
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script>
+      $(function() {
+        $( "#datepicker" ).datepicker();
+      });
+    </script>
+    <script>
+         $.datepicker.regional['es'] = {
+         closeText: 'Cerrar',
+         prevText: '<Ant',
+         nextText: 'Sig>',
+         currentText: 'Hoy',
+         monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+         monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+         dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+         dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+         dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+         weekHeader: 'Sm',
+         dateFormat: 'dd/mm/yy',
+         firstDay: 1,
+         isRTL: false,
+         showMonthAfterYear: false,
+         yearSuffix: ''
+         };
+
+         $.datepicker.setDefaults($.datepicker.regional['es']);
+         $(function() {
+            $( "#datepicker1" ).datepicker();
+         });
+    </script>
+
+</head>
+<body>
+
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-10">
+            <h1>Inventario</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-horizontal">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-10">
+                <div class="col-md-2">
+                    <label>Categoria</label>
+                </div>
+                <div class="col-md-2">
+                    <select style="width: 180px; margin-left:60px;">
+                        <option value="Inicio">Seleccione categoria</option>
+                        <option value="Pendiente">Computadoras</option>
+                        <option value="Cancelada">Impresoras</option>
+                        <option value="Cancelada">Proyectores</option>
+                    </select>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" value="Buscar" onclick="location.href='@Url.Action("Buscar", "Inventario")'"
+                            class="btn btn-default" style="margin-left: 90px;">
+                        Buscar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-8">
+            <table class="table" style="width:480px; margin-top:20px">
+                <thead>
+                    <tr>
+                        <th class="col-md-2">Marca</th>
+                        <th class="col-md-2">Modelo</th>
+                        <th class="col-md-2">Serie</th>
+                        <th class="col-md-2">Responsable</th>
+                        <th class="col-md-2">Prestado A</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-md-1">Toshiba</td>
+                        <td class="col-md-1">Satellite</td>
+                        <td class="col-md-1">jkd487</td>
+                        <td class="col-md-1">Carlos</td>
+                        <td class="col-md-1">Oscar</td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-1">HP</td>
+                        <td class="col-md-1">Inspiron</td>
+                        <td class="col-md-1">sid462</td>
+                        <td class="col-md-1">Oscar</td>
+                        <td class="col-md-1">No Prestado</td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-1">HP</td>
+                        <td class="col-md-1">Pavilion</td>
+                        <td class="col-md-1">smj273</td>
+                        <td class="col-md-1">Carlos</td>
+                        <td class="col-md-1">No Prestado</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+    <br>
+    <div class="row">
+        <div class="form-horizontal">
+            <div class="col-md-1">
+            </div>
+            <div class="col-md-5">
+                <label class="col-md-4">Fecha inicial:</label>
+                <div class="col-md-6">
+                    <input class="form-control" style="padding:10px" type="text" id="datepicker" />
+                    <br>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-5">
+            <label class="col-md-4">Fecha finalización:</label>
+            <div class="col-md-6">
+                <input class="form-control" style="padding:10px" type="text" id="datepicker1" />
+                <br>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-8">
+            <table class="table table-striped table-hover " style="width:200px; margin-top:20px">
+                <thead>
+                    <tr>
+                        <th class="col-md-1">Categoria</th>
+                        <th class="col-md-1">Cantidad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="col-md-1">Pendiente</td>
+                        <td class="col-md-1">1</td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-1">Solicitado</td>
+                        <td class="col-md-1">2</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
