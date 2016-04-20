@@ -9,6 +9,27 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+
+<fieldset>
+    Movie Type
+    <select id="Estado" name="Estado">
+
+        <option value="">Todos</option>
+
+        <option value="0">Pendiente</option>
+
+        <option value="1">Aceptado</option>
+
+        <option selected="selected" value="2">Cerrado</option>
+
+        <option value="3">Science Fiction</option>
+
+    </select>
+
+    <p><input type="submit" value="Submit" class="btn btn-default"/> </p>
+
+</fieldset>
+
 <table class="table">
     <tr>
         <th>
