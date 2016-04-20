@@ -5,10 +5,78 @@
 }
 
 <h2>Solicitudes de préstamo</h2>
+<br />
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<fieldset>
+    <label for="textArea" class="col-lg-2 control-label">Empresa </label>
+    <div class="col-lg-10">
+        <select id="Estado" name="Estado" value="Estado" class="form-control">
+            <option selected="selected" value="0">Todos</option>
+
+            <option value="1">OET</option>
+
+            <option value="2">Aceptado</option>
+
+            <option value="3">Cerrado</option>
+
+            <option value="4">Denegado</option>
+        </select>
+    </div>
+</fieldset>
+<br />
+
+<fieldset>
+    <label for="textArea" class="col-lg-2 control-label">Estación </label>
+    <div class="col-lg-10">
+        <select id="Estado" name="Estado" value="Estado" class="form-control">
+            <option selected="selected" value="0">Todos</option>
+
+            <option value="1">Pendiente</option>
+
+            <option value="2">Aceptado</option>
+
+            <option value="3">Cerrado</option>
+
+            <option value="4">Denegado</option>
+        </select>
+    </div>
+</fieldset>
+<br />
+
+<div class="form-group">
+    <label class="col-lg-2 control-label" for="inputDefault">Fecha de Solicitud</label>
+    <div class="col-lg-10">
+        <input type="text" class="form-control" id="inputDefault">
+    </div>
+</div>
+<br />
+<br />
+<div class="form-group">
+    <label class="col-lg-2 control-label" for="inputDefault">Fecha de Retiro</label>
+    <div class="col-lg-10">
+        <input type="text" class="form-control" id="inputDefault">
+    </div>
+    </div>
+<br />
+<br />
+<fieldset>
+    <label for="textArea" class="col-lg-2 control-label">Estado </label>
+    <div class="col-lg-10">
+        <select id="Estado" name="Estado" value="Estado" class="form-control">
+            <option selected="selected" value="0">Todos</option>
+
+            <option value="1">Pendiente</option>
+
+            <option value="2">Aceptado</option>
+
+            <option value="3">Cerrado</option>
+
+            <option value="4">Denegado</option>
+        </select>
+    </div>
+</fieldset>
+<br />
+
 <table class="table">
     <tr>
         <th>
