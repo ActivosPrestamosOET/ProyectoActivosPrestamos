@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Activos_PrestamosOET.Models.PRESTAMO>
+
+@{
+    ViewBag.Title = "Historial";
+}
+
+<h2>Historial de Prestamos</h2>
+<br />
+<br />
+
+<p>
+    @Html.ActionLink("Nueva Solicitud", "Create")
+</p>
+
+
+<label for="Estadito">Estado: </label>
+<select class="form-control" id="SeleccionEstado" name="SeleccionEstado">
+    <option>Todos</option>
+    <option>Pendiente</option>
+    <option>Aceptado</option>
+    <option>Abierta</option>
+    <option>Cerrada</option>
+</select>
+
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.NUMERO_BOLETA)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.FECHA_SOLICITUD)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.FECHA_RETIRO)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.SIGLA_CURSO)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PERIODO_USO)
+                </th>
+
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SIGLA_CURSO)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PERIODO_USO)
+                    </td>
+
+                    <td>
+
+                        <input type="submit" value="Detalles" class="btn btn-default btn-sm" />
+                        @Html.ActionLink("Detalles", "Detalles", new { id = item.ID })
+                    </td>
+                </tr>
+            }
+
+        </table>

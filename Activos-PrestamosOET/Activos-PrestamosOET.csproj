@@ -250,6 +250,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\oetblanco.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -336,6 +337,8 @@
     <Content Include="Views\EQUIPO_SOLICITADO\Index.cshtml" />
     <Content Include="Views\Inventario\Index.cshtml" />
     <Content Include="Views\PRESTAMOes\ConsultarSolicitud.cshtml" />
+    <Content Include="Views\PRESTAMOes\Historial.cshtml" />
+    <Content Include="Views\PRESTAMOes\Detalles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

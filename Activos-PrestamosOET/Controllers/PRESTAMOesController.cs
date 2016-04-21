@@ -17,11 +17,35 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult Index()
         {
            return View(db.PRESTAMOS.ToList());
-           
-           
-           
-           
-        }       
+        }
+
+
+        // GET: PRESTAMOes/Historial
+        public ActionResult Historial()
+        {
+            return View(db.PRESTAMOS.ToList());
+        }
+
+        // GET: PRESTAMOes/Detalles
+        public ActionResult Detalles(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
+            if (pRESTAMO == null)
+            {
+                return HttpNotFound();
+            }
+            return View(pRESTAMO);
+        }
+
+
+
+
+
+
 
         // GET: PRESTAMOes/Details/5
         public ActionResult Details(string id)
