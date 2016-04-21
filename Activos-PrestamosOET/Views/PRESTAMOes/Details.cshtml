@@ -21,7 +21,14 @@
                 <div class="col-md-4">
                     @Html.DisplayFor(model => model.NUMERO_BOLETA)
                 </div>
-                <br />
+        <div class="col-md-2">
+            <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_SOLICITUD):</label>
+        </div>
+        <div class="col-md-4">
+            @Html.DisplayFor(model => model.FECHA_SOLICITUD)
+        </div>
+
+             <br />
             <br />
             <div class="col-md-2">
                 <label class="control-label" for="inputDefault">Solicitante:</label>
@@ -29,6 +36,12 @@
             <div class="col-md-4">
                 Juanito de los Angeles
             </div>
+        <div class="col-md-2">
+            <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_RETIRO):</label>
+        </div>
+        <div class="col-md-4">
+            @Html.DisplayFor(model => model.FECHA_RETIRO)
+        </div>
             <br />
             <br />
             <div class="col-md-2">
@@ -37,34 +50,15 @@
             <div class="col-md-4">
                 @Html.DisplayFor(model => model.MOTIVO)
             </div>
-            <br />
-
-        <div class="col-md-offset-6 col-md-2">
-            <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_SOLICITUD):</label>
-        </div>
-        <div class="col-md-offset-8 col-md-4">
-            @Html.DisplayFor(model => model.FECHA_SOLICITUD)
-        </div>
-        <br />
-        <br />
-
-        <div class="col-md-offset-6 col-md-2">
-            <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_RETIRO):</label>
-        </div>
-        <div class="col-md-offset-8 col-md-4">
-            @Html.DisplayFor(model => model.FECHA_RETIRO)
-        </div>
-        <br />
-        <br />
-        
-        <div class="col-md-offset-6 col-md-2">
+        <div class="col-md-2">
             <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.PERIODO_USO):</label>
         </div>
-        <div class="col-md-offset-8 col-md-4">
+        <div class="col-md-4">
             @Html.DisplayFor(model => model.PERIODO_USO)
         </div>
+            <br />
         <br />
-        <br />                
+             
          
     </div>
 </div>	
