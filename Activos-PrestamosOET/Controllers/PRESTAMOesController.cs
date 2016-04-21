@@ -18,10 +18,15 @@ namespace Activos_PrestamosOET.Controllers
         {
            return View(db.PRESTAMOS.ToList());
         }
+
+
+        // GET: PRESTAMOes/Historial
         public ActionResult Historial()
         {
             return View(db.PRESTAMOS.ToList());
         }
+
+        // GET: PRESTAMOes/Detalles
         public ActionResult Detalles(string id)
         {
             if (id == null)
@@ -35,6 +40,13 @@ namespace Activos_PrestamosOET.Controllers
             }
             return View(pRESTAMO);
         }
+
+
+
+
+
+
+
         // GET: PRESTAMOes/Details/5
         public ActionResult Details(string id)
         {
