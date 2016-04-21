@@ -7,6 +7,7 @@
     <meta charset="utf-8">
     <title>Inventario</title>
     <!-- Js -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script>
@@ -59,11 +60,10 @@
                     <label>Categoria</label>
                 </div>
                 <div class="col-md-2">
-                    <select class="form-control" style="width: 180px; margin-left: 40px;">
-                        <option value="Inicio">Seleccione categoria</option>
-                        <option value="Pendiente">Computadoras</option>
-                        <option value="Cancelada">Impresoras</option>
-                        <option value="Abierta">Proyectores</option>
+                    <select id="dropdownCategoria" name="dropdownCategoria" class="form-control" style="width: 180px;margin-left:40px;">
+                        <option selected="selected" value="0">Todas</option>
+                        <option value="1">Computadoras</option>
+                        <option value="2">Impresoras</option>
                     </select>
                 </div>
 
