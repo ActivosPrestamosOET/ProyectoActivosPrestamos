@@ -76,7 +76,9 @@
         <div class="form-group">
             @Html.Label("¿Pertece a un curso?", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.RadioButton("Curso", false)
+               <!-- @Html.RadioButton("Curso", false)-->
+                @Html.CheckBox("Curso", false)
+
             </div>
         </div>
         <div class="form-group">
