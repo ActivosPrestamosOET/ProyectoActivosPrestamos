@@ -666,6 +666,6 @@ C:\Users\Helena\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\b
 C:\Users\Helena\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\Microsoft.Owin.Security.Google.xml
 C:\Users\Helena\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\Helena\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
-C:\Users\Helena\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache
 C:\Users\Helena\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.dll
 C:\Users\Helena\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.pdb
+C:\Users\Helena\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache

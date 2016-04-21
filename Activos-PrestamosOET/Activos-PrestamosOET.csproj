@@ -236,6 +236,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ModeloInventario.cs" />
     <Compile Include="Models\PRESTAMO.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
