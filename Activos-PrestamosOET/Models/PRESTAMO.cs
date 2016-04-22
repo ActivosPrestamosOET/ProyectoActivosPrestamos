@@ -12,6 +12,16 @@ namespace Activos_PrestamosOET.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    public enum Estadito
+    {
+        //Todos,
+        Pendiente,
+        Aprobado,
+        Denegado,
+        Cancelado
+    }
+
+
     public partial class PRESTAMO
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -56,8 +66,8 @@ namespace Activos_PrestamosOET.Models
         [Display(Name = "Sigla del Curso")]
         public string SIGLA_CURSO { get; set; }
 
-        [Display(Name = "Estado")]
-        public short Estado { get; set; }
+        [Display(Name = "Estadoo")]
+        public Estadito Estado { get; set; }
 
         [Display(Name = "Cédula del solicitante")]
         public string CED_SOLICITA { get; set; }
@@ -71,6 +81,7 @@ namespace Activos_PrestamosOET.Models
         public virtual ICollection<ACTIVO> ACTIVOes { get; set; }
         public virtual USUARIO USUARIO { get; set; }
         public virtual USUARIO USUARIO1 { get; set; }
+
     }
 }
 
