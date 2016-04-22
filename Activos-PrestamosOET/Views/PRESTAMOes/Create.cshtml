@@ -5,7 +5,38 @@
 }
 
 <h2>Nueva solicitud de préstamo</h2>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script>
+      $(function() {
+        $( "#datepicker" ).datepicker();
+      });
+</script>
+<script>
+         $.datepicker.regional['es'] = {
+         closeText: 'Cerrar',
+         prevText: '<Ant',
+         nextText: 'Sig>',
+         currentText: 'Hoy',
+         monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+         monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
+         dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+         dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
+         dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
+         weekHeader: 'Sm',
+         dateFormat: 'dd/mm/yy',
+         firstDay: 1,
+         isRTL: false,
+         showMonthAfterYear: false,
+         yearSuffix: ''
+         };
 
+         $.datepicker.setDefaults($.datepicker.regional['es']);
+         $(function() {
+            $( "#datepicker1" ).datepicker();
+         });
+</script>
 
 @using (Html.BeginForm()) 
 {
@@ -52,6 +83,13 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.FECHA_RETIRO, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.FECHA_RETIRO, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="col-md-5">
+            <label class="col-md-4">Datepicker:</label>
+            <div class="col-md-6">
+                <input class="form-control" style="padding:10px" type="text" id="datepicker" />
+                <br>
             </div>
         </div>
 
