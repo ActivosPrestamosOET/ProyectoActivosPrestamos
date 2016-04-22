@@ -90,6 +90,52 @@ namespace Activos_PrestamosOET.Controllers
             return View(pRESTAMO);
         }
 
+
+
+
+
+
+
+
+
+        // GET: PRESTAMOes/Create
+        public ActionResult Create()
+        {
+            ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
+            ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
+            return View();
+        }
+
+        // POST: PRESTAMOes/Create
+        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
+        // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,CED_SOLICITA,CED_APRUEBA")] PRESTAMO pRESTAMO)
+        {
+            if (ModelState.IsValid)
+            {
+                db.PRESTAMOS.Add(pRESTAMO);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", pRESTAMO.CED_SOLICITA);
+            ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", pRESTAMO.CED_APRUEBA);
+            return View(pRESTAMO);
+        }
+
+
+
+
+
+
+
+
+
+
+
+        /*
         // GET: PRESTAMOes/Create
         public ActionResult Create()
         {
@@ -119,6 +165,7 @@ namespace Activos_PrestamosOET.Controllers
 
             return View(pRESTAMO);
         }
+        */
 
         // GET: PRESTAMOes/Edit/5
         public ActionResult Edit(string id)
