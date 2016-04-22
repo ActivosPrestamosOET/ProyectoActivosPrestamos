@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
-  <Alias Key="Model" Value="ER_x0020_Prestamos" />
-  <Alias Key="Target" Value="ER_x0020_Prestamos.Store" />
-  <EntityContainerMapping CdmEntityContainer="ER_x0020_PrestamosContainer" StorageEntityContainer="ER_x0020_PrestamosTargetContainer" />
-</Mapping>

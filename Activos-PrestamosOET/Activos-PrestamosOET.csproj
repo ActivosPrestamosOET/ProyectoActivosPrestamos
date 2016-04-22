@@ -334,11 +334,11 @@
     <Content Include="Views\PRESTAMOes\Details.cshtml" />
     <Content Include="Views\PRESTAMOes\Edit.cshtml" />
     <Content Include="Views\PRESTAMOes\Index.cshtml" />
-    <Content Include="Views\Account\EQUIPO_SOLICITADO\Create.cshtml" />
-    <Content Include="Views\Account\EQUIPO_SOLICITADO\Delete.cshtml" />
-    <Content Include="Views\Account\EQUIPO_SOLICITADO\Details.cshtml" />
-    <Content Include="Views\Account\EQUIPO_SOLICITADO\Edit.cshtml" />
-    <Content Include="Views\Account\EQUIPO_SOLICITADO\Index.cshtml" />
+    <Content Include="Views\EQUIPO_SOLICITADO\Create.cshtml" />
+    <Content Include="Views\EQUIPO_SOLICITADO\Delete.cshtml" />
+    <Content Include="Views\EQUIPO_SOLICITADO\Details.cshtml" />
+    <Content Include="Views\EQUIPO_SOLICITADO\Edit.cshtml" />
+    <Content Include="Views\EQUIPO_SOLICITADO\Index.cshtml" />
     <Content Include="Views\Inventario\Index.cshtml" />
     <Content Include="Views\PRESTAMOes\ConsultarSolicitud.cshtml" />
     <Content Include="Views\PRESTAMOes\Historial.cshtml" />
