@@ -14,13 +14,6 @@ namespace Local.Controllers
         // default
         public ActionResult Index()
         {
-            var types = new List<Inventario.Models.SelectType>();
-            types.Add(new Inventario.Models.SelectType() { Value = "0", Text = "Todas" });
-            types.Add(new Inventario.Models.SelectType() { Value = "1", Text = "Computadoras" });
-            types.Add(new Inventario.Models.SelectType() { Value = "2", Text = "Impresoras" });
-            ViewBag.PartialTypes = types;
-
-
             ViewBag.Opcion = "Todas";
 
             List <String> solicitantes = new List<String>();
@@ -86,7 +79,7 @@ namespace Local.Controllers
         // default
         public ActionResult Buscar(Inventario.Models.ModeloInventario model)
         {
-            String t = Convert.ToString(Request.Form["dropdownCategoria"]);
+
             if (ViewBag.Opcion==null)
             {
                 var viewModel = from o in db.PRESTAMOS.ToList()

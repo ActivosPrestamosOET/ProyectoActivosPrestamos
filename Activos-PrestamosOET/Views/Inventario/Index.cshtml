@@ -68,6 +68,10 @@
                         <option value="1">Computadoras</option>
                         <option value="2">Impresoras</option>
                     </select>
+                    @foreach (var item in Model)
+                    {
+                        item.seleccionado = 
+                    }
                     <script>
                         function myFunction() {
                             var e = document.getElementById("ddlViewBy");
