@@ -9,4 +9,9 @@ namespace Inventario.Models
         public Activos_PrestamosOET.Models.USUARIO Usuarios { get; set; }
         public string seleccionado { get; set; }
     }
+
+    public class SelectType {
+        public string Text { get; set; }
+        public string Value { get; set; }
+    }
 }
