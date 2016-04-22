@@ -59,6 +59,34 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return HttpNotFound();
             }
+
+            var viewModel = from o in db.PRESTAMOS.ToList()
+                            join o2 in db.USUARIOS.ToList()
+                                on o.CED_SOLICITA equals o2.IDUSUARIO
+                            where o.CED_SOLICITA.Equals(o2.IDUSUARIO)
+                            //  select o2.NOMBRE;
+                            select new Activos_PrestamosOET.Models.USUARIO { NOMBRE = o2.NOMBRE };
+
+
+            //  var courses = new List<List<String>>();
+
+            String nombre = "";
+            // whatever you want to do with the objects
+            foreach (Activos_PrestamosOET.Models.USUARIO mi in viewModel)
+            {
+
+                nombre = mi.NOMBRE;
+
+            }
+
+
+            //    temp.Add(prestado_a);
+
+            //if viewModel tiene  hace match con alguno de los f's
+            //  courses.Add(temp);
+
+
+            //      ViewBag.Nombre = nombre;
             return View(pRESTAMO);
         }
 
