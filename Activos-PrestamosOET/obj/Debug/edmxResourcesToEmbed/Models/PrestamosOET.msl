@@ -85,5 +85,79 @@
         <ScalarProperty Name="ID" ColumnName="PRESTAMOes_ID" />
       </EndProperty>
     </AssociationSetMapping>
+    <EntitySetMapping Name="TIPOS_ACTIVOS">
+      <EntityTypeMapping TypeName="PrestamosModel.TIPOS_ACTIVOS">
+        <MappingFragment StoreEntitySet="TIPOS_ACTIVOS">
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="V_ANFITRIONA">
+      <EntityTypeMapping TypeName="PrestamosModel.V_ANFITRIONA">
+        <MappingFragment StoreEntitySet="V_ANFITRIONA">
+          <ScalarProperty Name="MONEDA_CONTA" ColumnName="MONEDA_CONTA" />
+          <ScalarProperty Name="TIPOCAMBIO_CONTA" ColumnName="TIPOCAMBIO_CONTA" />
+          <ScalarProperty Name="TIPOUSUARIO" ColumnName="TIPOUSUARIO" />
+          <ScalarProperty Name="TIPOCAMBIO" ColumnName="TIPOCAMBIO" />
+          <ScalarProperty Name="MONEDA" ColumnName="MONEDA" />
+          <ScalarProperty Name="SIGLAS" ColumnName="SIGLAS" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="V_ESTACION">
+      <EntityTypeMapping TypeName="PrestamosModel.V_ESTACION">
+        <MappingFragment StoreEntitySet="V_ESTACION">
+          <ScalarProperty Name="RESERVABLE" ColumnName="RESERVABLE" />
+          <ScalarProperty Name="SIGLAS" ColumnName="SIGLAS" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="V_MONEDA">
+      <EntityTypeMapping TypeName="PrestamosModel.V_MONEDA">
+        <MappingFragment StoreEntitySet="V_MONEDA">
+          <ScalarProperty Name="SIMBOLO" ColumnName="SIMBOLO" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="V_PROVEEDOR">
+      <EntityTypeMapping TypeName="PrestamosModel.V_PROVEEDOR">
+        <MappingFragment StoreEntitySet="V_PROVEEDOR">
+          <ScalarProperty Name="NOMBRE_CORTO" ColumnName="NOMBRE_CORTO" />
+          <ScalarProperty Name="MONEDA" ColumnName="MONEDA" />
+          <ScalarProperty Name="MODIFICADOR" ColumnName="MODIFICADOR" />
+          <ScalarProperty Name="MODIFICADO" ColumnName="MODIFICADO" />
+          <ScalarProperty Name="CREADOR" ColumnName="CREADOR" />
+          <ScalarProperty Name="CREADO" ColumnName="CREADO" />
+          <ScalarProperty Name="CONGELAR" ColumnName="CONGELAR" />
+          <ScalarProperty Name="COMENTARIO" ColumnName="COMENTARIO" />
+          <ScalarProperty Name="INTERESMORA" ColumnName="INTERESMORA" />
+          <ScalarProperty Name="DESCUENTO" ColumnName="DESCUENTO" />
+          <ScalarProperty Name="IDPLAZO" ColumnName="IDPLAZO" />
+          <ScalarProperty Name="IDFORMAPAGO" ColumnName="IDFORMAPAGO" />
+          <ScalarProperty Name="DIRECCION" ColumnName="DIRECCION" />
+          <ScalarProperty Name="IDPROVINCIA" ColumnName="IDPROVINCIA" />
+          <ScalarProperty Name="IDPAIS" ColumnName="IDPAIS" />
+          <ScalarProperty Name="LOCACION" ColumnName="LOCACION" />
+          <ScalarProperty Name="CORREOELECTRONICO" ColumnName="CORREOELECTRONICO" />
+          <ScalarProperty Name="SITIOWEB" ColumnName="SITIOWEB" />
+          <ScalarProperty Name="FAX" ColumnName="FAX" />
+          <ScalarProperty Name="TELEFONO" ColumnName="TELEFONO" />
+          <ScalarProperty Name="CEDULA" ColumnName="CEDULA" />
+          <ScalarProperty Name="TIPOCEDULA" ColumnName="TIPOCEDULA" />
+          <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+          <ScalarProperty Name="RAZONSOCIAL" ColumnName="RAZONSOCIAL" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+          <ScalarProperty Name="FECHAINGRESO" ColumnName="FECHAINGRESO" />
+          <ScalarProperty Name="IDPROVEEDOR" ColumnName="IDPROVEEDOR" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>
