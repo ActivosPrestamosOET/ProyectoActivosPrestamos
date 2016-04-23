@@ -130,7 +130,8 @@ namespace Activos_PrestamosOET.Controllers
                 P.CED_SOLICITA = p.CED_SOLICITA;
                 P.FECHA_RETIRO = p.FECHA_RETIRO;
                 P.FECHA_SOLICITUD = System.DateTimeOffset.Now.Date;//SELECT SYSDATE FROM DUAL
-                //P.SOFTWARE_REQUERIDO
+                P.SOFTWARE_REQUERIDO = "";
+                P.Estado = 1;
                 //P.CED_APRUEBA = p.CED_APRUEBA;
                 db.PRESTAMOS.Add(P);
                 db.SaveChanges();
