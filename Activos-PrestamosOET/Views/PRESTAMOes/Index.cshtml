@@ -171,9 +171,7 @@
         </td>
 
         <td>
-
-            <input type="submit" value="Detalles" class="btn btn-default btn-sm" />
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) 
+            @Html.ActionLink("Detalles", "Details", new { id=item.ID }, new { @class = "btn btn-default" }) 
         </td>
     </tr>
 }
