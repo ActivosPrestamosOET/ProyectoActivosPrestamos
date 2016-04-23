@@ -57,13 +57,23 @@ namespace Activos_PrestamosOET.Controllers
                 }
             }
         }
-
+        public ActionResult Historial(string fechaSolicitud)
+        {
+            if (String.IsNullOrEmpty(fechaSolicitud))
+            {
+                return View(db.PRESTAMOS.ToList());
+            }
+            else
+            {
+                return View(db.PRESTAMOS.Where(model => model.CED_SOLICITA == fechaSolicitud));
+            }
+        }
 
         // GET: PRESTAMOes/Historial
-        public ActionResult Historial()
+      /*  public ActionResult Historial()
         {
             return View(db.PRESTAMOS.ToList());
-        }
+        }*/
 
         // GET: PRESTAMOes/Detalles
         public ActionResult Detalles(string id)
