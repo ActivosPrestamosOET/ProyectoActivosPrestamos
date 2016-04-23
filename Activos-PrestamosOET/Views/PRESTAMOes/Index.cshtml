@@ -88,7 +88,8 @@
 <div class="form-group">
     <label class="col-lg-2 control-label" for="inputDefault">Fecha de Retiro</label>
     <div class="col-lg-10">
-        <input class="form-control" name="fechaRetiro" type="text" id="datepicker1" />
+        <input class="datepicker" />
+        @Html.TextBox("fechaRetiro", "", new { @class = "datepicker1" })
     </div>
 </div>
 <br />

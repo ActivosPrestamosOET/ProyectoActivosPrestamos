@@ -15,8 +15,10 @@ namespace Activos_PrestamosOET.Controllers
         private PrestamosEntities db = new PrestamosEntities();
 
         // GET: PRESTAMOes
-        public ActionResult Index()
+        public ActionResult Index(string fechaSolicitud, string fechaRetiro)
         {
+            if(!String.IsNullOrEmpty(fechaSolicitud))
+                Console.WriteLine(fechaSolicitud);
            return View(db.PRESTAMOS.ToList());
         }
 
