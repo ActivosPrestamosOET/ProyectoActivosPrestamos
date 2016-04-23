@@ -112,18 +112,34 @@ namespace Activos_PrestamosOET.Controllers
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,CED_SOLICITA,CED_APRUEBA")] PRESTAMO pRESTAMO)
+        public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,CED_SOLICITA,CED_APRUEBA")] PRESTAMO p)
         {
+            PRESTAMO P = new PRESTAMO();
             if (ModelState.IsValid)
             {
-                db.PRESTAMOS.Add(pRESTAMO);
+                
+                P.ID = p.ID;
+                P.MOTIVO = p.MOTIVO;
+                P.NUMERO_BOLETA = p.NUMERO_BOLETA;
+                P.OBSERVACIONES_APROBADO = "";
+                P.OBSERVACIONES_RECIBIDO = "";
+                P.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
+                P.PERIODO_USO = p.PERIODO_USO;
+                P.SIGLA_CURSO = p.SIGLA_CURSO;
+                P.CED_APRUEBA = p.CED_APRUEBA;
+                P.CED_SOLICITA = p.CED_SOLICITA;
+                P.FECHA_RETIRO = p.FECHA_RETIRO;
+                P.FECHA_SOLICITUD = System.DateTimeOffset.Now.Date;//SELECT SYSDATE FROM DUAL
+                //P.SOFTWARE_REQUERIDO
+                //P.CED_APRUEBA = p.CED_APRUEBA;
+                db.PRESTAMOS.Add(P);
                 db.SaveChanges();
                 return RedirectToAction("Historial");
             }
 
-            ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", pRESTAMO.CED_SOLICITA);
-            ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", pRESTAMO.CED_APRUEBA);
-            return View(pRESTAMO);
+            //ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", pRESTAMO.CED_SOLICITA);
+            //ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", pRESTAMO.CED_APRUEBA);
+            return View(P);
         }
 
 

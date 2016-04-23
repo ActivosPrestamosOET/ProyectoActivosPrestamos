@@ -66,8 +66,8 @@ namespace Activos_PrestamosOET.Models
         [Display(Name = "Sigla del Curso")]
         public string SIGLA_CURSO { get; set; }
 
-        [Display(Name = "Estadoo")]
-        public Estadito Estado { get; set; }
+        [Display(Name = "Estado")]
+        public short Estado { get; set; }
 
         [Display(Name = "Cédula del solicitante")]
         public string CED_SOLICITA { get; set; }
