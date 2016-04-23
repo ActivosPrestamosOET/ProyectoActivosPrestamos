@@ -36,11 +36,11 @@
 </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Nueva Solicitud", "Create", "PRESTAMOes")</li>
-                    <li>@Html.ActionLink("Historial de Solicitudes", "Historial", "PRESTAMOes")</li> 
-                    <li>@Html.ActionLink("Revision de Prestamos", "Index", "PRESTAMOes")</li>
-                    <li>@Html.ActionLink("Equipo", "Index", "EQUIPO_SOLICITADO")</li>
+                    <li id ="A1">@Html.ActionLink("Inicio", "Index", "Home")</li>
+                    <li id ="A2">@Html.ActionLink("Nueva Solicitud", "Create", "PRESTAMOes")</li>
+                    <li id ="A3">@Html.ActionLink("Historial de Solicitudes", "Historial", "PRESTAMOes")</li> 
+                    <li id ="A4">@Html.ActionLink("Revision de Prestamos", "Index", "PRESTAMOes")</li>
+                    <li id ="A5">@Html.ActionLink("Equipo", "Index", "EQUIPO_SOLICITADO")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -51,9 +51,22 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-           
-        </footer>
+        <div class="footer">
+            <div class="cuerpo-footer">
+                <div class="container">
+                    <footer>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <br />
+                               
+                                <h5 class="text-center"> OET &copy; Copyright @DateTime.Now.Year - Todos los derechos reservados. </h5>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     @Scripts.Render("~/bundles/bootstrap")
