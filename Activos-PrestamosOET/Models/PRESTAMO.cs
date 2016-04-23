@@ -47,7 +47,7 @@ namespace Activos_PrestamosOET.Models
         [Required(ErrorMessage = "Por favor ingrese una rango válido")]
         public Nullable<System.DateTime> FECHA_RETIRO { get; set; }
 
-        [Display(Name = "Fecha de inicio del préstamo")]
+        [Display(Name = "Periodo de uso")]
         [Required(ErrorMessage = "Por favor ingrese una rango válido")]
         public Nullable<decimal> PERIODO_USO { get; set; }
 
@@ -79,7 +79,9 @@ namespace Activos_PrestamosOET.Models
         public virtual ICollection<EQUIPO_SOLICITADO> EQUIPO_SOLICITADO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ACTIVO> ACTIVOes { get; set; }
+        [Display(Name = "Cédula del solicitante")]
         public virtual USUARIO USUARIO { get; set; }
+        [Display(Name = "Cédula de quién aprueba")]
         public virtual USUARIO USUARIO1 { get; set; }
 
     }

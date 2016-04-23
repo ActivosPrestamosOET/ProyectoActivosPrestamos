@@ -150,12 +150,14 @@ namespace Activos_PrestamosOET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,CED_SOLICITA,CED_APRUEBA")] PRESTAMO p)
         {
+            //p.FECHA_RETIRO
             PRESTAMO P = new PRESTAMO();
             if (ModelState.IsValid)
             {
                 
                 P.ID = p.ID;
                 P.MOTIVO = p.MOTIVO;
+                //P.NUMERO_BOLETA = p.NUMERO_BOLETA;
                // P.NUMERO_BOLETA = db.PRESTAMOS.;//context.Persons.Max(p => p.Age); ;
                 P.OBSERVACIONES_APROBADO = "";
                 P.OBSERVACIONES_RECIBIDO = "";
@@ -174,8 +176,8 @@ namespace Activos_PrestamosOET.Controllers
                 return RedirectToAction("Historial");
             }
 
-            //ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", pRESTAMO.CED_SOLICITA);
-            //ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", pRESTAMO.CED_APRUEBA);
+            ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", p.CED_SOLICITA);
+            ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", p.CED_APRUEBA);
             return View(P);
         }
 
