@@ -94,6 +94,8 @@ namespace Activos_PrestamosOET.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
+           // ViewBag.clear();
+
             if (pRESTAMO == null)
             {
                 return HttpNotFound();
@@ -114,14 +116,6 @@ namespace Activos_PrestamosOET.Controllers
 
             return View(pRESTAMO);
         }
-
-
-
-
-
-    
-
-
 
         // GET: PRESTAMOes/Create
         public ActionResult Create()
