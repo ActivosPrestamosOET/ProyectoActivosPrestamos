@@ -18,9 +18,9 @@
     <Property Name="ID" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="NUMERO_BOLETA" Type="Decimal" Precision="38" Scale="0" />
     <Property Name="MOTIVO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-    <Property Name="FECHA_SOLICITUD" Type="DateTime" />
-    <Property Name="FECHA_RETIRO" Type="DateTime" />
-    <Property Name="PERIODO_USO" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="FECHA_SOLICITUD" Type="DateTime" Nullable="false" />
+    <Property Name="FECHA_RETIRO" Type="DateTime" Nullable="false" />
+    <Property Name="PERIODO_USO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
     <Property Name="SOFTWARE_REQUERIDO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
     <Property Name="OBSERVACIONES_SOLICITANTE" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
     <Property Name="OBSERVACIONES_APROBADO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
