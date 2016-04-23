@@ -7,6 +7,8 @@ using System.Data;
 using System.Web.UI.WebControls;
 using System;
 using System.Globalization;
+using System.Collections.Generic;
+
 
 namespace Activos_PrestamosOET.Controllers
 {
@@ -97,33 +99,19 @@ namespace Activos_PrestamosOET.Controllers
                 return HttpNotFound();
             }
 
-            var viewModel = from o in db.PRESTAMOS.ToList()
-                            join o2 in db.USUARIOS.ToList()
-                                on o.CED_SOLICITA equals o2.IDUSUARIO
-                            where o.CED_SOLICITA.Equals(o2.IDUSUARIO)
-                            //  select o2.NOMBRE;
-                            select new Activos_PrestamosOET.Models.USUARIO { NOMBRE = o2.NOMBRE };
+            var lista = from o in db.PRESTAMOS
+                        from o2 in db.USUARIOS
+                        where o.CED_SOLICITA == o2.IDUSUARIO
+                        select new { PRESTAMO = o, USUARIO = o2.NOMBRE};
 
-
-            //  var courses = new List<List<String>>();
-
-            String nombre = "";
-            // whatever you want to do with the objects
-            foreach (Activos_PrestamosOET.Models.USUARIO mi in viewModel)
+            List<Tuple<Activos_PrestamosOET.Models.PRESTAMO, string>> l = new List<Tuple<Activos_PrestamosOET.Models.PRESTAMO, string>>();
+            foreach (var m in lista)
             {
-
-                nombre = mi.NOMBRE;
-
+                var t = new Tuple<Activos_PrestamosOET.Models.PRESTAMO, string>(m.PRESTAMO, m.USUARIO);
+                l.Add(t);
+                ViewBag.Nombre = t.Item2;
             }
 
-
-            //    temp.Add(prestado_a);
-
-            //if viewModel tiene  hace match con alguno de los f's
-            //  courses.Add(temp);
-
-
-            //      ViewBag.Nombre = nombre;
             return View(pRESTAMO);
         }
 
@@ -131,7 +119,7 @@ namespace Activos_PrestamosOET.Controllers
 
 
 
-
+    
 
 
 

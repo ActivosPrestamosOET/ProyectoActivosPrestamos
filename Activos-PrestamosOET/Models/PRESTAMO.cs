@@ -43,7 +43,7 @@ namespace Activos_PrestamosOET.Models
         [Display(Name = "Fecha de solicitud")]
         public Nullable<System.DateTime> FECHA_SOLICITUD { get; set; }
 
-        [Display(Name = "Fecha de inicio del préstamo")]
+        [Display(Name = "Fecha de retiro")]
         [Required(ErrorMessage = "Por favor ingrese una rango válido")]
         public Nullable<System.DateTime> FECHA_RETIRO { get; set; }
 
