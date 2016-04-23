@@ -120,7 +120,7 @@ namespace Activos_PrestamosOET.Controllers
                 
                 P.ID = p.ID;
                 P.MOTIVO = p.MOTIVO;
-                P.NUMERO_BOLETA = p.NUMERO_BOLETA;
+               // P.NUMERO_BOLETA = db.PRESTAMOS.;//context.Persons.Max(p => p.Age); ;
                 P.OBSERVACIONES_APROBADO = "";
                 P.OBSERVACIONES_RECIBIDO = "";
                 P.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
@@ -130,7 +130,8 @@ namespace Activos_PrestamosOET.Controllers
                 P.CED_SOLICITA = p.CED_SOLICITA;
                 P.FECHA_RETIRO = p.FECHA_RETIRO;
                 P.FECHA_SOLICITUD = System.DateTimeOffset.Now.Date;//SELECT SYSDATE FROM DUAL
-                //P.SOFTWARE_REQUERIDO
+                P.SOFTWARE_REQUERIDO = "";
+                P.Estado = 1;
                 //P.CED_APRUEBA = p.CED_APRUEBA;
                 db.PRESTAMOS.Add(P);
                 db.SaveChanges();
