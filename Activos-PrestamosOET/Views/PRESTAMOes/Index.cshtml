@@ -128,22 +128,23 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.NUMERO_BOLETA)
+            @Html.ActionLink("Número de boleta", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
 
         <th>
-            @Html.DisplayNameFor(model => model.FECHA_SOLICITUD)
+            @Html.ActionLink("Fecha de solicitud", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
 
         <th>
-            @Html.DisplayNameFor(model => model.FECHA_RETIRO)
+            @Html.ActionLink("Fecha de inicio del préstamo", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
 
         <th>
-            @Html.DisplayNameFor(model => model.SIGLA_CURSO)
+            @Html.ActionLink("Periodo del préstamo", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PERIODO_USO)
+            @Html.ActionLink("Solicitante", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
 
         <th></th>
@@ -163,11 +164,12 @@
         </td>
        
         <td>
-            @Html.DisplayFor(modelItem => item.SIGLA_CURSO)
+            @Html.DisplayFor(modelItem => item.PERIODO_USO)
+            
         </td>
 
         <td>
-            @Html.DisplayFor(modelItem => item.PERIODO_USO)
+            @Html.DisplayFor(modelItem => item.SIGLA_CURSO)
         </td>
 
         <td>
