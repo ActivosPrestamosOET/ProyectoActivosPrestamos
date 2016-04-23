@@ -60,9 +60,16 @@ namespace Activos_PrestamosOET.Controllers
 
 
         // GET: PRESTAMOes/Historial
-        public ActionResult Historial()
+        public ActionResult Historial(string fechaSolicitud)
         {
-            return View(db.PRESTAMOS.ToList());
+            if (String.IsNullOrEmpty(fechaSolicitud))
+            {
+                return View(db.PRESTAMOS.ToList());
+            }
+            else
+            {
+                return View(db.PRESTAMOS.Where(model => model.CED_SOLICITA == fechaSolicitud));
+            }
         }
 
         // GET: PRESTAMOes/Detalles
