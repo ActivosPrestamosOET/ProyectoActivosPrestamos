@@ -32,7 +32,7 @@
 
          $.datepicker.setDefaults($.datepicker.regional['es']);
          $(function() {
-            $( "#datepicker1" ).datepicker();
+             $('.date-picker').datepicker();
          });
 </script>
 
@@ -76,11 +76,12 @@
     </div>
 </fieldset>
 <br />
-
+@using (Html.BeginForm("Index", "PRESTAMOes", FormMethod.Get))
+{
 <div class="form-group">
     <label class="col-lg-2 control-label" for="inputDefault">Fecha de Solicitud</label>
     <div class="col-lg-10">
-        <input class="form-control" name="fechaSolicitud" type="text" id="datepicker" />
+        @Html.TextBox("fechaSolicitud", ViewBag.CurrentFilter as string, new { @class = "date-picker" })
     </div>
 </div>
 <br />
@@ -88,8 +89,7 @@
 <div class="form-group">
     <label class="col-lg-2 control-label" for="inputDefault">Fecha de Retiro</label>
     <div class="col-lg-10">
-        <input class="datepicker" />
-        @Html.TextBox("fechaRetiro", "", new { @class = "datepicker1" })
+        @Html.TextBox("fechaRetiro", ViewBag.CurrentFilter as string, new { @class = "date-picker" })
     </div>
 </div>
 <br />
@@ -111,10 +111,9 @@
     </div>
 </fieldset>
 <br />
-@using (Html.BeginForm("Index", "PRESTAMOes", FormMethod.Get))
-{
+
 <p>    
-    <input type="submit" value="Search" />
+    <input type="submit" value="Buscar" />
 </p>
 }
 

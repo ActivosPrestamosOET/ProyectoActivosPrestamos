@@ -6,6 +6,7 @@ using Activos_PrestamosOET.Models;
 using System.Data;
 using System.Web.UI.WebControls;
 using System;
+using System.Globalization;
 
 namespace Activos_PrestamosOET.Controllers
 {
@@ -17,9 +18,42 @@ namespace Activos_PrestamosOET.Controllers
         // GET: PRESTAMOes
         public ActionResult Index(string fechaSolicitud, string fechaRetiro)
         {
-            if(!String.IsNullOrEmpty(fechaSolicitud))
-                Console.WriteLine(fechaSolicitud);
-           return View(db.PRESTAMOS.ToList());
+            if (String.IsNullOrEmpty(fechaSolicitud) && String.IsNullOrEmpty(fechaRetiro))
+                return View(db.PRESTAMOS.ToList());
+            else
+            {
+                DateTime fechaS;
+                DateTime fechaR;
+
+                if (String.IsNullOrEmpty(fechaSolicitud))
+                {
+                    if (!DateTime.TryParse(fechaRetiro, out fechaR))
+                    {
+                        return View(db.PRESTAMOS.ToList());
+                    }
+                    return View(db.PRESTAMOS.Where(model => model.FECHA_RETIRO == fechaR.Date));
+                }
+                else if (String.IsNullOrEmpty(fechaRetiro))
+                {
+                    if (!DateTime.TryParseExact(fechaSolicitud, "dd/mm/yyyy",new CultureInfo("es"),DateTimeStyles.None, out fechaS))
+                    {
+                        return View(db.PRESTAMOS.ToList());
+                    }
+                    return View(db.PRESTAMOS.Where(model => model.FECHA_SOLICITUD == fechaS.Date));
+                }
+                else
+                {
+                    if (!DateTime.TryParseExact(fechaSolicitud, "dd/mm/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaS))
+                    {
+                        return View(db.PRESTAMOS.ToList());
+                    }
+                    if (!DateTime.TryParse(fechaRetiro, out fechaR))
+                    {
+                        return View(db.PRESTAMOS.ToList());
+                    }
+                    return View(db.PRESTAMOS.Where(model => model.FECHA_RETIRO == fechaR.Date && model.FECHA_SOLICITUD == fechaS.Date));
+                }
+            }
         }
 
 
