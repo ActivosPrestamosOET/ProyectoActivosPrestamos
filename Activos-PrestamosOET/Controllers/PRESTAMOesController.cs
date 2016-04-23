@@ -120,7 +120,7 @@ namespace Activos_PrestamosOET.Controllers
                 
                 P.ID = p.ID;
                 P.MOTIVO = p.MOTIVO;
-                P.NUMERO_BOLETA = p.NUMERO_BOLETA;
+               // P.NUMERO_BOLETA = db.PRESTAMOS.;//context.Persons.Max(p => p.Age); ;
                 P.OBSERVACIONES_APROBADO = "";
                 P.OBSERVACIONES_RECIBIDO = "";
                 P.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
