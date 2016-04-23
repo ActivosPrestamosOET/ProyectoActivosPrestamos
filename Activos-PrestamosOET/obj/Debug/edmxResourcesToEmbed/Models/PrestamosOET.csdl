@@ -67,6 +67,15 @@
       <End Role="USUARIO" EntitySet="USUARIOS" />
       <End Role="PRESTAMO" EntitySet="PRESTAMOS" />
     </AssociationSet>
+    <EntitySet Name="TIPOS_ACTIVOS" EntityType="PrestamosModel.TIPOS_ACTIVOS" />
+    <EntitySet Name="V_ANFITRIONA" EntityType="PrestamosModel.V_ANFITRIONA" />
+    <EntitySet Name="V_ESTACION" EntityType="PrestamosModel.V_ESTACION" />
+    <EntitySet Name="V_MONEDA" EntityType="PrestamosModel.V_MONEDA" />
+    <EntitySet Name="V_PROVEEDOR" EntityType="PrestamosModel.V_PROVEEDOR" />
+    <AssociationSet Name="FK_TIPO_ACTIVOACTIVO" Association="PrestamosModel.FK_TIPO_ACTIVOACTIVO">
+      <End Role="TIPOS_ACTIVOS" EntitySet="TIPOS_ACTIVOS" />
+      <End Role="ACTIVO" EntitySet="ACTIVOS" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="ACTIVO">
     <Key>
@@ -98,6 +107,7 @@
     <Property Name="DEPARTAMENTOIDDEPARTAMENTO" Type="Decimal" Precision="8" Scale="2" />
     <Property Name="MODELO" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="PRESTAMOes" Relationship="PrestamosModel.ACTIVOPRESTAMO" FromRole="ACTIVO" ToRole="PRESTAMO" />
+    <NavigationProperty Name="TIPOS_ACTIVOS" Relationship="PrestamosModel.FK_TIPO_ACTIVOACTIVO" FromRole="ACTIVO" ToRole="TIPOS_ACTIVOS" />
   </EntityType>
   <EntityType Name="USUARIO">
     <Key>
@@ -141,6 +151,105 @@
       </Principal>
       <Dependent Role="PRESTAMO">
         <PropertyRef Name="CED_APRUEBA" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="TIPOS_ACTIVOS">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="NOMBRE" Type="String" Nullable="false" MaxLength="127" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ACTIVOS" Relationship="PrestamosModel.FK_TIPO_ACTIVOACTIVO" FromRole="TIPOS_ACTIVOS" ToRole="ACTIVO" />
+  </EntityType>
+  <EntityType Name="V_ANFITRIONA">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="NOMBRE" />
+      <PropertyRef Name="SIGLAS" />
+      <PropertyRef Name="MONEDA" />
+      <PropertyRef Name="TIPOCAMBIO" />
+      <PropertyRef Name="TIPOUSUARIO" />
+      <PropertyRef Name="TIPOCAMBIO_CONTA" />
+      <PropertyRef Name="MONEDA_CONTA" />
+    </Key>
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="NOMBRE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="SIGLAS" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="MONEDA" Type="String" Nullable="false" MaxLength="26" FixedLength="false" Unicode="false" />
+    <Property Name="TIPOCAMBIO" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="TIPOUSUARIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+    <Property Name="TIPOCAMBIO_CONTA" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="MONEDA_CONTA" Type="String" Nullable="false" MaxLength="26" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="V_ESTACION">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="NOMBRE" />
+    </Key>
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="26" FixedLength="false" Unicode="false" />
+    <Property Name="NOMBRE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="SIGLAS" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="RESERVABLE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="V_MONEDA">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="26" FixedLength="false" Unicode="false" />
+    <Property Name="NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="SIMBOLO" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="V_PROVEEDOR">
+    <Key>
+      <PropertyRef Name="IDPROVEEDOR" />
+      <PropertyRef Name="FECHAINGRESO" />
+      <PropertyRef Name="NOMBRE" />
+      <PropertyRef Name="ESTADO" />
+      <PropertyRef Name="CEDULA" />
+      <PropertyRef Name="LOCACION" />
+      <PropertyRef Name="CREADO" />
+      <PropertyRef Name="CREADOR" />
+      <PropertyRef Name="MODIFICADO" />
+      <PropertyRef Name="MODIFICADOR" />
+    </Key>
+    <Property Name="IDPROVEEDOR" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="FECHAINGRESO" Type="DateTime" Nullable="false" />
+    <Property Name="NOMBRE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="RAZONSOCIAL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ESTADO" Type="Boolean" Nullable="false" />
+    <Property Name="TIPOCEDULA" Type="Int32" />
+    <Property Name="CEDULA" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="TELEFONO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="FAX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="SITIOWEB" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CORREOELECTRONICO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="LOCACION" Type="Boolean" Nullable="false" />
+    <Property Name="IDPAIS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IDPROVINCIA" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DIRECCION" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="IDFORMAPAGO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="IDPLAZO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="DESCUENTO" Type="Decimal" Precision="8" Scale="2" />
+    <Property Name="INTERESMORA" Type="Decimal" Precision="8" Scale="2" />
+    <Property Name="COMENTARIO" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="CONGELAR" Type="Boolean" />
+    <Property Name="CREADO" Type="DateTime" Nullable="false" />
+    <Property Name="CREADOR" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="MODIFICADO" Type="DateTime" Nullable="false" />
+    <Property Name="MODIFICADOR" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="MONEDA" Type="String" MaxLength="26" FixedLength="false" Unicode="false" />
+    <Property Name="NOMBRE_CORTO" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <Association Name="FK_TIPO_ACTIVOACTIVO">
+    <End Type="PrestamosModel.TIPOS_ACTIVOS" Role="TIPOS_ACTIVOS" Multiplicity="1" />
+    <End Type="PrestamosModel.ACTIVO" Role="ACTIVO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TIPOS_ACTIVOS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ACTIVO">
+        <PropertyRef Name="TIPO_ACTIVOID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
