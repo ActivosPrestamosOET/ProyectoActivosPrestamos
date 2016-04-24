@@ -262,15 +262,31 @@ namespace Activos_PrestamosOET.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO pRESTAMO)
+        public ActionResult Edit([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p, int ID)
         {
+            PRESTAMO P = db.PRESTAMOS.Find(ID);
+            //P.ID = p.ID;
+            P.MOTIVO = p.MOTIVO;
+            //P.NUMERO_BOLETA = p.NUMERO_BOLETA;
+            // P.NUMERO_BOLETA = db.PRESTAMOS.;//context.Persons.Max(p => p.Age); ;
+            //P.OBSERVACIONES_APROBADO = "";
+            //P.OBSERVACIONES_RECIBIDO = "";
+            P.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
+            P.PERIODO_USO = p.PERIODO_USO;
+            P.SIGLA_CURSO = p.SIGLA_CURSO;
+            //P.CED_APRUEBA = p.CED_APRUEBA;
+            //P.CED_SOLICITA = p.CED_SOLICITA;
+            P.FECHA_RETIRO = p.FECHA_RETIRO;
+            //P.FECHA_SOLICITUD = System.DateTimeOffset.Now.Date;//SELECT SYSDATE FROM DUAL
+            P.SOFTWARE_REQUERIDO = "";
+            P.Estado = 1;
             if (ModelState.IsValid)
             {
-                db.Entry(pRESTAMO).State = EntityState.Modified;
+                db.Entry(P).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Historial");
             }
-            return View(pRESTAMO);
+            return View(P);
         }
 
         // GET: PRESTAMOes/Delete/5
