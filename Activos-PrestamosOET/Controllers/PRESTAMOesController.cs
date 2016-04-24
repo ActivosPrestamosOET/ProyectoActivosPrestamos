@@ -50,27 +50,27 @@ namespace Activos_PrestamosOET.Controllers
 
                 if (String.IsNullOrEmpty(fechaSolicitud))
                 {
-                    if (DateTime.TryParse(fechaRetiro, out fechaR))
+                    if (DateTime.TryParseExact(fechaRetiro, "dd/MM/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaR))
                     {
-                        prestamos.Where(model => model.FECHA_RETIRO == fechaR.Date);
+                        prestamos = prestamos.Where(model => model.FECHA_RETIRO == fechaR.Date);
                     }
                 }
                 else if (String.IsNullOrEmpty(fechaRetiro))
                 {
-                    if (DateTime.TryParseExact(fechaSolicitud, "dd/mm/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaS))
+                    if (DateTime.TryParseExact(fechaSolicitud, "dd/MM/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaS))
                     {
-                        prestamos.Where(model => model.FECHA_SOLICITUD == fechaS.Date);
+                        prestamos = prestamos.Where(model => model.FECHA_SOLICITUD == fechaS.Date);
                     }                    
                 }
                 else
                 {
-                    if (DateTime.TryParseExact(fechaSolicitud, "dd/mm/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaS))
+                    if (DateTime.TryParseExact(fechaSolicitud, "dd/MM/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaS))
                     {
-                        prestamos.Where(model => model.FECHA_SOLICITUD == fechaS.Date);
+                        prestamos = prestamos.Where(model => model.FECHA_SOLICITUD == fechaS.Date);
                     }
-                    if (DateTime.TryParse(fechaRetiro, out fechaR))
+                    if (DateTime.TryParseExact(fechaRetiro, "dd/MM/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaR))
                     {
-                        prestamos.Where(model => model.FECHA_RETIRO == fechaR.Date);
+                        prestamos = prestamos.Where(model => model.FECHA_RETIRO == fechaR.Date);
                     }                    
                 }
             }
@@ -108,7 +108,7 @@ namespace Activos_PrestamosOET.Controllers
                     prestamos = prestamos.OrderBy(s => s.NUMERO_BOLETA);
                     break;
             }
-            int pageSize = 3;
+            int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(prestamos.ToPagedList(pageNumber, pageSize));
             //Hasta aquí paginación//                            

@@ -55,7 +55,7 @@
     <Property Name="MOTIVO" Type="varchar2" Nullable="true" MaxLength="250" />
     <Property Name="FECHA_SOLICITUD" Type="date" Nullable="false" />
     <Property Name="FECHA_RETIRO" Type="date" Nullable="false" />
-    <Property Name="PERIODO_USO" Type="number" Nullable="false" Precision="38" />
+    <Property Name="PERIODO_USO" Type="number" Nullable="false" Precision="10" />
     <Property Name="SOFTWARE_REQUERIDO" Type="varchar2" Nullable="true" MaxLength="250" />
     <Property Name="OBSERVACIONES_SOLICITANTE" Type="varchar2" Nullable="true" MaxLength="250" />
     <Property Name="OBSERVACIONES_APROBADO" Type="varchar2" Nullable="true" MaxLength="250" />
