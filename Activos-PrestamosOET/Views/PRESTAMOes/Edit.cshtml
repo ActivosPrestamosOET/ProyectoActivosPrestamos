@@ -148,50 +148,18 @@
         </div>
         <br />
         <br />
-        <div id="Botones_aceptar_cancelar" class="col-md-offset-9 col-md-12">
-
-        </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Guardar" class="btn btn-default" />
+                @Html.ActionLink("Cancelar solicitud", "Delete", new { id = Model.ID }, new { @class = "btn btn-default" })
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Volver al Historial de Solicitudes", "Historial")  |
-    @Html.ActionLink("Cancelar la solicitud", "Delete", new { id = Model.ID }) 
+    @Html.ActionLink("Volver al Historial de Solicitudes", "Historial")  
 </div>
 
 
