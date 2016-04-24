@@ -10,67 +10,143 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ID)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.NUMERO_BOLETA, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NUMERO_BOLETA, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NUMERO_BOLETA, "", new { @class = "text-danger" })
+        <div class="container">
+            <div class="row">
+
+
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.NUMERO_BOLETA):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.NUMERO_BOLETA, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.NUMERO_BOLETA, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_SOLICITUD):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DisplayFor(model => model.FECHA_SOLICITUD)
+                </div>
+
+                <br />
+                <br />
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">Solicitante:</label>
+                </div>
+                <div class="col-md-4">
+                    <label class="control-label" for="inputDefault">Solicitante:</label>
+                    <!--ViewBag.Nombre-->
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_RETIRO):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.FECHA_RETIRO, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.FECHA_RETIRO, "", new { @class = "text-danger" })
+                </div>
+                <br />
+                <br />
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.MOTIVO):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.MOTIVO, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.MOTIVO, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.PERIODO_USO):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.PERIODO_USO, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PERIODO_USO, "", new { @class = "text-danger" })
+                </div>
+                <br />
+                <br />
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.SIGLA_CURSO):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DisplayFor(model => model.SIGLA_CURSO)
+                </div>
+                <br />
+                <br />
             </div>
         </div>
+        <br />
+        <br />
+        <table class="table" style="margin-top:20px">
+            <thead>
+                <tr>
+                    <th>
+                        Equipo
+                    </th>
 
+                    <th>
+                        Cantidad Solicitada
+                    </th>
+                    <th>
+                        Cantidad Aprovada
+                    </th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <br />
+        <br />
         <div class="form-group">
-            @Html.LabelFor(model => model.MOTIVO, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.MOTIVO, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.MOTIVO, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <!--div class="form-group">
-            @Html.LabelFor(model => model.FECHA_SOLICITUD, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FECHA_SOLICITUD, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FECHA_SOLICITUD, "", new { @class = "text-danger" })
-            </div>
-        </div>-->
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.FECHA_RETIRO, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FECHA_RETIRO, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FECHA_RETIRO, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.PERIODO_USO, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.PERIODO_USO, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PERIODO_USO, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.SOFTWARE_REQUERIDO, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO):</label>
+            <div class="col-lg-10">
                 @Html.EditorFor(model => model.SOFTWARE_REQUERIDO, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.SOFTWARE_REQUERIDO, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        <br />
+        <br />
         <div class="form-group">
-            @Html.LabelFor(model => model.OBSERVACIONES_SOLICITANTE, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.OBSERVACIONES_SOLICITANTE):</label>
+            <div class="col-lg-10">
                 @Html.EditorFor(model => model.OBSERVACIONES_SOLICITANTE, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.OBSERVACIONES_SOLICITANTE, "", new { @class = "text-danger" })
             </div>
         </div>
+        <br />
+        <br />
+        <div id="Botones_aceptar_cancelar" class="col-md-offset-9 col-md-12">
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
