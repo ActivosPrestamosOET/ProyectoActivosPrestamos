@@ -7,6 +7,135 @@
 <h2>Editar Solicitud</h2>
 
 
+
+
+<div class="container">
+    <div class="row">
+
+
+        <div class="col-md-2">
+            <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.NUMERO_BOLETA):</label>
+        </div>
+        <div class="col-md-4">
+            @Html.DisplayFor(model => model.NUMERO_BOLETA)
+        </div>
+        <div class="col-md-2">
+            <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_SOLICITUD):</label>
+        </div>
+        <div class="col-md-4">
+            @Html.DisplayFor(model => model.FECHA_SOLICITUD)
+        </div>
+
+        <br />
+        <br />
+        <div class="col-md-2">
+            <label class="control-label" for="inputDefault">Solicitante:</label>
+        </div>
+        <div class="col-md-4">
+            <label class="control-label" for="inputDefault">Solicitante:</label>
+            <!--ViewBag.Nombre-->
+        </div>
+        <div class="col-md-2">
+            <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_RETIRO):</label>
+        </div>
+        <div class="col-md-4">
+            @Html.DisplayFor(model => model.FECHA_RETIRO)
+        </div>
+        <br />
+        <br />
+        <div class="col-md-2">
+            <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.MOTIVO):</label>
+        </div>
+        <div class="col-md-4">
+            @Html.DisplayFor(model => model.MOTIVO)
+        </div>
+        <div class="col-md-2">
+            <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.PERIODO_USO):</label>
+        </div>
+        <div class="col-md-4">
+            @Html.DisplayFor(model => model.PERIODO_USO)
+        </div>
+        <br />
+        <br />
+        <div class="col-md-2">
+            <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.SIGLA_CURSO):</label>
+        </div>
+        <div class="col-md-4">
+            @Html.DisplayFor(model => model.SIGLA_CURSO)
+        </div>
+        <br />
+        <br />
+    </div>
+</div>
+<br />
+<br />
+<table class="table" style="margin-top:20px">
+    <thead>
+        <tr>
+            <th>
+                Equipo
+            </th>
+
+            <th>
+                Cantidad Solicitada
+            </th>
+            <th>
+                Cantidad Aprovada
+            </th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+<br />
+<br />
+<div class="form-group">
+    <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO):</label>
+    <div class="col-lg-10">
+        @Html.DisplayFor(model => model.SOFTWARE_REQUERIDO)
+    </div>
+</div>
+<br />
+<br />
+<div class="form-group">
+    <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.OBSERVACIONES_SOLICITANTE):</label>
+    <div class="col-lg-10">
+        @Html.DisplayFor(model => model.OBSERVACIONES_SOLICITANTE)
+    </div>
+</div>
+<br />
+<br />
+<div id="Botones_aceptar_cancelar" class="col-md-offset-9 col-md-12">
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
