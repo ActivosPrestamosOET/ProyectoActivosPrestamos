@@ -14,15 +14,7 @@
         <AssociationConnector Association="PrestamosModel.Solicita" />
         <AssociationConnector Association="PrestamosModel.Aprueba" />
         <EntityTypeShape EntityType="PrestamosModel.TIPOS_ACTIVOS" Width="1.5" PointX="2.25" PointY="9" />
-        <EntityTypeShape EntityType="PrestamosModel.V_ANFITRIONA" Width="1.5" PointX="7.375" PointY="4.75" />
-        <EntityTypeShape EntityType="PrestamosModel.V_ESTACION" Width="1.5" PointX="7.375" PointY="8.75" />
-        <EntityTypeShape EntityType="PrestamosModel.V_MONEDA" Width="1.5" PointX="9.375" PointY="0.75" />
-        <EntityTypeShape EntityType="PrestamosModel.V_PROVEEDOR" Width="1.5" PointX="9.375" PointY="3.75" />
         <AssociationConnector Association="PrestamosModel.FK_TIPO_ACTIVOACTIVO" />
-        <AssociationConnector Association="PrestamosModel.V_MONEDAV_ANFITRIONA" />
-        <AssociationConnector Association="PrestamosModel.V_PROVEEDORACTIVO" />
-        <AssociationConnector Association="PrestamosModel.ACTIVOV_ANFITRIONA" />
-        <AssociationConnector Association="PrestamosModel.V_ESTACIONACTIVO" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

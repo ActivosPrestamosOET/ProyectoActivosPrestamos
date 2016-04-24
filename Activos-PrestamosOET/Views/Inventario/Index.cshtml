@@ -4,6 +4,34 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <head>
+    <style type="text/css">
+        .paging-nav {
+            text-align: right;
+            padding-top: 2px;
+        }
+
+            .paging-nav a {
+                margin: auto 1px;
+                text-decoration: none;
+                display: inline-block;
+                padding: 1px 7px;
+                background: #ff9966;
+                color: white;
+                border-radius: 3px;
+            }
+
+            .paging-nav .selected-page {
+                background: #f26631;
+                font-weight: bold;
+            }
+
+        .paging-nav,
+        #tableData {
+            margin: 0 auto;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+
     <meta charset="utf-8">
     <title>Inventario</title>
     <!-- Js -->
@@ -46,6 +74,16 @@
          });
     </script>
 
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="~/Content/paging.js"></script>
+    <script type="text/javascript">
+            $(document).ready(function() {
+                $('#tableData').paging({limit:5});
+            });
+    </script>
+
 </head>
 <body>
     <!--TÍTULO-->
@@ -80,15 +118,12 @@
             <div class="form-horizontal">
                 <div class="col-md-1">
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-8">
+                    <label class="col-md-2">Categoria</label>
+                    <div class="col-md-4">
+                        @Html.DropDownList("dropdownCategoria", listItems, new { @class = "form-control" })
+                    </div>
                     <div class="col-md-3">
-                        <label>Categoria</label>
-                    </div>
-                    <div class="col-md-2">
-                        @Html.DropDownList("dropdownCategoria", listItems ,new { @class = "form-control" }) 
-                    </div>
-
-                    <div class="col-md-5">
                         <input name="submit" id="submit" type="submit" value="Buscar" class="btn btn-default" />
                     </div>
                 </div>
@@ -98,15 +133,15 @@
         <div class="row">
             <div class="col-md-1">
             </div>
-            <div class="col-md-6">
-                <table class="table" style="margin-top:20px">
+            <div class="col-md-8">
+                <table id ="tableData" class="table" style="margin-top:20px">
                     <thead>
                         <tr>
-                            <th class="col-md-2">Fabricante</th>
-                            <th class="col-md-2">Modelo</th>
-                            <th class="col-md-2">Número Serie</th>
-                            <th class="col-md-2">Tipo</th>
-                            <th class="col-md-2">Prestado A</th>
+                            <th>Fabricante</th>
+                            <th>Modelo</th>
+                            <th>Número Serie</th>
+                            <th>Tipo</th>
+                            <th>Prestado A</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -115,7 +150,7 @@
                             <tr>
                                 @foreach (String hilera in s)
                                 {
-                                    <td class="col-md-2">@hilera</td>
+                                    <td>@hilera</td>
                                 }
                             </tr>
                         }
@@ -189,4 +224,8 @@
 }
     
 
+    
 </body>
+
+
+
