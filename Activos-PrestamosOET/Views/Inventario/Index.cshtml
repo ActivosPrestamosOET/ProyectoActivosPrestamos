@@ -3,7 +3,6 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@model IEnumerable<Inventario.Models.ModeloInventario>
 <head>
     <meta charset="utf-8">
     <title>Inventario</title>
@@ -11,6 +10,12 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("[id$=A6]").addClass("active");
+        });
+    </script>
+
     <script>
       $(function() {
         $( "#datepicker" ).datepicker();
@@ -43,7 +48,7 @@
 
 </head>
 <body>
-
+    <!--TÍTULO-->
     <div class="row">
         <div class="col-md-1">
         </div>
@@ -51,75 +56,76 @@
             <h1>Inventario</h1>
         </div>
     </div>
+    @using (Html.BeginForm())
+    {
+        Activos_PrestamosOET.Models.PrestamosEntities db = new Activos_PrestamosOET.Models.PrestamosEntities();
+        List<SelectListItem> listItems = new List<SelectListItem>();
+        listItems.Add(new SelectListItem
+        {
+            Text = "Todas",
+            Value = "1",
+            Selected = true
+        });
+        foreach (Activos_PrestamosOET.Models.TIPOS_ACTIVOS tipos in db.TIPOS_ACTIVOS)
+        {
+            listItems.Add(new SelectListItem
+            {
+                Text = tipos.NOMBRE,
+                Value = tipos.NOMBRE,
+                Selected = true
+            });
+        }
+        ViewBag.listItems = listItems;
+        <!--CATEGORÍA-->
+        <div class="row">
+            <div class="form-horizontal">
+                <div class="col-md-1">
+                </div>
+                <div class="col-md-10">
+                    <div class="col-md-3">
+                        <label>Categoria</label>
+                    </div>
+                    <div class="col-md-2">
+                        @Html.DropDownList("dropdownCategoria", listItems ,new { @class = "form-control" }) 
+                    </div>
 
-    <div class="row">
-        <div class="form-horizontal">
+                    <div class="col-md-5">
+                        <input type="submit" value="Buscar" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--TABLA-->
+        <div class="row">
             <div class="col-md-1">
             </div>
-            <div class="col-md-10">
-                <div class="col-md-3">
-                    <label>Categoria</label>
-                </div>
-                <div class="col-md-2">
-                    <select id="dropdownCategoria" name="dropdownCategoria" 
-                            class="form-control" style="width: 180px;margin-left:40px;"
-                            onchange ="myFunction()">
-                        <option selected="selected" value="0">Todas</option>
-                        <option value="1">Computadoras</option>
-                        <option value="2">Impresoras</option>
-                    </select>
-                    @foreach (var item in Model)
-                    {
-                        //item.seleccionado;
-                    }
-                    <script>
-                        function myFunction() {
-                            var e = document.getElementById("ddlViewBy");
-                            var strUser = e.options[e.selectedIndex].text;
-                            ViewBag.Opcion = strUser;
-                            
+            <div class="col-md-6">
+                <table class="table" style="margin-top:20px">
+                    <thead>
+                        <tr>
+                            <th class="col-md-2">Fabricante</th>
+                            <th class="col-md-2">Modelo</th>
+                            <th class="col-md-2">Número Serie</th>
+                            <th class="col-md-2">Tipo</th>
+                            <th class="col-md-2">Prestado A</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (List<String> s in ViewBag.Courses)
+                        {
+                            <tr>
+                                @foreach (String hilera in s)
+                                {
+                                    <td class="col-md-2">@hilera</td>
+                                }
+                            </tr>
                         }
-                    </script>
-                </div>
-
-                <div class="col-md-1">
-                    <button type="button" value="Buscar" onclick="location.href='@Url.Action("Buscar", "Inventario")'"
-                            class="btn btn-default" style="margin-left: 70px;">
-                        Buscar
-                    </button>
-                </div>
+                    </tbody>
+                </table>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-1">
-        </div>
-        <div class="col-md-6">
-            <table class="table" style="margin-top:20px">
-                <thead>
-                    <tr>
-                        <th class="col-md-2">Fabricante</th>
-                        <th class="col-md-2">Modelo</th>
-                        <th class="col-md-2">Número Serie</th>
-                        <th class="col-md-2">Tipo</th>
-                        <th class="col-md-2">Prestado A</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (List<String> s in ViewBag.Courses)
-                    {
-                        <tr>
-                            @foreach (String hilera in s)
-                            {
-                                <td class="col-md-2">@hilera</td>
-                            }
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
+    }
 
-    </div>
     <br>
     <div class="row">
         <div class="form-horizontal">
@@ -132,7 +138,6 @@
                     <br>
                 </div>
             </div>
-
         </div>
 
     </div>
