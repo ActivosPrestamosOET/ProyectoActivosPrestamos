@@ -157,26 +157,11 @@ namespace Activos_PrestamosOET.Controllers
         // GET: PRESTAMOes/Detalles
         public ActionResult Detalles(string id)
         {
-            /*if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
-            if (pRESTAMO == null)
-            {
-                return HttpNotFound();
-            }
-            return View(pRESTAMO);
-            */
-
-
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
-            // ViewBag.clear();
 
             if (pRESTAMO == null)
             {
@@ -332,22 +317,11 @@ namespace Activos_PrestamosOET.Controllers
         // GET: PRESTAMOes/Edit/5
         public ActionResult Edit(string id)
         {
-            /*
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
-            if (pRESTAMO == null)
-            {
-                return HttpNotFound();
-            }*/
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
-            // ViewBag.clear();
 
             if (pRESTAMO == null)
             {
@@ -394,22 +368,12 @@ namespace Activos_PrestamosOET.Controllers
         // GET: PRESTAMOes/Delete/5
         public ActionResult Delete(string id)
         {
-            /*
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
-            if (pRESTAMO == null)
-            {
-                return HttpNotFound();
-            }*/
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
-            // ViewBag.clear();
 
             if (pRESTAMO == null)
             {
