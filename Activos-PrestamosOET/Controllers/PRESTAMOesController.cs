@@ -60,9 +60,18 @@ namespace Activos_PrestamosOET.Controllers
 
 
         // GET: PRESTAMOes/Historial
-        public ActionResult Historial()
+        public ActionResult Historial(string CED_SOLICITA)
         {
-            return View(db.PRESTAMOS.ToList());
+            CED_SOLICITA = "PITAN0126052014.085230671";
+            if (String.IsNullOrEmpty(CED_SOLICITA))
+            {
+                ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
+                return View(db.PRESTAMOS.ToList());
+            }
+            else
+            {
+                return View(db.PRESTAMOS.Where(model => model.CED_SOLICITA == CED_SOLICITA));
+            }
         }
 
         // GET: PRESTAMOes/Detalles

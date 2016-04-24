@@ -40,7 +40,7 @@ namespace Activos_PrestamosOET.Models
         [Required(ErrorMessage = "Por favor ingrese un motivo válido")]
         public string MOTIVO { get; set; }
 
-
+        [Display(Name = "Fecha de solicitud")]
         public Nullable<System.DateTime> FECHA_SOLICITUD { get; set; }
 
         [Display(Name = "Fecha de retiro")]
@@ -48,7 +48,7 @@ namespace Activos_PrestamosOET.Models
         public Nullable<System.DateTime> FECHA_RETIRO { get; set; }
 
         [Display(Name = "Periodo de uso")]
-        [Required(ErrorMessage = "Por favor ingrese una rango v�lido")]
+        [Required(ErrorMessage = "Por favor ingrese una rango válido")]
         public Nullable<decimal> PERIODO_USO { get; set; }
 
         [Display(Name = "Software requerido")]
