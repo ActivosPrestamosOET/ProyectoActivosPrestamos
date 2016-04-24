@@ -144,7 +144,7 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: PRESTAMOes/Historial
-        public ActionResult Historial(string CED_SOLICITA)
+        /*public ActionResult Historial(string CED_SOLICITA)
         {
             CED_SOLICITA = "PITAN0126052014.085230671";
             if (String.IsNullOrEmpty(CED_SOLICITA))
@@ -156,8 +156,35 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return View(db.PRESTAMOS.Where(model => model.CED_SOLICITA == CED_SOLICITA && model.Estado != 6));
             }
-        }
+        }*/
+        // GET: PRESTAMOes/Historial
+        public ActionResult Historial(string CED_SOLICITA, string currentFilter, string estado, int? page)
+        {
+            CED_SOLICITA = "PITAN0126052014.085230671";
 
+            var prestamos = from s in db.PRESTAMOS
+                            select s;
+            var p = prestamos.Where(model => model.CED_SOLICITA == CED_SOLICITA);
+            if (!string.IsNullOrEmpty(estado) && estado != "0")
+            {
+                int est = int.Parse(estado);
+                var int16 = Convert.ToInt16(est);
+                var prestamosFiltrados = p.Where(model => model.Estado == int16);
+                prestamosFiltrados = prestamosFiltrados.OrderByDescending(s => s.FECHA_SOLICITUD);
+                int pageSize1 = 5;
+                int pageNumber1 = (page ?? 1);
+                return View(prestamosFiltrados.ToPagedList(pageNumber1, pageSize1));
+            }
+            else
+            {
+                var prestamosFiltrados = p.Where(model => model.Estado != 6);
+                prestamosFiltrados = prestamosFiltrados.OrderByDescending(s => s.FECHA_SOLICITUD);
+                prestamos = prestamos.OrderByDescending(s => s.FECHA_SOLICITUD);
+                int pageSize = 5;
+                int pageNumber = (page ?? 1);
+                return View(prestamos.ToPagedList(pageNumber, pageSize));
+            }
+        }
         // GET: PRESTAMOes/Detalles
         public ActionResult Detalles(string id)
         {

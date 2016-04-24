@@ -66,7 +66,7 @@
         <br />
         <br />
     </div>
-</div>	
+</div>
 <br />
 <br />
 <table class="table" style="margin-top:20px">
@@ -84,9 +84,7 @@
             </th>
         </tr>
     </thead>
-    <tbody>
-
-    </tbody>
+    <tbody></tbody>
 </table>
 <br />
 <br />
@@ -106,19 +104,30 @@
 </div>
 <br />
 <br />
-<div class="form-group">
-    <div class="col-md-offset-2 col-md-10">
-        @Html.ActionLink("Editar", "Edit", new { id = Model.ID }, new { @class = "btn btn-default" })
-        @Html.ActionLink("Cancelar solicitud", "Delete", new { id = Model.ID }, new { @class = "btn btn-default" })
+@if (Model.FECHA_RETIRO >= System.DateTimeOffset.Now.Date)
+{
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.ActionLink("Editar", "Edit", new { id = Model.ID }, new { @class = "btn btn-default" })
+            @Html.ActionLink("Cancelar solicitud", "Delete", new { id = Model.ID }, new { @class = "btn btn-default" })
+        </div>
     </div>
-</div>
+}
+else
+{
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <p>Esta solicitud ya no puede ser editada o cancelada.</p>
+        </div>
+    </div>
+}
 
 
 <div class="form-group">
     <dl class="dl-horizontal">
-    <div>
-        <p>
-            @Html.ActionLink("Volver al Historial", "Historial")
-        </p>
-    </div>
+        <div>
+            <p>
+                @Html.ActionLink("Volver al Historial", "Historial")
+            </p>
+        </div>
 </div>
