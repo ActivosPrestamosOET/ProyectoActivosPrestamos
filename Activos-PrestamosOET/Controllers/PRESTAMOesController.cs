@@ -19,12 +19,20 @@ namespace Activos_PrestamosOET.Controllers
         private PrestamosEntities db = new PrestamosEntities();
 
         // GET: PRESTAMOes
-        public ActionResult Index(string fechaSolicitud, string fechaRetiro, string sortOrder, string currentFilter, int? page)
+        public ActionResult Index(string sortOrder, string currentFilter, string fechaSolicitud, string fechaRetiro, int? page)
         {
 
-            ViewBag.currentSort = sortOrder;
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "numero_dsc" : "";
-            ViewBag.DateSortParm = sortOrder == "fecha_solicitud" ? "date_desc" : "Date";
+            ViewBag.currentSort = sortOrder;//NO prestar atención
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "numero_dsc" : "";//NO prestar atención
+            ViewBag.DateSortParm = sortOrder == "fecha_solicitud" ? "date_desc" : "Date";//NO prestar atención
+            var prestamos = from s in db.PRESTAMOS
+                           select s;
+            prestamos = prestamos.OrderBy(s => s.NUMERO_BOLETA);
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            return View(prestamos.ToPagedList(pageNumber, pageSize));
+            //Hasta aquí paginación//
+
             if (String.IsNullOrEmpty(fechaSolicitud) && String.IsNullOrEmpty(fechaRetiro))
                 return View(db.PRESTAMOS.ToList());
             else
