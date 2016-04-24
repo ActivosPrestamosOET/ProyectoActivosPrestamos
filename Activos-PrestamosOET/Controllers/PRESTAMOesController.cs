@@ -181,12 +181,6 @@ namespace Activos_PrestamosOET.Controllers
             return View(pRESTAMO);
         }
 
-
-
-
-
-
-
         // GET: PRESTAMOes/Details/5
         public ActionResult Details(string id)
         {
@@ -205,49 +199,71 @@ namespace Activos_PrestamosOET.Controllers
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
                         where o.ID == id
-                        select new { USUARIO = o2.NOMBRE };
+                        select new { Prestamo=o, CEDULA= o2.IDUSUARIO, USUARIO = o2.NOMBRE };
 
             foreach (var m in lista)
             {
-                var t = new Tuple<string>(m.USUARIO);
-                ViewBag.Nombre = t.Item1;
-            }
-
-
-
-           /* List<String> solicitantes = new List<String>();
-            List<String> ceds = new List<String>();
-            foreach (Activos_PrestamosOET.Models.PRESTAMO p in db.PRESTAMOS)
-            {
-                foreach (Activos_PrestamosOET.Models.USUARIO u in db.USUARIOS)
+                if (m.Prestamo.ID == id)
                 {
-                    if (p.USUARIO != null)
+                    if (m.Prestamo.CED_SOLICITA == m.CEDULA)
                     {
-                        if (p.USUARIO.Equals(u.IDUSUARIO))
-                        {
-                            solicitantes.Add(u.NOMBRE);
-                            ceds.Add(u.IDUSUARIO);
-                        }
+                        var t = new Tuple<string>(m.USUARIO);
+                        ViewBag.Nombre = t.Item1;
                     }
                 }
             }
-
-
-
-            var lista1 = from o in db.PRESTAMOS
-                         from o2 in db.EQUIPO_SOLICITADO
-                         where o.ID == o2.ID_PRESTAMO
-                         select new { EQUIPO_SOLICITADO = o2.TIPO_ACTIVO, EQUIPO_SOLICITADO_CANTIDAD = o2.CANTIDAD };
-
-            List<Tuple<string, decimal>> l1 = new List<Tuple<string, decimal>>();
-            foreach (var m in lista1)
+            /*  -------------------------------------------------------------------------------------------  */
+            var equipo_sol = db.EQUIPO_SOLICITADO;
+            var equipo = new List<List<String>>();
+            foreach (Activos_PrestamosOET.Models.EQUIPO_SOLICITADO x in equipo_sol)
             {
-                var t1 = new Tuple<string, decimal>(m.EQUIPO_SOLICITADO, m.EQUIPO_SOLICITADO_CANTIDAD);
-                l1.Add(t1);
+                if (x.ID_PRESTAMO == id)
+                {
+                    List<String> temp = new List<String>();
+                    if (x.TIPO_ACTIVO != null) { temp.Add(x.TIPO_ACTIVO); } else { temp.Add(""); }
+                    if (x.CANTIDAD!= 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
+
+                    equipo.Add(temp);
+                }
             }
 
-            ViewBag.Equipo_Solict = l1;
-            */
+            ViewBag.Equipo_Solict = equipo;
+
+            /*  -------------------------------------------------------------------------------------------  */ 
+
+            /* List<String> solicitantes = new List<String>();
+             List<String> ceds = new List<String>();
+             foreach (Activos_PrestamosOET.Models.PRESTAMO p in db.PRESTAMOS)
+             {
+                 foreach (Activos_PrestamosOET.Models.USUARIO u in db.USUARIOS)
+                 {
+                     if (p.USUARIO != null)
+                     {
+                         if (p.USUARIO.Equals(u.IDUSUARIO))
+                         {
+                             solicitantes.Add(u.NOMBRE);
+                             ceds.Add(u.IDUSUARIO);
+                         }
+                     }
+                 }
+             }
+
+
+
+             var lista1 = from o in db.PRESTAMOS
+                          from o2 in db.EQUIPO_SOLICITADO
+                          where o.ID == o2.ID_PRESTAMO
+                          select new { EQUIPO_SOLICITADO = o2.TIPO_ACTIVO, EQUIPO_SOLICITADO_CANTIDAD = o2.CANTIDAD };
+
+             List<Tuple<string, decimal>> l1 = new List<Tuple<string, decimal>>();
+             foreach (var m in lista1)
+             {
+                 var t1 = new Tuple<string, decimal>(m.EQUIPO_SOLICITADO, m.EQUIPO_SOLICITADO_CANTIDAD);
+                 l1.Add(t1);
+             }
+
+             ViewBag.Equipo_Solict = l1;
+             */
             return View(pRESTAMO);
         }
 
