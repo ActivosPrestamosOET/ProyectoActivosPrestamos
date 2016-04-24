@@ -7,6 +7,7 @@
           <ScalarProperty Name="ID_PRESTAMO" ColumnName="ID_PRESTAMO" />
           <ScalarProperty Name="TIPO_ACTIVO" ColumnName="TIPO_ACTIVO" />
           <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+          <ScalarProperty Name="CANTIDADAPROBADA" ColumnName="CANTIDADAPROBADA" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -157,6 +158,62 @@
       </EndProperty>
       <EndProperty Name="PRESTAMO">
         <ScalarProperty Name="ID" ColumnName="PRESTAMOes_ID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="V_MONEDAV_ANFITRIONA" TypeName="PrestamosModel.V_MONEDAV_ANFITRIONA" StoreEntitySet="V_ANFITRIONA">
+      <EndProperty Name="V_MONEDA">
+        <ScalarProperty Name="ID" ColumnName="V_MONEDA_ID" />
+      </EndProperty>
+      <EndProperty Name="V_ANFITRIONA">
+        <ScalarProperty Name="ID" ColumnName="ID" />
+        <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+        <ScalarProperty Name="SIGLAS" ColumnName="SIGLAS" />
+        <ScalarProperty Name="MONEDA" ColumnName="MONEDA" />
+        <ScalarProperty Name="TIPOCAMBIO" ColumnName="TIPOCAMBIO" />
+        <ScalarProperty Name="TIPOUSUARIO" ColumnName="TIPOUSUARIO" />
+        <ScalarProperty Name="TIPOCAMBIO_CONTA" ColumnName="TIPOCAMBIO_CONTA" />
+        <ScalarProperty Name="MONEDA_CONTA" ColumnName="MONEDA_CONTA" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="V_PROVEEDORACTIVO" TypeName="PrestamosModel.V_PROVEEDORACTIVO" StoreEntitySet="ACTIVOS">
+      <EndProperty Name="V_PROVEEDOR">
+        <ScalarProperty Name="IDPROVEEDOR" ColumnName="V_PROVEEDOR_IDPROVEEDOR" />
+        <ScalarProperty Name="FECHAINGRESO" ColumnName="V_PROVEEDOR_FECHAINGRESO" />
+        <ScalarProperty Name="NOMBRE" ColumnName="V_PROVEEDOR_NOMBRE" />
+        <ScalarProperty Name="ESTADO" ColumnName="V_PROVEEDOR_ESTADO" />
+        <ScalarProperty Name="CEDULA" ColumnName="V_PROVEEDOR_CEDULA" />
+        <ScalarProperty Name="LOCACION" ColumnName="V_PROVEEDOR_LOCACION" />
+        <ScalarProperty Name="CREADO" ColumnName="V_PROVEEDOR_CREADO" />
+        <ScalarProperty Name="CREADOR" ColumnName="V_PROVEEDOR_CREADOR" />
+        <ScalarProperty Name="MODIFICADO" ColumnName="V_PROVEEDOR_MODIFICADO" />
+        <ScalarProperty Name="MODIFICADOR" ColumnName="V_PROVEEDOR_MODIFICADOR" />
+      </EndProperty>
+      <EndProperty Name="ACTIVO">
+        <ScalarProperty Name="ID" ColumnName="ID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="ACTIVOV_ANFITRIONA" TypeName="PrestamosModel.ACTIVOV_ANFITRIONA" StoreEntitySet="ACTIVOS">
+      <EndProperty Name="V_ANFITRIONA">
+        <ScalarProperty Name="ID" ColumnName="V_ANFITRIONA_ID" />
+        <ScalarProperty Name="NOMBRE" ColumnName="V_ANFITRIONA_NOMBRE" />
+        <ScalarProperty Name="SIGLAS" ColumnName="V_ANFITRIONA_SIGLAS" />
+        <ScalarProperty Name="MONEDA" ColumnName="V_ANFITRIONA_MONEDA" />
+        <ScalarProperty Name="TIPOCAMBIO" ColumnName="V_ANFITRIONA_TIPOCAMBIO" />
+        <ScalarProperty Name="TIPOUSUARIO" ColumnName="V_ANFITRIONA_TIPOUSUARIO" />
+        <ScalarProperty Name="TIPOCAMBIO_CONTA" ColumnName="V_ANFITRIONA_TIPOCAMBIO_CONTA" />
+        <ScalarProperty Name="MONEDA_CONTA" ColumnName="V_ANFITRIONA_MONEDA_CONTA" />
+      </EndProperty>
+      <EndProperty Name="ACTIVO">
+        <ScalarProperty Name="ID" ColumnName="ID" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="V_ESTACIONACTIVO" TypeName="PrestamosModel.V_ESTACIONACTIVO" StoreEntitySet="ACTIVOS">
+      <EndProperty Name="V_ESTACION">
+        <ScalarProperty Name="ID" ColumnName="V_ESTACION_ID" />
+        <ScalarProperty Name="NOMBRE" ColumnName="V_ESTACION_NOMBRE" />
+      </EndProperty>
+      <EndProperty Name="ACTIVO">
+        <ScalarProperty Name="ID" ColumnName="ID" />
       </EndProperty>
     </AssociationSetMapping>
   </EntityContainerMapping>
