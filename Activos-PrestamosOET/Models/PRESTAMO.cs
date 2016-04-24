@@ -35,7 +35,7 @@ namespace Activos_PrestamosOET.Models
 
         public string ID { get; set; }
 
-        [Display(Name = "Número de boleta")]
+        [Display(Name = "NÃºmero de boleta")]
         public Nullable<long> NUMERO_BOLETA { get; set; }
 
         [Display(Name = "Motivo")]
@@ -56,10 +56,10 @@ namespace Activos_PrestamosOET.Models
         [Display(Name = "Observaciones del solicitante")]
         public string OBSERVACIONES_SOLICITANTE { get; set; }
 
-        [Display(Name = "Observaciones de quién aprueba")]
+        [Display(Name = "Observaciones de quiÃ©n aprueba")]
         public string OBSERVACIONES_APROBADO { get; set; }
 
-        [Display(Name = "Observaciones al recibir el préstamo")]
+        [Display(Name = "Observaciones al recibir el prÃ©stamo")]
         public string OBSERVACIONES_RECIBIDO { get; set; }
 
         [Display(Name = "Sigla del Curso")]
@@ -68,20 +68,20 @@ namespace Activos_PrestamosOET.Models
         [Display(Name = "Estado")]
         public short Estado { get; set; }
 
-        [Display(Name = "Cédula del solicitante")]
+        [Display(Name = "CÃ©dula del solicitante")]
         public string CED_SOLICITA { get; set; }
 
-        [Display(Name = "Cédula de quién aprueba")]
+        [Display(Name = "CÃ©dula de quiÃ©n aprueba")]
         public string CED_APRUEBA { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EQUIPO_SOLICITADO> EQUIPO_SOLICITADO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ACTIVO> ACTIVOes { get; set; }
-        [Display(Name = "Cédula del solicitante")]
+        [Display(Name = "CÃ©dula del solicitante")]
         public virtual USUARIO USUARIO { get; set; }
 
-        [Display(Name = "Cédula de quién aprueba")]
+        [Display(Name = "CÃ©dula de quiÃ©n aprueba")]
         public virtual USUARIO USUARIO1 { get; set; }
     }
 }
