@@ -80,11 +80,11 @@ namespace Activos_PrestamosOET.Controllers
             if (String.IsNullOrEmpty(CED_SOLICITA))
             {
                 ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
-                return View(db.PRESTAMOS.ToList());
+                return View(db.PRESTAMOS.Where(model => model.Estado != 6));
             }
             else
             {
-                return View(db.PRESTAMOS.Where(model => model.CED_SOLICITA == CED_SOLICITA));
+                return View(db.PRESTAMOS.Where(model => model.CED_SOLICITA == CED_SOLICITA && model.Estado!=6));
             }
         }
 
@@ -262,9 +262,9 @@ namespace Activos_PrestamosOET.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p, int ID)
+        public ActionResult Edit([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p,string id)
         {
-            PRESTAMO P = db.PRESTAMOS.Find(ID);
+            PRESTAMO P = db.PRESTAMOS.Find(id);
             //P.ID = p.ID;
             P.MOTIVO = p.MOTIVO;
             //P.NUMERO_BOLETA = p.NUMERO_BOLETA;
