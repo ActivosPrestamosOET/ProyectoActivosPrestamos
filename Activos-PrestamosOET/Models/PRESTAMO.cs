@@ -11,7 +11,18 @@ namespace Activos_PrestamosOET.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    public enum Estadito
+    {
+        //Todos,
+        Pendiente,
+        Aprobada,
+        Denegada,
+        Abierta,
+        Cerrada,
+        Cancelada
+    }
+       
     public partial class PRESTAMO
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
