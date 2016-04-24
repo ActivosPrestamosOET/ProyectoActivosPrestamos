@@ -304,7 +304,8 @@ namespace Activos_PrestamosOET.Controllers
             if (ModelState.IsValid)
             {
 
-                P.ID = p.ID;
+                //P.ID = p.ID;
+                P.ID = generarID();
                 P.MOTIVO = p.MOTIVO;
                 P.OBSERVACIONES_APROBADO = "";
                 P.OBSERVACIONES_RECIBIDO = "";

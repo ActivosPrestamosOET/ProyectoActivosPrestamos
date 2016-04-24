@@ -44,7 +44,7 @@
                     <!--ViewBag.Nombre-->
                 </div>
                 <div class="col-md-2">
-                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_RETIRO):</label>
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_RETIRO.Date):</label>
                 </div>
                 <div class="col-md-4">
                     @Html.EditorFor(model => model.FECHA_RETIRO, new { htmlAttributes = new { @class = "form-control" } })
