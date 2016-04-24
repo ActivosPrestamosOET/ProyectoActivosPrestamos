@@ -103,8 +103,7 @@
 <fieldset>
     <label for="textArea" class="col-lg-2 control-label">Estado </label>
     <div class="col-lg-10">
-        v class="col-lg-10">
-        @Html.DropDownList("estado", new SelectList(
+       @Html.DropDownList("estado", new SelectList(
                   new List<Object>{
                        new { value = 0 , text = "Seleccione un estado"  },
                        new { Text = "Pendiente", Value = "1" },
@@ -153,23 +152,31 @@
 
         <th></th>
     </tr>
-
+   
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
+        @switch (item.Estado)
+        {
+            case 1:
+                <td class="info">
+                    @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
+                </td>
+                
+        <td>           
+                @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
         </td>
 
         <td>
-            @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)            
+            @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
         </td>
-       
+
+
         <td>
             @Html.DisplayFor(modelItem => item.PERIODO_USO)
-            
+
         </td>
 
         <td>
@@ -177,8 +184,12 @@
         </td>
 
         <td>
-            @Html.ActionLink("Detalles", "Details", new { id=item.ID }, new { @class = "btn btn-default" }) 
+            @Html.ActionLink("Detalles", "Details", new { id=item.ID }, new { @class = "btn btn-default" })
         </td>
+
+                break;
+                }
+
     </tr>
 }
 
