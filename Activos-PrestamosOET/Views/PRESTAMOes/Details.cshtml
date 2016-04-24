@@ -71,26 +71,38 @@
 </div>	
 <br />
 <br />
-<table class="table">
-    <tr>
-        <th>
-            Equipo
-        </th>
 
-        <th>
-            Cantidad Solicitada
-        </th>
+<table class="table" style="margin-top:20px">
+    <thead>
+        <tr>
+            <th>
+                Equipo
+            </th>
 
-        <th>
-            Cantidad Aprovada
-        </th>
+            <th>
+                Cantidad Solicitada
+            </th>
 
-    </tr>
+            <th>
+                Cantidad Aprovada
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (List<String> s in ViewBag.Equipo_Solict)
+        {
+            <tr>
+                @foreach (String hilera in s)
+                {
+                    <td>@hilera</td>
+                }
+                <td><input type="number" class="form-control" name="points" min="0" value="0"></td>
 
+</tr>
+        }
+    </tbody>
 </table>
-<br />
-<br />
-<input type="number" class="form-control" name="points" min="0" value="0">
+
 <br />
 <br />
 <div class="form-group">

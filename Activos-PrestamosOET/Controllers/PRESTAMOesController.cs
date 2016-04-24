@@ -123,6 +123,20 @@ namespace Activos_PrestamosOET.Controllers
                 ViewBag.Nombre = t.Item2;
             }
 
+            var lista1 = from o in db.PRESTAMOS
+                        from o2 in db.EQUIPO_SOLICITADO
+                        where o.ID == o2.ID_PRESTAMO
+                        select new {EQUIPO_SOLICITADO = o2.TIPO_ACTIVO, EQUIPO_SOLICITADO_CANTIDAD = o2.CANTIDAD };
+
+            List<Tuple< string, decimal>> l1 = new List<Tuple<string, decimal>>();
+            foreach (var m in lista1)
+            {
+                var t1 = new Tuple< string, decimal>(m.EQUIPO_SOLICITADO, m.EQUIPO_SOLICITADO_CANTIDAD);
+                l1.Add(t1);
+            }
+
+            ViewBag.Equipo_Solict = l1;
+
             return View(pRESTAMO);
         }
 
