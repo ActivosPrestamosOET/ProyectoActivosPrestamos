@@ -71,8 +71,7 @@
             listItems.Add(new SelectListItem
             {
                 Text = tipos.NOMBRE,
-                Value = tipos.NOMBRE,
-                Selected = true
+                Value = tipos.NOMBRE
             });
         }
         ViewBag.listItems = listItems;
@@ -90,7 +89,7 @@
                     </div>
 
                     <div class="col-md-5">
-                        <input type="submit" value="Buscar" class="btn btn-default" />
+                        <input name="submit" id="submit" type="submit" value="Buscar" class="btn btn-default" />
                     </div>
                 </div>
             </div>
@@ -127,14 +126,16 @@
     }
 
     <br>
+@using (Html.BeginForm())
+{
     <div class="row">
         <div class="form-horizontal">
             <div class="col-md-1">
             </div>
-            <div class="col-md-5">
-                <label class="col-md-4">Fecha inicial:</label>
-                <div class="col-md-6">
-                    <input class="form-control" style="padding:10px" type="text" id="datepicker" />
+            <div class="col-md-8">
+                <label class="col-md-2">Fecha inicial:</label>
+                <div class="col-md-4">
+                    <input name ="datepicker" class="form-control" style="padding:10px" type="text" id="datepicker" />
                     <br>
                 </div>
             </div>
@@ -144,13 +145,17 @@
     <div class="row">
         <div class="col-md-1">
         </div>
-        <div class="col-md-5">
-            <label class="col-md-4">Fecha finalización:</label>
-            <div class="col-md-6">
-                <input class="form-control" style="padding:10px" type="text" id="datepicker1" />
+        <div class="col-md-8">
+            <label class="col-md-2">Fecha finalización:</label>
+            <div class="col-md-4">
+                <input name="datepicker1" class="form-control" style="padding:10px" type="text" id="datepicker1" />
                 <br>
             </div>
+            <div class="col-md-3">
+                <input type="submit"name="submit" id="process" value="Buscar por fechas" class="btn btn-default" />
+            </div>
         </div>
+
     </div>
     <div class="row">
         <div class="col-md-1">
@@ -159,22 +164,29 @@
             <table class="table" style="width:200px; margin-top:20px">
                 <thead>
                     <tr>
-                        <th class="col-md-1">Categoria</th>
-                        <th class="col-md-1">Cantidad</th>
+                        <th class="col-md-2">Categoría</th>
+                        <th class="col-md-2">Cantidad</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td class="col-md-1">Pendiente</td>
-                        <td class="col-md-1">1</td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-1">Solicitado</td>
-                        <td class="col-md-1">2</td>
-                    </tr>
+                <tbody>              
+                    @if (ViewBag.Courses1 != null)
+                    {
+                        foreach (List<String> s in ViewBag.Courses1)
+                        {
+                            <tr>
+                                @foreach (String hilera in s)
+                                {
+                                    <td class="col-md-2">@hilera</td>
+                                }
+                            </tr>
+                        }
+                    }
                 </tbody>
+
             </table>
         </div>
     </div>
+}
+    
 
 </body>
