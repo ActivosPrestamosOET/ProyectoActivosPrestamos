@@ -217,6 +217,12 @@ namespace Activos_PrestamosOET.Controllers
                 }
             }
             /*  -------------------------------------------------------------------------------------------  */
+            var cat = (from ac in db.ACTIVOS
+                       from t in db.TIPOS_ACTIVOS
+                       where ac.PRESTABLE.Equals(true) &&
+                              t.ID.Equals(ac.TIPO_ACTIVOID)
+                       select new { t.NOMBRE, t.ID }).Distinct();
+
             var equipo_sol = from o in db.PRESTAMOS
                              from o2 in db.EQUIPO_SOLICITADO
                              where o.ID == id
@@ -233,7 +239,26 @@ namespace Activos_PrestamosOET.Controllers
 
 
                         List<String> temp = new List<String>();
-                        if (x.TIPO != null) { temp.Add(x.TIPO); } else { temp.Add(""); }
+                        if (x.TIPO != null)
+                        {
+                            foreach (var y in cat)
+                            {
+
+                                if (x.TIPO == y.ID.ToString())
+                                {
+
+                                    temp.Add(y.NOMBRE);
+                                }
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            temp.Add("");
+
+                        }
+                        
+                        
                         if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
 
                         equipo.Add(temp);
