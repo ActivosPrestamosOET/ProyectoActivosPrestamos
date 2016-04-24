@@ -87,7 +87,7 @@
 <div class="form-group">
     <label class="col-lg-2 control-label" for="inputDefault">Fecha de Solicitud</label>
     <div class="col-lg-10">
-        @Html.TextBox("fechaSolicitud", ViewBag.CurrentFilter as string, new { @class = "date-picker" })
+        @Html.TextBox("fechaSolicitud", ViewBag.CurrentFilter as string, new { @class = "form-control date-picker" })
     </div>
 </div>
 <br />
@@ -95,7 +95,7 @@
 <div class="form-group">
     <label class="col-lg-2 control-label" for="inputDefault">Fecha de Retiro</label>
     <div class="col-lg-10">
-        @Html.TextBox("fechaRetiro", ViewBag.CurrentFilter as string, new { @class = "date-picker" })
+        @Html.TextBox("fechaRetiro", ViewBag.CurrentFilter as string, new { @class = "form-control date-picker" })
     </div>
 </div>
 <br />
@@ -105,9 +105,9 @@
     <div class="col-lg-10">
        @Html.DropDownList("estado", new SelectList(
                   new List<Object>{
-                       new { value = 0 , text = "Seleccione un estado"  },
+                       new { text = "Todos", value = "0"},
                        new { Text = "Pendiente", Value = "1" },
-                       new  { Text = "Aprobada", Value = "2" },
+                       new { Text = "Aprobada", Value = "2" },
                        new { Text = "Denegada", Value = "3" },
                        new { Text = "Abierta", Value = "4" },
                        new { Text = "Cerrada", Value = "5" },
@@ -115,13 +115,13 @@
                   },
                   "value",
                   "text",
-                   2), ViewBag.CurrentFilter as string)
+                   0), ViewBag.CurrentFilter as string, new { @class = "form-control"})
     </div>
 </fieldset>
 <br />
 
 <p>    
-    <input type="submit" value="Buscar" class="btn btn-default" />
+    <input type="submit" value="Buscar" class="btn btn-default col-lg-offset-1" />
 </p>
 }
 
