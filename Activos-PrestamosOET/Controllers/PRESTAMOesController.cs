@@ -98,7 +98,7 @@ namespace Activos_PrestamosOET.Controllers
                     }
                 }
             }
-            if (!string.IsNullOrEmpty(estado) || estado != "0")
+            if (!string.IsNullOrEmpty(estado) && estado != "0")
             {
                 int est = int.Parse(estado);
                 var int16 = Convert.ToInt16(est);
