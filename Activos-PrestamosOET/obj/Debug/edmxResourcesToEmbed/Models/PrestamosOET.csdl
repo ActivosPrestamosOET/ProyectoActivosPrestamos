@@ -16,7 +16,7 @@
       <PropertyRef Name="ID" />
     </Key>
     <Property Name="ID" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="NUMERO_BOLETA" Type="Decimal" Precision="38" Scale="0" />
+    <Property Name="NUMERO_BOLETA" Type="Int64" />
     <Property Name="MOTIVO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
     <Property Name="FECHA_SOLICITUD" Type="DateTime" Nullable="false" />
     <Property Name="FECHA_RETIRO" Type="DateTime" Nullable="false" />

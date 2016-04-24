@@ -168,16 +168,35 @@ namespace Activos_PrestamosOET.Controllers
 
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
-                        where o.CED_SOLICITA == o2.IDUSUARIO
-                        select new { PRESTAMO = o, USUARIO = o2.NOMBRE };
+                        where o.ID == id
+                        select new { USUARIO = o2.NOMBRE };
 
-            List<Tuple<Activos_PrestamosOET.Models.PRESTAMO, string>> l = new List<Tuple<Activos_PrestamosOET.Models.PRESTAMO, string>>();
             foreach (var m in lista)
             {
-                var t = new Tuple<Activos_PrestamosOET.Models.PRESTAMO, string>(m.PRESTAMO, m.USUARIO);
-                l.Add(t);
-                ViewBag.Nombre = t.Item2;
+                var t = new Tuple<string>(m.USUARIO);
+                ViewBag.Nombre = t.Item1;
             }
+
+
+
+           /* List<String> solicitantes = new List<String>();
+            List<String> ceds = new List<String>();
+            foreach (Activos_PrestamosOET.Models.PRESTAMO p in db.PRESTAMOS)
+            {
+                foreach (Activos_PrestamosOET.Models.USUARIO u in db.USUARIOS)
+                {
+                    if (p.USUARIO != null)
+                    {
+                        if (p.USUARIO.Equals(u.IDUSUARIO))
+                        {
+                            solicitantes.Add(u.NOMBRE);
+                            ceds.Add(u.IDUSUARIO);
+                        }
+                    }
+                }
+            }
+
+
 
             var lista1 = from o in db.PRESTAMOS
                          from o2 in db.EQUIPO_SOLICITADO
@@ -192,7 +211,7 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             ViewBag.Equipo_Solict = l1;
-
+            */
             return View(pRESTAMO);
         }
 
