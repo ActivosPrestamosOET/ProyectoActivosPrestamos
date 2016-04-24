@@ -310,9 +310,9 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
-            db.PRESTAMOS.Remove(pRESTAMO);
+            pRESTAMO.Estado = 6;
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Historial");
         }
 
         protected override void Dispose(bool disposing)
