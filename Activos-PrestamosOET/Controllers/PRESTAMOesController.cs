@@ -21,13 +21,60 @@ namespace Activos_PrestamosOET.Controllers
         // GET: PRESTAMOes
         public ActionResult Index(string sortOrder, string currentFilter, string fechaSolicitud, string fechaRetiro, int? page)
         {
-
+            System.Diagnostics.Trace.WriteLine(sortOrder);
             ViewBag.currentSort = sortOrder;//NO prestar atención
-            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "numero_dsc" : "";//NO prestar atención
-            ViewBag.DateSortParm = sortOrder == "fecha_solicitud" ? "date_desc" : "Date";//NO prestar atención
+            ViewBag.NumeroSortParm = String.IsNullOrEmpty(sortOrder) ? "numero_dsc" : "";//NO prestar atención
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";//NO prestar atención
+            ViewBag.FDateSortParm = sortOrder == "FDate" ? "FDate_desc" : "FDate";
+            ViewBag.PeriodoSortParm = sortOrder == "Periodo" ? "Periodo_desc" : "Periodo";
+            ViewBag.NameSortParm = sortOrder == "Name" ? "Name_desc" : "Name";
+
+            if (fechaSolicitud != null || fechaRetiro != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                fechaSolicitud = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = fechaSolicitud;
             var prestamos = from s in db.PRESTAMOS
                            select s;
-            prestamos = prestamos.OrderBy(s => s.NUMERO_BOLETA);
+            
+            switch (sortOrder)
+            {
+                case "numero_dsc":
+                    prestamos = prestamos.OrderByDescending(s => s.NUMERO_BOLETA);
+                    break;
+                case "Date":
+                    prestamos = prestamos.OrderBy(s => s.FECHA_SOLICITUD);
+                    break;
+                case "date_desc":
+                    prestamos = prestamos.OrderByDescending(s => s.FECHA_SOLICITUD);
+                    break;
+                case "FDate":
+                    prestamos = prestamos.OrderBy(s => s.FECHA_RETIRO);
+                    break;
+                case "FDate_desc":
+                    prestamos = prestamos.OrderByDescending(s => s.FECHA_RETIRO);
+                    break;
+                case "Periodo":
+                    prestamos = prestamos.OrderBy(s => s.PERIODO_USO);
+                    break;
+                case "Periodo_desc":
+                    prestamos = prestamos.OrderByDescending(s => s.PERIODO_USO);
+                    break;
+                case "Name":
+                    prestamos = prestamos.OrderBy(s => s.CED_SOLICITA);
+                    break;
+                case "Name_desc":
+                    prestamos = prestamos.OrderByDescending(s => s.CED_SOLICITA);
+                    break;
+                default:  // Name ascending 
+                    prestamos = prestamos.OrderBy(s => s.NUMERO_BOLETA);
+                    break;
+            }
             int pageSize = 3;
             int pageNumber = (page ?? 1);
             return View(prestamos.ToPagedList(pageNumber, pageSize));
