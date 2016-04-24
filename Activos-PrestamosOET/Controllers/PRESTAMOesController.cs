@@ -40,8 +40,41 @@ namespace Activos_PrestamosOET.Controllers
 
             ViewBag.CurrentFilter = fechaSolicitud;
             var prestamos = from s in db.PRESTAMOS
-                           select s;
-            
+                            select s;
+
+            if (!String.IsNullOrEmpty(fechaSolicitud) || !String.IsNullOrEmpty(fechaRetiro))
+            {
+                DateTime fechaS;
+                DateTime fechaR;
+
+
+                if (String.IsNullOrEmpty(fechaSolicitud))
+                {
+                    if (DateTime.TryParse(fechaRetiro, out fechaR))
+                    {
+                        prestamos.Where(model => model.FECHA_RETIRO == fechaR.Date);
+                    }
+                }
+                else if (String.IsNullOrEmpty(fechaRetiro))
+                {
+                    if (DateTime.TryParseExact(fechaSolicitud, "dd/mm/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaS))
+                    {
+                        prestamos.Where(model => model.FECHA_SOLICITUD == fechaS.Date);
+                    }                    
+                }
+                else
+                {
+                    if (DateTime.TryParseExact(fechaSolicitud, "dd/mm/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaS))
+                    {
+                        prestamos.Where(model => model.FECHA_SOLICITUD == fechaS.Date);
+                    }
+                    if (DateTime.TryParse(fechaRetiro, out fechaR))
+                    {
+                        prestamos.Where(model => model.FECHA_RETIRO == fechaR.Date);
+                    }                    
+                }
+            }
+
             switch (sortOrder)
             {
                 case "numero_dsc":
@@ -78,45 +111,7 @@ namespace Activos_PrestamosOET.Controllers
             int pageSize = 3;
             int pageNumber = (page ?? 1);
             return View(prestamos.ToPagedList(pageNumber, pageSize));
-            //Hasta aquí paginación//
-
-            if (String.IsNullOrEmpty(fechaSolicitud) && String.IsNullOrEmpty(fechaRetiro))
-                return View(db.PRESTAMOS.ToList());
-            else
-            {
-                DateTime fechaS;
-                DateTime fechaR;
-
-
-                if (String.IsNullOrEmpty(fechaSolicitud))
-                {
-                    if (!DateTime.TryParse(fechaRetiro, out fechaR))
-                    {
-                        return View(db.PRESTAMOS.ToList());
-                    }
-                    return View(db.PRESTAMOS.Where(model => model.FECHA_RETIRO == fechaR.Date));
-                }
-                else if (String.IsNullOrEmpty(fechaRetiro))
-                {
-                    if (!DateTime.TryParseExact(fechaSolicitud, "dd/mm/yyyy",new CultureInfo("es"),DateTimeStyles.None, out fechaS))
-                    {
-                        return View(db.PRESTAMOS.ToList());
-                    }
-                    return View(db.PRESTAMOS.Where(model => model.FECHA_SOLICITUD == fechaS.Date));
-                }
-                else
-                {
-                    if (!DateTime.TryParseExact(fechaSolicitud, "dd/mm/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaS))
-                    {
-                        return View(db.PRESTAMOS.ToList());
-                    }
-                    if (!DateTime.TryParse(fechaRetiro, out fechaR))
-                    {
-                        return View(db.PRESTAMOS.ToList());
-                    }
-                    return View(db.PRESTAMOS.Where(model => model.FECHA_RETIRO == fechaR.Date && model.FECHA_SOLICITUD == fechaS.Date));
-                }
-            }
+            //Hasta aquí paginación//                            
         }
 
 
@@ -131,7 +126,7 @@ namespace Activos_PrestamosOET.Controllers
             }
             else
             {
-                return View(db.PRESTAMOS.Where(model => model.CED_SOLICITA == CED_SOLICITA && model.Estado!=6));
+                return View(db.PRESTAMOS.Where(model => model.CED_SOLICITA == CED_SOLICITA && model.Estado != 6));
             }
         }
 
@@ -164,7 +159,7 @@ namespace Activos_PrestamosOET.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
-           // ViewBag.clear();
+            // ViewBag.clear();
 
             if (pRESTAMO == null)
             {
@@ -174,7 +169,7 @@ namespace Activos_PrestamosOET.Controllers
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
                         where o.CED_SOLICITA == o2.IDUSUARIO
-                        select new { PRESTAMO = o, USUARIO = o2.NOMBRE};
+                        select new { PRESTAMO = o, USUARIO = o2.NOMBRE };
 
             List<Tuple<Activos_PrestamosOET.Models.PRESTAMO, string>> l = new List<Tuple<Activos_PrestamosOET.Models.PRESTAMO, string>>();
             foreach (var m in lista)
@@ -185,14 +180,14 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             var lista1 = from o in db.PRESTAMOS
-                        from o2 in db.EQUIPO_SOLICITADO
-                        where o.ID == o2.ID_PRESTAMO
-                        select new {EQUIPO_SOLICITADO = o2.TIPO_ACTIVO, EQUIPO_SOLICITADO_CANTIDAD = o2.CANTIDAD };
+                         from o2 in db.EQUIPO_SOLICITADO
+                         where o.ID == o2.ID_PRESTAMO
+                         select new { EQUIPO_SOLICITADO = o2.TIPO_ACTIVO, EQUIPO_SOLICITADO_CANTIDAD = o2.CANTIDAD };
 
-            List<Tuple< string, decimal>> l1 = new List<Tuple<string, decimal>>();
+            List<Tuple<string, decimal>> l1 = new List<Tuple<string, decimal>>();
             foreach (var m in lista1)
             {
-                var t1 = new Tuple< string, decimal>(m.EQUIPO_SOLICITADO, m.EQUIPO_SOLICITADO_CANTIDAD);
+                var t1 = new Tuple<string, decimal>(m.EQUIPO_SOLICITADO, m.EQUIPO_SOLICITADO_CANTIDAD);
                 l1.Add(t1);
             }
 
@@ -220,11 +215,11 @@ namespace Activos_PrestamosOET.Controllers
             PRESTAMO P = new PRESTAMO();
             if (ModelState.IsValid)
             {
-                
+
                 P.ID = p.ID;
                 P.MOTIVO = p.MOTIVO;
                 //P.NUMERO_BOLETA = p.NUMERO_BOLETA;
-               // P.NUMERO_BOLETA = db.PRESTAMOS.;//context.Persons.Max(p => p.Age); ;
+                // P.NUMERO_BOLETA = db.PRESTAMOS.;//context.Persons.Max(p => p.Age); ;
                 P.OBSERVACIONES_APROBADO = "";
                 P.OBSERVACIONES_RECIBIDO = "";
                 P.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
@@ -309,7 +304,7 @@ namespace Activos_PrestamosOET.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p,string id)
+        public ActionResult Edit([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p, string id)
         {
             PRESTAMO P = db.PRESTAMOS.Find(id);
             //P.ID = p.ID;
