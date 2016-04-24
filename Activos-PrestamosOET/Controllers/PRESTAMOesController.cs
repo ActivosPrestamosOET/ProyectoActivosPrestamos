@@ -6,6 +6,7 @@ using Activos_PrestamosOET.Models;
 using System.Data;
 using System.Web.UI.WebControls;
 using System;
+using PagedList;
 using System.Globalization;
 using System.Collections.Generic;
 
@@ -18,14 +19,19 @@ namespace Activos_PrestamosOET.Controllers
         private PrestamosEntities db = new PrestamosEntities();
 
         // GET: PRESTAMOes
-        public ActionResult Index(string fechaSolicitud, string fechaRetiro)
+        public ActionResult Index(string fechaSolicitud, string fechaRetiro, string sortOrder, string currentFilter, int? page)
         {
+
+            ViewBag.currentSort = sortOrder;
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "numero_dsc" : "";
+            ViewBag.DateSortParm = sortOrder == "fecha_solicitud" ? "date_desc" : "Date";
             if (String.IsNullOrEmpty(fechaSolicitud) && String.IsNullOrEmpty(fechaRetiro))
                 return View(db.PRESTAMOS.ToList());
             else
             {
                 DateTime fechaS;
                 DateTime fechaR;
+
 
                 if (String.IsNullOrEmpty(fechaSolicitud))
                 {
