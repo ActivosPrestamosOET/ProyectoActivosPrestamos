@@ -7,7 +7,11 @@
 <h2>Historial de Prestamos</h2>
 <br />
 <br />
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("[id$=A3]").addClass("active");
+    });
+</script>
 <p>
     @Html.ActionLink("Nueva Solicitud", "Create")
 </p>
