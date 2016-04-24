@@ -89,7 +89,20 @@
         </tr>
     </thead>
     <tbody>
+    @if (ViewBag.Equipo_Solict != null)
+    {
+        foreach (List<String> s in ViewBag.Equipo_Solict)
+        {
+            <tr>
+                @foreach (String hilera in s)
+                    {
+                    <td>@hilera</td>
+                }
+                <td><input type="number" class="form-control" name="points" min="0" value="0"></td>
 
+            </tr>
+        }
+    }
    </tbody>
 </table>
 
