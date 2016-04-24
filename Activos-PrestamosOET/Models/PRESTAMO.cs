@@ -26,7 +26,7 @@ namespace Activos_PrestamosOET.Models
         public string MOTIVO { get; set; }
         public System.DateTime FECHA_SOLICITUD { get; set; }
         public System.DateTime FECHA_RETIRO { get; set; }
-        public decimal PERIODO_USO { get; set; }
+        public int PERIODO_USO { get; set; }
         public string SOFTWARE_REQUERIDO { get; set; }
         public string OBSERVACIONES_SOLICITANTE { get; set; }
         public string OBSERVACIONES_APROBADO { get; set; }
