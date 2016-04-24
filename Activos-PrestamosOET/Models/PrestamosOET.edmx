@@ -40,6 +40,22 @@
                 <End Role="TIPOS_ACTIVOS" EntitySet="TIPOS_ACTIVOS" />
                 <End Role="ACTIVO" EntitySet="ACTIVOS" />
             </AssociationSet>
+            <AssociationSet Name="V_MONEDAV_ANFITRIONA" Association="PrestamosModel.Store.V_MONEDAV_ANFITRIONA">
+                <End Role="V_MONEDA" EntitySet="V_MONEDA" />
+                <End Role="V_ANFITRIONA" EntitySet="V_ANFITRIONA" />
+            </AssociationSet>
+            <AssociationSet Name="V_PROVEEDORACTIVO" Association="PrestamosModel.Store.V_PROVEEDORACTIVO">
+                <End Role="V_PROVEEDOR" EntitySet="V_PROVEEDOR" />
+                <End Role="ACTIVO" EntitySet="ACTIVOS" />
+            </AssociationSet>
+            <AssociationSet Name="ACTIVOV_ANFITRIONA" Association="PrestamosModel.Store.ACTIVOV_ANFITRIONA">
+                <End Role="ACTIVO" EntitySet="ACTIVOS" />
+                <End Role="V_ANFITRIONA" EntitySet="V_ANFITRIONA" />
+            </AssociationSet>
+            <AssociationSet Name="V_ESTACIONACTIVO" Association="PrestamosModel.Store.V_ESTACIONACTIVO">
+                <End Role="V_ESTACION" EntitySet="V_ESTACION" />
+                <End Role="ACTIVO" EntitySet="ACTIVOS" />
+            </AssociationSet>
         </EntityContainer>
         <EntityType Name="EQUIPO_SOLICITADO">
             <Key>
@@ -50,12 +66,13 @@
             <Property Name="ID_PRESTAMO" Type="varchar2" Nullable="false" MaxLength="8" />
             <Property Name="TIPO_ACTIVO" Type="varchar2" Nullable="false" MaxLength="50" />
             <Property Name="CANTIDAD" Type="number" Nullable="false" Precision="38" />
+            <Property Name="CANTIDADAPROBADA" Type="number" Nullable="true" Precision="38" />
         </EntityType>
         <EntityType Name="PRESTAMOS">
             <Key>
                 <PropertyRef Name="ID" />
             </Key>
-            <Property Name="ID" Type="varchar2" Nullable="false" MaxLength="8" />
+            <Property Name="ID" Type="varchar2" Nullable="false" MaxLength="25" />
             <Property Name="NUMERO_BOLETA" Type="number" Nullable="true" Precision="19" />
             <Property Name="MOTIVO" Type="varchar2" Nullable="true" MaxLength="250" />
             <Property Name="FECHA_SOLICITUD" Type="date" Nullable="false" />
@@ -99,6 +116,26 @@
             <Property Name="ESTACIONID" Type="varchar2" Nullable="true" MaxLength="26" />
             <Property Name="DEPARTAMENTOIDDEPARTAMENTO" Type="number" Nullable="true" Precision="8" Scale="2" />
             <Property Name="MODELO" Type="nvarchar2" Nullable="true" MaxLength="128" />
+            <Property Name="V_PROVEEDOR_IDPROVEEDOR" Type="varchar2" MaxLength="50" Nullable="false" />
+            <Property Name="V_PROVEEDOR_FECHAINGRESO" Type="date" Nullable="false" />
+            <Property Name="V_PROVEEDOR_NOMBRE" Type="varchar2" MaxLength="50" Nullable="false" />
+            <Property Name="V_PROVEEDOR_ESTADO" Type="number" Precision="1" Nullable="false" />
+            <Property Name="V_PROVEEDOR_CEDULA" Type="varchar2" MaxLength="50" Nullable="false" />
+            <Property Name="V_PROVEEDOR_LOCACION" Type="number" Precision="1" Nullable="false" />
+            <Property Name="V_PROVEEDOR_CREADO" Type="date" Nullable="false" />
+            <Property Name="V_PROVEEDOR_CREADOR" Type="varchar2" MaxLength="50" Nullable="false" />
+            <Property Name="V_PROVEEDOR_MODIFICADO" Type="date" Nullable="false" />
+            <Property Name="V_PROVEEDOR_MODIFICADOR" Type="varchar2" MaxLength="50" Nullable="false" />
+            <Property Name="V_ANFITRIONA_ID" Type="varchar2" MaxLength="2" Nullable="false" />
+            <Property Name="V_ANFITRIONA_NOMBRE" Type="varchar2" MaxLength="100" Nullable="false" />
+            <Property Name="V_ANFITRIONA_SIGLAS" Type="varchar2" MaxLength="20" Nullable="false" />
+            <Property Name="V_ANFITRIONA_MONEDA" Type="varchar2" MaxLength="26" Nullable="false" />
+            <Property Name="V_ANFITRIONA_TIPOCAMBIO" Type="varchar2" MaxLength="10" Nullable="false" />
+            <Property Name="V_ANFITRIONA_TIPOUSUARIO" Type="number" Precision="38" Nullable="false" />
+            <Property Name="V_ANFITRIONA_TIPOCAMBIO_CONTA" Type="varchar2" MaxLength="10" Nullable="false" />
+            <Property Name="V_ANFITRIONA_MONEDA_CONTA" Type="varchar2" MaxLength="26" Nullable="false" />
+            <Property Name="V_ESTACION_ID" Type="varchar2" MaxLength="26" Nullable="false" />
+            <Property Name="V_ESTACION_NOMBRE" Type="varchar2" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="USUARIOS">
             <Key>
@@ -141,6 +178,7 @@
             <Property Name="TIPOUSUARIO" Type="number" Nullable="false" Precision="38" />
             <Property Name="TIPOCAMBIO_CONTA" Type="varchar2" Nullable="false" MaxLength="10" />
             <Property Name="MONEDA_CONTA" Type="varchar2" Nullable="false" MaxLength="26" />
+            <Property Name="V_MONEDA_ID" Type="varchar2" MaxLength="26" Nullable="false" />
         </EntityType>
         <EntityType Name="V_ESTACION">
             <Key>
@@ -207,7 +245,7 @@
                 <PropertyRef Name="PRESTAMOes_ID" />
             </Key>
             <Property Name="ACTIVOes_ID" Type="number" Nullable="false" Precision="10" />
-            <Property Name="PRESTAMOes_ID" Type="varchar2" Nullable="false" MaxLength="8" />
+            <Property Name="PRESTAMOes_ID" Type="varchar2" Nullable="false" MaxLength="25" />
         </EntityType>
     <Association Name="FK_A_PRESTAMOS">
         <End Role="PRESTAMOS" Type="PrestamosModel.Store.PRESTAMOS" Multiplicity="1">
@@ -265,6 +303,96 @@
             </Dependent>
         </ReferentialConstraint>
     </Association>
+    <Association Name="V_MONEDAV_ANFITRIONA">
+        <End Role="V_MONEDA" Type="PrestamosModel.Store.V_MONEDA" Multiplicity="1">
+        </End>
+        <End Role="V_ANFITRIONA" Type="PrestamosModel.Store.V_ANFITRIONA" Multiplicity="*">
+        </End>
+        <ReferentialConstraint>
+            <Principal Role="V_MONEDA">
+                <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="V_ANFITRIONA">
+                <PropertyRef Name="V_MONEDA_ID" />
+            </Dependent>
+        </ReferentialConstraint>
+    </Association>
+    <Association Name="V_PROVEEDORACTIVO">
+        <End Role="V_PROVEEDOR" Type="PrestamosModel.Store.V_PROVEEDOR" Multiplicity="1">
+        </End>
+        <End Role="ACTIVO" Type="PrestamosModel.Store.ACTIVOS" Multiplicity="*">
+        </End>
+        <ReferentialConstraint>
+            <Principal Role="V_PROVEEDOR">
+                <PropertyRef Name="IDPROVEEDOR" />
+                <PropertyRef Name="FECHAINGRESO" />
+                <PropertyRef Name="NOMBRE" />
+                <PropertyRef Name="ESTADO" />
+                <PropertyRef Name="CEDULA" />
+                <PropertyRef Name="LOCACION" />
+                <PropertyRef Name="CREADO" />
+                <PropertyRef Name="CREADOR" />
+                <PropertyRef Name="MODIFICADO" />
+                <PropertyRef Name="MODIFICADOR" />
+            </Principal>
+            <Dependent Role="ACTIVO">
+                <PropertyRef Name="V_PROVEEDOR_IDPROVEEDOR" />
+                <PropertyRef Name="V_PROVEEDOR_FECHAINGRESO" />
+                <PropertyRef Name="V_PROVEEDOR_NOMBRE" />
+                <PropertyRef Name="V_PROVEEDOR_ESTADO" />
+                <PropertyRef Name="V_PROVEEDOR_CEDULA" />
+                <PropertyRef Name="V_PROVEEDOR_LOCACION" />
+                <PropertyRef Name="V_PROVEEDOR_CREADO" />
+                <PropertyRef Name="V_PROVEEDOR_CREADOR" />
+                <PropertyRef Name="V_PROVEEDOR_MODIFICADO" />
+                <PropertyRef Name="V_PROVEEDOR_MODIFICADOR" />
+            </Dependent>
+        </ReferentialConstraint>
+    </Association>
+    <Association Name="ACTIVOV_ANFITRIONA">
+        <End Role="ACTIVO" Type="PrestamosModel.Store.ACTIVOS" Multiplicity="*">
+        </End>
+        <End Role="V_ANFITRIONA" Type="PrestamosModel.Store.V_ANFITRIONA" Multiplicity="1">
+        </End>
+        <ReferentialConstraint>
+            <Principal Role="V_ANFITRIONA">
+                <PropertyRef Name="ID" />
+                <PropertyRef Name="NOMBRE" />
+                <PropertyRef Name="SIGLAS" />
+                <PropertyRef Name="MONEDA" />
+                <PropertyRef Name="TIPOCAMBIO" />
+                <PropertyRef Name="TIPOUSUARIO" />
+                <PropertyRef Name="TIPOCAMBIO_CONTA" />
+                <PropertyRef Name="MONEDA_CONTA" />
+            </Principal>
+            <Dependent Role="ACTIVO">
+                <PropertyRef Name="V_ANFITRIONA_ID" />
+                <PropertyRef Name="V_ANFITRIONA_NOMBRE" />
+                <PropertyRef Name="V_ANFITRIONA_SIGLAS" />
+                <PropertyRef Name="V_ANFITRIONA_MONEDA" />
+                <PropertyRef Name="V_ANFITRIONA_TIPOCAMBIO" />
+                <PropertyRef Name="V_ANFITRIONA_TIPOUSUARIO" />
+                <PropertyRef Name="V_ANFITRIONA_TIPOCAMBIO_CONTA" />
+                <PropertyRef Name="V_ANFITRIONA_MONEDA_CONTA" />
+            </Dependent>
+        </ReferentialConstraint>
+    </Association>
+    <Association Name="V_ESTACIONACTIVO">
+        <End Role="V_ESTACION" Type="PrestamosModel.Store.V_ESTACION" Multiplicity="1">
+        </End>
+        <End Role="ACTIVO" Type="PrestamosModel.Store.ACTIVOS" Multiplicity="*">
+        </End>
+        <ReferentialConstraint>
+            <Principal Role="V_ESTACION">
+                <PropertyRef Name="ID" />
+                <PropertyRef Name="NOMBRE" />
+            </Principal>
+            <Dependent Role="ACTIVO">
+                <PropertyRef Name="V_ESTACION_ID" />
+                <PropertyRef Name="V_ESTACION_NOMBRE" />
+            </Dependent>
+        </ReferentialConstraint>
+    </Association>
     <Association Name="FK_ACTIVOPRESTAMO_ACTIVO">
         <End Role="ACTIVO" Type="PrestamosModel.Store.ACTIVOS" Multiplicity="1" />
         <End Role="ACTIVOPRESTAMO" Type="PrestamosModel.Store.ACTIVOPRESTAMO" Multiplicity="*" />
@@ -303,6 +431,7 @@
           <Property Name="TIPO_ACTIVO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="CANTIDAD" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="PRESTAMO" Relationship="Self.FK_A_PRESTAMOS" FromRole="EQUIPO_SOLICITADO" ToRole="PRESTAMOS" />
+          <Property Name="CANTIDADAPROBADA" Type="Decimal" Precision="38" Scale="0" />
         </EntityType>
         <EntityType Name="PRESTAMO">
           <Key>
@@ -373,6 +502,22 @@
             <End Role="TIPOS_ACTIVOS" EntitySet="TIPOS_ACTIVOS" />
             <End Role="ACTIVO" EntitySet="ACTIVOS" />
           </AssociationSet>
+          <AssociationSet Name="V_MONEDAV_ANFITRIONA" Association="PrestamosModel.V_MONEDAV_ANFITRIONA">
+            <End Role="V_MONEDA" EntitySet="V_MONEDA" />
+            <End Role="V_ANFITRIONA" EntitySet="V_ANFITRIONA" />
+          </AssociationSet>
+          <AssociationSet Name="V_PROVEEDORACTIVO" Association="PrestamosModel.V_PROVEEDORACTIVO">
+            <End Role="V_PROVEEDOR" EntitySet="V_PROVEEDOR" />
+            <End Role="ACTIVO" EntitySet="ACTIVOS" />
+          </AssociationSet>
+          <AssociationSet Name="ACTIVOV_ANFITRIONA" Association="PrestamosModel.ACTIVOV_ANFITRIONA">
+            <End Role="ACTIVO" EntitySet="ACTIVOS" />
+            <End Role="V_ANFITRIONA" EntitySet="V_ANFITRIONA" />
+          </AssociationSet>
+          <AssociationSet Name="V_ESTACIONACTIVO" Association="PrestamosModel.V_ESTACIONACTIVO">
+            <End Role="V_ESTACION" EntitySet="V_ESTACION" />
+            <End Role="ACTIVO" EntitySet="ACTIVOS" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="ACTIVO">
           <Key>
@@ -405,6 +550,9 @@
           <Property Name="MODELO" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="PRESTAMOes" Relationship="PrestamosModel.ACTIVOPRESTAMO" FromRole="ACTIVO" ToRole="PRESTAMO" />
           <NavigationProperty Name="TIPOS_ACTIVOS" Relationship="PrestamosModel.FK_TIPO_ACTIVOACTIVO" FromRole="ACTIVO" ToRole="TIPOS_ACTIVOS" />
+          <NavigationProperty Name="V_PROVEEDOR" Relationship="PrestamosModel.V_PROVEEDORACTIVO" FromRole="ACTIVO" ToRole="V_PROVEEDOR" />
+          <NavigationProperty Name="V_ANFITRIONA" Relationship="PrestamosModel.ACTIVOV_ANFITRIONA" FromRole="ACTIVO" ToRole="V_ANFITRIONA" />
+          <NavigationProperty Name="V_ESTACION" Relationship="PrestamosModel.V_ESTACIONACTIVO" FromRole="ACTIVO" ToRole="V_ESTACION" />
         </EntityType>
         <EntityType Name="USUARIO">
           <Key>
@@ -478,6 +626,8 @@
           <Property Name="TIPOUSUARIO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
           <Property Name="TIPOCAMBIO_CONTA" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="MONEDA_CONTA" Type="String" Nullable="false" MaxLength="26" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="V_MONEDA" Relationship="PrestamosModel.V_MONEDAV_ANFITRIONA" FromRole="V_ANFITRIONA" ToRole="V_MONEDA" />
+          <NavigationProperty Name="ACTIVOes" Relationship="PrestamosModel.ACTIVOV_ANFITRIONA" FromRole="V_ANFITRIONA" ToRole="ACTIVO" />
         </EntityType>
         <EntityType Name="V_ESTACION">
           <Key>
@@ -488,6 +638,7 @@
           <Property Name="NOMBRE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="SIGLAS" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="RESERVABLE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ACTIVOes" Relationship="PrestamosModel.V_ESTACIONACTIVO" FromRole="V_ESTACION" ToRole="ACTIVO" />
         </EntityType>
         <EntityType Name="V_MONEDA">
           <Key>
@@ -496,6 +647,7 @@
           <Property Name="ID" Type="String" Nullable="false" MaxLength="26" FixedLength="false" Unicode="false" />
           <Property Name="NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="SIMBOLO" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="V_ANFITRIONA" Relationship="PrestamosModel.V_MONEDAV_ANFITRIONA" FromRole="V_MONEDA" ToRole="V_ANFITRIONA" />
         </EntityType>
         <EntityType Name="V_PROVEEDOR">
           <Key>
@@ -537,6 +689,7 @@
           <Property Name="MODIFICADOR" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="MONEDA" Type="String" MaxLength="26" FixedLength="false" Unicode="false" />
           <Property Name="NOMBRE_CORTO" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ACTIVOes" Relationship="PrestamosModel.V_PROVEEDORACTIVO" FromRole="V_PROVEEDOR" ToRole="ACTIVO" />
         </EntityType>
         <Association Name="FK_TIPO_ACTIVOACTIVO">
           <End Type="PrestamosModel.TIPOS_ACTIVOS" Role="TIPOS_ACTIVOS" Multiplicity="1" />
@@ -550,6 +703,22 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="V_MONEDAV_ANFITRIONA">
+          <End Type="PrestamosModel.V_MONEDA" Role="V_MONEDA" Multiplicity="1" />
+          <End Type="PrestamosModel.V_ANFITRIONA" Role="V_ANFITRIONA" Multiplicity="*" />
+        </Association>
+        <Association Name="V_PROVEEDORACTIVO">
+          <End Type="PrestamosModel.V_PROVEEDOR" Role="V_PROVEEDOR" Multiplicity="1" />
+          <End Type="PrestamosModel.ACTIVO" Role="ACTIVO" Multiplicity="*" />
+        </Association>
+        <Association Name="ACTIVOV_ANFITRIONA">
+          <End Type="PrestamosModel.ACTIVO" Role="ACTIVO" Multiplicity="*" />
+          <End Type="PrestamosModel.V_ANFITRIONA" Role="V_ANFITRIONA" Multiplicity="1" />
+        </Association>
+        <Association Name="V_ESTACIONACTIVO">
+          <End Type="PrestamosModel.V_ESTACION" Role="V_ESTACION" Multiplicity="1" />
+          <End Type="PrestamosModel.ACTIVO" Role="ACTIVO" Multiplicity="*" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -562,6 +731,7 @@
                     <ScalarProperty Name="ID_PRESTAMO" ColumnName="ID_PRESTAMO" />
                     <ScalarProperty Name="TIPO_ACTIVO" ColumnName="TIPO_ACTIVO" />
                     <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
+                    <ScalarProperty Name="CANTIDADAPROBADA" ColumnName="CANTIDADAPROBADA" />
                 </MappingFragment>
             </EntityTypeMapping>
         </EntitySetMapping>
@@ -712,6 +882,62 @@
             </EndProperty>
             <EndProperty Name="PRESTAMO">
                 <ScalarProperty Name="ID" ColumnName="PRESTAMOes_ID" />
+            </EndProperty>
+        </AssociationSetMapping>
+        <AssociationSetMapping Name="V_MONEDAV_ANFITRIONA" TypeName="PrestamosModel.V_MONEDAV_ANFITRIONA" StoreEntitySet="V_ANFITRIONA">
+            <EndProperty Name="V_MONEDA">
+                <ScalarProperty Name="ID" ColumnName="V_MONEDA_ID" />
+            </EndProperty>
+            <EndProperty Name="V_ANFITRIONA">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+                <ScalarProperty Name="SIGLAS" ColumnName="SIGLAS" />
+                <ScalarProperty Name="MONEDA" ColumnName="MONEDA" />
+                <ScalarProperty Name="TIPOCAMBIO" ColumnName="TIPOCAMBIO" />
+                <ScalarProperty Name="TIPOUSUARIO" ColumnName="TIPOUSUARIO" />
+                <ScalarProperty Name="TIPOCAMBIO_CONTA" ColumnName="TIPOCAMBIO_CONTA" />
+                <ScalarProperty Name="MONEDA_CONTA" ColumnName="MONEDA_CONTA" />
+            </EndProperty>
+        </AssociationSetMapping>
+        <AssociationSetMapping Name="V_PROVEEDORACTIVO" TypeName="PrestamosModel.V_PROVEEDORACTIVO" StoreEntitySet="ACTIVOS">
+            <EndProperty Name="V_PROVEEDOR">
+                <ScalarProperty Name="IDPROVEEDOR" ColumnName="V_PROVEEDOR_IDPROVEEDOR" />
+                <ScalarProperty Name="FECHAINGRESO" ColumnName="V_PROVEEDOR_FECHAINGRESO" />
+                <ScalarProperty Name="NOMBRE" ColumnName="V_PROVEEDOR_NOMBRE" />
+                <ScalarProperty Name="ESTADO" ColumnName="V_PROVEEDOR_ESTADO" />
+                <ScalarProperty Name="CEDULA" ColumnName="V_PROVEEDOR_CEDULA" />
+                <ScalarProperty Name="LOCACION" ColumnName="V_PROVEEDOR_LOCACION" />
+                <ScalarProperty Name="CREADO" ColumnName="V_PROVEEDOR_CREADO" />
+                <ScalarProperty Name="CREADOR" ColumnName="V_PROVEEDOR_CREADOR" />
+                <ScalarProperty Name="MODIFICADO" ColumnName="V_PROVEEDOR_MODIFICADO" />
+                <ScalarProperty Name="MODIFICADOR" ColumnName="V_PROVEEDOR_MODIFICADOR" />
+            </EndProperty>
+            <EndProperty Name="ACTIVO">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+        </AssociationSetMapping>
+        <AssociationSetMapping Name="ACTIVOV_ANFITRIONA" TypeName="PrestamosModel.ACTIVOV_ANFITRIONA" StoreEntitySet="ACTIVOS">
+            <EndProperty Name="V_ANFITRIONA">
+                <ScalarProperty Name="ID" ColumnName="V_ANFITRIONA_ID" />
+                <ScalarProperty Name="NOMBRE" ColumnName="V_ANFITRIONA_NOMBRE" />
+                <ScalarProperty Name="SIGLAS" ColumnName="V_ANFITRIONA_SIGLAS" />
+                <ScalarProperty Name="MONEDA" ColumnName="V_ANFITRIONA_MONEDA" />
+                <ScalarProperty Name="TIPOCAMBIO" ColumnName="V_ANFITRIONA_TIPOCAMBIO" />
+                <ScalarProperty Name="TIPOUSUARIO" ColumnName="V_ANFITRIONA_TIPOUSUARIO" />
+                <ScalarProperty Name="TIPOCAMBIO_CONTA" ColumnName="V_ANFITRIONA_TIPOCAMBIO_CONTA" />
+                <ScalarProperty Name="MONEDA_CONTA" ColumnName="V_ANFITRIONA_MONEDA_CONTA" />
+            </EndProperty>
+            <EndProperty Name="ACTIVO">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+            </EndProperty>
+        </AssociationSetMapping>
+        <AssociationSetMapping Name="V_ESTACIONACTIVO" TypeName="PrestamosModel.V_ESTACIONACTIVO" StoreEntitySet="ACTIVOS">
+            <EndProperty Name="V_ESTACION">
+                <ScalarProperty Name="ID" ColumnName="V_ESTACION_ID" />
+                <ScalarProperty Name="NOMBRE" ColumnName="V_ESTACION_NOMBRE" />
+            </EndProperty>
+            <EndProperty Name="ACTIVO">
+                <ScalarProperty Name="ID" ColumnName="ID" />
             </EndProperty>
         </AssociationSetMapping>
     </EntityContainerMapping>

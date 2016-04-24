@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7fd8eb393eb44ed3ae919eb3a83615fa" Name="Diagram1" DisplayType="true" ZoomLevel="95">
+      <Diagram DiagramId="7fd8eb393eb44ed3ae919eb3a83615fa" Name="Diagram1" DisplayType="true" ZoomLevel="68">
         <EntityTypeShape EntityType="PrestamosModel.EQUIPO_SOLICITADO" Width="1.5" PointX="7.25" PointY="2.125" IsExpanded="true" />
         <EntityTypeShape EntityType="PrestamosModel.PRESTAMO" Width="2.75" PointX="3.5" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="PrestamosModel.FK_A_PRESTAMOS" ManuallyRouted="false" />
@@ -13,12 +13,16 @@
         <AssociationConnector Association="PrestamosModel.ACTIVOPRESTAMO" />
         <AssociationConnector Association="PrestamosModel.Solicita" />
         <AssociationConnector Association="PrestamosModel.Aprueba" />
-        <EntityTypeShape EntityType="PrestamosModel.TIPOS_ACTIVOS" Width="1.5" PointX="1.25" PointY="7.75" />
+        <EntityTypeShape EntityType="PrestamosModel.TIPOS_ACTIVOS" Width="1.5" PointX="2.25" PointY="9" />
         <EntityTypeShape EntityType="PrestamosModel.V_ANFITRIONA" Width="1.5" PointX="7.375" PointY="4.75" />
         <EntityTypeShape EntityType="PrestamosModel.V_ESTACION" Width="1.5" PointX="7.375" PointY="8.75" />
         <EntityTypeShape EntityType="PrestamosModel.V_MONEDA" Width="1.5" PointX="9.375" PointY="0.75" />
         <EntityTypeShape EntityType="PrestamosModel.V_PROVEEDOR" Width="1.5" PointX="9.375" PointY="3.75" />
         <AssociationConnector Association="PrestamosModel.FK_TIPO_ACTIVOACTIVO" />
+        <AssociationConnector Association="PrestamosModel.V_MONEDAV_ANFITRIONA" />
+        <AssociationConnector Association="PrestamosModel.V_PROVEEDORACTIVO" />
+        <AssociationConnector Association="PrestamosModel.ACTIVOV_ANFITRIONA" />
+        <AssociationConnector Association="PrestamosModel.V_ESTACIONACTIVO" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
