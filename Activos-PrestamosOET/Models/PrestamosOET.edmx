@@ -60,7 +60,7 @@
             <Property Name="MOTIVO" Type="varchar2" Nullable="true" MaxLength="250" />
             <Property Name="FECHA_SOLICITUD" Type="date" Nullable="false" />
             <Property Name="FECHA_RETIRO" Type="date" Nullable="false" />
-            <Property Name="PERIODO_USO" Type="number" Nullable="false" Precision="38" />
+            <Property Name="PERIODO_USO" Type="number" Nullable="false" Precision="10" />
             <Property Name="SOFTWARE_REQUERIDO" Type="varchar2" Nullable="true" MaxLength="250" />
             <Property Name="OBSERVACIONES_SOLICITANTE" Type="varchar2" Nullable="true" MaxLength="250" />
             <Property Name="OBSERVACIONES_APROBADO" Type="varchar2" Nullable="true" MaxLength="250" />
@@ -309,11 +309,15 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="NUMERO_BOLETA" Type="Int64" />
+          <Property Name="NUMERO_BOLETA" Type="Int64" a:SetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" annotation:StoreGeneratedPattern="None" Nullable="true" >
+            <Documentation>
+              <Summary>Acepta valores null porque el valor se lo pone un trigger</Summary>
+            </Documentation>
+          </Property>
           <Property Name="MOTIVO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="FECHA_SOLICITUD" Type="DateTime" Nullable="false" />
           <Property Name="FECHA_RETIRO" Type="DateTime" Nullable="false" />
-          <Property Name="PERIODO_USO" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="PERIODO_USO" Type="Int32" Nullable="false" />
           <Property Name="SOFTWARE_REQUERIDO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="OBSERVACIONES_SOLICITANTE" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="OBSERVACIONES_APROBADO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />

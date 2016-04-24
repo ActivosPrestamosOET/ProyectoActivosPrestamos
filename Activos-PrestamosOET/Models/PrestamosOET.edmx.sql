@@ -1,30 +1,48 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for Oracle database
 -- --------------------------------------------------
--- Date Created: 23/04/2016 10:12:29 p.m.
+-- Date Created: 24/04/2016 07:53:41 a.m.
 -- Generated from EDMX file: C:\Users\andre_000\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\Models\PrestamosOET.edmx
 -- --------------------------------------------------
 
 -- --------------------------------------------------
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
+
+-- ALTER TABLE "ACTIVOS"."EQUIPO_SOLICITADO" DROP CONSTRAINT "FK_A_PRESTAMOS" CASCADE;
+
+-- ALTER TABLE "ACTIVOS"."ACTIVOPRESTAMO" DROP CONSTRAINT "FK_ACTIVOPRESTAMO_ACTIVO" CASCADE;
+
+-- ALTER TABLE "ACTIVOS"."ACTIVOPRESTAMO" DROP CONSTRAINT "FK_ACTIVOPRESTAMO_PRESTAMO" CASCADE;
+
+-- ALTER TABLE "ACTIVOS"."PRESTAMOS" DROP CONSTRAINT "FK_Solicita" CASCADE;
+
+-- ALTER TABLE "ACTIVOS"."PRESTAMOS" DROP CONSTRAINT "FK_Aprueba" CASCADE;
+
+-- ALTER TABLE "ACTIVOS"."ACTIVOS" DROP CONSTRAINT "FK_TIPO_ACTIVOACTIVO" CASCADE;
 -- --------------------------------------------------
 -- Dropping existing tables
 -- --------------------------------------------------
-
--- DROP TABLE "ACTIVOS"."ACTIVOPRESTAMO";
-
--- DROP TABLE "ACTIVOS"."ACTIVOS";
 
 -- DROP TABLE "ACTIVOS"."EQUIPO_SOLICITADO";
 
 -- DROP TABLE "ACTIVOS"."PRESTAMOS";
 
--- DROP TABLE "ACTIVOS"."TIPOS_ACTIVOS";
+-- DROP TABLE "ACTIVOS"."ACTIVOS";
 
 -- DROP TABLE "ACTIVOS"."USUARIOS";
 
--- DROP TABLE "V_ANFITRIONA";
+-- DROP TABLE "ACTIVOS"."TIPOS_ACTIVOS";
+
+-- DROP TABLE "ACTIVOS"."V_ANFITRIONA";
+
+-- DROP TABLE "ACTIVOS"."V_ESTACION";
+
+-- DROP TABLE "ACTIVOS"."V_MONEDA";
+
+-- DROP TABLE "ACTIVOS"."V_PROVEEDOR";
+
+-- DROP TABLE "ACTIVOS"."ACTIVOPRESTAMO";
 
 -- --------------------------------------------------
 -- Creating all tables
@@ -44,7 +62,7 @@ CREATE TABLE "ACTIVOS"."PRESTAMOS" (
    "MOTIVO" VARCHAR2(250 CHAR) ,
    "FECHA_SOLICITUD" DATE NOT NULL,
    "FECHA_RETIRO" DATE NOT NULL,
-   "PERIODO_USO" NUMBER(38) NOT NULL,
+   "PERIODO_USO" NUMBER(10) NOT NULL,
    "SOFTWARE_REQUERIDO" VARCHAR2(250 CHAR) ,
    "OBSERVACIONES_SOLICITANTE" VARCHAR2(250 CHAR) ,
    "OBSERVACIONES_APROBADO" VARCHAR2(250 CHAR) ,
