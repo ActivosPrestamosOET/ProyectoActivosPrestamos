@@ -98,7 +98,7 @@ namespace Activos_PrestamosOET.Controllers
                     }
                 }
             }
-            if (!string.IsNullOrEmpty(estado))
+            if (!string.IsNullOrEmpty(estado) || estado != "0")
             {
                 int est = int.Parse(estado);
                 var int16 = Convert.ToInt16(est);
@@ -218,9 +218,9 @@ namespace Activos_PrestamosOET.Controllers
             }
             /*  -------------------------------------------------------------------------------------------  */
             var equipo_sol = from o in db.PRESTAMOS
-                              from o2 in db.EQUIPO_SOLICITADO
-                              where o.ID == id
-                              select new { ID= o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO= o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD }
+                             from o2 in db.EQUIPO_SOLICITADO
+                             where o.ID == id
+                             select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD };
 
 
             var equipo = new List<List<String>>();
