@@ -220,6 +220,24 @@ namespace Activos_PrestamosOET.Controllers
         {
             ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
             ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
+
+
+
+            List<String> categorias = new List<string>();
+
+            var cat = (from ac in db.ACTIVOS
+                       from t in db.TIPOS_ACTIVOS
+                       where ac.PRESTABLE.Equals(true) &&
+                              t.ID.Equals(ac.TIPO_ACTIVOID)
+                       select t.NOMBRE).Distinct();
+
+            foreach (var c in cat)
+            {
+                categorias.Add(c.ToString());
+            }
+
+            ViewBag.CATEGORIAS = categorias;
+
             return View();
         }
 

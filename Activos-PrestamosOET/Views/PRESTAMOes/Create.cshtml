@@ -54,7 +54,30 @@
                 @Html.ValidationMessageFor(model => model.PERIODO_USO, "", new { @class = "text-danger" })
             </div>
         </div>
+        <div class="form-group">
+            <table class="table">
+                <tr>
+                    <th>
+                        Equipo
+                    </th>
 
+                    <th>
+                        Cantidad
+                    </th>
+                </tr>
+                @foreach (var cat in ViewBag.CATEGORIAS)
+                {
+                    <tr>
+                        <td>
+                            @cat
+                        </td>
+                        <td>
+                            <input type="number" class="form-control" name="points" min="0" value="0">
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.SOFTWARE_REQUERIDO, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
