@@ -18,6 +18,22 @@ namespace Activos_PrestamosOET.Controllers
     {
         private PrestamosEntities db = new PrestamosEntities();
 
+        protected static int consecutivo;
+        protected String generarID()
+        {
+            consecutivo = (consecutivo + 1) % 999;
+            return ""
+            + DateTime.Now.Day.ToString("D2")
+            + DateTime.Now.Month.ToString("D2")
+            + DateTime.Now.Year.ToString()
+            + DateTime.Now.Hour.ToString("D2")
+            + DateTime.Now.Minute.ToString("D2")
+            + DateTime.Now.Second.ToString("D2")
+            + DateTime.Now.Millisecond.ToString("D3")
+            + consecutivo.ToString("D3");
+        }
+
+
         // GET: PRESTAMOes
         public ActionResult Index(string sortOrder, string currentFilter, string fechaSolicitud, string fechaRetiro, int? page)
         {
@@ -141,7 +157,7 @@ namespace Activos_PrestamosOET.Controllers
         // GET: PRESTAMOes/Detalles
         public ActionResult Detalles(string id)
         {
-            if (id == null)
+            /*if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
@@ -149,6 +165,33 @@ namespace Activos_PrestamosOET.Controllers
             if (pRESTAMO == null)
             {
                 return HttpNotFound();
+            }
+            return View(pRESTAMO);
+            */
+
+
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
+            // ViewBag.clear();
+
+            if (pRESTAMO == null)
+            {
+                return HttpNotFound();
+            }
+
+            var lista = from o in db.PRESTAMOS
+                        from o2 in db.USUARIOS
+                        where o.ID == id
+                        select new { USUARIO = o2.NOMBRE };
+
+            foreach (var m in lista)
+            {
+                var t = new Tuple<string>(m.USUARIO);
+                ViewBag.Nombre = t.Item1;
             }
             return View(pRESTAMO);
         }
@@ -263,8 +306,6 @@ namespace Activos_PrestamosOET.Controllers
 
                 P.ID = p.ID;
                 P.MOTIVO = p.MOTIVO;
-                //P.NUMERO_BOLETA = p.NUMERO_BOLETA;
-                // P.NUMERO_BOLETA = db.PRESTAMOS.;//context.Persons.Max(p => p.Age); ;
                 P.OBSERVACIONES_APROBADO = "";
                 P.OBSERVACIONES_RECIBIDO = "";
                 P.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
@@ -276,7 +317,6 @@ namespace Activos_PrestamosOET.Controllers
                 P.FECHA_SOLICITUD = System.DateTimeOffset.Now.Date;//SELECT SYSDATE FROM DUAL
                 P.SOFTWARE_REQUERIDO = "";
                 P.Estado = 1;
-                //P.CED_APRUEBA = p.CED_APRUEBA;
                 db.PRESTAMOS.Add(P);
                 db.SaveChanges();
                 return RedirectToAction("Historial");
@@ -288,50 +328,10 @@ namespace Activos_PrestamosOET.Controllers
         }
 
 
-
-
-
-
-
-
-
-
-
-        /*
-        // GET: PRESTAMOes/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: PRESTAMOes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO pRESTAMO)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    db.PRESTAMOS.Add(pRESTAMO);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-            }
-            catch (DataException)
-            {
-                ModelState.AddModelError("", "No se pudo realizar la solicitud. Por favor trate nuevamente y si el problema persiste comuníquese con el administrador") ;
-            }
-
-            return View(pRESTAMO);
-        }
-        */
-
         // GET: PRESTAMOes/Edit/5
         public ActionResult Edit(string id)
         {
+            /*
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -340,6 +340,28 @@ namespace Activos_PrestamosOET.Controllers
             if (pRESTAMO == null)
             {
                 return HttpNotFound();
+            }*/
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
+            // ViewBag.clear();
+
+            if (pRESTAMO == null)
+            {
+                return HttpNotFound();
+            }
+
+            var lista = from o in db.PRESTAMOS
+                        from o2 in db.USUARIOS
+                        where o.ID == id
+                        select new { USUARIO = o2.NOMBRE };
+
+            foreach (var m in lista)
+            {
+                var t = new Tuple<string>(m.USUARIO);
+                ViewBag.Nombre = t.Item1;
             }
             return View(pRESTAMO);
         }
@@ -352,19 +374,11 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult Edit([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p, string id)
         {
             PRESTAMO P = db.PRESTAMOS.Find(id);
-            //P.ID = p.ID;
             P.MOTIVO = p.MOTIVO;
-            //P.NUMERO_BOLETA = p.NUMERO_BOLETA;
-            // P.NUMERO_BOLETA = db.PRESTAMOS.;//context.Persons.Max(p => p.Age); ;
-            //P.OBSERVACIONES_APROBADO = "";
-            //P.OBSERVACIONES_RECIBIDO = "";
             P.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
             P.PERIODO_USO = p.PERIODO_USO;
             P.SIGLA_CURSO = p.SIGLA_CURSO;
-            //P.CED_APRUEBA = p.CED_APRUEBA;
-            //P.CED_SOLICITA = p.CED_SOLICITA;
             P.FECHA_RETIRO = p.FECHA_RETIRO;
-            //P.FECHA_SOLICITUD = System.DateTimeOffset.Now.Date;//SELECT SYSDATE FROM DUAL
             P.SOFTWARE_REQUERIDO = "";
             P.Estado = 1;
             if (ModelState.IsValid)
@@ -379,6 +393,7 @@ namespace Activos_PrestamosOET.Controllers
         // GET: PRESTAMOes/Delete/5
         public ActionResult Delete(string id)
         {
+            /*
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -387,6 +402,28 @@ namespace Activos_PrestamosOET.Controllers
             if (pRESTAMO == null)
             {
                 return HttpNotFound();
+            }*/
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
+            // ViewBag.clear();
+
+            if (pRESTAMO == null)
+            {
+                return HttpNotFound();
+            }
+
+            var lista = from o in db.PRESTAMOS
+                        from o2 in db.USUARIOS
+                        where o.ID == id
+                        select new { USUARIO = o2.NOMBRE };
+
+            foreach (var m in lista)
+            {
+                var t = new Tuple<string>(m.USUARIO);
+                ViewBag.Nombre = t.Item1;
             }
             return View(pRESTAMO);
         }
@@ -414,9 +451,11 @@ namespace Activos_PrestamosOET.Controllers
         {
             //Todos,
             Pendiente,
-            Aprobado,
-            Denegado,
-            Cancelado
+            Aprobada,
+            Denegada,
+            Abierta,
+            Cerrada,
+            Cancelada
         }
     }
 }
