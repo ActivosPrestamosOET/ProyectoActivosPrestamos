@@ -35,7 +35,7 @@ namespace Activos_PrestamosOET.Controllers
 
 
         // GET: PRESTAMOes
-        public ActionResult Index(string sortOrder, string currentFilter, string fechaSolicitud, string fechaRetiro, int? page)
+        public ActionResult Index(string sortOrder, string currentFilter, string fechaSolicitud, string fechaRetiro, string estado, int? page)
         {
             System.Diagnostics.Trace.WriteLine(sortOrder);
             ViewBag.currentSort = sortOrder;//NO prestar atención
@@ -77,10 +77,10 @@ namespace Activos_PrestamosOET.Controllers
                 {
                     if (DateTime.TryParseExact(fechaSolicitud, "dd/MM/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaS))
                     {
-                        prestamos = prestamos.Where(model => model.FECHA_SOLICITUD.Year == fechaS.Year 
+                        prestamos = prestamos.Where(model => model.FECHA_SOLICITUD.Year == fechaS.Year
                                                           && model.FECHA_SOLICITUD.Month == fechaS.Month
                                                           && model.FECHA_SOLICITUD.Day == fechaS.Day);
-                    }                    
+                    }
                 }
                 else
                 {
@@ -95,10 +95,15 @@ namespace Activos_PrestamosOET.Controllers
                         prestamos = prestamos.Where(model => model.FECHA_RETIRO.Year == fechaR.Year
                                                           && model.FECHA_RETIRO.Month == fechaR.Month
                                                           && model.FECHA_RETIRO.Day == fechaR.Day);
-                    }                    
+                    }
                 }
             }
-
+            if (!string.IsNullOrEmpty(estado))
+            {
+                int est = int.Parse(estado);
+                var int16 = Convert.ToInt16(est);
+                prestamos = prestamos.Where(model => model.Estado == int16);
+            }
             switch (sortOrder)
             {
                 case "numero_dsc":
@@ -137,7 +142,6 @@ namespace Activos_PrestamosOET.Controllers
             return View(prestamos.ToPagedList(pageNumber, pageSize));
             //Hasta aquí paginación//                            
         }
-
 
         // GET: PRESTAMOes/Historial
         public ActionResult Historial(string CED_SOLICITA)
@@ -213,17 +217,27 @@ namespace Activos_PrestamosOET.Controllers
                 }
             }
             /*  -------------------------------------------------------------------------------------------  */
-            var equipo_sol = db.EQUIPO_SOLICITADO;
-            var equipo = new List<List<String>>();
-            foreach (Activos_PrestamosOET.Models.EQUIPO_SOLICITADO x in equipo_sol)
-            {
-                if (x.ID_PRESTAMO == id)
-                {
-                    List<String> temp = new List<String>();
-                    if (x.TIPO_ACTIVO != null) { temp.Add(x.TIPO_ACTIVO); } else { temp.Add(""); }
-                    if (x.CANTIDAD!= 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
+            var equipo_sol = from o in db.PRESTAMOS
+                              from o2 in db.EQUIPO_SOLICITADO
+                              where o.ID == id
+                              select new { ID= o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO= o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD }
 
-                    equipo.Add(temp);
+
+            var equipo = new List<List<String>>();
+            foreach (var x in equipo_sol)
+            {
+                if (x.ID == id)
+                {
+                    if (x.ID == x.ID_EQUIPO)
+                    {
+
+
+                        List<String> temp = new List<String>();
+                        if (x.TIPO != null) { temp.Add(x.TIPO); } else { temp.Add(""); }
+                        if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
+
+                        equipo.Add(temp);
+                    }
                 }
             }
 
@@ -231,24 +245,7 @@ namespace Activos_PrestamosOET.Controllers
 
             /*  -------------------------------------------------------------------------------------------  */ 
 
-            /* List<String> solicitantes = new List<String>();
-             List<String> ceds = new List<String>();
-             foreach (Activos_PrestamosOET.Models.PRESTAMO p in db.PRESTAMOS)
-             {
-                 foreach (Activos_PrestamosOET.Models.USUARIO u in db.USUARIOS)
-                 {
-                     if (p.USUARIO != null)
-                     {
-                         if (p.USUARIO.Equals(u.IDUSUARIO))
-                         {
-                             solicitantes.Add(u.NOMBRE);
-                             ceds.Add(u.IDUSUARIO);
-                         }
-                     }
-                 }
-             }
-
-
+            /* 
 
              var lista1 = from o in db.PRESTAMOS
                           from o2 in db.EQUIPO_SOLICITADO
