@@ -157,6 +157,9 @@ namespace Activos_PrestamosOET.Controllers
                 return View(db.PRESTAMOS.Where(model => model.CED_SOLICITA == CED_SOLICITA && model.Estado != 6));
             }
         }*/
+
+
+        
         // GET: PRESTAMOes/Historial
         public ActionResult Historial(string CED_SOLICITA, string currentFilter, string estado, int? page)
         {
@@ -185,14 +188,23 @@ namespace Activos_PrestamosOET.Controllers
                 return View(prestamos.ToPagedList(pageNumber, pageSize));
             }
         }
+
+        public string viewBagFechaSolicitada(DateTime sol)
+        {
+            string f = sol.Date.ToShortDateString();
+            return f;
+        }
         // GET: PRESTAMOes/Detalles
         public ActionResult Detalles(string id)
         {
+            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
+            ViewBag.fechSol = viewBagFechaSolicitada(pRESTAMO.FECHA_SOLICITUD.Value.Date);
+            //viewBagFechaSolicitada(pRESTAMO.FECHA_SOLICITUD);
 
             if (pRESTAMO == null)
             {
@@ -405,7 +417,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return HttpNotFound();
             }
-
+            ViewBag.fechSol = viewBagFechaSolicitada(pRESTAMO.FECHA_SOLICITUD.Value.Date);
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
                         where o.ID == id
@@ -433,6 +445,7 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult Edit([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p, string id)
         {
             PRESTAMO P = db.PRESTAMOS.Find(id);
+            ViewBag.fechSol = P.FECHA_SOLICITUD.Value.ToShortDateString();
             P.MOTIVO = p.MOTIVO;
             P.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
             P.PERIODO_USO = p.PERIODO_USO;
@@ -458,7 +471,7 @@ namespace Activos_PrestamosOET.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
-
+            ViewBag.fechSol = viewBagFechaSolicitada(pRESTAMO.FECHA_SOLICITUD.Value.Date);
             if (pRESTAMO == null)
             {
                 return HttpNotFound();
