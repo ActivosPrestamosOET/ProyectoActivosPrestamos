@@ -49,8 +49,5 @@ namespace Activos_PrestamosOET.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRESTAMO> PRESTAMOes { get; set; }
         public virtual TIPOS_ACTIVOS TIPOS_ACTIVOS { get; set; }
-        public virtual V_PROVEEDOR V_PROVEEDOR { get; set; }
-        public virtual V_ANFITRIONA V_ANFITRIONA { get; set; }
-        public virtual V_ESTACION V_ESTACION { get; set; }
     }
 }

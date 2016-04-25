@@ -30,9 +30,5 @@ namespace Activos_PrestamosOET.Models
         public virtual DbSet<ACTIVO> ACTIVOS { get; set; }
         public virtual DbSet<USUARIO> USUARIOS { get; set; }
         public virtual DbSet<TIPOS_ACTIVOS> TIPOS_ACTIVOS { get; set; }
-        public virtual DbSet<V_ANFITRIONA> V_ANFITRIONA { get; set; }
-        public virtual DbSet<V_ESTACION> V_ESTACION { get; set; }
-        public virtual DbSet<V_MONEDA> V_MONEDA { get; set; }
-        public virtual DbSet<V_PROVEEDOR> V_PROVEEDOR { get; set; }
     }
 }
