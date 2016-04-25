@@ -323,20 +323,59 @@ namespace Activos_PrestamosOET.Controllers
             return View(pRESTAMO);
         }
 
+        [HttpPost]
+        public ActionResult Details(string ID, int[] cantidad_aprobada)
+        {
+            PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
+            var equipo_sol = from o in db.PRESTAMOS
+                             from o2 in db.EQUIPO_SOLICITADO
+                             where o.ID == ID && o.ID == o2.ID_PRESTAMO
+                             select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD };
+            int a = 0;
 
-/*@if (ViewBag.Disponible)
-{
+            foreach (var x in equipo_sol)
+            {
+                if (x.ID == ID)
+                {
+                    if (x.ID == x.ID_EQUIPO)
+                    {
 
-}
-else
-{
-    <td>
+                        EQUIPO_SOLICITADO P = db.EQUIPO_SOLICITADO.Find(ID, x.TIPO, x.CANTIDAD);
 
-        @Html.TextBox("cantidad_apovada", ViewBag.CurrentFilter as List<decimal>, new { style = "color:#1e83ca;", @class = "warning form-control col-md-2", @type = "number", @min = "0", @value = "0", @max = "99" })
-    </td>
-}
+                        decimal temp = cantidad_aprobada[a];
 
-    */
+                        P.CANTIDADAPROBADA = temp;
+                        if (ModelState.IsValid)
+                        {
+                            db.Entry(P).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+
+                        a++;
+                        //cantidad_aprobada.Remove(cantidad_aprobada.First());
+                    }
+
+
+                }
+            }
+
+            return View(pRESTAMO);
+        }
+
+
+        /*@if (ViewBag.Disponible)
+        {
+
+        }
+        else
+        {
+            <td>
+
+                @Html.TextBox("cantidad_apovada", ViewBag.CurrentFilter as List<decimal>, new { style = "color:#1e83ca;", @class = "warning form-control col-md-2", @type = "number", @min = "0", @value = "0", @max = "99" })
+            </td>
+        }
+
+            */
 
         // GET: PRESTAMOes/Create
         public ActionResult Create()
@@ -524,41 +563,6 @@ else
             base.Dispose(disposing);
         }
 
-        public void aceptar_solicitud(string ID, int[] cantidad_aprobada)
-        {
-            var equipo_sol = from o in db.PRESTAMOS
-                             from o2 in db.EQUIPO_SOLICITADO
-                             where o.ID == ID
-                             select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD };
-            int a = 0;
-
-            foreach (var x in equipo_sol)
-            {
-                if (x.ID == ID)
-                {
-                    if (x.ID == x.ID_EQUIPO)
-                    {
-
-                        EQUIPO_SOLICITADO P = db.EQUIPO_SOLICITADO.Find(ID, x.TIPO, x.CANTIDAD);
-
-                        decimal temp = cantidad_aprobada[a];
-
-                        P.CANTIDADAPROBADA = temp;
-                        if (ModelState.IsValid)
-                        {
-                            db.Entry(P).State = EntityState.Modified;
-                            db.SaveChanges();
-                        }
-
-                        a++;
-                        //cantidad_aprobada.Remove(cantidad_aprobada.First());
-                    }
-
-
-                }
-            }
-
-        }
         public enum Estadito
         {
             //Todos,
