@@ -108,8 +108,15 @@
 <br />
 <br />
 <div class="form-group">
+    <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.OBSERVACIONES_APROBADO):</label>
+    <div class="col-lg-10">
+        @Html.DisplayFor(model => model.OBSERVACIONES_APROBADO)
+    </div>
+</div>
+<br />
+<br />
+<div class="form-group">
     <div class="col-md-offset-2 col-md-10">
-        @Html.ActionLink("Editar", "Edit", new { id = Model.ID }, new { @class = "btn btn-default" })
         @Html.ActionLink("Cancelar solicitud", "Delete", new { id = Model.ID }, new { @class = "btn btn-default" })
     </div>
 </div>
