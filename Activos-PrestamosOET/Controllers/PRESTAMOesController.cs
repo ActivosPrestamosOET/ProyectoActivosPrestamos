@@ -55,8 +55,7 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             ViewBag.CurrentFilter = fechaSolicitud;
-            var prestamos = from s in db.PRESTAMOS
-                            select s;
+            var prestamos = db.PRESTAMOS.Include(i => i.USUARIO);
 
             if (!String.IsNullOrEmpty(fechaSolicitud) || !String.IsNullOrEmpty(fechaRetiro))
             {
@@ -137,6 +136,9 @@ namespace Activos_PrestamosOET.Controllers
                     prestamos = prestamos.OrderBy(s => s.NUMERO_BOLETA);
                     break;
             }
+
+            
+            
             int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(prestamos.ToPagedList(pageNumber, pageSize));
