@@ -192,6 +192,7 @@ namespace Activos_PrestamosOET.Controllers
         public string viewBagFechaSolicitada(DateTime sol)
         {
             string f = sol.Date.ToShortDateString();
+            f=f.Replace("/20","/");
             return f;
         }
         // GET: PRESTAMOes/Detalles
