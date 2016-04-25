@@ -92,7 +92,7 @@
             </tr>
         </thead>
         <tbody>
-            @if (ViewBag.Equipo_Solict != null)
+           @if (ViewBag.Equipo_Solict != null)
             {
                 foreach (List<String> s in ViewBag.Equipo_Solict)
                 {
@@ -101,26 +101,11 @@
                         {
                             <td>@hilera&nbsp;</td>
                         }
-<<<<<<< HEAD
+
                         <td>
-                            @Html.TextBox("cantidad_aprobada", ViewBag.CurrentFilter as List<decimal>, new { @class = "form-control col-md-2", @type = "number", @min = "0", @value = "0" })
+                            @Html.TextBox("cantidad_aprobada", ViewBag.CurrentFilter as List<decimal>, new { style = "color:#FF0000", @class = "form-control col-md-2", @type = "number", @min = "0", @value = "0" })
                         </td>
-=======
-                        @if (ViewBag.Disponible)
-                        {
-                            <td>
 
-                                @Html.TextBox("cantidad_apovada", ViewBag.CurrentFilter as List<decimal>, new { style = "color:#FF0000;", @class = "form-control col-md-2", @type = "number", @min = "0", @value = "0", @max = "99" })
-                            </td>
-                        }
-                        else
-                        {
-                            <td>
-
-                                @Html.TextBox("cantidad_apovada", ViewBag.CurrentFilter as List<decimal>, new { style = "color:#1e83ca;", @class = "warning form-control col-md-2", @type = "number", @min = "0", @value = "0", @max = "99" })
-                            </td>
-                        }                        
->>>>>>> origin/master
                     </tr>
                 }
             }
@@ -159,4 +144,6 @@
                     </div>
 
 }
+
+
 

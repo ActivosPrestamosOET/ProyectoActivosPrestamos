@@ -339,6 +339,22 @@ namespace Activos_PrestamosOET.Controllers
              */
             return View(pRESTAMO);
         }
+
+
+/*@if (ViewBag.Disponible)
+{
+
+}
+else
+{
+    <td>
+
+        @Html.TextBox("cantidad_apovada", ViewBag.CurrentFilter as List<decimal>, new { style = "color:#1e83ca;", @class = "warning form-control col-md-2", @type = "number", @min = "0", @value = "0", @max = "99" })
+    </td>
+}
+
+    */
+
         // GET: PRESTAMOes/Create
         public ActionResult Create()
         {
