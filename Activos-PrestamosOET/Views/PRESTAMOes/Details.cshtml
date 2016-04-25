@@ -15,6 +15,18 @@
 
     </p>
 </div>
+
+
+@if (ViewBag.Mensaje != null)
+{
+    <div class="alert alert-dismissible alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        @ViewBag.Mensaje
+    </div>
+
+   
+}
+
 <legend><h2>Detalles de la Solicitud</h2></legend>
 
 <div class="panel panel-default">
@@ -93,9 +105,10 @@
         </thead>
         <tbody>
            @if (ViewBag.Equipo_Solict != null)
-            {
-                foreach (List<String> s in ViewBag.Equipo_Solict)
-                {
+           {
+               int a = 0;
+               foreach (List<String> s in ViewBag.Equipo_Solict)
+               {
                     <tr>
                         @foreach (String hilera in s)
                         {
@@ -103,12 +116,12 @@
                         }
 
                         <td>
-                            @Html.TextBox("cantidad_aprobada", ViewBag.CurrentFilter as List<decimal>, new { style = "color:#FF0000", @class = "form-control col-md-2", @type = "number", @min = "0", @value = "0" })
+                            @Html.TextBox("cantidad_aprobada", ViewBag.CurrentFilter as List<decimal>, new { style = "color:#FF0000", @class = "form-control col-md-2", @type = "number", @min = "0", @value = ViewBag.ap })
                         </td>
 
                     </tr>
                 }
-            }
+           }
 
         </tbody>
     </table>
