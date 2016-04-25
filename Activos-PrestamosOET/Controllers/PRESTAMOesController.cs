@@ -345,14 +345,21 @@ namespace Activos_PrestamosOET.Controllers
                         decimal temp = cantidad_aprobada[a];
 
                         P.CANTIDADAPROBADA = temp;
+                        pRESTAMO.Estado = 2;
                         if (ModelState.IsValid)
                         {
                             db.Entry(P).State = EntityState.Modified;
                             db.SaveChanges();
                         }
 
+                        if (ModelState.IsValid)
+                        {
+                            db.Entry(pRESTAMO).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+
                         a++;
-                        //cantidad_aprobada.Remove(cantidad_aprobada.First());
+                        ViewBag.Mensaje = "El préstamos ha sido aprobado con éxito";
                     }
 
 
