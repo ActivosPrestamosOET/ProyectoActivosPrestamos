@@ -11,9 +11,9 @@ namespace Activos_PrestamosOET.Models
 {
     using System;
     using System.Collections.Generic;
-<<<<<<< HEAD
+
     
-=======
+
     using System.ComponentModel.DataAnnotations;
     public enum Estadito
     {
@@ -23,7 +23,7 @@ namespace Activos_PrestamosOET.Models
         Denegado,
         Cancelado
     }
->>>>>>> origin/master
+
     public partial class PRESTAMO
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -32,25 +32,6 @@ namespace Activos_PrestamosOET.Models
             this.EQUIPO_SOLICITADO = new HashSet<EQUIPO_SOLICITADO>();
             this.ACTIVOes = new HashSet<ACTIVO>();
         }
-<<<<<<< HEAD
-    
-        public string ID { get; set; }
-        public Nullable<long> NUMERO_BOLETA { get; set; }
-        public string MOTIVO { get; set; }
-        public System.DateTime FECHA_SOLICITUD { get; set; }
-        public System.DateTime FECHA_RETIRO { get; set; }
-        public int PERIODO_USO { get; set; }
-        public string SOFTWARE_REQUERIDO { get; set; }
-        public string OBSERVACIONES_SOLICITANTE { get; set; }
-        public string OBSERVACIONES_APROBADO { get; set; }
-        public string OBSERVACIONES_RECIBIDO { get; set; }
-        public string SIGLA_CURSO { get; set; }
-        public short Estado { get; set; }
-        public string CED_SOLICITA { get; set; }
-        public string CED_APRUEBA { get; set; }
-=======
-
-        
 
             [Display(Name = "Id de la boleta")]
             public string ID { get; set; }
@@ -97,7 +78,7 @@ namespace Activos_PrestamosOET.Models
             [Display(Name = "Cédula de quién aprueba")]
             public string CED_APRUEBA { get; set; }
 
->>>>>>> origin/master
+
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EQUIPO_SOLICITADO> EQUIPO_SOLICITADO { get; set; }
