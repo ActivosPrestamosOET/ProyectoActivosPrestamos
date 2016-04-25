@@ -144,23 +144,6 @@ namespace Activos_PrestamosOET.Controllers
             return View(prestamos.ToPagedList(pageNumber, pageSize));
             //Hasta aquí paginación//                            
         }
-
-        // GET: PRESTAMOes/Historial
-        /*public ActionResult Historial(string CED_SOLICITA)
-        {
-            CED_SOLICITA = "PITAN0126052014.085230671";
-            if (String.IsNullOrEmpty(CED_SOLICITA))
-            {
-                ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
-                return View(db.PRESTAMOS.Where(model => model.Estado != 6));
-            }
-            else
-            {
-                return View(db.PRESTAMOS.Where(model => model.CED_SOLICITA == CED_SOLICITA && model.Estado != 6));
-            }
-        }*/
-
-
         
         // GET: PRESTAMOes/Historial
         public ActionResult Historial(string CED_SOLICITA, string currentFilter, string estado, int? page)
@@ -198,6 +181,7 @@ namespace Activos_PrestamosOET.Controllers
             f=f.Replace("/20","/");
             return f;
         }
+
         // GET: PRESTAMOes/Detalles
         public ActionResult Detalles(string id)
         {
@@ -208,7 +192,6 @@ namespace Activos_PrestamosOET.Controllers
             }
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
             ViewBag.fechSol = viewBagFechaSolicitada(pRESTAMO.FECHA_SOLICITUD.Value.Date);
-            //viewBagFechaSolicitada(pRESTAMO.FECHA_SOLICITUD);
 
             if (pRESTAMO == null)
             {
