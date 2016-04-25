@@ -39,7 +39,11 @@
              $('.date-picker').datepicker();
          });
 </script>
-
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("[id$=A2]").addClass("active");
+    });
+</script>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
