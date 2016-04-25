@@ -263,9 +263,8 @@ namespace Activos_PrestamosOET.Controllers
                 {
                     if (x.ID == x.ID_EQUIPO)
                     {
-
-
                         List<String> temp = new List<String>();
+
                         if (x.TIPO != null)
                         {
                             foreach (var y in cat)
@@ -273,7 +272,6 @@ namespace Activos_PrestamosOET.Controllers
 
                                 if (x.TIPO == y.ID.ToString())
                                 {
-
                                     temp.Add(y.NOMBRE);
                                 }
                                 break;
@@ -286,34 +284,24 @@ namespace Activos_PrestamosOET.Controllers
                         }
                         
                         
-                        if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
+                        if (x.CANTIDAD != 0) {
+                            temp.Add(x.CANTIDAD.ToString());
+
+                        }
+                        else { temp.Add(""); }
 
                         equipo.Add(temp);
+
                     }
                 }
             }
 
             ViewBag.Equipo_Solict = equipo;
 
-            /*  -------------------------------------------------------------------------------------------  */ 
-
-            /* 
-
-             var lista1 = from o in db.PRESTAMOS
-                          from o2 in db.EQUIPO_SOLICITADO
-                          where o.ID == o2.ID_PRESTAMO
-                          select new { EQUIPO_SOLICITADO = o2.TIPO_ACTIVO, EQUIPO_SOLICITADO_CANTIDAD = o2.CANTIDAD };
-
-             List<Tuple<string, decimal>> l1 = new List<Tuple<string, decimal>>();
-             foreach (var m in lista1)
-             {
-                 var t1 = new Tuple<string, decimal>(m.EQUIPO_SOLICITADO, m.EQUIPO_SOLICITADO_CANTIDAD);
-                 l1.Add(t1);
-             }
-
-             ViewBag.Equipo_Solict = l1;
-             */
-            return View(pRESTAMO);
+            /*  -------------------------------------------------------------------------------------------  */
+     
+                /* ---------------------------------------------------------------------------------------  */
+                return View(pRESTAMO);
         }
 
         // GET: PRESTAMOes/Create
@@ -476,6 +464,40 @@ namespace Activos_PrestamosOET.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        public void aceptar_solicitud(string id, List<decimal> cantidad_apovada)
+        {
+            var equipo_sol = from o in db.PRESTAMOS
+                             from o2 in db.EQUIPO_SOLICITADO
+                             where o.ID == id
+                             select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD };
+
+            foreach (var x in equipo_sol)
+            {
+                if (x.ID == id)
+                {
+                    if (x.ID == x.ID_EQUIPO)
+                    {
+
+                        EQUIPO_SOLICITADO P = db.EQUIPO_SOLICITADO.Find(id, x.TIPO, x.CANTIDAD);
+
+                        decimal temp = cantidad_apovada.First();
+
+                        P.CANTIDADAPROBADA = temp;
+                        if (ModelState.IsValid)
+                        {
+                            db.Entry(P).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+
+                        cantidad_apovada.Remove(cantidad_apovada.First());
+                    }
+
+
+                }
+            }
+
         }
         public enum Estadito
         {
