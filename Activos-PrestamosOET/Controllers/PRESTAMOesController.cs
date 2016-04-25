@@ -318,7 +318,7 @@ namespace Activos_PrestamosOET.Controllers
 
 
 
-            List<String> categorias = new List<string>();
+            List<String> categorias = new List<String>();
 
             var cat = (from ac in db.ACTIVOS
                        from t in db.TIPOS_ACTIVOS
@@ -326,50 +326,61 @@ namespace Activos_PrestamosOET.Controllers
                               t.ID.Equals(ac.TIPO_ACTIVOID)
                        select t.NOMBRE).Distinct();
 
-            foreach (var c in cat)
+            foreach (String c in cat)
             {
                 categorias.Add(c.ToString());
             }
 
-            ViewBag.CATEGORIAS = categorias;
+            ViewData["categorias"] = categorias;
+            TempData["categorias"] = categorias;
 
             return View();
         }
 
-        // POST: PRESTAMOes/Create
+
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,CED_SOLICITA,CED_APRUEBA")] PRESTAMO p)
+        public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,CED_SOLICITA,CED_APRUEBA")] PRESTAMO p, int[] Cantidad)
         {
             //p.FECHA_RETIRO
-            PRESTAMO P = new PRESTAMO();
+            PRESTAMO prestamo = new PRESTAMO();
+            var allErrors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
-
                 //P.ID = p.ID;
-                P.ID = generarID();
-                P.MOTIVO = p.MOTIVO;
-                P.OBSERVACIONES_APROBADO = "";
-                P.OBSERVACIONES_RECIBIDO = "";
-                P.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
-                P.PERIODO_USO = p.PERIODO_USO;
-                P.SIGLA_CURSO = p.SIGLA_CURSO;
-                P.CED_APRUEBA = p.CED_APRUEBA;
-                P.CED_SOLICITA = p.CED_SOLICITA;
-                P.FECHA_RETIRO = p.FECHA_RETIRO;
-                P.FECHA_SOLICITUD = System.DateTimeOffset.Now.Date;//SELECT SYSDATE FROM DUAL
-                P.SOFTWARE_REQUERIDO = "";
-                P.Estado = 1;
-                db.PRESTAMOS.Add(P);
+                prestamo.ID = generarID();
+                prestamo.MOTIVO = p.MOTIVO;
+                prestamo.OBSERVACIONES_APROBADO = "";
+                prestamo.OBSERVACIONES_RECIBIDO = "";
+                prestamo.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
+                prestamo.PERIODO_USO = p.PERIODO_USO;
+                prestamo.SIGLA_CURSO = p.SIGLA_CURSO;
+                prestamo.CED_APRUEBA = p.CED_APRUEBA;
+                prestamo.CED_SOLICITA = p.CED_SOLICITA;
+                prestamo.FECHA_RETIRO = p.FECHA_RETIRO;
+                prestamo.FECHA_SOLICITUD = System.DateTimeOffset.Now.Date;//SELECT SYSDATE FROM DUAL
+                prestamo.SOFTWARE_REQUERIDO = p.SOFTWARE_REQUERIDO;
+                prestamo.Estado = 1;
+                db.PRESTAMOS.Add(prestamo);
                 db.SaveChanges();
+                foreach (int c in Cantidad)
+                {
+                    EQUIPO_SOLICITADO equipo = new EQUIPO_SOLICITADO();
+                    equipo.CANTIDAD = c;
+                    equipo.TIPO_ACTIVO = "13";
+                    equipo.ID_PRESTAMO = prestamo.ID;
+                    db.EQUIPO_SOLICITADO.Add(equipo);
+                    db.SaveChanges();
+                }
+
                 return RedirectToAction("Historial");
             }
 
             ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", p.CED_SOLICITA);
             ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", p.CED_APRUEBA);
-            return View(P);
+            return View(prestamo);
         }
 
 
