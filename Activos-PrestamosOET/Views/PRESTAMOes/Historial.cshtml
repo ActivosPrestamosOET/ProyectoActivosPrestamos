@@ -22,10 +22,12 @@
 <br />
 @using (Html.BeginForm("Historial", "PRESTAMOes", FormMethod.Get))
 {
-    <fieldset>
-        <label for="textArea" class="col-lg-2 control-label">Estado </label>
-        <div class="col-lg-4">
-            @Html.DropDownList("estado", new SelectList(
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <fieldset>
+                <label for="textArea" class="col-lg-2 control-label">Estado </label>
+                <div class="col-lg-4">
+                    @Html.DropDownList("estado", new SelectList(
                   new List<Object>{
                        new { text = "Todos", value = "0"},
                        new { Text = "Pendiente", Value = "1" },
@@ -38,38 +40,17 @@
                   "value",
                   "text",
                    0), new { @class = "form-control" })
-        </div>
-    </fieldset>
-    <br />
+                </div>
+            </fieldset>
+            <br />
 
             <div class="col-md-3">
                 <input type="submit" value="Buscar" class="btn btn-default" />
             </div>
 
-            <!----<fieldset>
-                <label for="textArea" class="col-lg-2 control-label">Estado </label>
-                <div class="col-lg-10">
+        </div>
+    </div>
 
-                    Html.DropDownList("estado", new SelectList(
-                          new List<Object>{
-                               new { value = 0 , text = "Seleccione un estado"  },
-                               new { Text = "Pendiente", Value = "1" },
-                               new  { Text = "Aprobada", Value = "2" },
-                               new { Text = "Denegada", Value = "3" },
-                               new { Text = "Abierta", Value = "4" },
-                               new { Text = "Cerrada", Value = "5" },
-                               new { Text = "Cancelada", Value = "6"}
-                          },
-                          "value",
-                          "text",
-                           2), ViewBag.CurrentFilter as string)
-                </div>
-            </fieldset>-->
-            <br />
-
-            <!-- <p>
-                 <input type="submit" value="Buscar" class="btn btn-default" />
-             </p>-->
 }
 
 
@@ -102,8 +83,8 @@
     {
         <tr>
             @switch (item.Estado)
-                {
-                    case 1:
+            {
+                case 1:
                 <tr class="danger">
                     <td>
                         @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
@@ -236,7 +217,6 @@
                     </tr>
                     break;
             }
-
             </tr>
     }
 
