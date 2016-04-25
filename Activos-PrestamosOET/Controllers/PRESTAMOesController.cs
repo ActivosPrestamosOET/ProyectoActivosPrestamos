@@ -296,8 +296,9 @@ namespace Activos_PrestamosOET.Controllers
                                 {
 
                                     temp.Add(y.NOMBRE);
+                                    break;
                                 }
-                                break;
+                                
                             }
                         }
                         else
