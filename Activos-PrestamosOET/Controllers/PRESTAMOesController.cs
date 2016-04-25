@@ -164,6 +164,7 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult Historial(string CED_SOLICITA, string currentFilter, string estado, int? page)
         {
             CED_SOLICITA = "PITAN0126052014.085230671";
+            ViewBag.estado = estado;
 
             var prestamos = from s in db.PRESTAMOS
                             select s;
@@ -517,23 +518,23 @@ namespace Activos_PrestamosOET.Controllers
             base.Dispose(disposing);
         }
 
-        public void aceptar_solicitud(string id, List<decimal> cantidad_apovada)
+        public void aceptar_solicitud(string ID, int[] cantidad_aprobada)
         {
             var equipo_sol = from o in db.PRESTAMOS
                              from o2 in db.EQUIPO_SOLICITADO
-                             where o.ID == id
+                             where o.ID == ID
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD };
 
             foreach (var x in equipo_sol)
             {
-                if (x.ID == id)
+                if (x.ID == ID)
                 {
                     if (x.ID == x.ID_EQUIPO)
                     {
 
-                        EQUIPO_SOLICITADO P = db.EQUIPO_SOLICITADO.Find(id, x.TIPO, x.CANTIDAD);
+                        EQUIPO_SOLICITADO P = db.EQUIPO_SOLICITADO.Find(ID, x.TIPO, x.CANTIDAD);
 
-                        decimal temp = cantidad_apovada.First();
+                        decimal temp = cantidad_aprobada.First();
 
                         P.CANTIDADAPROBADA = temp;
                         if (ModelState.IsValid)
@@ -542,7 +543,7 @@ namespace Activos_PrestamosOET.Controllers
                             db.SaveChanges();
                         }
 
-                        cantidad_apovada.Remove(cantidad_apovada.First());
+                        //cantidad_aprobada.Remove(cantidad_aprobada.First());
                     }
 
 

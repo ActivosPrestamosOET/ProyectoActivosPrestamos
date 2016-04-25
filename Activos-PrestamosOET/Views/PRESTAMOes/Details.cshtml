@@ -11,7 +11,7 @@
 </script>
 <div>
     <p>
-        @Html.ActionLink("Regresar a Solicitudes", "Index", new { @class = "btn btn-default" })
+        @Html.ActionLink("Regresar a Solicitudes", "Index", null, new { @class = "btn btn-default" })
 
     </p>
 </div>
@@ -72,9 +72,9 @@
     </div>
 </div>
 
-@using (Html.BeginForm("aceptar_solicitud", "PRESTAMOes", FormMethod.Get))
+@using (Html.BeginForm("aceptar_solicitud", "PRESTAMOes"))
 {
-
+    @Html.HiddenFor(model => model.ID);
     <table class="table" style="margin-top:20px">
         <thead>
             <tr>
@@ -87,7 +87,7 @@
                 </th>
 
                 <th  class="col-md-3">
-                    Cantidad Aprovada
+                    Cantidad Aprobada
                 </th>
             </tr>
         </thead>
@@ -99,10 +99,10 @@
                     <tr>
                         @foreach (String hilera in s)
                         {
-                            <td>@hilera</td>
+                            <td>@hilera&nbsp;</td>
                         }
                         <td>
-                            @Html.TextBox("cantidad_apovada", ViewBag.CurrentFilter as List<decimal>, new { @class = "form-control col-md-2", @type = "number", @min = "0", @value = "0" })
+                            @Html.TextBox("cantidad_aprobada", ViewBag.CurrentFilter as List<decimal>, new { @class = "form-control col-md-2", @type = "number", @min = "0", @value = "0" })
                         </td>
                     </tr>
                 }

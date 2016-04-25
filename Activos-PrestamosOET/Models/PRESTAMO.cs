@@ -48,7 +48,7 @@ namespace Activos_PrestamosOET.Models
 
             [Display(Name = "Fecha de retiro")]
             [DataType(DataType.Date)]
-            [DisplayFormat(DataFormatString = "{0:dd/MM/yy}")]
+            [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
             [Required(ErrorMessage = "Por favor ingrese una rango válido")]
             public Nullable<System.DateTime> FECHA_RETIRO { get; set; }
 
