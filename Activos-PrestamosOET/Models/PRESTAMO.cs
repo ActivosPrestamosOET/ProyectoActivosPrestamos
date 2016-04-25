@@ -44,6 +44,8 @@ namespace Activos_PrestamosOET.Models
             public string MOTIVO { get; set; }
 
             [Display(Name = "Fecha de solicitud")]
+            [DataType(DataType.Date)]
+            [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
             public Nullable<System.DateTime> FECHA_SOLICITUD { get; set; }
 
             [Display(Name = "Fecha de retiro")]

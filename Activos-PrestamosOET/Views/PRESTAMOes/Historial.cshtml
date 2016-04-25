@@ -40,36 +40,36 @@
                    0), new { @class = "form-control" })
         </div>
     </fieldset>
-            <br />
+    <br />
 
             <div class="col-md-3">
                 <input type="submit" value="Buscar" class="btn btn-default" />
             </div>
 
-    <!----<fieldset>
-        <label for="textArea" class="col-lg-2 control-label">Estado </label>
-        <div class="col-lg-10">
+            <!----<fieldset>
+                <label for="textArea" class="col-lg-2 control-label">Estado </label>
+                <div class="col-lg-10">
 
-            Html.DropDownList("estado", new SelectList(
-                  new List<Object>{
-                       new { value = 0 , text = "Seleccione un estado"  },
-                       new { Text = "Pendiente", Value = "1" },
-                       new  { Text = "Aprobada", Value = "2" },
-                       new { Text = "Denegada", Value = "3" },
-                       new { Text = "Abierta", Value = "4" },
-                       new { Text = "Cerrada", Value = "5" },
-                       new { Text = "Cancelada", Value = "6"}
-                  },
-                  "value",
-                  "text",
-                   2), ViewBag.CurrentFilter as string)
-        </div>
-    </fieldset>-->
-    <br />
+                    Html.DropDownList("estado", new SelectList(
+                          new List<Object>{
+                               new { value = 0 , text = "Seleccione un estado"  },
+                               new { Text = "Pendiente", Value = "1" },
+                               new  { Text = "Aprobada", Value = "2" },
+                               new { Text = "Denegada", Value = "3" },
+                               new { Text = "Abierta", Value = "4" },
+                               new { Text = "Cerrada", Value = "5" },
+                               new { Text = "Cancelada", Value = "6"}
+                          },
+                          "value",
+                          "text",
+                           2), ViewBag.CurrentFilter as string)
+                </div>
+            </fieldset>-->
+            <br />
 
-   <!-- <p>
-        <input type="submit" value="Buscar" class="btn btn-default" />
-    </p>-->
+            <!-- <p>
+                 <input type="submit" value="Buscar" class="btn btn-default" />
+             </p>-->
 }
 
 
@@ -98,13 +98,35 @@
         <th></th>
     </tr>
 
-        @foreach (var item in Model)
-        {
-            <tr>
-                @switch (item.Estado)
+    @foreach (var item in Model)
+    {
+        <tr>
+            @switch (item.Estado)
                 {
                     case 1:
-                    <tr class="danger">
+                <tr class="danger">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PERIODO_USO)
+
+                    </td>
+                    <td>
+                        @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
+                    </td>
+                </tr>
+                    break;
+                case 2:
+                    <tr class="success">
                         <td>
                             @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
                         </td>
@@ -124,120 +146,98 @@
                             @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
                         </td>
                     </tr>
-                        break;
-                    case 2:
-                        <tr class="success">
-                            <td>
-                                @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
-                            </td>
+                    break;
+                case 3:
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
+                        </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
-                            </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                        </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PERIODO_USO)
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PERIODO_USO)
 
-                            </td>
-                            <td>
-                                @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
-                            </td>
-                        </tr>
-                        break;
-                    case 3:
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
-                            </td>
+                        </td>
+                        <td>
+                            @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
+                        </td>
+                    </tr>
+                    break;
+                case 4:
+                    <tr class="warning">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
+                        </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
-                            </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                        </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PERIODO_USO)
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PERIODO_USO)
 
-                            </td>
-                            <td>
-                                @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
-                            </td>
-                        </tr>
-                        break;
-                    case 4:
-                        <tr class="warning">
-                            <td>
-                                @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
-                            </td>
+                        </td>
+                        <td>
+                            @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
+                        </td>
+                    </tr>
+                    break;
+                case 5:
+                    <tr class="info">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
+                        </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
-                            </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                        </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PERIODO_USO)
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PERIODO_USO)
 
-                            </td>
-                            <td>
-                                @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
-                            </td>
-                        </tr>
-                        break;
-                    case 5:
-                        <tr class="info">
-                            <td>
-                                @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
-                            </td>
+                        </td>
+                        <td>
+                            @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
+                        </td>
+                    </tr>
+                    break;
+                case 6:
+                    <tr class="active">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
+                        </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
-                            </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                        </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PERIODO_USO)
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PERIODO_USO)
 
-                            </td>
-                            <td>
-                                @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
-                            </td>
-                        </tr>
-                        break;
-                    case 6:
-                        <tr class="active">
-                            <td>
-                                @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
-                            </td>
+                        </td>
+                        <td>
+                            @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
+                        </td>
+                    </tr>
+                    break;
+            }
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
-                            </td>
-
-                            <td>
-                                @Html.DisplayFor(modelItem => item.PERIODO_USO)
-
-                            </td>
-                            <td>
-                                @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
-                            </td>
-                        </tr>
-                        break;
-                }
-
-        </tr>
+            </tr>
     }
 
 </table>
