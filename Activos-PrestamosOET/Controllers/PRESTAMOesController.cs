@@ -330,8 +330,9 @@ namespace Activos_PrestamosOET.Controllers
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
             var equipo_sol = from o in db.PRESTAMOS
                              from o2 in db.EQUIPO_SOLICITADO
-                             where o.ID == ID && o.ID == o2.ID_PRESTAMO
-                             select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD };
+                             where o.ID == ID
+                             select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
+
             int a = 0;
 
             foreach (var x in equipo_sol)
@@ -360,13 +361,80 @@ namespace Activos_PrestamosOET.Controllers
                         }
 
                         a++;
-                        ViewBag.Mensaje = "El préstamos ha sido aprobado con éxito";
+                        
                     }
 
 
                 }
             }
 
+            ViewBag.Mensaje = "El préstamos ha sido aprobado con éxito";
+
+            var lista = from o in db.PRESTAMOS
+                        from o2 in db.USUARIOS
+                        where o.ID == ID
+                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
+
+            foreach (var m in lista)
+            {
+                if (m.Prestamo.ID == ID)
+                {
+                    if (m.Prestamo.CED_SOLICITA == m.CEDULA)
+                    {
+                        var t = new Tuple<string>(m.USUARIO);
+                        ViewBag.Nombre = t.Item1;
+                    }
+                }
+            }
+            /*  -------------------------------------------------------------------------------------------  */
+            var cat = (from ac in db.ACTIVOS
+                       from t in db.TIPOS_ACTIVOS
+                       where ac.PRESTABLE.Equals(true) &&
+                              t.ID.Equals(ac.TIPO_ACTIVOID)
+                       select new { t.NOMBRE, t.ID }).Distinct();
+
+
+
+            var equipo = new List<List<String>>();
+            foreach (var x in equipo_sol)
+            {
+                if (x.ID == ID)
+                {
+                    if (x.ID == x.ID_EQUIPO)
+                    {
+
+
+                        List<String> temp = new List<String>();
+                        if (x.TIPO != null)
+                        {
+                            foreach (var y in cat)
+                            {
+
+                                if (x.TIPO == y.ID.ToString())
+                                {
+
+                                    temp.Add(y.NOMBRE);
+                                    break;
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            temp.Add("");
+
+                        }
+
+
+                        if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
+
+                        if (x.CANTAP != 0) { temp.Add(x.CANTAP.ToString()); } else { temp.Add(""); }
+                        equipo.Add(temp);
+                    }
+                }
+            }
+
+            ViewBag.Equipo_Solict = equipo;
             return View(pRESTAMO);
         }
 
