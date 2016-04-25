@@ -8,33 +8,33 @@
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script>
-      $(function() {
-        $( "#datepicker" ).datepicker();
-      });
+    $(function () {
+        $("#datepicker").datepicker();
+    });
 </script>
 <script>
-         $.datepicker.regional['es'] = {
-         closeText: 'Cerrar',
-         prevText: '<Ant',
-         nextText: 'Sig>',
-         currentText: 'Hoy',
-         monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-         monthNamesShort: ['Ene','Feb','Mar','Abr', 'May','Jun','Jul','Ago','Sep', 'Oct','Nov','Dic'],
-         dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-         dayNamesShort: ['Dom','Lun','Mar','Mié','Juv','Vie','Sáb'],
-         dayNamesMin: ['Do','Lu','Ma','Mi','Ju','Vi','Sá'],
-         weekHeader: 'Sm',
-         dateFormat: 'dd/mm/yy',
-         firstDay: 1,
-         isRTL: false,
-         showMonthAfterYear: false,
-         yearSuffix: ''
-         };
+    $.datepicker.regional['es'] = {
+        closeText: 'Cerrar',
+        prevText: '<Ant',
+        nextText: 'Sig>',
+        currentText: 'Hoy',
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+        weekHeader: 'Sm',
+        dateFormat: 'dd/mm/yy',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
 
-         $.datepicker.setDefaults($.datepicker.regional['es']);
-         $(function() {
-             $('.date-picker').datepicker();
-         });
+    $.datepicker.setDefaults($.datepicker.regional['es']);
+    $(function () {
+        $('.date-picker').datepicker();
+    });
 </script>
 
 <script type="text/javascript">
@@ -42,68 +42,32 @@
         $("[id$=A4]").addClass("active");
     });
 </script>
+<legend><h2>Solicitudes de préstamo</h2></legend>
 
-<h2>Solicitudes de préstamo</h2>
-<br />
-
-<br />
-
-<fieldset>
-    <label for="textArea" class="col-lg-2 control-label">Empresa </label>
-    <div class="col-lg-10">
-        <select id="Estado" name="Estado" value="Estado" class="form-control">
-            <option selected="selected" value="0">Todos</option>
-
-            <option value="1">OET</option>
-
-            <option value="2">ESINTRO</option>
-
-        </select>
-    </div>
-</fieldset>
-<br />
-
-<fieldset>
-    <label for="textArea" class="col-lg-2 control-label">Estación </label>
-    <div class="col-lg-10">
-        <select id="Estado" name="Estado" value="Estado" class="form-control">
-            <option selected="selected" value="0">Todos</option>
-
-            <option value="1">CRO</option>
-
-            <option value="2">La Selva</option>
-
-            <option value="3">Las Cruces</option>
-
-            <option value="4">Jardín Botánico Wilson</option>
-
-            <option value="5">Palo Verde</option>
-        </select>
-    </div>
-</fieldset>
-<br />
 @using (Html.BeginForm("Index", "PRESTAMOes", FormMethod.Get))
 {
-<div class="form-group">
-    <label class="col-lg-2 control-label" for="inputDefault">Fecha de Solicitud</label>
-    <div class="col-lg-10">
-        @Html.TextBox("fechaSolicitud", ViewBag.CurrentFilter as string, new { @class = "form-control date-picker" })
-    </div>
-</div>
-<br />
-<br />
-<div class="form-group">
-    <label class="col-lg-2 control-label" for="inputDefault">Fecha de Retiro</label>
-    <div class="col-lg-10">
-        @Html.TextBox("fechaRetiro", ViewBag.CurrentFilter as string, new { @class = "form-control date-picker" })
-    </div>
-</div>
-<br />
-<br />
-<fieldset>
-    <label for="textArea" class="col-lg-2 control-label">Estado </label>
-    <div class="col-lg-10">
-       @Html.DropDownList("estado", new SelectList(
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="inputDefault">Fecha de Solicitud</label>
+                <div class="col-lg-4">
+                    @Html.TextBox("fechaSolicitud", ViewBag.CurrentFilter as string, new { @class = "form-control date-picker" })
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="inputDefault">Fecha de Retiro</label>
+                <div class="col-lg-4">
+                    @Html.TextBox("fechaRetiro", ViewBag.CurrentFilter as string, new { @class = "form-control date-picker" })
+                </div>
+            </div>
+            <br />
+            <br />
+            <fieldset>
+                <label for="textArea" class="col-lg-2 control-label">Estado </label>
+                <div class="col-lg-4">
+                    @Html.DropDownList("estado", new SelectList(
                   new List<Object>{
                        new { text = "Todos", value = "0"},
                        new { Text = "Pendiente", Value = "1" },
@@ -115,23 +79,26 @@
                   },
                   "value",
                   "text",
-                   0), new { @class = "form-control"})
-    </div>
-</fieldset>
-<br />
+                   0), new { @class = "form-control" })
+                </div>
+            </fieldset>
+            <br />
+            
+            <div class="col-md-4">
+                <input type="submit" value="Buscar" class="btn btn-default" />
+            </div>
 
-<p>    
-    <input type="submit" value="Buscar" class="btn btn-default col-lg-offset-1" />
-</p>
+        </div>
+    </div>
 }
 
 
 
-
+<br />
 <table class="table">
     <tr>
         <th>
-            @Html.ActionLink("Número de boleta", "Index", new { sortOrder = ViewBag.NumeroSortParm , currentFilter = ViewBag.CurrentFilter })
+            @Html.ActionLink("Número de boleta", "Index", new { sortOrder = ViewBag.NumeroSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
 
         <th>
@@ -144,7 +111,7 @@
 
         <th>
             @Html.ActionLink("Periodo del préstamo", "Index", new { sortOrder = ViewBag.PeriodoSortParm, currentFilter = ViewBag.CurrentFilter })
-            
+
         </th>
         <th>
             @Html.ActionLink("Solicitante", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
@@ -152,180 +119,180 @@
 
         <th></th>
     </tr>
-   
-@foreach (var item in Model)
-{
-    switch (item.Estado)
+
+    @foreach (var item in Model)
     {
-        case 1:
-            <tr class="danger">
-                <td>
-                    @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
-                </td>
+        switch (item.Estado)
+        {
+            case 1:
+                <tr class="danger">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.PERIODO_USO)
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PERIODO_USO)
 
-                </td>
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.SIGLA_CURSO)
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SIGLA_CURSO)
+                    </td>
 
-                <td>
-                    @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
-                </td>
+                    <td>
+                        @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
+                    </td>
                 </tr>
-            break;
-        case 2:
-            <tr class="success">
-                <td>
-                    @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
-                </td>
+                break;
+            case 2:
+                <tr class="success">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.PERIODO_USO)
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PERIODO_USO)
 
-                </td>
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.SIGLA_CURSO)
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SIGLA_CURSO)
+                    </td>
 
-                <td>
-                    @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
-                </td>
-           </tr>
-            break;
-        case 3:
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
-                </td>
+                    <td>
+                        @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
+                    </td>
+                </tr>
+                break;
+            case 3:
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.PERIODO_USO)
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PERIODO_USO)
 
-                </td>
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.SIGLA_CURSO)
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SIGLA_CURSO)
+                    </td>
 
-                <td>
-                    @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
-                </td>
-            </tr>
-            break;
-        case 4:
-            <tr class="warning">
-                <td>
-                    @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
-                </td>
+                    <td>
+                        @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
+                    </td>
+                </tr>
+                break;
+            case 4:
+                <tr class="warning">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.PERIODO_USO)
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PERIODO_USO)
 
-                </td>
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.SIGLA_CURSO)
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SIGLA_CURSO)
+                    </td>
 
-                <td>
-                    @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
-                </td>
-            </tr>
-            break;
-        case 5:
-            <tr class="info">
-                <td>
-                    @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
-                </td>
+                    <td>
+                        @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
+                    </td>
+                </tr>
+                break;
+            case 5:
+                <tr class="info">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.PERIODO_USO)
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PERIODO_USO)
 
-                </td>
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.SIGLA_CURSO)
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SIGLA_CURSO)
+                    </td>
 
-                <td>
-                    @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
-                </td>
-            </tr>
-            break;
-        case 6:
-            <tr class="active">
-                <td>
-                    @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
-                </td>
+                    <td>
+                        @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
+                    </td>
+                </tr>
+                break;
+            case 6:
+                <tr class="active">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.PERIODO_USO)
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PERIODO_USO)
 
-                </td>
+                    </td>
 
-                <td>
-                    @Html.DisplayFor(modelItem => item.SIGLA_CURSO)
-                </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SIGLA_CURSO)
+                    </td>
 
-                <td>
-                    @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
-                </td>
-            </tr>
-            break;                    
-        }  
+                    <td>
+                        @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
+                    </td>
+                </tr>
+                break;
+        }
     }
 
 </table>
-<br/>
+<br />
 
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-@Html.PagedListPager(Model, page => Url.Action("Index",
+            @Html.PagedListPager(Model, page => Url.Action("Index",
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
