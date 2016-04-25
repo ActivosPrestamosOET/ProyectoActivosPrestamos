@@ -88,11 +88,15 @@
 <body>
     <!--TÍTULO-->
     <div class="row">
-        <div class="col-md-1">
+        
+        <div class="col-md-12">
+            <legend><h1>Inventario</h1></legend>
+            
         </div>
-        <div class="col-md-10">
-            <h1>Inventario</h1>
-        </div>
+        <br>
+        <br>
+        <br />
+        <br />
     </div>
     @using (Html.BeginForm())
     {
@@ -114,27 +118,30 @@
         }
         ViewBag.listItems = listItems;
         <!--CATEGORÍA-->
-        <div class="row">
-            <div class="form-horizontal">
-                <div class="col-md-1">
-                </div>
-                <div class="col-md-8">
-                    <label class="col-md-2">Categoria</label>
-                    <div class="col-md-4">
-                        @Html.DropDownList("dropdownCategoria", listItems, new { @class = "form-control" })
-                    </div>
-                    <div class="col-md-3">
-                        <input name="submit" id="submit" type="submit" value="Buscar" class="btn btn-default" />
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="form-horizontal">
+
+                        <div class="col-md-12">
+                            <label class="col-md-2">Categoria</label>
+                            <div class="col-md-4">
+                                @Html.DropDownList("dropdownCategoria", listItems, new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-3">
+                                <input name="submit" id="submit" type="submit" value="Buscar" class="btn btn-default" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--TABLA-->
+                <!--TABLA-->
         <div class="row">
             <div class="col-md-1">
             </div>
-            <div class="col-md-8">
-                <table id ="tableData" class="table" style="margin-top:20px">
+            <div class="col-md-12">
+                <table id="tableData" class="table" style="margin-top:20px">
                     <thead>
                         <tr>
                             <th>Fabricante</th>
@@ -161,70 +168,75 @@
     }
 
     <br>
-@using (Html.BeginForm())
-{
-    <div class="row">
-        <div class="form-horizontal">
-            <div class="col-md-1">
-            </div>
-            <div class="col-md-8">
-                <label class="col-md-2">Fecha inicial:</label>
-                <div class="col-md-4">
-                    <input name ="datepicker" class="form-control" style="padding:10px" type="text" id="datepicker" />
-                    <br>
+    <br />
+    @using (Html.BeginForm())
+    {
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="form-horizontal">
+                        <div class="col-md-8">
+                            <label class="col-md-2">Fecha inicial:</label>
+                            <div class="col-md-6">
+                                <input name="datepicker" class="form-control" style="padding:10px" type="text" id="datepicker" />
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+
+                    <div class="col-md-8">
+                        <label class="col-md-2">Fecha finalización:</label>
+                        <div class="col-md-6">
+                            <input name="datepicker1" class="form-control" style="padding:10px" type="text" id="datepicker1" />
+                            <br>
+                        </div>
+                        <br>
+                        <br>
+                        <br>
+
+                        <div class="col-md-3">
+                            <input type="submit" name="submit" id="process" value="Buscar por fechas" class="btn btn-default" />
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
+                    <div class="row">
 
-    </div>
-    <div class="row">
-        <div class="col-md-1">
-        </div>
-        <div class="col-md-8">
-            <label class="col-md-2">Fecha finalización:</label>
-            <div class="col-md-4">
-                <input name="datepicker1" class="form-control" style="padding:10px" type="text" id="datepicker1" />
-                <br>
-            </div>
-            <div class="col-md-3">
-                <input type="submit"name="submit" id="process" value="Buscar por fechas" class="btn btn-default" />
-            </div>
-        </div>
+                        <div class="col-md-8">
+                            <table class="table" style="width:200px; margin-top:20px">
+                                <thead>
+                                    <tr>
+                                        <th class="col-md-3">Categoría</th>
+                                        <th class="col-md-3">Cantidad</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (ViewBag.Courses1 != null)
+                                    {
+                                        foreach (List<String> s in ViewBag.Courses1)
+                                        {
+                                            <tr>
+                                                @foreach (String hilera in s)
+                                                {
+                                                    <td class="col-md-3">@hilera</td>
+                                                }
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
 
-    </div>
-    <div class="row">
-        <div class="col-md-1">
-        </div>
-        <div class="col-md-8">
-            <table class="table" style="width:200px; margin-top:20px">
-                <thead>
-                    <tr>
-                        <th class="col-md-2">Categoría</th>
-                        <th class="col-md-2">Cantidad</th>
-                    </tr>
-                </thead>
-                <tbody>              
-                    @if (ViewBag.Courses1 != null)
-                    {
-                        foreach (List<String> s in ViewBag.Courses1)
-                        {
-                            <tr>
-                                @foreach (String hilera in s)
-                                {
-                                    <td class="col-md-2">@hilera</td>
-                                }
-                            </tr>
-                        }
-                    }
-                </tbody>
+                            </table>
+                        </div>
+                    </div>
+    }
 
-            </table>
-        </div>
-    </div>
-}
-    
 
-    
+
 </body>
 
 
