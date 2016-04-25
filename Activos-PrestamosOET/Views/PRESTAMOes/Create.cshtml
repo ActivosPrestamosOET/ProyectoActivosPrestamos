@@ -65,14 +65,19 @@
                         Cantidad
                     </th>
                 </tr>
-                @foreach (var cat in ViewBag.CATEGORIAS)
+                @{
+                    ViewData["categorias"] = (List<String>)TempData["categorias"];
+                    List<String> categorias = (List<String>)ViewData["categorias"];
+                }
+                @foreach (String cat in categorias)
                 {
                     <tr>
                         <td>
-                            @cat
+                            @Html.Label(@cat)
                         </td>
                         <td>
-                            <input type="number" class="form-control" name="points" min="0" value="0">
+                            @Html.TextBox("Cantidad", null, new { @class = "form-control", @type = "number", @min = "0", @value = "0" })
+                            @*<input type="number" class="form-control" name="points" min="0" value="0">*@
                         </td>
                     </tr>
                 }
