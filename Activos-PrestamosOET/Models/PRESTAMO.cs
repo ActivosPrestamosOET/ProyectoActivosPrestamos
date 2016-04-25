@@ -11,7 +11,15 @@ namespace Activos_PrestamosOET.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+    public enum Estadito
+    {
+        //Todos,
+        Pendiente,
+        Aprobado,
+        Denegado,
+        Cancelado
+    }
     public partial class PRESTAMO
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,21 +28,54 @@ namespace Activos_PrestamosOET.Models
             this.EQUIPO_SOLICITADO = new HashSet<EQUIPO_SOLICITADO>();
             this.ACTIVOes = new HashSet<ACTIVO>();
         }
-    
-        public string ID { get; set; }
-        public Nullable<long> NUMERO_BOLETA { get; set; }
-        public string MOTIVO { get; set; }
-        public System.DateTime FECHA_SOLICITUD { get; set; }
-        public System.DateTime FECHA_RETIRO { get; set; }
-        public int PERIODO_USO { get; set; }
-        public string SOFTWARE_REQUERIDO { get; set; }
-        public string OBSERVACIONES_SOLICITANTE { get; set; }
-        public string OBSERVACIONES_APROBADO { get; set; }
-        public string OBSERVACIONES_RECIBIDO { get; set; }
-        public string SIGLA_CURSO { get; set; }
-        public short Estado { get; set; }
-        public string CED_SOLICITA { get; set; }
-        public string CED_APRUEBA { get; set; }
+
+        
+
+            [Display(Name = "Id de la boleta")]
+            public string ID { get; set; }
+
+            [Display(Name = "Número de boleta")]
+            public Nullable<long> NUMERO_BOLETA { get; set; }
+
+            [Display(Name = "Motivo")]
+            [Required(ErrorMessage = "Por favor ingrese un motivo válido")]
+            public string MOTIVO { get; set; }
+
+            [Display(Name = "Fecha de solicitud")]
+            public Nullable<System.DateTime> FECHA_SOLICITUD { get; set; }
+
+            [Display(Name = "Fecha de retiro")]
+            [Required(ErrorMessage = "Por favor ingrese una rango válido")]
+            public Nullable<System.DateTime> FECHA_RETIRO { get; set; }
+
+            [Display(Name = "Periodo de uso")]
+            [Required(ErrorMessage = "Por favor ingrese una rango válido")]
+            public int PERIODO_USO { get; set; }
+
+            [Display(Name = "Software requerido")]
+            public string SOFTWARE_REQUERIDO { get; set; }
+
+            [Display(Name = "Observaciones del solicitante")]
+            public string OBSERVACIONES_SOLICITANTE { get; set; }
+
+            [Display(Name = "Observaciones de quién aprueba")]
+            public string OBSERVACIONES_APROBADO { get; set; }
+
+            [Display(Name = "Observaciones al recibir el préstamo")]
+            public string OBSERVACIONES_RECIBIDO { get; set; }
+
+            [Display(Name = "Sigla del Curso")]
+            public string SIGLA_CURSO { get; set; }
+
+            [Display(Name = "Estado")]
+            public short Estado { get; set; }
+
+            [Display(Name = "Cédula del solicitante")]
+            public string CED_SOLICITA { get; set; }
+
+            [Display(Name = "Cédula de quién aprueba")]
+            public string CED_APRUEBA { get; set; }
+
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EQUIPO_SOLICITADO> EQUIPO_SOLICITADO { get; set; }
