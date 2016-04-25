@@ -325,51 +325,70 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         [HttpPost]
-        public ActionResult Details(string ID, int[] cantidad_aprobada)
+        public ActionResult Details(string ID, int[] cantidad_aprobada, string b)
         {
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
+
             var equipo_sol = from o in db.PRESTAMOS
                              from o2 in db.EQUIPO_SOLICITADO
                              where o.ID == ID
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
 
-            int a = 0;
 
-            foreach (var x in equipo_sol)
+            if (b == "Aceptar")
             {
-                if (x.ID == ID)
+
+                int a = 0;
+                foreach (var x in equipo_sol)
                 {
-                    if (x.ID == x.ID_EQUIPO)
+                    if (x.ID == ID)
                     {
-
-                        EQUIPO_SOLICITADO P = db.EQUIPO_SOLICITADO.Find(ID, x.TIPO, x.CANTIDAD);
-
-                        decimal temp = cantidad_aprobada[a];
-
-                        P.CANTIDADAPROBADA = temp;
-                        pRESTAMO.Estado = 2;
-                        if (ModelState.IsValid)
+                        if (x.ID == x.ID_EQUIPO)
                         {
-                            db.Entry(P).State = EntityState.Modified;
-                            db.SaveChanges();
-                        }
 
-                        if (ModelState.IsValid)
-                        {
-                            db.Entry(pRESTAMO).State = EntityState.Modified;
-                            db.SaveChanges();
-                        }
+                            EQUIPO_SOLICITADO P = db.EQUIPO_SOLICITADO.Find(ID, x.TIPO, x.CANTIDAD);
 
-                        a++;
-                        
+                            decimal temp = cantidad_aprobada[a];
+
+                            P.CANTIDADAPROBADA = temp;
+
+                            if (ModelState.IsValid)
+                            {
+                                db.Entry(P).State = EntityState.Modified;
+                                db.SaveChanges();
+                            }
+
+                            a++;
+                        }
                     }
-
-
                 }
+
+                pRESTAMO.Estado = 2;
+                if (ModelState.IsValid)
+                {
+                    db.Entry(pRESTAMO).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+                ViewBag.Mensaje = "El préstamo ha sido aprobado con éxito";
+
             }
 
-            ViewBag.Mensaje = "El préstamos ha sido aprobado con éxito";
+            if (b == "Denegar")
+            {
+                
+                pRESTAMO.Estado = 3;
+                if (ModelState.IsValid)
+                {
+                    db.Entry(pRESTAMO).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
 
+                ViewBag.Mensaje2 = "El préstamo ha sido denegado con éxito";
+            }
+
+
+            
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
                         where o.ID == ID
@@ -438,7 +457,7 @@ namespace Activos_PrestamosOET.Controllers
             return View(pRESTAMO);
         }
 
-
+             
         /*@if (ViewBag.Disponible)
         {
 

@@ -27,6 +27,20 @@
    
 }
 
+
+
+@if (ViewBag.Mensaje2 != null)
+{
+
+    <div class="alert alert-dismissible alert-warning">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        @ViewBag.Mensaje2
+   </div>
+}
+
+
+
+
 <legend><h2>Detalles de la Solicitud</h2></legend>
 
 <div class="panel panel-default">
@@ -86,6 +100,7 @@
 
 @using (Html.BeginForm("Details", "PRESTAMOes"))
 {
+
     @Html.HiddenFor(model => model.ID);
     <table class="table" style="margin-top:20px">
         <thead>
@@ -147,9 +162,9 @@
                     <br />
                     <div id="Botones_aceptar_cancelar" class="col-md-offset-9 col-md-12">
 
-                        <input type="submit" value="Aceptar" class="btn btn-success" />
+                        <input type="submit" name="b" value="Aceptar" class="btn btn-success" />
 
-                      <!--  <input type="submit" value="Denegar" class="btn btn-danger" /> -->
+                        <input type="submit" name="b" value="Denegar" class="btn btn-danger" /> 
 
                     </div>
 
