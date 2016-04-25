@@ -106,17 +106,14 @@
         <tbody>
            @if (ViewBag.Equipo_Solict != null)
            {
-               int a = 0;
+
                foreach (List<String> s in ViewBag.Equipo_Solict)
                {
                     <tr>
-                        @foreach (String hilera in s)
-                        {
-                            <td>@hilera&nbsp;</td>
-                        }
-
+                        <td>@s[0] &nbsp;</td>
+                        <td>@s[1] &nbsp;</td>
                         <td>
-                            @Html.TextBox("cantidad_aprobada", ViewBag.CurrentFilter as List<decimal>, new { style = "color:#FF0000", @class = "form-control col-md-2", @type = "number", @min = "0", @value = ViewBag.ap })
+                            @Html.TextBox("cantidad_aprobada", @s[2], null, new { @class = "form-control col-md-2", @type = "number", @min = "0" })
                         </td>
 
                     </tr>
