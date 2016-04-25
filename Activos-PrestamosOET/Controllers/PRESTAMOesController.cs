@@ -314,7 +314,11 @@ namespace Activos_PrestamosOET.Controllers
                     }
                 }
             }
-
+            Random i = new Random();
+            if (i.Next(2) % 2 == 0)
+                ViewBag.Disponible = true;
+            else
+                ViewBag.Disponible = false;
             ViewBag.Equipo_Solict = equipo;
 
             /*  -------------------------------------------------------------------------------------------  */
