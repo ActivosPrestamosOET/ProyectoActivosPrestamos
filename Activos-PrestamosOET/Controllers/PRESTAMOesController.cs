@@ -236,7 +236,7 @@ namespace Activos_PrestamosOET.Controllers
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
                         where o.ID == id
-                        select new { Prestamo=o, CEDULA= o2.IDUSUARIO, USUARIO = o2.NOMBRE };
+                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
 
             foreach (var m in lista)
             {
@@ -269,8 +269,9 @@ namespace Activos_PrestamosOET.Controllers
                 {
                     if (x.ID == x.ID_EQUIPO)
                     {
-                        List<String> temp = new List<String>();
 
+
+                        List<String> temp = new List<String>();
                         if (x.TIPO != null)
                         {
                             foreach (var y in cat)
@@ -278,6 +279,7 @@ namespace Activos_PrestamosOET.Controllers
 
                                 if (x.TIPO == y.ID.ToString())
                                 {
+
                                     temp.Add(y.NOMBRE);
                                 }
                                 break;
@@ -288,16 +290,11 @@ namespace Activos_PrestamosOET.Controllers
                             temp.Add("");
 
                         }
-                        
-                        
-                        if (x.CANTIDAD != 0) {
-                            temp.Add(x.CANTIDAD.ToString());
 
-                        }
-                        else { temp.Add(""); }
+
+                        if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
 
                         equipo.Add(temp);
-
                     }
                 }
             }
@@ -305,11 +302,22 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.Equipo_Solict = equipo;
 
             /*  -------------------------------------------------------------------------------------------  */
-     
-                /* ---------------------------------------------------------------------------------------  */
-                return View(pRESTAMO);
-        }
 
+            /* 
+             var lista1 = from o in db.PRESTAMOS
+                          from o2 in db.EQUIPO_SOLICITADO
+                          where o.ID == o2.ID_PRESTAMO
+                          select new { EQUIPO_SOLICITADO = o2.TIPO_ACTIVO, EQUIPO_SOLICITADO_CANTIDAD = o2.CANTIDAD };
+             List<Tuple<string, decimal>> l1 = new List<Tuple<string, decimal>>();
+             foreach (var m in lista1)
+             {
+                 var t1 = new Tuple<string, decimal>(m.EQUIPO_SOLICITADO, m.EQUIPO_SOLICITADO_CANTIDAD);
+                 l1.Add(t1);
+             }
+             ViewBag.Equipo_Solict = l1;
+             */
+            return View(pRESTAMO);
+        }
         // GET: PRESTAMOes/Create
         public ActionResult Create()
         {
