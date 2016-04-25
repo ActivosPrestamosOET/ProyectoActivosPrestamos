@@ -68,33 +68,33 @@ namespace Activos_PrestamosOET.Controllers
                 {
                     if (DateTime.TryParseExact(fechaRetiro, "dd/MM/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaR))
                     {
-                        prestamos = prestamos.Where(model => model.FECHA_RETIRO.Year == fechaR.Year
-                                                          && model.FECHA_RETIRO.Month == fechaR.Month
-                                                          && model.FECHA_RETIRO.Day == fechaR.Day);
+                        prestamos = prestamos.Where(model => model.FECHA_RETIRO.Value.Year == fechaR.Year
+                                                          && model.FECHA_RETIRO.Value.Month == fechaR.Month
+                                                          && model.FECHA_RETIRO.Value.Day == fechaR.Day);
                     }
                 }
                 else if (String.IsNullOrEmpty(fechaRetiro))
                 {
                     if (DateTime.TryParseExact(fechaSolicitud, "dd/MM/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaS))
                     {
-                        prestamos = prestamos.Where(model => model.FECHA_SOLICITUD.Year == fechaS.Year
-                                                          && model.FECHA_SOLICITUD.Month == fechaS.Month
-                                                          && model.FECHA_SOLICITUD.Day == fechaS.Day);
+                        prestamos = prestamos.Where(model => model.FECHA_SOLICITUD.Value.Year == fechaS.Year
+                                                          && model.FECHA_SOLICITUD.Value.Month == fechaS.Month
+                                                          && model.FECHA_SOLICITUD.Value.Day == fechaS.Day);
                     }
                 }
                 else
                 {
                     if (DateTime.TryParseExact(fechaSolicitud, "dd/MM/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaS))
                     {
-                        prestamos = prestamos.Where(model => model.FECHA_SOLICITUD.Year == fechaS.Year
-                                                          && model.FECHA_SOLICITUD.Month == fechaS.Month
-                                                          && model.FECHA_SOLICITUD.Day == fechaS.Day);
+                        prestamos = prestamos.Where(model => model.FECHA_SOLICITUD.Value.Year == fechaS.Year
+                                                          && model.FECHA_SOLICITUD.Value.Month == fechaS.Month
+                                                          && model.FECHA_SOLICITUD.Value.Day == fechaS.Day);
                     }
                     if (DateTime.TryParseExact(fechaRetiro, "dd/MM/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaR))
                     {
-                        prestamos = prestamos.Where(model => model.FECHA_RETIRO.Year == fechaR.Year
-                                                          && model.FECHA_RETIRO.Month == fechaR.Month
-                                                          && model.FECHA_RETIRO.Day == fechaR.Day);
+                        prestamos = prestamos.Where(model => model.FECHA_RETIRO.Value.Year == fechaR.Year
+                                                          && model.FECHA_RETIRO.Value.Month == fechaR.Month
+                                                          && model.FECHA_RETIRO.Value.Day == fechaR.Day);
                     }
                 }
             }
