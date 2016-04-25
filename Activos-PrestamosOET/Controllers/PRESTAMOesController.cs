@@ -202,12 +202,18 @@ namespace Activos_PrestamosOET.Controllers
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
                         where o.ID == id
-                        select new { USUARIO = o2.NOMBRE };
+                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
 
             foreach (var m in lista)
             {
-                var t = new Tuple<string>(m.USUARIO);
-                ViewBag.Nombre = t.Item1;
+                if (m.Prestamo.ID == id)
+                {
+                    if (m.Prestamo.CED_SOLICITA == m.CEDULA)
+                    {
+                        var t = new Tuple<string>(m.USUARIO);
+                        ViewBag.Nombre = t.Item1;
+                    }
+                }
             }
             return View(pRESTAMO);
         }
@@ -396,12 +402,18 @@ namespace Activos_PrestamosOET.Controllers
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
                         where o.ID == id
-                        select new { USUARIO = o2.NOMBRE };
+                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
 
             foreach (var m in lista)
             {
-                var t = new Tuple<string>(m.USUARIO);
-                ViewBag.Nombre = t.Item1;
+                if (m.Prestamo.ID == id)
+                {
+                    if (m.Prestamo.CED_SOLICITA == m.CEDULA)
+                    {
+                        var t = new Tuple<string>(m.USUARIO);
+                        ViewBag.Nombre = t.Item1;
+                    }
+                }
             }
             return View(pRESTAMO);
         }
@@ -448,12 +460,18 @@ namespace Activos_PrestamosOET.Controllers
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
                         where o.ID == id
-                        select new { USUARIO = o2.NOMBRE };
+                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
 
             foreach (var m in lista)
             {
-                var t = new Tuple<string>(m.USUARIO);
-                ViewBag.Nombre = t.Item1;
+                if (m.Prestamo.ID == id)
+                {
+                    if (m.Prestamo.CED_SOLICITA == m.CEDULA)
+                    {
+                        var t = new Tuple<string>(m.USUARIO);
+                        ViewBag.Nombre = t.Item1;
+                    }
+                }
             }
             return View(pRESTAMO);
         }
