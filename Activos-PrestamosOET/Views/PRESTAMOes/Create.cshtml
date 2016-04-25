@@ -58,7 +58,7 @@
                     <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.MOTIVO):</label>
                 </div>
                 <div class="col-md-4">
-                    @Html.EditorFor(model => model.MOTIVO, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.MOTIVO, new { htmlAttributes = new { @class = "form-control", @style = "70px" } })
                     @Html.ValidationMessageFor(model => model.MOTIVO, "", new { @class = "text-danger" })
                 </div>
                 <div class="col-md-2">
@@ -117,9 +117,10 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <div class="form-group">
+                    <br />
                     @Html.LabelFor(model => model.SOFTWARE_REQUERIDO, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.SOFTWARE_REQUERIDO, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.SOFTWARE_REQUERIDO, new { htmlAttributes = new { @class = "form-control",  @style = "40px" } })
                         @Html.ValidationMessageFor(model => model.SOFTWARE_REQUERIDO, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -127,15 +128,15 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.OBSERVACIONES_SOLICITANTE, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.OBSERVACIONES_SOLICITANTE, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.OBSERVACIONES_SOLICITANTE, new { htmlAttributes = new { @class = "form-control", @style = "40px" } })
                         @Html.ValidationMessageFor(model => model.OBSERVACIONES_SOLICITANTE, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.CED_SOLICITA, "CED_SOLICITA", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
+                    @Html.LabelFor(model => model.CED_SOLICITA, "Cédula del solicitante", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
                         @Html.DropDownList("CED_SOLICITA", null, htmlAttributes: new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.CED_SOLICITA, "", new { @class = "text-danger" })
                     </div>
@@ -152,7 +153,7 @@
                     }
 
 <div>
-    @Html.ActionLink("Historial de Solicitudes", "Historial")
+@Html.ActionLink("Historial de Solicitudes", "Historial", null, null, new { @class = "btn btn-default" })
 </div>
 
 @section Scripts {
