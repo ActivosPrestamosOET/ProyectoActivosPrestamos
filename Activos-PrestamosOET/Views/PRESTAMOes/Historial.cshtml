@@ -6,20 +6,21 @@
     ViewBag.Title = "Historial";
 }
 
-<h2>Historial de Prestamos</h2>
+<div>
+    @Html.ActionLink("Nueva Solicitud", "Create", null, null, new { @class = "btn btn-default" })
+</div>
+
 <br />
-<br />
+
+<legend><h2>Historial de Prestamos</h2></legend>
+
 <script type="text/javascript">
     $(document).ready(function () {
         $("[id$=A3]").addClass("active");
     });
 </script>
-<p>
-    @Html.ActionLink("Nueva Solicitud", "Create")
-</p>
 
 
-<br />
 @using (Html.BeginForm("Historial", "PRESTAMOes", FormMethod.Get))
 {
     <div class="panel panel-default">
@@ -42,7 +43,7 @@
                    0), new { @class = "form-control" })
                 </div>
             </fieldset>
-            <br />
+
 
             <div class="col-md-3">
                 <input type="submit" value="Buscar" class="btn btn-default" />
