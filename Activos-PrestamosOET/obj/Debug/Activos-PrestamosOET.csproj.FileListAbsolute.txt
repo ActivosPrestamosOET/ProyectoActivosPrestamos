@@ -264,3 +264,4 @@ C:\Users\rick9\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bi
 C:\Users\rick9\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache
 C:\Users\rick9\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.dll
 C:\Users\rick9\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.pdb
+C:\Users\andre_000\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache
