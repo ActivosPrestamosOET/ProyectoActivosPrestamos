@@ -621,6 +621,8 @@ namespace Activos_PrestamosOET.Controllers
             return View(P);
         }
 
+
+
         // GET: PRESTAMOes/Delete/5
         public ActionResult Delete(string id)
         {
@@ -654,7 +656,6 @@ namespace Activos_PrestamosOET.Controllers
             }
             return View(pRESTAMO);
         }
-
         // POST: PRESTAMOes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -662,9 +663,24 @@ namespace Activos_PrestamosOET.Controllers
         {
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
             pRESTAMO.Estado = 6;
-            db.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                db.Entry(pRESTAMO).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Historial");
+            }
             return RedirectToAction("Historial");
         }
+        /*  // POST: PRESTAMOes/Delete/5
+          [HttpPost, ActionName("Delete")]
+          [ValidateAntiForgeryToken]
+          public ActionResult DeleteConfirmed(string id)
+          {
+              PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
+              pRESTAMO.Estado = 6;
+              db.SaveChanges();
+              return RedirectToAction("Historial");
+          }*/
 
         protected override void Dispose(bool disposing)
         {
