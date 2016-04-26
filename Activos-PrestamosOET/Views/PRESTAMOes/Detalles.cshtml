@@ -140,7 +140,7 @@
 </div>
 
 
-@if (Model.FECHA_RETIRO >= System.DateTimeOffset.Now.Date)
+@if ((Model.FECHA_RETIRO >= System.DateTimeOffset.Now.Date)&&(Model.Estado==1))
 {
     <div class="form-group">
         <div class="col-md-offset-9 col-md-12">
@@ -157,6 +157,15 @@ else if (Model.Estado == 6)
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
                 Esta solicitud ya no puede ser editada debido a que esta cancelada
             </div>
+    </div>
+}
+else if (Model.Estado != 1)
+{
+    <div class="form-group">
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            Esta solicitud ya no puede ser editada. (Solo las solicitudes pendientes pueden ser editadas).
+        </div>
     </div>
 }
 else

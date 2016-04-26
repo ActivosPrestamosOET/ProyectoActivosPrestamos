@@ -127,20 +127,26 @@
 </div>
 <br />
 <br />
-<div class="form-group">
-    <div class="col-md-offset-2 col-md-10">
-        <input type="submit" value="Cancelar Solicitud" class="btn btn-default" />
-        <!--Html.ActionLink("Cancelar solicitud", "Delete", new { id = Model.ID }, new { class = "btn btn-default" -->
-    </div>
-</div>
 
+}
 
-<div class="form-group">
-    <dl class="dl-horizontal">
-        <div>
-            <p>
-                @Html.ActionLink("Volver al Historial", "Historial")
-            </p>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Cancelar" class="btn btn-default" />
         </div>
-</div>
+    </div>
+        <div class="form-group">
+            <dl class="dl-horizontal">
+                <div>
+                    <p>
+                        @Html.ActionLink("Volver al Historial", "Historial")
+                    </p>
+                </div>
+        </div>
+}
+
 

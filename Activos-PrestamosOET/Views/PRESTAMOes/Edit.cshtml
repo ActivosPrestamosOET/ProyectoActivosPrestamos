@@ -134,9 +134,10 @@
                     foreach (List<String> s in ViewBag.Equipo_Solict)
                     {
                         <tr>
-                            <td>@s[0] &nbsp;</td>
+                            <td>@s[0] &nbsp;
+                            </td>
                             <td>
-                                @Html.TextBox("cantidad_aprobada", @s[1], null, new { @class = "form-control col-md-2", @type = "number", @min = "0" })
+                                @Html.TextBox("cantidad", @s[1], null, new { @class = "form-control col-md-2", @type = "number", @min = "0" })
                             </td>
                             <td>
                             </td>
