@@ -4,6 +4,59 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <head>
+    <meta charset="utf-8">
+    <title>Inventario</title>
+    <!-- Js -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("[id$=A6]").addClass("active");
+        });
+    </script>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="~/Content/paging.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('#tableData').paging({limit:5});
+        });
+    </script>
+
+    
+    <script>
+        $(function () {
+            $("#datepicker").datepicker();
+        });
+        $.datepicker.regional['es'] = {
+            closeText: 'Cerrar',
+            prevText: '<Ant',
+            nextText: 'Sig>',
+            currentText: 'Hoy',
+            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+            dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+            weekHeader: 'Sm',
+            dateFormat: 'dd/mm/yy',
+            firstDay: 1,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: ''
+        };
+
+        $.datepicker.setDefaults($.datepicker.regional['es']);
+        $(function () {
+            $("#datepicker1").datepicker();
+        });
+    </script>
+
+
+    
+
     <style type="text/css">
         .paging-nav {
             text-align: right;
@@ -32,71 +85,42 @@
         }
     </style>
 
-    <meta charset="utf-8">
-    <title>Inventario</title>
-    <!-- Js -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("[id$=A6]").addClass("active");
-        });
-    </script>
-
-    
-    <script>
-        $.datepicker.regional['es'] = {
-            closeText: 'Cerrar',
-            prevText: '<Ant',
-            nextText: 'Sig>',
-            currentText: 'Hoy',
-            monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-            monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-            dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-            dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
-            dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
-            weekHeader: 'Sm',
-            dateFormat: 'dd/mm/yy',
-            firstDay: 1,
-            isRTL: false,
-            showMonthAfterYear: false,
-            yearSuffix: ''
-        };
-
-        $.datepicker.setDefaults($.datepicker.regional['es']);
-        $(function () {
-            $('#datepicker').datepicker({ dateFormat: 'dd/mm/yy' });
-        });
-        $(function () {
-            $("#datepicker1").datepicker({ dateFormat: 'dd/mm/yy' });
-        });
-    </script>
-
-
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="~/Content/paging.js"></script>
-    <script type="text/javascript">
-            $(document).ready(function() {
-                $('#tableData').paging({limit:5});
-            });
-    </script>
-
 </head>
 <body>
     <!--TÍTULO-->
     <div class="row">
-        
         <div class="col-md-12">
             <legend><h1>Inventario</h1></legend>
-            
         </div>
         <br>
         <br>
-        <br />
-        <br />
+        <br>
+        <br>
     </div>
+    @if (ViewBag.Mensaje2 != null)
+    {
+
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            @ViewBag.Mensaje2
+        </div>
+    }
+    @if (ViewBag.Mensaje1 != null)
+    {
+
+        <div class="alert alert-dismissible alert-warning">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            @ViewBag.Mensaje1
+        </div>
+    }
+    @if (ViewBag.Mensaje0 != null)
+    {
+
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            @ViewBag.Mensaje0
+        </div>
+    }
     @using (Html.BeginForm())
     {
         Activos_PrestamosOET.Models.PrestamosEntities db = new Activos_PrestamosOET.Models.PrestamosEntities();
@@ -135,7 +159,7 @@
                 </div>
             </div>
         </div>
-                <!--TABLA-->
+        <!--TABLA-->
         <div class="row">
             <div class="col-md-1">
             </div>
@@ -165,9 +189,8 @@
             </div>
         </div>
     }
-
     <br>
-    <br />
+    <br>
     @using (Html.BeginForm())
     {
         <div class="panel panel-default">
@@ -178,65 +201,56 @@
                             <label class="col-md-2">Fecha inicial:</label>
                             <div class="col-md-6">
                                 <input name="datepicker" class="form-control" style="padding:10px" type="text" id="datepicker" />
-                                <br>
                             </div>
                         </div>
+                        <br>
                     </div>
-
                 </div>
                 <div class="row">
-
                     <div class="col-md-8">
                         <label class="col-md-2">Fecha finalización:</label>
                         <div class="col-md-6">
                             <input name="datepicker1" class="form-control" style="padding:10px" type="text" id="datepicker1" />
-                            <br>
                         </div>
                         <br>
                         <br>
                         <br>
-
+                        <br>
                         <div class="col-md-3">
                             <input type="submit" name="submit" id="process" value="Buscar por fechas" class="btn btn-default" />
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-                    <div class="row">
-
-                        <div class="col-md-8">
-                            <table class="table" style="width:200px; margin-top:20px">
-                                <thead>
-                                    <tr>
-                                        <th class="col-md-3">Categoría</th>
-                                        <th class="col-md-3">Cantidad</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (ViewBag.Courses1 != null)
+        <!--TABLA-->
+        <div class="row">
+            <div class="col-md-8">
+                <table class="table" style="width:200px; margin-top:20px">
+                    <thead>
+                        <tr>
+                            <th class="col-md-3">Categoría</th>
+                            <th class="col-md-3">Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.Courses1 != null)
+                        {
+                            foreach (List<String> s in ViewBag.Courses1)
+                            {
+                                <tr>
+                                    @foreach (String hilera in s)
                                     {
-                                        foreach (List<String> s in ViewBag.Courses1)
-                                        {
-                                            <tr>
-                                                @foreach (String hilera in s)
-                                                {
-                                                    <td class="col-md-3">@hilera</td>
-                                                }
-                                            </tr>
-                                        }
+                                        <td class="col-md-3">@hilera</td>
                                     }
-                                </tbody>
-
-                            </table>
-                        </div>
-                    </div>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     }
-
-
-
 </body>
-
 
 

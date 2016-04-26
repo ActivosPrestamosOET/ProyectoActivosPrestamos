@@ -107,6 +107,10 @@ namespace Local.Controllers
                 }
             }
             ViewBag.Courses = courses;
+            if (courses.Count == 0)
+            {
+                ViewBag.Mensaje0 = "No hay Activos Prestables.";
+            }
         }
 
         private void llenarTablaCategoria(String datepicker, String datepicker1, String dropdownCategoria) {
@@ -156,6 +160,10 @@ namespace Local.Controllers
                 temp.Add(keys[i]);
                 temp.Add(values[i]);
                 courses.Add(temp);
+            }
+            if (keys.Length == 0)
+            {
+                ViewBag.Mensaje2 = "No hay préstamos en estas fechas.";
             }
 
 
@@ -230,6 +238,10 @@ namespace Local.Controllers
                 }
             }
             ViewBag.Courses = courses;
+            if (courses.Count==0)
+            {
+                ViewBag.Mensaje1 = "No hay Activos Prestables con esta categoría.";
+            }
         }
     }
 }
