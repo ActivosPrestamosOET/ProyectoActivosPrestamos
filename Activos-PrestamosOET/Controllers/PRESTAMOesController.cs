@@ -487,7 +487,7 @@ namespace Activos_PrestamosOET.Controllers
 
             var equipo_sol = from o in db.PRESTAMOS
                              from o2 in db.EQUIPO_SOLICITADO
-                             where o.ID == ID
+                             where o.ID == ID && o2.CANTIDAD < 0
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
 
 
