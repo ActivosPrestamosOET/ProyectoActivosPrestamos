@@ -4,6 +4,15 @@
     ViewBag.Title = "Nueva solicitud de préstamo";
 }
 
+@if (ViewBag.Mensaje != null)
+{
+    <div class="alert alert-dismissible alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        @ViewBag.Mensaje
+    </div>
+
+}
+
 <legend><h2>Nueva solicitud de préstamo</h2></legend>
 
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -140,7 +149,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.CED_SOLICITA, "Cédula del solicitante", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-5">
-                        @Html.DropDownList("CED_SOLICITA", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.DropDownList("CED_SOLICITA", null, "Seleccionar", htmlAttributes: new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.CED_SOLICITA, "", new { @class = "text-danger" })
                     </div>
                 </div>
