@@ -244,12 +244,53 @@ namespace Activos_PrestamosOET.Controllers
 
 
             var equipo = new List<List<String>>();
+            int cont = 0;
+
+            /*foreach (var y in cat) {
+                bool existeCat = false;
+                List<String> temp = new List<String>();
+                foreach (var x in equipo_sol)
+                {
+                    if (x.ID == id)
+                    {
+                        if (x.ID == x.ID_EQUIPO)
+                        {
+                            
+                            if (x.TIPO != null)
+                            {
+                                    if ((x.TIPO == y.ID.ToString()))
+                                    {
+                                        existeCat = true;
+                                        temp.Add(y.NOMBRE);
+                                    break;
+                                    }
+                            }
+                            else
+                            {
+                                temp.Add("");
+                            }
+                            if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add("0"); }
+                            equipo.Add(temp);
+                        }
+                    }
+            }
+                if (!existeCat)
+                {
+                    temp.Add(y.NOMBRE);
+                    equipo.Add(temp);
+                    temp.Add("0");
+                    equipo.Add(temp);
+                }
+
+            }*/
             foreach (var x in equipo_sol)
             {
                 if (x.ID == id)
                 {
                     if (x.ID == x.ID_EQUIPO)
                     {
+
+
                         List<String> temp = new List<String>();
                         if (x.TIPO != null)
                         {
@@ -273,17 +314,13 @@ namespace Activos_PrestamosOET.Controllers
 
 
                         if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
+
+                        if (x.CANTAP != 0) { temp.Add(x.CANTAP.ToString()); } else { temp.Add(""); }
                         equipo.Add(temp);
                     }
                 }
             }
-            Random i = new Random();
-            if (i.Next(2) % 2 == 0)
-                ViewBag.Disponible = true;
-            else
-                ViewBag.Disponible = false;
-            ViewBag.Equipo_Solict = equipo;
-
+            //if(equipo.)
             return View(pRESTAMO);
         }
 
@@ -601,7 +638,12 @@ namespace Activos_PrestamosOET.Controllers
                 for (int i = 0; i < Cantidad.Length; i++)
                 {
                     EQUIPO_SOLICITADO equipo = new EQUIPO_SOLICITADO();
-                    equipo.CANTIDAD = Cantidad[i];
+                    if (Cantidad[i] == 0)
+                    {
+                        equipo.CANTIDAD = 0;
+                    } else {
+                        equipo.CANTIDAD = Cantidad[i];
+                    }
                     equipo.TIPO_ACTIVO = traerCategoria( cat[i] );
                     equipo.ID_PRESTAMO = prestamo.ID;
                     db.EQUIPO_SOLICITADO.Add(equipo);
@@ -705,6 +747,58 @@ namespace Activos_PrestamosOET.Controllers
                     {
                         var t = new Tuple<string>(m.USUARIO);
                         ViewBag.Nombre = t.Item1;
+                    }
+                }
+            }
+            /*  -------------------------------------------------------------------------------------------  */
+            var cat = (from ac in db.ACTIVOS
+                       from t in db.TIPOS_ACTIVOS
+                       where ac.PRESTABLE.Equals(true) &&
+                              t.ID.Equals(ac.TIPO_ACTIVOID)
+                       select new { t.NOMBRE, t.ID }).Distinct();
+
+            var equipo_sol = from o in db.PRESTAMOS
+                             from o2 in db.EQUIPO_SOLICITADO
+                             where o.ID == id
+                             select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
+
+
+            var equipo = new List<List<String>>();
+            int cont = 0;
+            foreach (var x in equipo_sol)
+            {
+                if (x.ID == id)
+                {
+                    if (x.ID == x.ID_EQUIPO)
+                    {
+
+
+                        List<String> temp = new List<String>();
+                        if (x.TIPO != null)
+                        {
+                            foreach (var y in cat)
+                            {
+
+                                if (x.TIPO == y.ID.ToString())
+                                {
+
+                                    temp.Add(y.NOMBRE);
+                                    break;
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            temp.Add("");
+
+                        }
+
+
+                        if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
+
+                        if (x.CANTAP != 0) { temp.Add(x.CANTAP.ToString()); } else { temp.Add(""); }
+                        equipo.Add(temp);
                     }
                 }
             }
