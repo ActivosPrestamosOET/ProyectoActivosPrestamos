@@ -488,7 +488,7 @@ namespace Activos_PrestamosOET.Controllers
 
             var equipo_sol = from o in db.PRESTAMOS
                              from o2 in db.EQUIPO_SOLICITADO
-                             where o.ID == ID && o2.CANTIDAD < 0
+                             where o.ID == ID && o2.CANTIDAD > 0
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
 
 
@@ -533,7 +533,7 @@ namespace Activos_PrestamosOET.Controllers
 
             if (b == "Denegar")
             {
-                
+
                 pRESTAMO.Estado = 3;
                 if (ModelState.IsValid)
                 {
@@ -545,7 +545,7 @@ namespace Activos_PrestamosOET.Controllers
             }
 
 
-            
+
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
                         where o.ID == ID
@@ -610,11 +610,93 @@ namespace Activos_PrestamosOET.Controllers
                 }
             }
 
+
+            var prestamos = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).SingleOrDefault(p => p.ID == ID);
+            DateTime dt = prestamos.FECHA_RETIRO.Value;
+            dt = dt.AddDays(prestamos.PERIODO_USO);
+
+            var equip = prestamos.EQUIPO_SOLICITADO.Where(q => q.CANTIDAD > 0);
+            var fechas = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).Where(p => p.FECHA_RETIRO <= prestamos.FECHA_RETIRO && p.ID != ID);
+            Dictionary<string, int> eq = new Dictionary<string, int>();
+            foreach (var f in fechas)
+            {
+                if (f.FECHA_RETIRO.Value.AddDays(f.PERIODO_USO) >= prestamos.FECHA_RETIRO.Value)
+                {
+                    var equip2 = f.EQUIPO_SOLICITADO.Where(q => q.CANTIDAD > 0);
+                    foreach (var e in equip2)
+                    {
+                        foreach (var pp in equip)
+                        {
+                            if (e.TIPO_ACTIVO == pp.TIPO_ACTIVO)
+                            {
+                                if (eq.ContainsKey(pp.TIPO_ACTIVO.ToString()))
+                                {
+                                    int value = Convert.ToInt32(eq[pp.TIPO_ACTIVO.ToString()]);
+                                    value += Convert.ToInt32(e.CANTIDAD);
+                                    eq[pp.TIPO_ACTIVO.ToString()] = value;
+                                }
+                                else
+                                {
+                                    eq.Add(pp.TIPO_ACTIVO.ToString(), int.Parse(e.CANTIDAD.ToString()));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            List<string> disp = new List<string>();
+            foreach (var e in equip)
+            {
+                int tipo = Convert.ToInt32(e.TIPO_ACTIVO);
+                int contador = (from a in db.ACTIVOS
+                                where a.TIPO_ACTIVOID == tipo
+                                select a).Count();
+                int total = 0;
+                if (eq.ContainsKey(e.TIPO_ACTIVO))
+                {
+
+                    total = Convert.ToInt32(e.CANTIDAD) + eq[e.TIPO_ACTIVO];
+                }
+                else
+                {
+                    total = Convert.ToInt32(e.CANTIDAD);
+                }
+                if (total <= contador)
+                {
+                    disp.Add("d");
+                }
+                else
+                {
+                    disp.Add("i");
+                }
+            }
+            int k = 0;
+            foreach (var l in equipo)
+            {
+                l.Add(disp[k]);
+                k++;
+            }
             ViewBag.Equipo_Solict = equipo;
+
+            /*  -------------------------------------------------------------------------------------------  */
+
+            /*
+         	var lista1 = from o in db.PRESTAMOS
+                      	from o2 in db.EQUIPO_SOLICITADO
+                      	where o.ID == o2.ID_PRESTAMO
+                      	select new { EQUIPO_SOLICITADO = o2.TIPO_ACTIVO, EQUIPO_SOLICITADO_CANTIDAD = o2.CANTIDAD };
+         	List<Tuple<string, decimal>> l1 = new List<Tuple<string, decimal>>();
+         	foreach (var m in lista1)
+         	{
+             	var t1 = new Tuple<string, decimal>(m.EQUIPO_SOLICITADO, m.EQUIPO_SOLICITADO_CANTIDAD);
+             	l1.Add(t1);
+         	}
+         	ViewBag.Equipo_Solict = l1;
+         	*/
             return View(pRESTAMO);
         }
 
-             
         /*@if (ViewBag.Disponible)
         {
 
