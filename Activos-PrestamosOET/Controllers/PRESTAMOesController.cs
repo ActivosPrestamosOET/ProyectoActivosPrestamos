@@ -726,37 +726,80 @@ namespace Activos_PrestamosOET.Controllers
                              where (o.ID == id && o2.ID_PRESTAMO == id )
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
 
-
             var equipo = new List<List<String>>();
 
-
+            foreach (var y in cat)
             {
+                bool existeCategoria=false;
+                List<String> temp = new List<String>();
                 foreach (var x in equipo_sol)
                 {
+                    
                     if (x.TIPO != null)
                     {
                         if (x.TIPO == y.ID.ToString())
                         {
 
                             temp.Add(y.NOMBRE);
+                            existeCategoria = true;
+                            if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add("0"); }
+                            if (x.CANTAP != 0) { temp.Add(x.CANTAP.ToString()); } else { temp.Add("0"); }
                             break;
                         }
                     }
                     else
                     {
                         temp.Add("");
+                        temp.Add("");
+                        temp.Add("");
                     }
                 }
+                if (!existeCategoria)
                 {
+                    temp.Add(y.NOMBRE);
+                    temp.Add("0");
+                    temp.Add("0");
+                    
+                }
+                equipo.Add(temp);
+            }
+            ViewBag.Equipo_Solict = equipo;
+            /*   foreach (var x in equipo_sol)
+           {
+               if (x.ID == id)
+               {
+                   if (x.ID == x.ID_EQUIPO)
+                   {
+
+                       List<String> temp = new List<String>();
+                       if (x.TIPO != null)
+                       {
+                           foreach (var y in cat)
+                           {
+
+                               if (x.TIPO == y.ID.ToString())
+                               {
+
+                                   temp.Add(y.NOMBRE);
+                                   break;
+                               }
+
+                           }
+                       }
+                       else
+                       {
+                           temp.Add("");
+
+                       }
 
 
+                       if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
 
-
-
-
-
-
-
+                       if (x.CANTAP != 0) { temp.Add(x.CANTAP.ToString()); } else { temp.Add(""); }
+                       equipo.Add(temp);
+                   }
+               }
+           }*/
 
             return View(pRESTAMO);
         }
@@ -829,6 +872,7 @@ namespace Activos_PrestamosOET.Controllers
 
             var equipo_sol = from o in db.PRESTAMOS
                              from o2 in db.EQUIPO_SOLICITADO
+                             where (o.ID == id && o2.ID_PRESTAMO == id)
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
 
             var equipo = new List<List<String>>();
