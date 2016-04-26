@@ -230,6 +230,60 @@ namespace Activos_PrestamosOET.Controllers
                     }
                 }
             }
+            /*  -------------------------------------------------------------------------------------------  */
+            var cat = (from ac in db.ACTIVOS
+                       from t in db.TIPOS_ACTIVOS
+                       where ac.PRESTABLE.Equals(true) &&
+                              t.ID.Equals(ac.TIPO_ACTIVOID)
+                       select new { t.NOMBRE, t.ID }).Distinct();
+
+            var equipo_sol = from o in db.PRESTAMOS
+                             from o2 in db.EQUIPO_SOLICITADO
+                             where o.ID == id
+                             select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
+
+
+            var equipo = new List<List<String>>();
+            foreach (var x in equipo_sol)
+            {
+                if (x.ID == id)
+                {
+                    if (x.ID == x.ID_EQUIPO)
+                    {
+                        List<String> temp = new List<String>();
+                        if (x.TIPO != null)
+                        {
+                            foreach (var y in cat)
+                            {
+
+                                if (x.TIPO == y.ID.ToString())
+                                {
+
+                                    temp.Add(y.NOMBRE);
+                                    break;
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            temp.Add("");
+
+                        }
+
+
+                        if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
+                        equipo.Add(temp);
+                    }
+                }
+            }
+            Random i = new Random();
+            if (i.Next(2) % 2 == 0)
+                ViewBag.Disponible = true;
+            else
+                ViewBag.Disponible = false;
+            ViewBag.Equipo_Solict = equipo;
+
             return View(pRESTAMO);
         }
 
