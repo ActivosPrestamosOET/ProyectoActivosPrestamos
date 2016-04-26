@@ -166,6 +166,7 @@ namespace Activos_PrestamosOET.Controllers
         {
             CED_SOLICITA = "PITAN0126052014.085230671";
             ViewBag.estado = estado;
+            ViewBag.mensajeConfirmacion = (String) TempData["confirmacion"];
 
             var prestamos = from s in db.PRESTAMOS
                             select s;
@@ -709,7 +710,8 @@ namespace Activos_PrestamosOET.Controllers
                     db.EQUIPO_SOLICITADO.Add(equipo);
                     db.SaveChanges();
                 }
-
+                TempData["confirmacion"] = "La solicitud fue enviada con éxito";
+                TempData.Keep();
                 return RedirectToAction("Historial");
             }
 
