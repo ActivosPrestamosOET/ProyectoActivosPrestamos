@@ -264,6 +264,7 @@ C:\Users\rick9\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bi
 C:\Users\rick9\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache
 C:\Users\rick9\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.dll
 C:\Users\rick9\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.pdb
+<<<<<<< HEAD
 C:\Users\Carolina\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\ApplicationInsights.config
 C:\Users\Carolina\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csc.exe
 C:\Users\Carolina\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
@@ -353,3 +354,6 @@ C:\Users\Carolina\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET
 C:\Users\Carolina\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache
 C:\Users\Carolina\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.dll
 C:\Users\Carolina\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.pdb
+=======
+C:\Users\andre_000\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache
+>>>>>>> origin/master
