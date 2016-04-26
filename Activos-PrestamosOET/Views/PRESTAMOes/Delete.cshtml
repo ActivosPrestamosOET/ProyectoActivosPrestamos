@@ -81,12 +81,24 @@
             <th>
                 Cantidad Solicitada
             </th>
-            <th>
-                Cantidad Aprovada
-            </th>
         </tr>
     </thead>
     <tbody>
+        @if (ViewBag.Equipo_Solict != null)
+        {
+
+            foreach (List<String> s in ViewBag.Equipo_Solict)
+            {
+                <tr>
+                    <td>@s[0] &nbsp;</td>
+                    <td>
+                        @s[1] &nbsp;
+                    </td>
+
+                </tr>
+            }
+        }
+
     </tbody>
 </table>
 <br />
