@@ -265,6 +265,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\colores.png" />
     <Content Include="Content\logo_oet.png" />
     <Content Include="Content\oetblanco.png" />
     <Content Include="Content\PagedList.css" />
