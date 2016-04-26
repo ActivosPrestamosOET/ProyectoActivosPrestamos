@@ -711,9 +711,6 @@ namespace Activos_PrestamosOET.Controllers
                 }
             }
 
-
-
-
             /*  -------------------------------------------------------------------------------------------  */
             var cat = (from ac in db.ACTIVOS
                        from t in db.TIPOS_ACTIVOS
@@ -764,43 +761,6 @@ namespace Activos_PrestamosOET.Controllers
                 equipo.Add(temp);
             }
             ViewBag.Equipo_Solict = equipo;
-            /*   foreach (var x in equipo_sol)
-           {
-               if (x.ID == id)
-               {
-                   if (x.ID == x.ID_EQUIPO)
-                   {
-
-                       List<String> temp = new List<String>();
-                       if (x.TIPO != null)
-                       {
-                           foreach (var y in cat)
-                           {
-
-                               if (x.TIPO == y.ID.ToString())
-                               {
-
-                                   temp.Add(y.NOMBRE);
-                                   break;
-                               }
-
-                           }
-                       }
-                       else
-                       {
-                           temp.Add("");
-
-                       }
-
-
-                       if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
-
-                       if (x.CANTAP != 0) { temp.Add(x.CANTAP.ToString()); } else { temp.Add(""); }
-                       equipo.Add(temp);
-                   }
-               }
-           }*/
-
             return View(pRESTAMO);
         }
 
