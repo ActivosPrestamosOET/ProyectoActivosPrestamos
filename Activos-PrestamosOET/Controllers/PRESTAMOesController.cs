@@ -33,6 +33,22 @@ namespace Activos_PrestamosOET.Controllers
             + consecutivo.ToString("D3");
         }
 
+        protected String traerCategoria( String tipo )
+        {
+            var consultaCat = from t in db.TIPOS_ACTIVOS
+                      where t.NOMBRE.Equals(tipo)
+                      select t.ID;
+
+            List<String> categorias = new List<String>();
+
+            foreach (int c in consultaCat)
+            {
+                categorias.Add(c.ToString());
+            }
+            String cat = categorias[0];
+
+            return cat;
+        }
 
         // GET: PRESTAMOes
         public ActionResult Index(string sortOrder, string currentFilter, string fechaSolicitud, string fechaRetiro, string estado, int? page)
@@ -495,6 +511,7 @@ namespace Activos_PrestamosOET.Controllers
 
             ViewData["categorias"] = categorias;
             TempData["categorias"] = categorias;
+            TempData.Keep();
 
             return View();
         }
@@ -504,14 +521,13 @@ namespace Activos_PrestamosOET.Controllers
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,CED_SOLICITA,CED_APRUEBA")] PRESTAMO p, int[] Cantidad)
+        public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,CED_SOLICITA,CED_APRUEBA")] PRESTAMO p, int[] Cantidad, String[] Categoria)
         {
             //p.FECHA_RETIRO
             PRESTAMO prestamo = new PRESTAMO();
             var allErrors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
-                //P.ID = p.ID;
                 prestamo.ID = generarID();
                 prestamo.MOTIVO = p.MOTIVO;
                 prestamo.OBSERVACIONES_APROBADO = "";
@@ -527,11 +543,12 @@ namespace Activos_PrestamosOET.Controllers
                 prestamo.Estado = 1;
                 db.PRESTAMOS.Add(prestamo);
                 db.SaveChanges();
-                foreach (int c in Cantidad)
+                List<String> cat = (List<String>) TempData["categorias"];
+                for (int i = 0; i < Cantidad.Length; i++)
                 {
                     EQUIPO_SOLICITADO equipo = new EQUIPO_SOLICITADO();
-                    equipo.CANTIDAD = c;
-                    equipo.TIPO_ACTIVO = "13";
+                    equipo.CANTIDAD = Cantidad[i];
+                    equipo.TIPO_ACTIVO = traerCategoria( cat[i] );
                     equipo.ID_PRESTAMO = prestamo.ID;
                     db.EQUIPO_SOLICITADO.Add(equipo);
                     db.SaveChanges();
