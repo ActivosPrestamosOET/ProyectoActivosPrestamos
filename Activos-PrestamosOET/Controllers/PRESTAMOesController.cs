@@ -201,13 +201,12 @@ namespace Activos_PrestamosOET.Controllers
         // GET: PRESTAMOes/Detalles
         public ActionResult Detalles(string id)
         {
-            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
-            ViewBag.fechSol = viewBagFechaSolicitada(pRESTAMO.FECHA_SOLICITUD.Value.Date);
+            // ViewBag.clear();
 
             if (pRESTAMO == null)
             {
@@ -230,7 +229,7 @@ namespace Activos_PrestamosOET.Controllers
                     }
                 }
             }
-            /*  -------------------------------------------------------------------------------------------  */
+
             var cat = (from ac in db.ACTIVOS
                        from t in db.TIPOS_ACTIVOS
                        where ac.PRESTABLE.Equals(true) &&
@@ -242,85 +241,37 @@ namespace Activos_PrestamosOET.Controllers
                              where o.ID == id
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
 
-
             var equipo = new List<List<String>>();
-            int cont = 0;
-
-            /*foreach (var y in cat) {
-                bool existeCat = false;
-                List<String> temp = new List<String>();
-                foreach (var x in equipo_sol)
-                {
-                    if (x.ID == id)
-                    {
-                        if (x.ID == x.ID_EQUIPO)
-                        {
-                            
-                            if (x.TIPO != null)
-                            {
-                                    if ((x.TIPO == y.ID.ToString()))
-                                    {
-                                        existeCat = true;
-                                        temp.Add(y.NOMBRE);
-                                    break;
-                                    }
-                            }
-                            else
-                            {
-                                temp.Add("");
-                            }
-                            if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add("0"); }
-                            equipo.Add(temp);
-                        }
-                    }
-            }
-                if (!existeCat)
-                {
-                    temp.Add(y.NOMBRE);
-                    equipo.Add(temp);
-                    temp.Add("0");
-                    equipo.Add(temp);
-                }
-
-            }*/
             foreach (var x in equipo_sol)
             {
                 if (x.ID == id)
                 {
                     if (x.ID == x.ID_EQUIPO)
                     {
-
-
                         List<String> temp = new List<String>();
                         if (x.TIPO != null)
                         {
                             foreach (var y in cat)
                             {
-
                                 if (x.TIPO == y.ID.ToString())
                                 {
-
                                     temp.Add(y.NOMBRE);
                                     break;
                                 }
-
                             }
                         }
                         else
                         {
                             temp.Add("");
-
                         }
 
-
-                        if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
-
-                        if (x.CANTAP != 0) { temp.Add(x.CANTAP.ToString()); } else { temp.Add(""); }
+                        if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add("0"); }
+                        if (x.CANTAP != 0) { temp.Add(x.CANTAP.ToString()); } else { temp.Add("0"); }
                         equipo.Add(temp);
                     }
                 }
             }
-            //if(equipo.)
+            ViewBag.Equipo_Solict = equipo;
             return View(pRESTAMO);
         }
 
@@ -607,7 +558,17 @@ namespace Activos_PrestamosOET.Controllers
             return View();
         }
 
+        public long calcularNumBoleta()
+        {
+            var prestamos = from s in db.PRESTAMOS
+                            select s;
+            prestamos = prestamos.OrderBy(s => s.NUMERO_BOLETA);
+            
+            List<PRESTAMO> u = prestamos.ToList();
+            PRESTAMO ultimo = u.First<PRESTAMO>();
 
+            return ultimo.NUMERO_BOLETA.GetValueOrDefault() + 1;
+        }
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -621,6 +582,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 prestamo.ID = generarID();
                 prestamo.MOTIVO = p.MOTIVO;
+                prestamo.NUMERO_BOLETA = calcularNumBoleta();
                 prestamo.OBSERVACIONES_APROBADO = "";
                 prestamo.OBSERVACIONES_RECIBIDO = "";
                 prestamo.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
@@ -689,6 +651,94 @@ namespace Activos_PrestamosOET.Controllers
                     }
                 }
             }
+
+
+
+
+            /*  -------------------------------------------------------------------------------------------  */
+            var cat = (from ac in db.ACTIVOS
+                       from t in db.TIPOS_ACTIVOS
+                       where ac.PRESTABLE.Equals(true) &&
+                              t.ID.Equals(ac.TIPO_ACTIVOID)
+                       select new { t.NOMBRE, t.ID }).Distinct();
+
+            var equipo_sol = from o in db.PRESTAMOS
+                             from o2 in db.EQUIPO_SOLICITADO
+                             where o.ID == id
+                             select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
+
+
+            var equipo = new List<List<String>>();
+
+
+            /*foreach (var y in cat)
+            {
+                foreach (var x in equipo_sol)
+                {
+                    List<String> temp = new List<String>();
+                    if (x.TIPO != null)
+                    {
+
+
+                        if (x.TIPO == y.ID.ToString())
+                        {
+
+                            temp.Add(y.NOMBRE);
+                            break;
+                        }
+
+
+                    }
+                    else
+                    {
+                        temp.Add("");
+
+                    }
+                    if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add("0"); }
+
+                    if (x.CANTAP != 0) { temp.Add(x.CANTAP.ToString()); } else { temp.Add("0"); }
+                    equipo.Add(temp);
+                }
+
+            }*/
+                foreach (var x in equipo_sol)
+            {
+                if (x.ID == id)
+                {
+                    if (x.ID == x.ID_EQUIPO)
+                    {
+
+
+                        List<String> temp = new List<String>();
+                        if (x.TIPO != null)
+                        {
+                            foreach (var y in cat)
+                            {
+
+                                if (x.TIPO == y.ID.ToString())
+                                {
+
+                                    temp.Add(y.NOMBRE);
+                                    break;
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            temp.Add("");
+
+                        }
+
+
+                        if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
+
+                        if (x.CANTAP != 0) { temp.Add(x.CANTAP.ToString()); } else { temp.Add(""); }
+                        equipo.Add(temp);
+                    }
+                }
+            }
+
             return View(pRESTAMO);
         }
 
@@ -728,7 +778,8 @@ namespace Activos_PrestamosOET.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
-            ViewBag.fechSol = viewBagFechaSolicitada(pRESTAMO.FECHA_SOLICITUD.Value.Date);
+            // ViewBag.clear();
+
             if (pRESTAMO == null)
             {
                 return HttpNotFound();
@@ -750,7 +801,7 @@ namespace Activos_PrestamosOET.Controllers
                     }
                 }
             }
-            /*  -------------------------------------------------------------------------------------------  */
+
             var cat = (from ac in db.ACTIVOS
                        from t in db.TIPOS_ACTIVOS
                        where ac.PRESTABLE.Equals(true) &&
@@ -762,46 +813,37 @@ namespace Activos_PrestamosOET.Controllers
                              where o.ID == id
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
 
-
             var equipo = new List<List<String>>();
-            int cont = 0;
             foreach (var x in equipo_sol)
             {
                 if (x.ID == id)
                 {
                     if (x.ID == x.ID_EQUIPO)
                     {
-
-
                         List<String> temp = new List<String>();
                         if (x.TIPO != null)
                         {
                             foreach (var y in cat)
                             {
-
                                 if (x.TIPO == y.ID.ToString())
                                 {
-
                                     temp.Add(y.NOMBRE);
                                     break;
                                 }
-
                             }
                         }
                         else
                         {
                             temp.Add("");
-
                         }
 
-
-                        if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
-
-                        if (x.CANTAP != 0) { temp.Add(x.CANTAP.ToString()); } else { temp.Add(""); }
+                        if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add("0"); }
+                        if (x.CANTAP != 0) { temp.Add(x.CANTAP.ToString()); } else { temp.Add("0"); }
                         equipo.Add(temp);
                     }
                 }
             }
+            ViewBag.Equipo_Solict = equipo;
             return View(pRESTAMO);
         }
         // POST: PRESTAMOes/Delete/5

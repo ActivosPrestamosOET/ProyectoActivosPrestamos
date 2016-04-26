@@ -128,7 +128,24 @@
                     </th>
                 </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+                @if (ViewBag.Equipo_Solict != null)
+                {
+
+                    foreach (List<String> s in ViewBag.Equipo_Solict)
+                    {
+                        <tr>
+                            <td>@s[0] &nbsp;</td>
+                            <td>@s[1] &nbsp;</td>
+                            <td>
+                                @Html.TextBox("cantidad_aprobada", @s[2], null, new { @class = "form-control col-md-2", @type = "number", @min = "0" })
+                            </td>
+
+                        </tr>
+                    }
+                }
+
+            </tbody>
         </table>
         <br />
         <br />
