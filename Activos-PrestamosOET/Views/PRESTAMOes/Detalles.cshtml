@@ -4,72 +4,82 @@
     ViewBag.Title = "Detalles";
 }
 
-<h2>Detalles de la Solicitud</h2>
+<div>
+    @Html.ActionLink("Regresar al Historial", "Historial", null, null, new { @class = "btn btn-default" })
+</div>
 
-<hr />
+<legend><h2>Detalles de la Solicitud</h2></legend>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("[id$=A3]").addClass("active");
+    });
+</script>
 
 
-<div class="container">
-    <div class="row">
+<div class="panel panel-default">
+    <div class="panel-body">
+        <div class="container">
+            <div class="row">
+                <br />
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.NUMERO_BOLETA):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DisplayFor(model => model.NUMERO_BOLETA)
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_SOLICITUD):</label>
+                </div>
+                <div class="col-md-4">
+                    <!--Html.DisplayFor(model => model.FECHA_SOLICITUD)-->
+                    @ViewBag.fechSol
+                </div>
 
+                <br />
+                <br />
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">Solicitante:</label>
+                </div>
+                <div class="col-md-4">
+                    @ViewBag.Nombre
+                    <!--ViewBag.Nombre-->
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_RETIRO):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DisplayFor(model => model.FECHA_RETIRO)
+                </div>
+                <br />
+                <br />
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.MOTIVO):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DisplayFor(model => model.MOTIVO)
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.PERIODO_USO):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DisplayFor(model => model.PERIODO_USO)
+                </div>
+                <br />
+                <br />
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.SIGLA_CURSO):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DisplayFor(model => model.SIGLA_CURSO)
+                </div>
+                <br />
 
-        <div class="col-md-2">
-            <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.NUMERO_BOLETA):</label>
+            </div>
         </div>
-        <div class="col-md-4">
-            @Html.DisplayFor(model => model.NUMERO_BOLETA)
-        </div>
-        <div class="col-md-2">
-            <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_SOLICITUD):</label>
-        </div>
-        <div class="col-md-4">
-            <!--Html.DisplayFor(model => model.FECHA_SOLICITUD)-->
-            @ViewBag.fechSol
-        </div>
-
-        <br />
-        <br />
-        <div class="col-md-2">
-            <label class="control-label" for="inputDefault">Solicitante:</label>
-        </div>
-        <div class="col-md-4">
-            @ViewBag.Nombre
-            <!--ViewBag.Nombre-->
-        </div>
-        <div class="col-md-2">
-            <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_RETIRO):</label>
-        </div>
-        <div class="col-md-4">
-            @Html.DisplayFor(model => model.FECHA_RETIRO)
-        </div>
-        <br />
-        <br />
-        <div class="col-md-2">
-            <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.MOTIVO):</label>
-        </div>
-        <div class="col-md-4">
-            @Html.DisplayFor(model => model.MOTIVO)
-        </div>
-        <div class="col-md-2">
-            <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.PERIODO_USO):</label>
-        </div>
-        <div class="col-md-4">
-            @Html.DisplayFor(model => model.PERIODO_USO)
-        </div>
-        <br />
-        <br />
-        <div class="col-md-2">
-            <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.SIGLA_CURSO):</label>
-        </div>
-        <div class="col-md-4">
-            @Html.DisplayFor(model => model.SIGLA_CURSO)
-        </div>
-        <br />
-        <br />
     </div>
 </div>
-<br />
-<br />
+
 <table class="table" style="margin-top:20px">
     <thead>
         <tr>
@@ -89,64 +99,64 @@
 </table>
 <br />
 <br />
-<div class="form-group">
-    <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO):</label>
-    <div class="col-lg-10">
-        @Html.DisplayFor(model => model.SOFTWARE_REQUERIDO)
+
+<div class="panel panel-default">
+    <div class="panel-body">
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO):</label>
+            <div class="col-lg-10">
+                @Html.DisplayFor(model => model.SOFTWARE_REQUERIDO)
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.OBSERVACIONES_SOLICITANTE):</label>
+            <div class="col-lg-10">
+                @Html.DisplayFor(model => model.OBSERVACIONES_SOLICITANTE)
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.OBSERVACIONES_APROBADO):</label>
+            <div class="col-lg-10">
+                @Html.DisplayFor(model => model.OBSERVACIONES_APROBADO)
+            </div>
+        </div>
     </div>
 </div>
-<br />
-<br />
-<div class="form-group">
-    <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.OBSERVACIONES_SOLICITANTE):</label>
-    <div class="col-lg-10">
-        @Html.DisplayFor(model => model.OBSERVACIONES_SOLICITANTE)
-    </div>
-</div>
-<br />
-<br />
-<div class="form-group">
-    <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.OBSERVACIONES_APROBADO):</label>
-    <div class="col-lg-10">
-        @Html.DisplayFor(model => model.OBSERVACIONES_APROBADO)
-    </div>
-</div>
-<br />
-<br />
 
 
 @if (Model.FECHA_RETIRO >= System.DateTimeOffset.Now.Date)
 {
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            @Html.ActionLink("Editar", "Edit", new { id = Model.ID }, new { @class = "btn btn-default" })
-            @Html.ActionLink("Cancelar solicitud", "Delete", new { id = Model.ID }, new { @class = "btn btn-default" })
+        <div class="col-md-offset-9 col-md-12">
+            @Html.ActionLink("Editar", "Edit", new { id = Model.ID }, new { @class = "btn btn-success" })
+            @Html.ActionLink("Cancelar solicitud", "Delete", new { id = Model.ID }, new { @class = "btn btn-danger" })
         </div>
     </div>
+
 }
 else if (Model.Estado == 6)
 {
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <p>Esta solicitud ya no puede ser editada debido a que esta cancelada.</p>
-        </div>
+                  <div class="alert alert-dismissible alert-danger">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                Esta solicitud ya no puede ser editada debido a que esta cancelada
+            </div>
     </div>
 }
 else
 {
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <p>Esta solicitud ya no puede ser editada ni cancelada debido a que ya paso su fecha de retiro.</p>
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            Esta solicitud ya no puede ser editada ni cancelada debido a que ya paso su fecha de retiro.
         </div>
     </div>
 }
 
 
-<div class="form-group">
-    <dl class="dl-horizontal">
-        <div>
-            <p>
-                @Html.ActionLink("Volver al Historial", "Historial")
-            </p>
-        </div>
-</div>
+
