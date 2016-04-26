@@ -20,6 +20,12 @@
     });
 </script>
 
+<script>
+$(document).ready(function(){
+    $('[data-toggle="popover"]').popover();
+
+});
+</script>
 
 @using (Html.BeginForm("Historial", "PRESTAMOes", FormMethod.Get))
 {
@@ -201,8 +207,13 @@
     }
 
 </table>
-<br />
 
+<div class="col-md-offset-9 col-md-12">
+
+    <button type="button" data-trigger="focus" class="btn btn-default" data-container="body" data-toggle="popover" data-placement="top" data-html="true" data-content="Rojo: Pendiente <br>Verde: Aceptado <br>Blanco: Denegado <br>Amarillo: Abierta <br>Azul: Cerrada <br>Gris: Cancelada" data-original-title="" title="¿Qué significan los colores?">¿Qué significan los colores?</button>
+
+    <br />
+</div>
 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
 @Html.PagedListPager(Model, page => Url.Action("Historial",
