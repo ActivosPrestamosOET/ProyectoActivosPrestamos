@@ -133,20 +133,27 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+    <!--                    <div id="Botones_aceptar_cancelar" class="col-md-offset-9 col-md-12">
 
+                        <input type="submit" name="b" value="Aceptar" class="btn btn-success" />
+
+                        <input type="submit" name="b" value="Denegar" class="btn btn-danger" />
+
+                    </div>-->
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="Cancelar" class="btn btn-default" />
+        <div class="col-md-offset-9 col-md-12">
+            <input type="submit" value="Si" class="btn btn-success" />
+            <input type="submit" value="No" class="btn btn-danger" />
         </div>
     </div>
-        <div class="form-group">
-            <dl class="dl-horizontal">
-                <div>
-                    <p>
-                        @Html.ActionLink("Volver al Historial", "Historial")
-                    </p>
-                </div>
-        </div>
+    <div class="form-group">
+        <dl class="dl-horizontal">
+            <div>
+                <p>
+                    @Html.ActionLink("Volver al Historial", "Historial")
+                </p>
+            </div>
+    </div>
 }
 
 
