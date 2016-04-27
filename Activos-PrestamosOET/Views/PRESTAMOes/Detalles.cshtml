@@ -90,6 +90,12 @@
             <th>
                 Cantidad Solicitada
             </th>
+            @if (Model.Estado > 1)
+            {
+                <th>
+                    Cantidad Aprobada
+                </th>
+            }
         </tr>
     </thead>
     <tbody>
@@ -101,7 +107,14 @@
                 <tr>
                     <td>@s[0] &nbsp;</td>
                     <td>@s[1] &nbsp;</td>
+                    @if (Model.Estado > 1)
+                    {
+                        <td>
+                            @s[2] &nbsp;
+                        </td>
+                    }
                 </tr>
+
             }
         }
 

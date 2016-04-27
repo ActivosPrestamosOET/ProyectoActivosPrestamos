@@ -235,39 +235,7 @@ namespace Activos_PrestamosOET.Controllers
                              from o2 in db.EQUIPO_SOLICITADO
                              where (o.ID == id && o2.ID_PRESTAMO == id)
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
-            /*
-            var equipo = new List<List<String>>();
-            foreach (var x in equipo_sol)
-            {
-                if (x.ID == id)
-                {
-                    if (x.ID == x.ID_EQUIPO)
-                    {
-                        List<String> temp = new List<String>();
-                        if (x.TIPO != null)
-                        {
-                            foreach (var y in cat)
-                            {
-                                if (x.TIPO == y.ID.ToString())
-                                {
-                                    temp.Add(y.NOMBRE);
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            temp.Add("");
-                        }
 
-                        if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add("0"); }
-                        if (x.CANTAP != 0) { temp.Add(x.CANTAP.ToString()); } else { temp.Add("0"); }
-                        equipo.Add(temp);
-                    }
-                }
-            }
-            ViewBag.Equipo_Solict = equipo;
-            */
             var equipo = new List<List<String>>();
 
             foreach (var y in cat)
@@ -778,7 +746,8 @@ namespace Activos_PrestamosOET.Controllers
                     if (Cantidad[i] == 0)
                     {
                         equipo.CANTIDAD = 0;
-                    } else {
+                    } else
+                    {
                         equipo.CANTIDAD = Cantidad[i];
                     }
                     equipo.TIPO_ACTIVO = traerCategoria( cat[i] );
