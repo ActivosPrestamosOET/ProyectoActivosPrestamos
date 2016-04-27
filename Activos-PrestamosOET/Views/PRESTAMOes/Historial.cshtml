@@ -78,13 +78,16 @@ $(document).ready(function(){
             <label class="control-label" for="inputDefault">Número de boleta</label>
         </th>
         <th>
-            <label class="control-label" for="inputDefault">Fecha de solicitud</label>
+            <label class="control-label" for="inputDefault">Solicitud</label>
         </th>
         <th>
-            <label class="control-label" for="inputDefault">Fecha de inicio del préstamo</label>
+            <label class="control-label" for="inputDefault">Inicio</label>
         </th>
         <th>
             <label class="control-label" for="inputDefault">Periodo del préstamo</label>
+        </th>
+        <th>
+            <label class="control-label" for="inputDefault">Estado</label>
         </th>
 
 
@@ -111,6 +114,9 @@ $(document).ready(function(){
                         @Html.DisplayFor(modelItem => item.PERIODO_USO)
                     </td>
                     <td>
+                        @Html.DisplayFor(modelItem => item.Estado)
+                    </td>
+                    <td>
                         @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
                     </td>
                 </tr>
@@ -128,6 +134,9 @@ $(document).ready(function(){
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.PERIODO_USO)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estado)
                         </td>
                         <td>
                             @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
@@ -149,6 +158,9 @@ $(document).ready(function(){
                             @Html.DisplayFor(modelItem => item.PERIODO_USO)
                         </td>
                         <td>
+                            @Html.DisplayFor(modelItem => item.Estado)
+                        </td>
+                        <td>
                             @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
                         </td>
                     </tr>
@@ -168,6 +180,9 @@ $(document).ready(function(){
                             @Html.DisplayFor(modelItem => item.PERIODO_USO)
                         </td>
                         <td>
+                            @Html.DisplayFor(modelItem => item.Estado)
+                        </td>
+                        <td>
                             @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
                         </td>
                     </tr>
@@ -185,7 +200,9 @@ $(document).ready(function(){
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.PERIODO_USO)
-
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estado)
                         </td>
                         <td>
                             @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
@@ -205,6 +222,9 @@ $(document).ready(function(){
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.PERIODO_USO)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Estado)
                         </td>
                         <td>
                             @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })

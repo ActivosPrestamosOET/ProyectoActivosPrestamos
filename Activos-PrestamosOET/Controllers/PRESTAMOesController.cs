@@ -175,41 +175,11 @@ namespace Activos_PrestamosOET.Controllers
             } else {
                 est = int.Parse(estado);
             }
-            if (!string.IsNullOrEmpty(estado) && estado != "0" /*&& estado != "6"*/)
+            if (!string.IsNullOrEmpty(estado) && estado != "0" )
             {
-                //prestamos = prestamos.Where(model => model.Estado != 6);
                 var int16 = Convert.ToInt16(est);
                 prestamos = prestamos.Where(model => model.Estado == int16);
-            } /* else if (estado =="6")
-            {
-                prestamos = prestamos.Where(model => model.Estado == 6);
-            }*/
-            /*else
-            {
-                prestamos = prestamos.Where(model => model.Estado != 6);
-            }*/
-            //var p = prestamos.Where(model => model.CED_SOLICITA == CED_SOLICITA);
-            /*
-             if (!string.IsNullOrEmpty(estado) && estado != "0")
-             {
-                 int est = int.Parse(estado);
-                 var int16 = Convert.ToInt16(est);
-                 var prestamosFiltrados = p.Where(model => model.Estado == int16);
-                 prestamosFiltrados = prestamosFiltrados.OrderByDescending(s => s.FECHA_SOLICITUD);
-                 int pageSize1 = 5;
-                 int pageNumber1 = (page ?? 1);
-                 return View(prestamosFiltrados.ToPagedList(pageNumber1, pageSize1));
-             }
-             else
-             {
-                 var prestamosFiltrados = p.Where(model => model.Estado != 6);
-                 prestamosFiltrados = prestamosFiltrados.OrderByDescending(s => s.FECHA_SOLICITUD);
-                 prestamos = prestamos.OrderByDescending(s => s.FECHA_SOLICITUD);
-                 int pageSize = 5;
-                 int pageNumber = (page ?? 1);
-                 return View(prestamos.ToPagedList(pageNumber, pageSize));
-             }
-         }*/
+            }
             prestamos = prestamos.OrderByDescending(s => s.FECHA_RETIRO);
             int pageSize = 5;
             int pageNumber = (page ?? 1);
