@@ -110,19 +110,25 @@ $(document).ready(function(){
         </th>
 
         <th>
-            @Html.ActionLink("Fecha de solicitud", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
+            @Html.ActionLink("Solicitud", "Index", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
 
         <th>
-            @Html.ActionLink("Fecha de inicio del préstamo", "Index", new { sortOrder = ViewBag.FDateSortParm, currentFilter = ViewBag.CurrentFilter })
+            @Html.ActionLink("Inicio del préstamo", "Index", new { sortOrder = ViewBag.FDateSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
 
         <th>
-            @Html.ActionLink("Periodo del préstamo", "Index", new { sortOrder = ViewBag.PeriodoSortParm, currentFilter = ViewBag.CurrentFilter })
+            @Html.ActionLink("Termina el préstamo", "Index", new { sortOrder = ViewBag.PeriodoSortParm, currentFilter = ViewBag.CurrentFilter })
 
         </th>
         <th>
             @Html.ActionLink("Solicitante", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Estado", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Estado", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
 
         <th></th>
@@ -153,6 +159,9 @@ $(document).ready(function(){
                     <td>
                         @Html.DisplayFor(modelItem => item.USUARIO.NOMBRE)
                     </td>
+                    <td>
+                       <text>Pendiente</text>
+                    </td>
 
                     <td>
                         @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
@@ -180,7 +189,9 @@ $(document).ready(function(){
                     <td>
                         @Html.DisplayFor(modelItem => item.USUARIO.NOMBRE)
                     </td>
-
+                    <td>
+                        <text>Pre-aceptada</text>
+                    </td>
                     <td>
                         @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
                     </td>
@@ -207,7 +218,9 @@ $(document).ready(function(){
                     <td>
                         @Html.DisplayFor(modelItem => item.USUARIO.NOMBRE)
                     </td>
-
+                    <td>
+                        <text>Denegada</text>
+                    </td>
                     <td>
                         @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
                     </td>
@@ -234,7 +247,9 @@ $(document).ready(function(){
                     <td>
                         @Html.DisplayFor(modelItem => item.USUARIO.NOMBRE)
                     </td>
-
+                    <td>
+                        <text>Abierta</text>
+                    </td>
                     <td>
                         @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
                     </td>
@@ -261,7 +276,9 @@ $(document).ready(function(){
                     <td>
                         @Html.DisplayFor(modelItem => item.USUARIO.NOMBRE)
                     </td>
-
+                    <td>
+                        <text>Cerrada</text>
+                    </td>
                     <td>
                         @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
                     </td>
@@ -288,7 +305,9 @@ $(document).ready(function(){
                     <td>
                         @Html.DisplayFor(modelItem => item.USUARIO.NOMBRE)
                     </td>
-
+                    <td>
+                        <text>Cancelada</text>
+                    </td>
                     <td>
                         @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
                     </td>
