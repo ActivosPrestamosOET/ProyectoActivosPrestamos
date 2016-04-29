@@ -865,12 +865,11 @@ namespace Activos_PrestamosOET.Controllers
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
             var cat = (from ac in db.ACTIVOS
                        from t in db.TIPOS_ACTIVOS
-                       where ac.PRESTABLE.Equals(true) &&
-                              t.ID.Equals(ac.TIPO_ACTIVOID)
+                       where ac.PRESTABLE.Equals(true) && t.ID.Equals(ac.TIPO_ACTIVOID)
                        select new { t.NOMBRE, t.ID }).Distinct();
             cat = cat.OrderBy(t => t.NOMBRE);
-            if (b == "Aceptar")
-            {
+         /*   if (b == "Aceptar")
+            {*/
                 int a = 0;
                 foreach (var y in cat)
                 {
@@ -901,11 +900,10 @@ namespace Activos_PrestamosOET.Controllers
                                 decimal temp = cantidad[a];
                                 noEsta = false;
                                 pr.CANTIDAD = temp;
-                                noEsta = false;
+                               // noEsta = false;
                                 if (ModelState.IsValid)
                                 {
                                     db.Entry(pr).State = EntityState.Modified;
-                                    db.SaveChanges();
                                     db.SaveChanges();
                                 }
                             }
@@ -914,7 +912,7 @@ namespace Activos_PrestamosOET.Controllers
                         /* }
                      }*/
                     }
-                    a++;
+
                     if (noEsta)
                     {
                         EQUIPO_SOLICITADO pr = new EQUIPO_SOLICITADO();
@@ -937,11 +935,12 @@ namespace Activos_PrestamosOET.Controllers
                             db.SaveChanges();
                         }*/
                     }
+                    a++;
 
                 }
                 ViewBag.Mensaje = "El préstamo ha sido aprobado con éxito";
 
-            }
+            //}
 
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
@@ -1221,7 +1220,17 @@ namespace Activos_PrestamosOET.Controllers
               db.SaveChanges();
               return RedirectToAction("Historial");
           }*/
-
+        /*
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(string id)
+        {
+            EQUIPO_SOLICITADO eQUIPO_SOLICITADO = db.EQUIPO_SOLICITADO.Find(id);
+            db.EQUIPO_SOLICITADO.Remove(eQUIPO_SOLICITADO);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+         */
         protected override void Dispose(bool disposing)
         {
             if (disposing)
