@@ -144,16 +144,15 @@ $(document).ready(function(){
                         @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
                     </td>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+                    <td>                       
+                        @item.FECHA_SOLICITUD.Value.ToShortDateString()
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                        @item.FECHA_RETIRO.Value.ToShortDateString()
                     </td>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PERIODO_USO)
-
+                    <td>                      
+                        @item.FECHA_RETIRO.Value.AddDays(item.PERIODO_USO).ToShortDateString()
                     </td>
 
                     <td>
@@ -175,20 +174,21 @@ $(document).ready(function(){
                     </td>
 
                     <td>
-                        @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+                        @item.FECHA_SOLICITUD.Value.ToShortDateString()
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                        @item.FECHA_RETIRO.Value.ToShortDateString()
                     </td>
 
                     <td>
-                        @Html.DisplayFor(modelItem => item.PERIODO_USO)
-
+                        @item.FECHA_RETIRO.Value.AddDays(item.PERIODO_USO).ToShortDateString()
                     </td>
 
                     <td>
                         @Html.DisplayFor(modelItem => item.USUARIO.NOMBRE)
                     </td>
+
+                  
                     <td>
                         <text>Pre-aceptada</text>
                     </td>
@@ -204,20 +204,21 @@ $(document).ready(function(){
                     </td>
 
                     <td>
-                        @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+                        @item.FECHA_SOLICITUD.Value.ToShortDateString()
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                        @item.FECHA_RETIRO.Value.ToShortDateString()
                     </td>
 
                     <td>
-                        @Html.DisplayFor(modelItem => item.PERIODO_USO)
-
+                        @item.FECHA_RETIRO.Value.AddDays(item.PERIODO_USO).ToShortDateString()
                     </td>
 
                     <td>
                         @Html.DisplayFor(modelItem => item.USUARIO.NOMBRE)
                     </td>
+
+                 
                     <td>
                         <text>Denegada</text>
                     </td>
@@ -233,20 +234,21 @@ $(document).ready(function(){
                     </td>
 
                     <td>
-                        @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+                        @item.FECHA_SOLICITUD.Value.ToShortDateString()
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                        @item.FECHA_RETIRO.Value.ToShortDateString()
                     </td>
 
                     <td>
-                        @Html.DisplayFor(modelItem => item.PERIODO_USO)
-
+                        @item.FECHA_RETIRO.Value.AddDays(item.PERIODO_USO).ToShortDateString()
                     </td>
 
                     <td>
                         @Html.DisplayFor(modelItem => item.USUARIO.NOMBRE)
                     </td>
+
+                  
                     <td>
                         <text>Abierta</text>
                     </td>
@@ -262,20 +264,21 @@ $(document).ready(function(){
                     </td>
 
                     <td>
-                        @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+                        @item.FECHA_SOLICITUD.Value.ToShortDateString()
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                        @item.FECHA_RETIRO.Value.ToShortDateString()
                     </td>
 
                     <td>
-                        @Html.DisplayFor(modelItem => item.PERIODO_USO)
-
+                        @item.FECHA_RETIRO.Value.AddDays(item.PERIODO_USO).ToShortDateString()
                     </td>
 
                     <td>
                         @Html.DisplayFor(modelItem => item.USUARIO.NOMBRE)
                     </td>
+
+              
                     <td>
                         <text>Cerrada</text>
                     </td>
@@ -291,20 +294,21 @@ $(document).ready(function(){
                     </td>
 
                     <td>
-                        @Html.DisplayFor(modelItem => item.FECHA_SOLICITUD)
+                        @item.FECHA_SOLICITUD.Value.ToShortDateString()
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                        @item.FECHA_RETIRO.Value.ToShortDateString()
                     </td>
 
                     <td>
-                        @Html.DisplayFor(modelItem => item.PERIODO_USO)
-
+                        @item.FECHA_RETIRO.Value.AddDays(item.PERIODO_USO).ToShortDateString()
                     </td>
 
                     <td>
                         @Html.DisplayFor(modelItem => item.USUARIO.NOMBRE)
                     </td>
+
+          
                     <td>
                         <text>Cancelada</text>
                     </td>
