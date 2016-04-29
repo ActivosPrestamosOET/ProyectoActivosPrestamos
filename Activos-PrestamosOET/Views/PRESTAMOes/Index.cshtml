@@ -57,25 +57,18 @@ $(document).ready(function(){
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="form-group">
-                <label class="col-lg-2 control-label" for="inputDefault">Fecha de Solicitud</label>
-                <div class="col-lg-4">
+                <label class="col-lg-1 control-label p" for="inputDefault">Fecha de Solicitud</label>
+                <div class="col-lg-3">
                     @Html.TextBox("fechaSolicitud", ViewBag.CurrentFilter as string, new { @class = "form-control date-picker" })
-                </div>
-            </div>
-            <br />
-            <br />
-            <div class="form-group">
-                <label class="col-lg-2 control-label" for="inputDefault">Fecha de Retiro</label>
-                <div class="col-lg-4">
-                    @Html.TextBox("fechaRetiro", ViewBag.CurrentFilter as string, new { @class = "form-control date-picker" })
-                </div>
-            </div>
-            <br />
-            <br />
-            <fieldset>
-                <label for="textArea" class="col-lg-2 control-label">Estado </label>
-                <div class="col-lg-4">
-                    @Html.DropDownList("estado", new SelectList(
+                </div>                              
+                    <label class="col-lg-1 control-label" for="inputDefault">Fecha de Retiro</label>
+                    <div class="col-lg-3">
+                        @Html.TextBox("fechaRetiro", ViewBag.CurrentFilter as string, new { @class = "form-control date-picker" })
+                    </div>
+         
+                    <label for="textArea" class="col-lg-1 control-label">Estado </label>
+                    <div class="col-lg-3">
+                        @Html.DropDownList("estado", new SelectList(
                   new List<Object>{
                        new { text = "Todos", value = "0"},
                        new { Text = "Pendiente", Value = "1" },
@@ -88,13 +81,15 @@ $(document).ready(function(){
                   "value",
                   "text",
                    0), new { @class = "form-control" })
-                </div>
-            </fieldset>
+                    </div>
+               
+                </div>    
             <br />
-            
-            <div class="col-md-3">
+            <br />
+            <br />
+            <div>
                 <input type="submit" value="Buscar" class="btn btn-default" />
-            </div>
+                </div>                                                            
 
         </div>
     </div>
@@ -306,9 +301,7 @@ $(document).ready(function(){
 
                     <td>
                         @Html.DisplayFor(modelItem => item.USUARIO.NOMBRE)
-                    </td>
-
-          
+                    </td>          
                     <td>
                         <text>Cancelada</text>
                     </td>
