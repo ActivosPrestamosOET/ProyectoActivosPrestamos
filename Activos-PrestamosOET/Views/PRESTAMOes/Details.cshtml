@@ -98,88 +98,120 @@
                 </div>
                 <div class="col-md-4">
                     @Html.DisplayFor(model => model.Estado)
+@*
+    @switch (@(Model.Estado))
+    {
+        case "1":
+    <text>Pendiente</text>
+    break;
+    case "2":
+    <text>Aprobada</text>
+    break;
+    case "3":
+    <text>Denegada</text>
+    break;
+    case "4":
+    <text>Abierta</text>
+    break;
+    case "5":
+    <text>Cerrada</text>
+    break;
+    case "6":
+    <text>Cancelada</text>
+    break;
+    }
+*@
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-@using (Html.BeginForm("Details", "PRESTAMOes"))
-{
+    @using (Html.BeginForm("Details", "PRESTAMOes"))
+    {
 
-    @Html.HiddenFor(model => model.ID);
-    <table class="table" style="margin-top:20px">
-        <thead>
-            <tr>
-                <th>
-                    Equipo
-                </th>
+        @Html.HiddenFor(model => model.ID);
+        <table class="table" style="margin-top:20px">
+            <thead>
+                <tr>
+                    <th>
+                        Equipo
+                    </th>
 
-                <th>
-                    Cantidad Solicitada
-                </th>
+                    <th>
+                        Cantidad Solicitada
+                    </th>
 
-                <th  class="col-md-3">
-                    Cantidad Aprobada
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (ViewBag.Equipo_Solict != null)
-            {
-
-                foreach (List<String> s in ViewBag.Equipo_Solict)
+                    <th  class="col-md-3">
+                        Cantidad Aprobada
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.Equipo_Solict != null)
                 {
-                    <tr>
-                        <td>@s[0] &nbsp;</td>
-                        @if (s[3] == "d")
-                        {
-                            <td style="color:green">@s[1] &nbsp;</td>
-                        }
-                        else
-                        {
-                            <td style="color: orangered">@s[1] &nbsp;</td>
-                        }
-                        <td>
-                            @Html.TextBox("cantidad_aprobada", @s[2], null, new { @class = "form-control col-md-2", @type = "number", @min = "0" })
-                        </td>
 
-                    </tr>
+                    foreach (List<String> s in ViewBag.Equipo_Solict)
+                    {
+                        <tr>
+                            <td>@s[0] &nbsp;</td>
+                            @if (s[3] == "d")
+                            {
+                                <td style="color:green">@s[1] &nbsp;</td>
+                            }
+                            else
+                            {
+                                <td style="color: orangered">@s[1] &nbsp;</td>
+                            }
+
+@if (ViewBag.Mensaje2 != null)
+{
+    <td>
+        @Html.TextBox("cantidad_aprobada", @s[2], null, new { @class = "form-control col-md-2", @type = "number", @min = "0", @readonly = "readonly", @disabled = "disabled" })
+    </td>
+}
+else
+{
+<td>
+                                @Html.TextBox("cantidad_aprobada", @s[2], null, new { @class = "form-control col-md-2", @type = "number", @min = "0" })
+                            </td>
+}
+                        </tr>
+                    }
                 }
-            }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
-    <br />
-    <br />
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="form-group">
-                        <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO):</label>
-                        <div class="col-lg-10">
-                            @Html.DisplayFor(model => model.SOFTWARE_REQUERIDO)
+        <br />
+        <br />
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO):</label>
+                            <div class="col-lg-10">
+                                @Html.DisplayFor(model => model.SOFTWARE_REQUERIDO)
+                            </div>
                         </div>
-                    </div>
-                    <br />
-                    <br />
-                    <div class="form-group">
-                        <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.OBSERVACIONES_SOLICITANTE):</label>
-                        <div class="col-lg-10">
-                            @Html.DisplayFor(model => model.OBSERVACIONES_SOLICITANTE)
+                        <br />
+                        <br />
+                        <div class="form-group">
+                            <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.OBSERVACIONES_SOLICITANTE):</label>
+                            <div class="col-lg-10">
+                                @Html.DisplayFor(model => model.OBSERVACIONES_SOLICITANTE)
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-                    <div id="Botones_aceptar_cancelar" class="col-md-offset-9 col-md-12">
+                        <div id="Botones_aceptar_cancelar" class="col-md-offset-9 col-md-12">
 
-                        <input type="submit" name="b" value="Aceptar" class="btn btn-success" />
+                            <input type="submit" name="b" value="Aceptar" class="btn btn-success" />
 
-                        <input type="submit" name="b" value="Denegar" class="btn btn-danger" /> 
+                            <input type="submit" name="b" value="Denegar" class="btn btn-danger" />
 
-                    </div>
+                        </div>
 
-}
+    }
 
 
 
