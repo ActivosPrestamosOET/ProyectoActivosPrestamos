@@ -868,18 +868,12 @@ namespace Activos_PrestamosOET.Controllers
                        where ac.PRESTABLE.Equals(true) && t.ID.Equals(ac.TIPO_ACTIVOID)
                        select new { t.NOMBRE, t.ID }).Distinct();
             cat = cat.OrderBy(t => t.NOMBRE);
-         /*   if (b == "Aceptar")
-            {*/
                 int a = 0;
                 foreach (var y in cat)
                 {
                     bool noEsta = true;
                     foreach (var x in equipo_sol)
                     {
-                        /*if (x.ID == id)
-                        {
-                            if (x.ID == x.ID_EQUIPO)
-                            {*/
                         if (y.NOMBRE == x.TIPO)
                         {
                             EQUIPO_SOLICITADO pr = db.EQUIPO_SOLICITADO.Find(id, x.TIPO, x.CANTIDAD);
@@ -900,7 +894,6 @@ namespace Activos_PrestamosOET.Controllers
                                 decimal temp = cantidad[a];
                                 noEsta = false;
                                 pr.CANTIDAD = temp;
-                               // noEsta = false;
                                 if (ModelState.IsValid)
                                 {
                                     db.Entry(pr).State = EntityState.Modified;
@@ -909,15 +902,13 @@ namespace Activos_PrestamosOET.Controllers
                             }
 
                         }
-                        /* }
-                     }*/
                     }
 
                     if (noEsta)
                     {
                         EQUIPO_SOLICITADO pr = new EQUIPO_SOLICITADO();
                         pr.ID_PRESTAMO = id;
-                        pr.TIPO_ACTIVO = y.NOMBRE;//traerCategoria(cat[a]); ;
+                        pr.TIPO_ACTIVO = y.NOMBRE;
                         pr.CANTIDAD = cantidad[a];
                         if (ModelState.IsValid)
                         {
@@ -939,8 +930,6 @@ namespace Activos_PrestamosOET.Controllers
 
                 }
                 ViewBag.Mensaje = "El préstamo ha sido aprobado con éxito";
-
-            //}
 
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
@@ -974,106 +963,6 @@ namespace Activos_PrestamosOET.Controllers
                 return RedirectToAction("Historial");
             }
 
-            /*
-            var equipo_sol = from o in db.PRESTAMOS
-                             from o2 in db.EQUIPO_SOLICITADO
-                             where (o.ID == id && o2.ID_PRESTAMO == id )
-                             select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
-            var cat = (from ac in db.ACTIVOS
-                       from t in db.TIPOS_ACTIVOS
-                       where ac.PRESTABLE.Equals(true) &&
-                              t.ID.Equals(ac.TIPO_ACTIVOID)
-                       select new { t.NOMBRE, t.ID }).Distinct();
-            cat = cat.OrderBy(t => t.NOMBRE);
-            if (b == "Aceptar")
-            {
-                int a = 0;
-                foreach (var y in cat)
-                {
-                    bool noEsta = true;
-                    foreach (var x in equipo_sol)
-                    {
-                        if (x.ID == id)
-                        {
-                            if (x.ID == x.ID_EQUIPO)
-                            {
-
-                                EQUIPO_SOLICITADO pr = db.EQUIPO_SOLICITADO.Find(id, x.TIPO, x.CANTIDAD);
-                                if (pr == null)
-                                {
-                                    pr = new EQUIPO_SOLICITADO();
-                                    pr.ID_PRESTAMO = id;
-                                    pr.TIPO_ACTIVO = y.NOMBRE;//traerCategoria(cat[a]); ;
-                                    pr.CANTIDAD = cantidad[a];
-                                    if (ModelState.IsValid)
-                                    {
-                                        db.EQUIPO_SOLICITADO.Add(pr);
-                                        db.SaveChanges();
-                                    }
-                                }
-                                else 
-                                {
-                                    decimal temp = cantidad[a];
-
-                                    pr.CANTIDAD = temp;
-                                    noEsta = false;
-                                    if (ModelState.IsValid)
-                                    {
-                                        db.Entry(pr).State = EntityState.Modified;
-                                        db.SaveChanges();
-                                    }
-                                }
-
-
-                                a++;
-                            }
-                        }
-                    }
-                    if (!noEsta)
-                    {
-                        EQUIPO_SOLICITADO pr = new EQUIPO_SOLICITADO();
-                        pr.ID_PRESTAMO = id;
-                        pr.TIPO_ACTIVO = y.NOMBRE;//traerCategoria(cat[a]); ;
-                        pr.CANTIDAD = cantidad[a];
-                        if (ModelState.IsValid)
-                        {
-                            db.EQUIPO_SOLICITADO.Add(pr);
-                            db.SaveChanges();
-                        }
-                        /*EQUIPO_SOLICITADO pr = new EQUIPO_SOLICITADO();
-                        pr.ID_PRESTAMO = id;
-                        pr.TIPO_ACTIVO = y.ID.ToString();
-                        pr.CANTIDAD = cantidad[a];
-                        pr.CANTIDADAPROBADA = 0;
-                        if (ModelState.IsValid)
-                        {
-                            db.EQUIPO_SOLICITADO.Add(pr);
-                            db.SaveChanges();
-                        }* /
-                    }
-
-                }
-                ViewBag.Mensaje = "El préstamo ha sido aprobado con éxito";
-
-            }
-
-            var lista = from o in db.PRESTAMOS
-                        from o2 in db.USUARIOS
-                        where o.ID == id
-                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
-
-            foreach (var m in lista)
-            {
-                if (m.Prestamo.ID == id)
-                {
-                    if (m.Prestamo.CED_SOLICITA == m.CEDULA)
-                    {
-                        var t = new Tuple<string>(m.USUARIO);
-                        ViewBag.Nombre = t.Item1;
-                    }
-                }
-            }
-          */
             return View(P);
         }
 
@@ -1088,7 +977,6 @@ namespace Activos_PrestamosOET.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
-            // ViewBag.clear();
 
             if (pRESTAMO == null)
             {
@@ -1122,39 +1010,7 @@ namespace Activos_PrestamosOET.Controllers
                              from o2 in db.EQUIPO_SOLICITADO
                              where (o.ID == id && o2.ID_PRESTAMO == id)
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
-            /*
-            var equipo = new List<List<String>>();
-            foreach (var x in equipo_sol)
-            {
-                if (x.ID == id)
-                {
-                    if (x.ID == x.ID_EQUIPO)
-                    {
-                        List<String> temp = new List<String>();
-                        if (x.TIPO != null)
-                        {
-                            foreach (var y in cat)
-                            {
-                                if (x.TIPO == y.ID.ToString())
-                                {
-                                    temp.Add(y.NOMBRE);
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            temp.Add("");
-                        }
-
-                        if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add("0"); }
-                        if (x.CANTAP != 0) { temp.Add(x.CANTAP.ToString()); } else { temp.Add("0"); }
-                        equipo.Add(temp);
-                    }
-                }
-            }
-            ViewBag.Equipo_Solict = equipo;
-            */
+            
             var equipo = new List<List<String>>();
 
             foreach (var y in cat)
