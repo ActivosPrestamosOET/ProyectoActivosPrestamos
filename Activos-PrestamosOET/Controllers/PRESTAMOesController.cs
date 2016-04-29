@@ -887,17 +887,34 @@ namespace Activos_PrestamosOET.Controllers
                                 {
                                     db.EQUIPO_SOLICITADO.Add(pr);
                                     db.SaveChanges();
+                                    Console.WriteLine('e');
+                                }
+                                else
+                                {
+                                    Console.WriteLine('a');
                                 }
                             }
                             else
                             {
+                                EQUIPO_SOLICITADO eq = new EQUIPO_SOLICITADO();
+
                                 decimal temp = cantidad[a];
                                 noEsta = false;
-                                pr.CANTIDAD = temp;
+                                eq.ID_PRESTAMO = pr.ID_PRESTAMO;
+                                eq.TIPO_ACTIVO = pr.TIPO_ACTIVO;
+                                eq.CANTIDAD = temp;
+                                eq.CANTIDADAPROBADA = pr.CANTIDADAPROBADA;
+                                db.EQUIPO_SOLICITADO.Remove(pr);
                                 if (ModelState.IsValid)
                                 {
-                                    db.Entry(pr).State = EntityState.Modified;
+                                    //db.Entry(pr).State = EntityState.Modified;
+                                    db.EQUIPO_SOLICITADO.Add(eq);
                                     db.SaveChanges();
+                                    Console.WriteLine('f');
+                                }
+                                else
+                                {
+                                    Console.WriteLine('b');
                                 }
                             }
 
@@ -910,10 +927,16 @@ namespace Activos_PrestamosOET.Controllers
                         pr.ID_PRESTAMO = id;
                         pr.TIPO_ACTIVO = y.NOMBRE;
                         pr.CANTIDAD = cantidad[a];
+                        Console.WriteLine('g');
                         if (ModelState.IsValid)
                         {
                             db.EQUIPO_SOLICITADO.Add(pr);
                             db.SaveChanges();
+                            Console.WriteLine('h');
+                        }
+                        else
+                        {
+                            Console.WriteLine('c');
                         }
                         /*EQUIPO_SOLICITADO pr = new EQUIPO_SOLICITADO();
                         pr.ID_PRESTAMO = id;
@@ -925,6 +948,10 @@ namespace Activos_PrestamosOET.Controllers
                             db.EQUIPO_SOLICITADO.Add(pr);
                             db.SaveChanges();
                         }*/
+                    }
+                    else
+                    {
+                        Console.WriteLine('d');
                     }
                     a++;
 
