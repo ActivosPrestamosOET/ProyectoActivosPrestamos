@@ -1030,7 +1030,7 @@ namespace Activos_PrestamosOET.Controllers
             P.PERIODO_USO = p.PERIODO_USO;
             P.SIGLA_CURSO = p.SIGLA_CURSO;
             P.FECHA_RETIRO = p.FECHA_RETIRO;
-            P.SOFTWARE_REQUERIDO = "";
+            P.SOFTWARE_REQUERIDO = p.SOFTWARE_REQUERIDO;
             P.Estado = 1;
             if (ModelState.IsValid)
             {
