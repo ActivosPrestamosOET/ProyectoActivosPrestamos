@@ -821,12 +821,14 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            //Busca la solicitud que se quiere editar
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
-
+            //si no esta devuelve error
             if (pRESTAMO == null)
             {
                 return HttpNotFound();
             }
+            //Determina el estado de la solicitud para desplegarlo en la pantalla mas adelante
             ViewBag.Estadillo = "";
             if (pRESTAMO.Estado == 1)
             {
@@ -853,11 +855,12 @@ namespace Activos_PrestamosOET.Controllers
                 ViewBag.Estadillo = "Cancelada";
             }
             ViewBag.fechSol = viewBagFechaSolicitada(pRESTAMO.FECHA_SOLICITUD.Value.Date);
+            //Consulta el usuario solicitante
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
                         where o.ID == id
                         select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
-
+            //busca el nombre del usuario solicitante
             foreach (var m in lista)
             {
                 if (m.Prestamo.ID == id)
@@ -870,18 +873,18 @@ namespace Activos_PrestamosOET.Controllers
                 }
             }
 
-            /*  -------------------------------------------------------------------------------------------  */
+            //Busca las categorias existentes
             var cat = (from ac in db.ACTIVOS
                        from t in db.TIPOS_ACTIVOS
                        where ac.PRESTABLE.Equals(true) &&
                               t.ID.Equals(ac.TIPO_ACTIVOID) 
                        select new { t.NOMBRE, t.ID }).Distinct();
-
+            //busca al equipo previamente solicitado 
             var equipo_sol = from o in db.PRESTAMOS
                              from o2 in db.EQUIPO_SOLICITADO
                              where (o.ID == id && o2.ID_PRESTAMO == id )
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
-
+            //Acomoda la informacion de la tabla de equipo solicitado que se desplegara en la pantalla
             var equipo = new List<List<String>>();
             cat = cat.OrderBy(t => t.NOMBRE);
             foreach (var y in cat)
@@ -919,6 +922,7 @@ namespace Activos_PrestamosOET.Controllers
                 }
                 equipo.Add(temp);
             }
+            //envia la informacion del equipo solicitado a modo de ViewBag
             ViewBag.Equipo_Solict = equipo;
             return View(pRESTAMO);
         }
@@ -926,17 +930,21 @@ namespace Activos_PrestamosOET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p, string id, int[] cantidad, string b)
         {
+            //Busca el prestamo en la base de datos
             PRESTAMO P = db.PRESTAMOS.Find(id);
+            //Busca el equipo previamente solicitado
             var equipo_sol = from o in db.PRESTAMOS
                              from o2 in db.EQUIPO_SOLICITADO
                              where (o.ID == id && o2.ID_PRESTAMO == id)
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
+            //Determina las categorias de activos presentes en el sistema
             var cat = (from ac in db.ACTIVOS
                        from t in db.TIPOS_ACTIVOS
                        where ac.PRESTABLE.Equals(true) && t.ID.Equals(ac.TIPO_ACTIVOID)
                        select new { t.NOMBRE, t.ID }).Distinct();
             cat = cat.OrderBy(t => t.NOMBRE);
             int a = 0;
+            //Para guardar cambios en la tabla de equipo solicitado
             foreach (var y in cat)
             {
                 bool noEsta = true;
@@ -945,12 +953,15 @@ namespace Activos_PrestamosOET.Controllers
                     if (y.ID.ToString() == x.TIPO)
                     {
                         EQUIPO_SOLICITADO pr = db.EQUIPO_SOLICITADO.Find(id, y.ID.ToString(), x.CANTIDAD);
+                        //busca si el elemento de la tabla equipo solicitado existe
                         if (pr == null)
                         {
+                            //Si no existe lo crea
                             pr = new EQUIPO_SOLICITADO();
                             pr.ID_PRESTAMO = id;
                             pr.TIPO_ACTIVO = y.ID.ToString();
                             pr.CANTIDAD = cantidad[a];
+                            //Lo agrega a la tabla
                             if (ModelState.IsValid)
                             {
                                 db.EQUIPO_SOLICITADO.Add(pr);
@@ -959,6 +970,7 @@ namespace Activos_PrestamosOET.Controllers
                         }
                         else
                         {
+                            //Si si existe, lo modifica y guarda los cambios
                             EQUIPO_SOLICITADO eq = new EQUIPO_SOLICITADO();
                             decimal temp = cantidad[a];
                             noEsta = false;
@@ -979,6 +991,7 @@ namespace Activos_PrestamosOET.Controllers
 
                 if (noEsta)
                 {
+                    //Si no se ha guardado en la tabla anteriormente lo crea y lo guarda
                     EQUIPO_SOLICITADO pr = new EQUIPO_SOLICITADO();
                     pr.ID_PRESTAMO = id;
                     pr.TIPO_ACTIVO = y.ID.ToString();
@@ -1010,6 +1023,8 @@ namespace Activos_PrestamosOET.Controllers
                 }
             }
             ViewBag.fechSol = P.FECHA_SOLICITUD.Value.ToShortDateString();
+
+            //Guarda los cambios de los otros atributos de la tabla prestamo
             P.MOTIVO = p.MOTIVO;
             P.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
             P.PERIODO_USO = p.PERIODO_USO;
@@ -1021,6 +1036,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 db.Entry(P).State = EntityState.Modified;
                 db.SaveChanges();
+                //Redirecciona al historial
                 return RedirectToAction("Historial");
             }
             return View(P);
