@@ -191,7 +191,6 @@ namespace Activos_PrestamosOET.Controllers
                 var int16 = Convert.ToInt16(est);
                 prestamos = prestamos.Where(model => model.Estado == int16);
             }
-            //prestamos = prestamos.OrderByDescending(s => s.FECHA_RETIRO);
             prestamos = prestamos.OrderByDescending(s => s.FECHA_SOLICITUD);
             int pageSize = 5;
             int pageNumber = (page ?? 1);
@@ -219,7 +218,31 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return HttpNotFound();
             }
-
+            ViewBag.Estadillo = "";
+            if (pRESTAMO.Estado == 1)
+            {
+                ViewBag.Estadillo = "Pendiente";
+            }
+            else if (pRESTAMO.Estado == 2)
+            {
+                ViewBag.Estadillo = "Aceptada";
+            }
+            else if (pRESTAMO.Estado == 3)
+            {
+                ViewBag.Estadillo = "Denegada";
+            }
+            else if (pRESTAMO.Estado == 4)
+            {
+                ViewBag.Estadillo = "Abierta";
+            }
+            else if (pRESTAMO.Estado == 5)
+            {
+                ViewBag.Estadillo = "Cerrada";
+            }
+            else if (pRESTAMO.Estado == 6)
+            {
+                ViewBag.Estadillo = "Cancelada";
+            }
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
                         where o.ID == id
@@ -792,6 +815,31 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.Estadillo = "";
+            if (pRESTAMO.Estado == 1)
+            {
+                ViewBag.Estadillo = "Pendiente";
+            }
+            else if (pRESTAMO.Estado == 2)
+            {
+                ViewBag.Estadillo = "Aceptada";
+            }
+            else if (pRESTAMO.Estado == 3)
+            {
+                ViewBag.Estadillo = "Denegada";
+            }
+            else if (pRESTAMO.Estado == 4)
+            {
+                ViewBag.Estadillo = "Abierta";
+            }
+            else if (pRESTAMO.Estado == 5)
+            {
+                ViewBag.Estadillo = "Cerrada";
+            }
+            else if (pRESTAMO.Estado == 6)
+            {
+                ViewBag.Estadillo = "Cancelada";
+            }
             ViewBag.fechSol = viewBagFechaSolicitada(pRESTAMO.FECHA_SOLICITUD.Value.Date);
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
@@ -1021,7 +1069,31 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return HttpNotFound();
             }
-
+            ViewBag.Estadillo = "";
+            if (pRESTAMO.Estado == 1)
+            {
+                ViewBag.Estadillo = "Pendiente";
+            }
+            else if (pRESTAMO.Estado == 2)
+            {
+                ViewBag.Estadillo = "Aceptada";
+            }
+            else if (pRESTAMO.Estado == 3)
+            {
+                ViewBag.Estadillo = "Denegada";
+            }
+            else if (pRESTAMO.Estado == 4)
+            {
+                ViewBag.Estadillo = "Abierta";
+            }
+            else if (pRESTAMO.Estado == 5)
+            {
+                ViewBag.Estadillo = "Cerrada";
+            }
+            else if (pRESTAMO.Estado == 6)
+            {
+                ViewBag.Estadillo = "Cancelada";
+            }
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
                         where o.ID == id
