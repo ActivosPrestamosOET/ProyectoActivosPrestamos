@@ -51,12 +51,15 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: PRESTAMOes
+        //Requiere: Recibe 6 parámetros, el primero es la columna por la que se ordenan los datos en la tabla, el segundo, tercero, cuarto y quinto para hacer filtrado de búsqueda y el último para identificar la página en q se encuentra la tabla.
+        // Modifica: Maneja el index view, la cual es la vista de consulta de revisión de solicitudes.
+        //Retorna: Devuelve una tabla que se despliegará en el index de Revisión de solicitudes.
         public ActionResult Index(string sortOrder, string currentFilter, string fechaSolicitud, string fechaRetiro, string estado, int? page)
         {
-            System.Diagnostics.Trace.WriteLine(sortOrder);
-            ViewBag.currentSort = sortOrder;//NO prestar atención
-            ViewBag.NumeroSortParm = String.IsNullOrEmpty(sortOrder) ? "numero_dsc" : "";//NO prestar atención
-            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";//NO prestar atención
+            //se identifica si alguna columna fue seleccionada como filtro para ordenar los datos despliegados
+            ViewBag.currentSort = sortOrder;
+            ViewBag.NumeroSortParm = String.IsNullOrEmpty(sortOrder) ? "numero_dsc" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date";
             ViewBag.FDateSortParm = sortOrder == "FDate" ? "FDate_desc" : "FDate";
             ViewBag.PeriodoSortParm = sortOrder == "Periodo" ? "Periodo_desc" : "Periodo";
             ViewBag.NameSortParm = sortOrder == "Name" ? "Name_desc" : "Name";
@@ -71,15 +74,16 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             ViewBag.CurrentFilter = fechaSolicitud;
-            var prestamos = db.PRESTAMOS.Include(i => i.USUARIO);
+            var prestamos = db.PRESTAMOS.Include(i => i.USUARIO);//Se agrega la tabla de usuarios a la de préstamos
 
-            if (!String.IsNullOrEmpty(fechaSolicitud) || !String.IsNullOrEmpty(fechaRetiro))
+            //Inician filtros de búsqueda
+            if (!String.IsNullOrEmpty(fechaSolicitud) || !String.IsNullOrEmpty(fechaRetiro))//Caso en que se consulta por una fecha específica
             {
                 DateTime fechaS;
                 DateTime fechaR;
 
 
-                if (String.IsNullOrEmpty(fechaSolicitud))
+                if (String.IsNullOrEmpty(fechaSolicitud))//Se ingresó únicamente fecha de inicio del préstamo
                 {
                     if (DateTime.TryParseExact(fechaRetiro, "dd/MM/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaR))
                     {
@@ -88,7 +92,7 @@ namespace Activos_PrestamosOET.Controllers
                                                           && model.FECHA_RETIRO.Value.Day == fechaR.Day);
                     }
                 }
-                else if (String.IsNullOrEmpty(fechaRetiro))
+                else if (String.IsNullOrEmpty(fechaRetiro))//Se ingresó únicamente la fecha de solicitud del préstamo
                 {
                     if (DateTime.TryParseExact(fechaSolicitud, "dd/MM/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaS))
                     {
@@ -97,7 +101,7 @@ namespace Activos_PrestamosOET.Controllers
                                                           && model.FECHA_SOLICITUD.Value.Day == fechaS.Day);
                     }
                 }
-                else
+                else//Se ingresaron tanto la fecha de solicitud como de inicio del préstamo.
                 {
                     if (DateTime.TryParseExact(fechaSolicitud, "dd/MM/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaS))
                     {
@@ -113,52 +117,59 @@ namespace Activos_PrestamosOET.Controllers
                     }
                 }
             }
-            if (!string.IsNullOrEmpty(estado) && estado != "0")
+            if (!string.IsNullOrEmpty(estado) && estado != "0")//Se consulta por un estado específico. Cero significa todos.
             {
                 int est = int.Parse(estado);
                 var int16 = Convert.ToInt16(est);
                 prestamos = prestamos.Where(model => model.Estado == int16);
             }
-            switch (sortOrder)
+            //Finaliza búsqueda por filtros//
+
+            //Inicio ordenado por columnas//
+            switch (sortOrder)//Se ordena la tabla por una columna seleccionada en la vista.
             {
-                case "numero_dsc":
+                case "numero_dsc"://Se ordena descendentemente por número de boleta
                     prestamos = prestamos.OrderByDescending(s => s.NUMERO_BOLETA);
                     break;
-                case "Date":
+                case "Date"://Se ordena ascendentemente por fecha de solicitud
                     prestamos = prestamos.OrderBy(s => s.FECHA_SOLICITUD);
                     break;
-                case "date_desc":
+                case "date_desc"://Se ordena descendentemente por fecha de solicitud
                     prestamos = prestamos.OrderByDescending(s => s.FECHA_SOLICITUD);
                     break;
-                case "FDate":
+                case "FDate"://Se ordena ascendentemente por fecha de inicio del préstamo
                     prestamos = prestamos.OrderBy(s => s.FECHA_RETIRO);
                     break;
-                case "FDate_desc":
+                case "FDate_desc"://Se ordena descendentemente por fecha de inicio del préstamo
                     prestamos = prestamos.OrderByDescending(s => s.FECHA_RETIRO);
                     break;
-                case "Periodo":
-                    prestamos = prestamos.OrderBy(s => s.PERIODO_USO);
+                /*case "Periodo":
+                    var press = prestamos.ToList().OrderBy(s => s.FECHA_RETIRO.Value.AddDays(s.PERIODO_USO));
+                    //prestamos = from pp in prestamos
+                    //       orderby (DbFunctions.AddDays(pp.FECHA_RETIRO, pp.PERIODO_USO)) select pp;  
+                    // prestamos = prestamos.Cast(press);
+                    prestamos = prestamos.OrderBy(s => s.PERIODO_USO).OrderBy(k => k.FECHA_RETIRO.Value.AddDays(k.PERIODO_USO));
                     break;
                 case "Periodo_desc":
-                    prestamos = prestamos.OrderByDescending(s => s.PERIODO_USO);
-                    break;
-                case "Name":
+                    prestamos = prestamos.OrderByDescending(s => s.FECHA_RETIRO.Value.AddDays(s.PERIODO_USO));
+                    break;*/
+                case "Name"://Ordenado ascendentemento por nombre del solicitante
                     prestamos = prestamos.OrderBy(s => s.CED_SOLICITA);
                     break;
-                case "Name_desc":
+                case "Name_desc"://Ordenado descendentemento por nombre de solicitante
                     prestamos = prestamos.OrderByDescending(s => s.CED_SOLICITA);
                     break;
-                default:  // Name ascending 
+                default:  // Para todo otro caso se ordena ascendentemente por número de boleta
                     prestamos = prestamos.OrderBy(s => s.NUMERO_BOLETA);
                     break;
             }
-
+            //Finaliza ordenado por columnas//
             
-            
-            int pageSize = 5;
-            int pageNumber = (page ?? 1);
-            return View(prestamos.ToPagedList(pageNumber, pageSize));
-            //Hasta aquí paginación//                            
+            //Inicia paginación//
+            int pageSize = 5;//Se define número filar por página a desplegar
+            int pageNumber = (page ?? 1);//Se define el número de página en que se encuentra
+            return View(prestamos.ToPagedList(pageNumber, pageSize));//Se envía la tabla a la paginación
+            //Finaliza paginación//                            
         }
 
         // GET: PRESTAMOes/Historial
@@ -360,23 +371,23 @@ namespace Activos_PrestamosOET.Controllers
                     }
                 }
             }
-            var prestamos = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).SingleOrDefault(p => p.ID == id);
-            DateTime dt = prestamos.FECHA_RETIRO.Value;
-            dt = dt.AddDays(prestamos.PERIODO_USO);
-            var equip = prestamos.EQUIPO_SOLICITADO.Where(q => q.CANTIDAD > 0);
-            var fechas = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).Where(p => p.FECHA_RETIRO <= prestamos.FECHA_RETIRO && p.ID != id);
-            Dictionary<string, int> eq = new Dictionary<string, int>();
+
+            //Segmento de código para colocar colores a las cantidad de solicitudes por categoría.
+            var prestamos = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).SingleOrDefault(p => p.ID == id);//Se hace joint entre prestamos y equipo solicitado por id del préstamo           
+            var equip = prestamos.EQUIPO_SOLICITADO.Where(q => q.CANTIDAD > 0);//Se verifica que se seleccionen los equipos seleccionados que tengan más 0 soliciudes
+            var fechas = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).Where(p => p.FECHA_RETIRO <= prestamos.FECHA_RETIRO && p.ID != id);//Se selccionan las solicitudes de préstamo qe se encuentran "abiertos" para el momento de inicio del préstamo consultado.
+            Dictionary<string, int> eq = new Dictionary<string, int>();//diccionario que almacena las cantidades de préstamos vigentes.
             foreach (var f in fechas)
             {
                 if (f.FECHA_RETIRO.Value.AddDays(f.PERIODO_USO) >= prestamos.FECHA_RETIRO.Value)
                 {
-                    var equip2 = f.EQUIPO_SOLICITADO.Where(q => q.CANTIDAD > 0);
+                    var equip2 = f.EQUIPO_SOLICITADO.Where(q => q.CANTIDAD > 0);//Se seleccionan pedidos co una cantidad mayor a 0
                     foreach (var e in equip2)
                     {
                         foreach (var pp in equip)
                         {
-                            if (e.TIPO_ACTIVO == pp.TIPO_ACTIVO)
-                            {
+                            if (e.TIPO_ACTIVO == pp.TIPO_ACTIVO)//Si los prestamos "abiertos" tienen un articulo solicitado en el prestamo consultado, se registra la categoría y la cantidad
+                            {//Se guarda en el diccionario
                                 if (eq.ContainsKey(pp.TIPO_ACTIVO.ToString()))
                                 {
                                     int value = Convert.ToInt32(eq[pp.TIPO_ACTIVO.ToString()]);
@@ -397,6 +408,7 @@ namespace Activos_PrestamosOET.Controllers
             foreach (var e in equip)
             {
                 int tipo = Convert.ToInt32(e.TIPO_ACTIVO);
+                //Se consulta la cantidad total de activos prestables de una categoría 
                 int contador = (from a in db.ACTIVOS
                                 where a.TIPO_ACTIVOID == tipo
                                 select a).Count();
@@ -404,23 +416,23 @@ namespace Activos_PrestamosOET.Controllers
                 if (eq.ContainsKey(e.TIPO_ACTIVO))
                 {
 
-                    total = Convert.ToInt32(e.CANTIDAD) + eq[e.TIPO_ACTIVO];
+                    total = Convert.ToInt32(e.CANTIDAD) + eq[e.TIPO_ACTIVO];//
                 }
                 else
                 {
                     total = Convert.ToInt32(e.CANTIDAD);
                 }
-                if (total <= contador)
+                if (total <= contador)//Si el total de activos solicitados para un periodo específico es meonr que el total de activos prestables, se retorna un disponible ("d")
                 {
                     disp.Add("d");
                 }
-                else
+                else//Caso contrario, se retorna un indisponible ("i")
                 {
                     disp.Add("i");
                 }
             }
             int k = 0;
-            foreach (var l in equipo)
+            foreach (var l in equipo)//Se agrega el resultado del cálculo para cada categoría al final del vector a retornar.
             {
                 l.Add(disp[k]);
                 k++;
