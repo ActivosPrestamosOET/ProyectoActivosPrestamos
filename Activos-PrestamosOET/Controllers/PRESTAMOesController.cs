@@ -195,6 +195,8 @@ namespace Activos_PrestamosOET.Controllers
                 var int16 = Convert.ToInt16(est);
                 prestamos = prestamos.Where(model => model.Estado == int16);
             }
+            prestamos = prestamos.OrderByDescending(s => s.PERIODO_USO);
+            prestamos = prestamos.OrderByDescending(s => s.FECHA_RETIRO);
             prestamos = prestamos.OrderByDescending(s => s.FECHA_SOLICITUD);
             int pageSize = 5;
             int pageNumber = (page ?? 1);
@@ -941,23 +943,17 @@ namespace Activos_PrestamosOET.Controllers
                         {
                             pr = new EQUIPO_SOLICITADO();
                             pr.ID_PRESTAMO = id;
-                            pr.TIPO_ACTIVO = y.ID.ToString();//traerCategoria(cat[a]); ;
+                            pr.TIPO_ACTIVO = y.ID.ToString();
                             pr.CANTIDAD = cantidad[a];
                             if (ModelState.IsValid)
                             {
                                 db.EQUIPO_SOLICITADO.Add(pr);
                                 db.SaveChanges();
-                                Console.WriteLine('e');
-                            }
-                            else
-                            {
-                                Console.WriteLine('a');
                             }
                         }
                         else
                         {
                             EQUIPO_SOLICITADO eq = new EQUIPO_SOLICITADO();
-
                             decimal temp = cantidad[a];
                             noEsta = false;
                             eq.ID_PRESTAMO = pr.ID_PRESTAMO;
@@ -968,17 +964,10 @@ namespace Activos_PrestamosOET.Controllers
                             db.SaveChanges();
                             if (ModelState.IsValid)
                             {
-                                //db.Entry(pr).State = EntityState.Modified;
                                 db.EQUIPO_SOLICITADO.Add(eq);
                                 db.SaveChanges();
-                                Console.WriteLine('f');
-                            }
-                            else
-                            {
-                                Console.WriteLine('b');
                             }
                         }
-
                     }
                 }
 
@@ -988,25 +977,13 @@ namespace Activos_PrestamosOET.Controllers
                     pr.ID_PRESTAMO = id;
                     pr.TIPO_ACTIVO = y.ID.ToString();
                     pr.CANTIDAD = cantidad[a];
-                    Console.WriteLine('g');
                     if (ModelState.IsValid)
                     {
                         db.EQUIPO_SOLICITADO.Add(pr);
                         db.SaveChanges();
-                        Console.WriteLine('h');
                     }
-                    else
-                    {
-                        Console.WriteLine('c');
-                    }
-
-                }
-                else
-                {
-                    Console.WriteLine('d');
                 }
                 a++;
-
             }
             ViewBag.Mensaje = "El préstamo ha sido aprobado con éxito";
 
@@ -1026,7 +1003,6 @@ namespace Activos_PrestamosOET.Controllers
                     }
                 }
             }
-
             ViewBag.fechSol = P.FECHA_SOLICITUD.Value.ToShortDateString();
             P.MOTIVO = p.MOTIVO;
             P.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
@@ -1041,7 +1017,6 @@ namespace Activos_PrestamosOET.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Historial");
             }
-
             return View(P);
         }
 
