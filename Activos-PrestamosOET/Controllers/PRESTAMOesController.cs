@@ -326,6 +326,9 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: PRESTAMOes/Details/5
+        //Requiere: Recibe el id del prestamo que se está consultando.
+        // Modifica: Maneja el details view, la cual es la vista de consulta de revisión de una solicitud en particular.
+        //Retorna: Devuelve un información necesaria para el despliegue de la vista como: nombre de solicitante, el estado, el equipo solicitado y sus cantidades
         public ActionResult Details(string id)
         {
             if (id == null)
@@ -492,6 +495,12 @@ namespace Activos_PrestamosOET.Controllers
          	*/
             return View(pRESTAMO);
         }
+
+
+        //Requiere: Recibe el id del prestamo que se está consultando, un vector desde la vista que envia las cantidades de equipo solicitado y un string q se usa para determinar que boton fue apretado.
+        // Modifica: Maneja el details view, la cual es la vista de consulta de revisión de una solicitud en particular.
+        //Retorna: Devuelve un información necesaria para el despliegue de la vista como: nombre de solicitante, el estado, el equipo solicitado y sus cantidades, además, despliega un mensaje de confirmacion diferente de acuerdo a si el boton fue aceptar o denegar
+
         [HttpPost]
         public ActionResult Details(string ID, int[] cantidad_aprobada, string b)
         {
