@@ -1173,8 +1173,10 @@ namespace Activos_PrestamosOET.Controllers
                 db.Entry(pRESTAMO).State = EntityState.Modified;
                 //guarda los cambios en la base
                 db.SaveChanges();
+                //Redirecciona la pagina al historial
                 return RedirectToAction("Historial");
             }
+            //Redirecciona la pagina al historial
             return RedirectToAction("Historial");
         }
         
