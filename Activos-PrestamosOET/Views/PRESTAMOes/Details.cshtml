@@ -97,30 +97,29 @@
                     <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.Estado):</label>
                 </div>
                 <div class="col-md-4">
-                    @Html.DisplayFor(model => model.Estado)
-@*
-    @switch (@(Model.Estado))
+                  
+
+    @switch (Model.Estado)
     {
-        case "1":
+        case 1:
     <text>Pendiente</text>
     break;
-    case "2":
+    case 2:
     <text>Aprobada</text>
     break;
-    case "3":
+    case 3:
     <text>Denegada</text>
     break;
-    case "4":
+    case 4:
     <text>Abierta</text>
     break;
-    case "5":
+    case 5:
     <text>Cerrada</text>
     break;
-    case "6":
+    case 6:
     <text>Cancelada</text>
     break;
     }
-*@
                     </div>
                 </div>
             </div>
