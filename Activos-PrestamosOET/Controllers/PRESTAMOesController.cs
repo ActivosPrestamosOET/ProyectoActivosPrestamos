@@ -176,14 +176,21 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult Historial(string CED_SOLICITA, string currentFilter, string estado, int? page)
         {
             //CED_SOLICITA = "PITAN0126052014.085230671";
+            //Para que al refrescar la pagina no se quite el filtro por estado
             ViewBag.estado = estado;
+
             ViewBag.mensajeConfirmacion = (String)TempData["confirmacion"];
+            //Consulta todos los prestamos
             var prestamos = from s in db.PRESTAMOS select s;
+            //Este es el filtro por cedula del que solicita. Esto deberia ser automatico y filtrar las solicitudes 
+            //por el usuario loggeado pero como aun no esta la parte del log in el filtro lo pondremos en 
+            //este if por mientras
             if (!string.IsNullOrEmpty(CED_SOLICITA))
             {
                 prestamos = prestamos.Where(model => model.CED_SOLICITA == CED_SOLICITA);
             } 
-            
+            //Verfica el filtro de estado. Si el usuario no selecciono ningun filtro, entonces no se filtra por estado
+            //pero si si selecciono el estado por el que quiere filtrar entonces, filtra por eso
             int est;
             if (string.IsNullOrEmpty(estado)) {
                 est = 0;
@@ -195,9 +202,9 @@ namespace Activos_PrestamosOET.Controllers
                 var int16 = Convert.ToInt16(est);
                 prestamos = prestamos.Where(model => model.Estado == int16);
             }
-            prestamos = prestamos.OrderByDescending(s => s.PERIODO_USO);
-            prestamos = prestamos.OrderByDescending(s => s.FECHA_RETIRO);
+            //En el historial, las solicitudes siempre estan ordenadas por la fecha de solicitud (de la mas reciente a la mas vieja)
             prestamos = prestamos.OrderByDescending(s => s.FECHA_SOLICITUD);
+            //para la paginacion de la tabla
             int pageSize = 5;
             int pageNumber = (page ?? 1);
             return View(prestamos.ToPagedList(pageNumber, pageSize));
@@ -721,8 +728,6 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
             ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
 
-
-
             List<String> categorias = new List<String>();
 
             var cat = (from ac in db.ACTIVOS
@@ -754,6 +759,7 @@ namespace Activos_PrestamosOET.Controllers
 
             return ultimo.NUMERO_BOLETA.GetValueOrDefault() + 1;
         }
+
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
