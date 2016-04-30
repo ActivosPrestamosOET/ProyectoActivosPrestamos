@@ -55,8 +55,7 @@
                     <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.NUMERO_BOLETA):</label>
                 </div>
                 <div class="col-md-4">
-                    @Html.EditorFor(model => model.NUMERO_BOLETA, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.NUMERO_BOLETA, "", new { @class = "text-danger" })
+                    @Html.DisplayFor(model => model.NUMERO_BOLETA)
                 </div>
                 <div class="col-md-2">
                     <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_SOLICITUD):</label>
@@ -106,6 +105,12 @@
                 <div class="col-md-4">
                     @Html.EditorFor(model => model.SIGLA_CURSO, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.SIGLA_CURSO, "", new { @class = "text-danger" })
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.Estado):</label>
+                </div>
+                <div class="col-md-4">
+                    @ViewBag.Estadillo
                 </div>
                 <br />
                 <br />
@@ -169,16 +174,17 @@
         <br />
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Guardar" class="btn btn-default" />
-                @Html.ActionLink("Cancelar solicitud", "Delete", new { id = Model.ID }, new { @class = "btn btn-default" })
+            <div class="col-md-offset-9 col-md-12">
+                <input type="submit" value="Guardar Cambios" class="btn btn-success" />
+                @Html.ActionLink("Cancelar Edicion", "Detalles", new { id = Model.ID }, new { @class = "btn btn-danger" })
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Volver al Historial de Solicitudes", "Historial")  
+    @Html.ActionLink("Volver al Historial de Solicitudes", "Historial")  |
+    @Html.ActionLink("Cancelar solicitud", "Delete", new { id = Model.ID }, new { @class = "btn btn-default" })
 </div>
 
 

@@ -77,30 +77,7 @@
                     <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.Estado):</label>
                 </div>
                 <div class="col-md-4">
-                    @if (Model.Estado == 1)
-                    {
-                        <label class="control-label" for="inputDefault">Pendiente</label>
-                    }
-                    else if (Model.Estado == 2)
-                    {
-                        <label class="control-label" for="inputDefault">Aprobada</label>
-                    }
-                    else if (Model.Estado == 2)
-                    {
-                        <label class="control-label" for="inputDefault">Denegada</label>
-                    }
-                    else if (Model.Estado == 2)
-                    {
-                        <label class="control-label" for="inputDefault">Abierta</label>
-                    }
-                    else if (Model.Estado == 2)
-                    {
-                        <label class="control-label" for="inputDefault">Cerrada</label>
-                    }
-                    else if (Model.Estado == 2)
-                    {
-                        <label class="control-label" for="inputDefault">Denegada</label>
-                    }
+                    @ViewBag.Estadillo
                 </div>
                 <br />
 
