@@ -173,6 +173,9 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: PRESTAMOes/Historial
+        //Requiere: cédula del solicitante, filtro actual de categorías, hilera del estado de la revisión y el identificador de la página en la que se encuentra actualmente.
+        //Modifica: Carga la información de la tabla con el historial de solicitudes.
+        //Retorna: vista con la tabla en la que se despliega el historial de solicitudes.
         public ActionResult Historial(string CED_SOLICITA, string currentFilter, string estado, int? page)
         {
             //CED_SOLICITA = "PITAN0126052014.085230671";
@@ -824,6 +827,9 @@ namespace Activos_PrestamosOET.Controllers
 
 
         // GET: PRESTAMOes/Edit/5
+        //Requiere: identificador del Préstamo.
+        //Modifica: Carga los campos en los que se pueden cambiar datos para editar información relacionada a un préstamo específico.
+        //Retorna: vista con los campos para editar solicitud.
         public ActionResult Edit(string id)
         {
             if (id == null)
@@ -935,6 +941,11 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.Equipo_Solict = equipo;
             return View(pRESTAMO);
         }
+
+
+        //Requiere: Un objeto prestamo, id del prestamo a modificar, int[] cantidad que dice las cantidades de las categorias de ahora.
+        //Modifica: Actualiza en la base de datos la informacion relacionada con ese prestamo.
+        //Retorna: vista con los campos para editar solicitud.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p, string id, int[] cantidad, string b)
@@ -1054,6 +1065,9 @@ namespace Activos_PrestamosOET.Controllers
 
 
         // GET: PRESTAMOes/Delete/5
+        //Requiere: id del Préstamo
+        //Modifica: Se encarga de cambiar el estado de la solicitud en la base de datos para que en prestamo aparezca cancelado.
+        //Retorna: Vista con el resultado de dicha modificación en la base de datos.
         public ActionResult Delete(string id)
         {
             //Si no entra al cancelar de una solicitud en especifico da error
@@ -1163,7 +1177,11 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.Equipo_Solict = equipo;
             return View(pRESTAMO);
         }
+
         // POST: PRESTAMOes/Delete/5
+        //Requiere: id del Préstamo
+        //Modifica: Se encarga de cambiar el estado de la solicitud en la base de datos para que en prestamo aparezca cancelado.
+        //Retorna: Vista con el resultado de dicha modificación en la base de datos.
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(string id)
