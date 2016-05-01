@@ -13,6 +13,9 @@ namespace Local.Controllers
 
         // GET: Inventario/Index
         // default
+        // Requiere: N/A.
+        // Modifica: muestra la información al ingresar a la página de Inventario inicialmente.
+        // Regresa: vista con la tabla de los datos acerca del Inventario.
         public ActionResult Index()
         {
             llenarTablaInventario();
@@ -20,6 +23,9 @@ namespace Local.Controllers
         }
 
         
+        // Requiere: valor seleccionado en el dropdown de Categoría, valor del botón seleccionado, valor de la fecha inicial y la fecha final
+        // Modifica: muestra después de seleccionado algún botón, los resultados correspondientes, mostrando las tablas que corresponden.
+        // Regresa: vista con las tablas cargadas que corresponden.
         [HttpPost]
         public ActionResult Index(String dropdownCategoria, String submit, String datepicker, String datepicker1)
         {
@@ -45,7 +51,9 @@ namespace Local.Controllers
 
         }
 
-
+        // Requiere: N/A.
+        // Modifica: se encarga de llenar la tabla de Inventario, de todas las categorías para ACTIVOS.
+        // Regresa: N/A.
         private void llenarTablaInventario() {
             List<String> solicitantes = new List<String>();
             List<String> ceds = new List<String>();
@@ -90,18 +98,21 @@ namespace Local.Controllers
                     }
                     else { temp.Add(""); }
 
+                    if (x.DESCRIPCION != null) { temp.Add(x.DESCRIPCION); } else { temp.Add(""); }
+
                     String prestado_a = "No prestado";
-
+                    String prestado_hasta = "Sin fecha";
                     foreach (Activos_PrestamosOET.Models.PRESTAMO f in x.PRESTAMOes)
-
                     {
                         if (ceds.Contains(f.CED_SOLICITA) && f.CED_SOLICITA != null)
                         {
                             prestado_a = solicitantes[ceds.IndexOf(f.CED_SOLICITA)];
                         }
-
+                        prestado_hasta = f.FECHA_RETIRO.ToString();
                     }
                     temp.Add(prestado_a);
+                    temp.Add(prestado_hasta);
+
 
                     courses.Add(temp);
                 }
@@ -113,6 +124,9 @@ namespace Local.Controllers
             }
         }
 
+        // Requiere: valor seleccionado en el dropdown de Categoría, valor del botón seleccionado, valor de la fecha inicial y la fecha final
+        // Modifica: Se encarga de llenar las tablas de Inventario y la de categoría, basadas en las selecciones del usuario.
+        // Regresa: N/A.
         private void llenarTablaCategoria(String datepicker, String datepicker1, String dropdownCategoria) {
             var courses = new List<List<String>>();
             var viewModel = from o in db.EQUIPO_SOLICITADO.ToList()
@@ -173,6 +187,9 @@ namespace Local.Controllers
             llenarTablaInventario();
         }
 
+        // Requiere: valor seleccionado en el dropdown de Categoría, valor del botón seleccionado, valor de la fecha inicial y la fecha final
+        // Modifica: se encarga de llenar la tabla de Inventario, de la categoría que recibe cómo parámetro.
+        // Regresa: N/A.
         private void llenarTabla(String dropdownCategoria, String datepicker, String datepicker1) {
             var viewModel = from o in db.PRESTAMOS.ToList()
                             join o2 in db.USUARIOS.ToList()
@@ -215,12 +232,12 @@ namespace Local.Controllers
                     }
                     else { temp.Add(""); }
 
+                    if (x.DESCRIPCION != null) { temp.Add(x.DESCRIPCION); } else { temp.Add(""); }
+
                     String prestado_a = "No prestado";
+                    String prestado_hasta = "Sin fecha";
                     foreach (Activos_PrestamosOET.Models.PRESTAMO f in x.PRESTAMOes)
-
                     {
-
-                        // whatever you want to do with the objects
                         foreach (Inventario.Models.ModeloInventario mi in viewModel)
                         {
                             if (f.CED_SOLICITA.Equals(mi.Usuarios.CLAVE)
@@ -228,10 +245,12 @@ namespace Local.Controllers
                             {
                                 prestado_a = mi.Usuarios.NOMBRE;
                             }
+                            prestado_hasta = f.FECHA_RETIRO.ToString();
                         }
 
                     }
                     temp.Add(prestado_a);
+                    temp.Add(prestado_hasta);
 
                     //if viewModel tiene  hace match con alguno de los f's
                     courses.Add(temp);
