@@ -126,7 +126,7 @@
         </div>
     </div>
 
-    @using (Html.BeginForm("Details", "PRESTAMOes"))
+    @using (Html.BeginForm("Details", "PRESTAMOes", FormMethod.Post))
     {
 
         @Html.HiddenFor(model => model.ID);
