@@ -509,11 +509,9 @@ namespace Activos_PrestamosOET.Controllers
         {
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
 
-            var equipo_sol = from o in db.PRESTAMOS
-                             from o2 in db.EQUIPO_SOLICITADO
-                             where o.ID == ID && o2.CANTIDAD > 0
-                             select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
+            var prestamo = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(p => p.ID == ID);
 
+            var equipo_sol = prestamo.EQUIPO_SOLICITADO;
 
             if (b == "Aceptar")
             {
@@ -521,9 +519,7 @@ namespace Activos_PrestamosOET.Controllers
                 int a = 0;
                 foreach (var x in equipo_sol)
                 {
-                    if (x.ID == ID)
-                    {
-                        if (x.ID == x.ID_EQUIPO)
+                     if (x.ID == x.ID_EQUIPO)
                         {
 
                             EQUIPO_SOLICITADO P = db.EQUIPO_SOLICITADO.Find(ID, x.TIPO, x.CANTIDAD);
@@ -592,7 +588,7 @@ namespace Activos_PrestamosOET.Controllers
                               t.ID.Equals(ac.TIPO_ACTIVOID)
                        select new { t.NOMBRE, t.ID }).Distinct();
 
-
+            
 
             var equipo = new List<List<String>>();
             foreach (var x in equipo_sol)
@@ -625,9 +621,23 @@ namespace Activos_PrestamosOET.Controllers
                         }
 
 
-                        if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
+                        if (x.CANTIDAD != 0)
+                        {
+                            temp.Add(x.CANTIDAD.ToString());
+                        }
+                        else
+                        {
+                            temp.Add("");
+                        }
 
-                        if (x.CANTAP != 0) { temp.Add(x.CANTAP.ToString()); } else { temp.Add(""); }
+                        if (x.CANTAP != 0)
+                        {
+                            temp.Add(x.CANTAP.ToString());
+                        }
+                        else
+                        {
+                            temp.Add("");
+                        }
                         equipo.Add(temp);
                     }
                 }
