@@ -442,6 +442,9 @@ C:\Users\Daniel\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\Micros
 C:\Users\Daniel\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache
 C:\Users\Daniel\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.dll
 C:\Users\Daniel\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.pdb
+<<<<<<< HEAD
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache
+=======
 C:\Users\b32896\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\ApplicationInsights.config
 C:\Users\b32896\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csc.exe
 C:\Users\b32896\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\Microsoft.Build.Tasks.CodeAnalysis.dll
@@ -530,3 +533,4 @@ C:\Users\b32896\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\b
 C:\Users\b32896\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\b32896\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.dll
 C:\Users\b32896\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.pdb
+>>>>>>> origin/master

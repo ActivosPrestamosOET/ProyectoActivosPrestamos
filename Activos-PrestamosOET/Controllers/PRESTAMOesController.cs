@@ -519,10 +519,10 @@ namespace Activos_PrestamosOET.Controllers
                 int a = 0;
                 foreach (var x in equipo_sol)
                 {
-                     if (x.ID == x.ID_EQUIPO)
+                     if (prestamo.ID == x.ID_PRESTAMO)
                         {
 
-                            EQUIPO_SOLICITADO P = db.EQUIPO_SOLICITADO.Find(ID, x.TIPO, x.CANTIDAD);
+                            EQUIPO_SOLICITADO P = db.EQUIPO_SOLICITADO.Find(ID, x.TIPO_ACTIVO, x.CANTIDAD);
 
                             decimal temp = cantidad_aprobada[a];
 
@@ -537,7 +537,7 @@ namespace Activos_PrestamosOET.Controllers
                             a++;
                         }
                     }
-                }
+                
 
                 pRESTAMO.Estado = 2;
                 if (ModelState.IsValid)
@@ -565,22 +565,13 @@ namespace Activos_PrestamosOET.Controllers
 
 
 
-            var lista = from o in db.PRESTAMOS
-                        from o2 in db.USUARIOS
-                        where o.ID == ID
-                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
+      
 
-            foreach (var m in lista)
-            {
-                if (m.Prestamo.ID == ID)
-                {
-                    if (m.Prestamo.CED_SOLICITA == m.CEDULA)
-                    {
-                        var t = new Tuple<string>(m.USUARIO);
-                        ViewBag.Nombre = t.Item1;
-                    }
-                }
-            }
+            var lista = db.PRESTAMOS.Include(i => i.USUARIO).SingleOrDefault(p => p.ID == ID);
+
+        
+
+            ViewBag.Nombre = lista.USUARIO.NOMBRE;
             /*  -------------------------------------------------------------------------------------------  */
             var cat = (from ac in db.ACTIVOS
                        from t in db.TIPOS_ACTIVOS
@@ -593,19 +584,19 @@ namespace Activos_PrestamosOET.Controllers
             var equipo = new List<List<String>>();
             foreach (var x in equipo_sol)
             {
-                if (x.ID == ID)
+                if (prestamo.ID == ID)
                 {
-                    if (x.ID == x.ID_EQUIPO)
+                    if (prestamo.ID == x.ID_PRESTAMO)
                     {
 
 
                         List<String> temp = new List<String>();
-                        if (x.TIPO != null)
+                        if (x.TIPO_ACTIVO != null)
                         {
                             foreach (var y in cat)
                             {
 
-                                if (x.TIPO == y.ID.ToString())
+                                if (x.TIPO_ACTIVO == y.ID.ToString())
                                 {
 
                                     temp.Add(y.NOMBRE);
@@ -630,9 +621,9 @@ namespace Activos_PrestamosOET.Controllers
                             temp.Add("");
                         }
 
-                        if (x.CANTAP != 0)
+                        if (x.CANTIDADAPROBADA != 0)
                         {
-                            temp.Add(x.CANTAP.ToString());
+                            temp.Add(x.CANTIDADAPROBADA.ToString());
                         }
                         else
                         {
