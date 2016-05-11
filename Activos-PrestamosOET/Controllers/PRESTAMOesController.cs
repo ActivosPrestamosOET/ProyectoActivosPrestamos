@@ -795,7 +795,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 prestamo.ID = generarID();
                 prestamo.MOTIVO = p.MOTIVO;
-                prestamo.NUMERO_BOLETA = calcularNumBoleta();
+                prestamo.NUMERO_BOLETA = 1;// calcularNumBoleta();
                 prestamo.OBSERVACIONES_APROBADO = "";
                 prestamo.OBSERVACIONES_RECIBIDO = "";
                 prestamo.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
