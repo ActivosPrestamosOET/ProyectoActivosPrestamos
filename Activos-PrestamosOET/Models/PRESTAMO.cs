@@ -11,8 +11,7 @@ namespace Activos_PrestamosOET.Models
 {
     using System;
     using System.Collections.Generic;
-
-    
+    using Web.Models.Validation;
 
     using System.ComponentModel.DataAnnotations;
     public enum Estadito
@@ -52,6 +51,7 @@ namespace Activos_PrestamosOET.Models
             [DataType(DataType.Date)]
             [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
             [Required(ErrorMessage = "Por favor ingrese una rango válido")]
+            [DateMustBeEqualOrGreaterThanCurrentDateValidation]
             public Nullable<System.DateTime> FECHA_RETIRO { get; set; }
 
             [Display(Name = "Periodo de uso")]
