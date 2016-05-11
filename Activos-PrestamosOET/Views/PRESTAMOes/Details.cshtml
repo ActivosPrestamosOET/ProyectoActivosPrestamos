@@ -144,41 +144,51 @@
                     <th  class="col-md-3">
                         Cantidad Aprobada
                     </th>
+
+                    <th class="col-md-3">
+                        Asignar
+                    </th>
                 </tr>
             </thead>
             <tbody>
-                @if (ViewBag.Equipo_Solict != null)
+    @if (ViewBag.Equipo_Solict != null)
                 {
 
                     foreach (List<String> s in ViewBag.Equipo_Solict)
                     {
-                        <tr>
-                            <td>@s[0] &nbsp;</td>
-                            @if (s[3] == "d")
-                            {
-                                <td style="color:green">@s[1] &nbsp;</td>
-                            }
-                            else
-                            {
-                                <td style="color: orangered">@s[1] &nbsp;</td>
-                            }
-
-@if (ViewBag.Mensaje2 != null)
-{
-    <td>
-        @Html.TextBox("cantidad_aprobada", @s[2], null, new { @class = "form-control col-md-2", @type = "number", @min = "0", @readonly = "readonly", @disabled = "disabled" })
-    </td>
-}
-else
-{
-<td>
-                                @Html.TextBox("cantidad_aprobada", @s[2], null, new { @class = "form-control col-md-2", @type = "number", @min = "0" })
-                            </td>
-}
-                        </tr>
-                    }
+            <tr>
+                <td>@s[0] &nbsp;</td>
+                @if (s[3] == "d")
+                {
+                    <td style="color:green">@s[1] &nbsp;</td>
                 }
-            </tbody>
+                else
+                {
+                    <td style="color: orangered">@s[1] &nbsp;</td>
+                }
+
+                @if (ViewBag.Mensaje2 != null)
+                {
+                    <td>
+                        @Html.TextBox("cantidad_aprobada", @s[2], null, new { @class = "form-control col-md-2", @type = "number", @min = "0", @readonly = "readonly", @disabled = "disabled" })
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @Html.TextBox("cantidad_aprobada", @s[2], null, new { @class = "form-control col-md-2", @type = "number", @min = "0" })
+                    </td>
+                }
+                <td>prueba</td>
+            </tr>
+
+
+        }
+        
+            
+        
+    }
+</tbody>
         </table>
 
         <br />
