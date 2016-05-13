@@ -4,9 +4,7 @@
 }
 
 <div>
-    <p>
-        @Html.ActionLink("Regresar a Solicitudes", "Index", null, new { @class = "btn btn-default" })
-    </p>
+    <p>@Html.ActionLink("Regresar a Solicitudes", "Index", null, new { @class = "btn btn-default" })</p>
 </div>
 
 <legend><h2>Detalles de la Solicitud</h2></legend>
@@ -108,16 +106,15 @@
 
 @using (Html.BeginForm("Details", "PRESTAMOes", FormMethod.Post))
 {
-
     @Html.HiddenFor(model => model.ID);
-    <table class="table" style="margin-top:20px">
+    <table class="table" name="tablaEquipo" style="margin-top:20px">
         <thead>
             <tr>
-                <th class="col-md-3">Equipo</th>
-                <th class="col-md-3">Cantidad Solicitada</th>
-                <th class="col-md-3">Cantidad Aprobada</th>
-                <th class="col-md-3">Devolver</th>
-                <th class="col-md-3">Devolver Todo</th>
+                <th class="col-md-1">Equipo</th>
+                <th class="col-md-1">Cantidad Solicitada</th>
+                <th class="col-md-1">Cantidad Aprobada</th>
+                <th class="col-md-1">Devolver</th>
+                <th class="col-md-1" id="columna">Devolver Todo<input type="checkbox" onclick="seleccionaTodos('column5', this)" name="column5_checkAll"></th>
             </tr>
         </thead>
         <tbody>
@@ -126,9 +123,11 @@
                 foreach (List<String> s in ViewBag.Equipo_Solict)
                 {
                     <tr>
-                        <td class="col-md-3">@s[0] &nbsp;</td>
-                        <td class="col-md-3">@s[1] &nbsp;</td>
-                        <td class="col-md-3">@s[2] &nbsp;</td>
+                        <td class="col-md-1">@s[0] &nbsp;</td>
+                        <td class="col-md-1">@s[1] &nbsp;</td>
+                        <td class="col-md-1">@s[2] &nbsp;</td>
+                        <td></td>
+                        <td><input type="checkbox" name="column5_checkbox">Devolver todos</td>
                     </tr>
                 }
             }
@@ -136,20 +135,39 @@
     </table>
 
     <br />
-        <br />
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div class="form-group">
-                    <label for="textArea" class="col-lg-2 control-label">@Html.DisplayNameFor(model => model.OBSERVACIONES_APROBADO):</label>
-                    <div class="col-lg-10">
-                        <textarea class="form-control" rows="3" style="width:95%" id="textArea"></textarea>
-                    </div>
+    <br />
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="form-group">
+                <label for="textArea" class="col-lg-2 control-label">@Html.DisplayNameFor(model => model.OBSERVACIONES_APROBADO):</label>
+                <div class="col-lg-10">
+                    <textarea class="form-control" rows="3" style="width:95%" id="textArea"></textarea>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div id="Botones" class="col-md-offset-9 col-md-12">
-            <input type="submit" name="b" value="Actualizar devolución" class="btn btn-danger" />
-        </div>
+    <div id="Botones" class="col-md-offset-9 col-md-12">
+        <input type="submit" name="b" value="Actualizar devolución" class="btn btn-default" />
+    </div>
 
 }
+<script>
+    function seleccionaTodos(columnNo, checkBox) {
+        if (checkBox.checked == true) {
+            var columnName = columnNo + '_checkbox';
+            var allCheckboxes = document.getElementsByName(columnName);
+
+            for (var i = 0; i < allCheckboxes.length; i++) {
+                allCheckboxes[i].checked = true;
+            }
+        } else if (checkBox.checked == false) {
+            var columnName = columnNo + '_checkbox';
+            var allCheckboxes = document.getElementsByName(columnName);
+
+            for (var i = 0; i < allCheckboxes.length; i++) {
+                allCheckboxes[i].checked = false;
+            }
+        }
+    }
+</script>
