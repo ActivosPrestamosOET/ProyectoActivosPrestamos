@@ -222,6 +222,7 @@
     <Compile Include="Controllers\InventarioController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PRESTAMOesController.cs" />
+    <Compile Include="Controllers\SendMailerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -234,6 +235,7 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\MailModel..cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
@@ -359,6 +361,7 @@
     <Content Include="Views\PRESTAMOes\ConsultarSolicitud.cshtml" />
     <Content Include="Views\PRESTAMOes\Historial.cshtml" />
     <Content Include="Views\PRESTAMOes\Detalles.cshtml" />
+    <Content Include="Views\SendMailer\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
