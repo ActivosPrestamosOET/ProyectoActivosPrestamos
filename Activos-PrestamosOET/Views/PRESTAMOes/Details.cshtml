@@ -248,20 +248,27 @@
                 }
                 <td>
 
-                    <div class="multiselect">
-                        
-                        <div class="selectBox" onclick="showCheckboxes()">
-                            <select class = "form-control">
-                                <option>Seleccionar</option>
-                            </select>
-                            <div class="overSelect"></div>
-                        </div>
-                        <div id="checkboxes">
-                            <label for="one"><input type="checkbox" id="one" />First checkbox</label>
-                            <label for="two"><input type="checkbox" id="two" />Second checkbox </label>
-                            <label for="three"><input type="checkbox" id="three" />Third checkbox</label>
+                    <button type="button" data-trigger="focus" class="btn btn-default" data-container="body" data-toggle="modal">Seleccionar</button>
+
+
+                    <div class="modal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title">Modal title</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>One fine body…</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
 
                 </td>
             </tr>
