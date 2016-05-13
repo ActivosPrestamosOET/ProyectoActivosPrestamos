@@ -5876,13 +5876,13 @@ button.close {
   -webkit-appearance: none;
 }
 .modal-open {
-  overflow: hidden;
+  overflow: visible;
 }
 .modal {
   display: none;
   overflow: hidden;
-  position: fixed;
-  top: 0;
+  position: absolute;
+  top: 35%;
   right: 0;
   bottom: 0;
   left: 0;
@@ -5913,6 +5913,7 @@ button.close {
   position: relative;
   width: auto;
   margin: 10px;
+  vertical-align: middle;
 }
 .modal-content {
   position: relative;
@@ -5925,6 +5926,7 @@ button.close {
   -webkit-background-clip: padding-box;
           background-clip: padding-box;
   outline: 0;
+    vertical-align: middle;
 }
 .modal-backdrop {
   position: fixed;
@@ -5984,10 +5986,12 @@ button.close {
   .modal-dialog {
     width: 600px;
     margin: 30px auto;
+    vertical-align: middle;
   }
   .modal-content {
     -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    vertical-align: middle;
   }
   .modal-sm {
     width: 300px;
