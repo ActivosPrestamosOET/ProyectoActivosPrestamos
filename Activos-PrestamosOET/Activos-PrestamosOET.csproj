@@ -362,6 +362,7 @@
     <Content Include="Views\PRESTAMOes\Historial.cshtml" />
     <Content Include="Views\PRESTAMOes\Detalles.cshtml" />
     <Content Include="Views\SendMailer\Index.cshtml" />
+    <Content Include="Views\PRESTAMOes\Devolucion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
