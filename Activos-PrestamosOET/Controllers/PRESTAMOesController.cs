@@ -1224,5 +1224,68 @@ namespace Activos_PrestamosOET.Controllers
             Cerrada,
             Cancelada
         }
+
+        public ActionResult Devolucion(string id){
+            if (id == null){
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
+            if (pRESTAMO == null){
+                return HttpNotFound();
+            }
+
+            var lista = from o in db.PRESTAMOS
+                        from o2 in db.USUARIOS
+                        where o.ID == id
+                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
+
+            foreach (var m in lista){
+                if (m.Prestamo.ID == id){
+                    if (m.Prestamo.CED_SOLICITA == m.CEDULA){
+                        var t = new Tuple<string>(m.USUARIO);
+                        ViewBag.Nombre = t.Item1;
+                    }
+                }
+            }
+            /*  -------------------------------------------------------------------------------------------  */
+            var cat = (from ac in db.ACTIVOS
+                       from t in db.TIPOS_ACTIVOS
+                       where ac.PRESTABLE.Equals(true) &&
+                              t.ID.Equals(ac.TIPO_ACTIVOID)
+                       select new { t.NOMBRE, t.ID }).Distinct();
+
+            var equipo_sol = from o in db.PRESTAMOS
+                             from o2 in db.EQUIPO_SOLICITADO
+                             where o.ID == id && o2.CANTIDAD > 0
+                             select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
+
+
+            var equipo = new List<List<String>>();
+            foreach (var x in equipo_sol){
+                if (x.ID == id){
+                    if (x.ID == x.ID_EQUIPO){
+                        List<String> temp = new List<String>();
+                        if (x.TIPO != null){
+                            foreach (var y in cat){
+                                if (x.TIPO == y.ID.ToString()){
+
+                                    temp.Add(y.NOMBRE);
+                                    break;
+                                }
+                            }
+                        }
+                        else{
+                            temp.Add("");
+                        }
+                        if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
+                        if (x.CANTAP != 0) { temp.Add(x.CANTAP.ToString()); } else { temp.Add(""); }
+                        equipo.Add(temp);
+                    }
+                }
+            }
+
+            ViewBag.Equipo_Solict = equipo;
+            return View(pRESTAMO);
+        }
     }
 }
