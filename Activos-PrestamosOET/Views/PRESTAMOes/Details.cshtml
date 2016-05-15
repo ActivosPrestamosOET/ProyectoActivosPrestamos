@@ -316,7 +316,7 @@
                     <div class="form-group">
                         <label for="textArea" class="col-lg-2 control-label">@Html.DisplayNameFor(model => model.OBSERVACIONES_APROBADO):</label>
                         <div class="col-lg-10">
-                            <textarea class="form-control" rows="3" style="width:95%" id="textArea"></textarea>
+                            @Html.EditorFor(model => model.OBSERVACIONES_APROBADO, new { htmlAttributes = new { @class = "form-control", @style = "width:95%; height:70px" } })
                         </div>
                     </div>
                 </div>
