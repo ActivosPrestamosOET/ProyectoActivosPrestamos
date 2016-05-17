@@ -67,7 +67,7 @@ namespace Activos_PrestamosOET.Models
             [Display(Name = "Observaciones de quién aprueba")]
             public string OBSERVACIONES_APROBADO { get; set; }
 
-            [Display(Name = "Observaciones al recibir el préstamo")]
+            [Display(Name = "Observaciones al devolver préstamos")]
             public string OBSERVACIONES_RECIBIDO { get; set; }
 
             [Display(Name = "Sigla del Curso")]
