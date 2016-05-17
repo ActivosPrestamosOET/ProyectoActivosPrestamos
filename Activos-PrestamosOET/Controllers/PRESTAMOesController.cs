@@ -1293,5 +1293,97 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.Equipo_Solict = equipo;
             return View(pRESTAMO);
         }
+
+
+
+
+        [HttpPost]
+        public ActionResult Devolucion(string ID, int[] seleccionaTodos, string column5_checkAll, string b, [Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p)
+        {
+            PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
+            pRESTAMO.OBSERVACIONES_APROBADO = p.OBSERVACIONES_APROBADO;
+            if (ModelState.IsValid)
+            {
+                db.Entry(pRESTAMO).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            var prestamo = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(d => p.ID == ID);
+            var equipo_sol = prestamo.EQUIPO_SOLICITADO;
+            var activos_asignados = prestamo.ACTIVOes;
+
+            /*---------------------------------------------------------------------------*/
+            if (b == "Aceptar")
+            {
+                int a = 0;
+                foreach (var x in activos_asignados)
+                {
+                    string t = column5_checkAll;
+
+                }
+
+
+                pRESTAMO.Estado = 2;
+                if (ModelState.IsValid)
+                {
+                    db.Entry(pRESTAMO).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+                ViewBag.Mensaje = "El préstamo ha sido aprobado con éxito";
+            }
+
+
+
+            var lista = db.PRESTAMOS.Include(i => i.USUARIO).SingleOrDefault(d => p.ID == ID);
+            ViewBag.Nombre = lista.USUARIO.NOMBRE;
+            /*  -------------------------------------------------------------------------------------------  */
+            var cat = (from ac in db.ACTIVOS
+                       from t in db.TIPOS_ACTIVOS
+                       where ac.PRESTABLE.Equals(true) &&
+                              t.ID.Equals(ac.TIPO_ACTIVOID)
+                       select new { t.NOMBRE, t.ID }).Distinct();
+
+            var equipo = new List<List<String>>();
+            foreach (var x in equipo_sol)
+            {
+                if (prestamo.ID == ID)
+                {
+                    if (prestamo.ID == x.ID_PRESTAMO)
+                    {
+                        List<String> temp = new List<String>();
+                        if (x.TIPO_ACTIVO != null)
+                        {
+                            foreach (var y in cat)
+                            {
+                                if (x.TIPO_ACTIVO == y.ID.ToString())
+                                {
+                                    temp.Add(y.NOMBRE);
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            temp.Add("");
+
+                        }
+                        if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
+                        if (x.CANTIDADAPROBADA != 0) { temp.Add(x.CANTIDADAPROBADA.ToString()); } else { temp.Add(""); }
+                        equipo.Add(temp);
+                    }
+                }
+            }
+
+            var prestamos = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).SingleOrDefault(d => p.ID == ID);
+            DateTime dt = prestamos.FECHA_RETIRO.Value;
+            dt = dt.AddDays(prestamos.PERIODO_USO);
+
+            ViewBag.Equipo_Solict = equipo;
+
+            /*  -------------------------------------------------------------------------------------------  */
+
+            return View(pRESTAMO);
+        }
     }
 }
