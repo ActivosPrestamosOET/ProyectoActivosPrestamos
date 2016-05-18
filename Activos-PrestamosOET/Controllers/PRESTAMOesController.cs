@@ -87,33 +87,33 @@ namespace Activos_PrestamosOET.Controllers
                 {
                     if (DateTime.TryParseExact(fechaRetiro, "dd/MM/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaR))
                     {
-                        prestamos = prestamos.Where(model => model.FECHA_RETIRO.Value.Year == fechaR.Year
-                                                          && model.FECHA_RETIRO.Value.Month == fechaR.Month
-                                                          && model.FECHA_RETIRO.Value.Day == fechaR.Day);
+                        prestamos = prestamos.Where(model => model.FECHA_RETIRO.Year == fechaR.Year
+                                                          && model.FECHA_RETIRO.Month == fechaR.Month
+                                                          && model.FECHA_RETIRO.Day == fechaR.Day);
                     }
                 }
                 else if (String.IsNullOrEmpty(fechaRetiro))//Se ingresó únicamente la fecha de solicitud del préstamo
                 {
                     if (DateTime.TryParseExact(fechaSolicitud, "dd/MM/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaS))
                     {
-                        prestamos = prestamos.Where(model => model.FECHA_SOLICITUD.Value.Year == fechaS.Year
-                                                          && model.FECHA_SOLICITUD.Value.Month == fechaS.Month
-                                                          && model.FECHA_SOLICITUD.Value.Day == fechaS.Day);
+                        prestamos = prestamos.Where(model => model.FECHA_SOLICITUD.Year == fechaS.Year
+                                                          && model.FECHA_SOLICITUD.Month == fechaS.Month
+                                                          && model.FECHA_SOLICITUD.Day == fechaS.Day);
                     }
                 }
                 else//Se ingresaron tanto la fecha de solicitud como de inicio del préstamo.
                 {
                     if (DateTime.TryParseExact(fechaSolicitud, "dd/MM/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaS))
                     {
-                        prestamos = prestamos.Where(model => model.FECHA_SOLICITUD.Value.Year == fechaS.Year
-                                                          && model.FECHA_SOLICITUD.Value.Month == fechaS.Month
-                                                          && model.FECHA_SOLICITUD.Value.Day == fechaS.Day);
+                        prestamos = prestamos.Where(model => model.FECHA_SOLICITUD.Year == fechaS.Year
+                                                          && model.FECHA_SOLICITUD.Month == fechaS.Month
+                                                          && model.FECHA_SOLICITUD.Day == fechaS.Day);
                     }
                     if (DateTime.TryParseExact(fechaRetiro, "dd/MM/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaR))
                     {
-                        prestamos = prestamos.Where(model => model.FECHA_RETIRO.Value.Year == fechaR.Year
-                                                          && model.FECHA_RETIRO.Value.Month == fechaR.Month
-                                                          && model.FECHA_RETIRO.Value.Day == fechaR.Day);
+                        prestamos = prestamos.Where(model => model.FECHA_RETIRO.Year == fechaR.Year
+                                                          && model.FECHA_RETIRO.Month == fechaR.Month
+                                                          && model.FECHA_RETIRO.Day == fechaR.Day);
                     }
                 }
             }
@@ -421,7 +421,7 @@ namespace Activos_PrestamosOET.Controllers
             Dictionary<string, int> eq = new Dictionary<string, int>();//diccionario que almacena las cantidades de préstamos vigentes.
             foreach (var f in fechas)
             {
-                if (f.FECHA_RETIRO.Value.AddDays(f.PERIODO_USO) >= prestamos.FECHA_RETIRO.Value)
+                if (f.FECHA_RETIRO.AddDays(f.PERIODO_USO) >= prestamos.FECHA_RETIRO)
                 {
                     var equip2 = f.EQUIPO_SOLICITADO.Where(q => q.CANTIDAD > 0);//Se seleccionan pedidos co una cantidad mayor a 0
                     foreach (var e in equip2)
@@ -515,7 +515,7 @@ namespace Activos_PrestamosOET.Controllers
                 db.SaveChanges();
             }
 
-            var prestamo = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(p => p.ID == ID);
+            var prestamo = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
 
             var equipo_sol = prestamo.EQUIPO_SOLICITADO;
 
@@ -573,7 +573,7 @@ namespace Activos_PrestamosOET.Controllers
 
       
 
-            var lista = db.PRESTAMOS.Include(i => i.USUARIO).SingleOrDefault(p => p.ID == ID);
+            var lista = db.PRESTAMOS.Include(i => i.USUARIO).SingleOrDefault(h => h.ID == ID);
 
         
 
@@ -641,16 +641,16 @@ namespace Activos_PrestamosOET.Controllers
             }
 
 
-            var prestamos = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).SingleOrDefault(p => p.ID == ID);
-            DateTime dt = prestamos.FECHA_RETIRO.Value;
+            var prestamos = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
+            DateTime dt = prestamos.FECHA_RETIRO;
             dt = dt.AddDays(prestamos.PERIODO_USO);
 
             var equip = prestamos.EQUIPO_SOLICITADO.Where(q => q.CANTIDAD > 0);
-            var fechas = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).Where(p => p.FECHA_RETIRO <= prestamos.FECHA_RETIRO && p.ID != ID);
+            var fechas = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).Where(h => h.FECHA_RETIRO <= prestamos.FECHA_RETIRO && h.ID != ID);
             Dictionary<string, int> eq = new Dictionary<string, int>();
             foreach (var f in fechas)
             {
-                if (f.FECHA_RETIRO.Value.AddDays(f.PERIODO_USO) >= prestamos.FECHA_RETIRO.Value)
+                if (f.FECHA_RETIRO.AddDays(f.PERIODO_USO) >= prestamos.FECHA_RETIRO)
                 {
                     var equip2 = f.EQUIPO_SOLICITADO.Where(q => q.CANTIDAD > 0);
                     foreach (var e in equip2)
@@ -876,7 +876,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 ViewBag.Estadillo = "Cancelada";
             }
-            ViewBag.fechSol = viewBagFechaSolicitada(pRESTAMO.FECHA_SOLICITUD.Value.Date);
+            ViewBag.fechSol = viewBagFechaSolicitada(pRESTAMO.FECHA_SOLICITUD.Date);
             //Consulta el usuario solicitante
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
@@ -1049,7 +1049,7 @@ namespace Activos_PrestamosOET.Controllers
                     }
                 }
             }
-            ViewBag.fechSol = P.FECHA_SOLICITUD.Value.ToShortDateString();
+            ViewBag.fechSol = P.FECHA_SOLICITUD.ToShortDateString();
 
             //Guarda los cambios de los otros atributos de la tabla prestamo
             P.MOTIVO = p.MOTIVO;
@@ -1376,7 +1376,7 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             var prestamos = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).SingleOrDefault(d => p.ID == ID);
-            DateTime dt = prestamos.FECHA_RETIRO.Value;
+            DateTime dt = prestamos.FECHA_RETIRO;
             dt = dt.AddDays(prestamos.PERIODO_USO);
 
             ViewBag.Equipo_Solict = equipo;
