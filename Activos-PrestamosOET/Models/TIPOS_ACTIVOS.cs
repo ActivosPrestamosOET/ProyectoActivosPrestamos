@@ -18,6 +18,7 @@ namespace Activos_PrestamosOET.Models
         public TIPOS_ACTIVOS()
         {
             this.ACTIVOS = new HashSet<ACTIVO>();
+            this.EQUIPO_SOLICITADO = new HashSet<EQUIPO_SOLICITADO>();
         }
     
         public int ID { get; set; }
@@ -25,5 +26,7 @@ namespace Activos_PrestamosOET.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ACTIVO> ACTIVOS { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EQUIPO_SOLICITADO> EQUIPO_SOLICITADO { get; set; }
     }
 }

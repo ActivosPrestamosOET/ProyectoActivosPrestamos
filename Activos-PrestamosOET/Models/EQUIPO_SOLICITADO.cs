@@ -18,7 +18,9 @@ namespace Activos_PrestamosOET.Models
         public string TIPO_ACTIVO { get; set; }
         public decimal CANTIDAD { get; set; }
         public Nullable<decimal> CANTIDADAPROBADA { get; set; }
+        public int TIPOS_ACTIVOSID { get; set; }
     
         public virtual PRESTAMO PRESTAMO { get; set; }
+        public virtual TIPOS_ACTIVOS TIPOS_ACTIVOS { get; set; }
     }
 }

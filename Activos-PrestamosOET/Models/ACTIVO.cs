@@ -20,7 +20,7 @@ namespace Activos_PrestamosOET.Models
             this.PRESTAMOes = new HashSet<PRESTAMO>();
         }
     
-        public int ID { get; set; }
+        public string ID { get; set; }
         public string NUMERO_SERIE { get; set; }
         public System.DateTime FECHA_COMPRA { get; set; }
         public Nullable<System.DateTime> INICIO_SERVICIO { get; set; }
