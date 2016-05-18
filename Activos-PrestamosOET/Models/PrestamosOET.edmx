@@ -209,7 +209,7 @@
             <PropertyRef Name="TIPO_ACTIVO" />
             <PropertyRef Name="CANTIDAD" />
           </Key>
-          <Property Name="ID_PRESTAMO" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ID_PRESTAMO" Type="String" MaxLength="25" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="TIPO_ACTIVO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="CANTIDAD" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="PRESTAMO" Relationship="Self.FK_A_PRESTAMOS" FromRole="EQUIPO_SOLICITADO" ToRole="PRESTAMOS" />
