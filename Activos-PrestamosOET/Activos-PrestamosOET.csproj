@@ -225,6 +225,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PRESTAMOesController.cs" />
     <Compile Include="Controllers\SendMailerController.cs" />
+    <Compile Include="Controllers\TiposActivosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -413,6 +414,11 @@
     <Content Include="Views\CentrosDeCostos\Details.cshtml" />
     <Content Include="Views\CentrosDeCostos\Edit.cshtml" />
     <Content Include="Views\CentrosDeCostos\Index.cshtml" />
+    <Content Include="Views\TiposActivos\Create.cshtml" />
+    <Content Include="Views\TiposActivos\Delete.cshtml" />
+    <Content Include="Views\TiposActivos\Details.cshtml" />
+    <Content Include="Views\TiposActivos\Edit.cshtml" />
+    <Content Include="Views\TiposActivos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
