@@ -77,6 +77,10 @@
       <End Role="ACTIVO" EntitySet="ACTIVOS" />
       <End Role="TRANSACCIONE" EntitySet="TRANSACCIONES" />
     </AssociationSet>
+    <AssociationSet Name="V_ESTACIONACTIVO" Association="PrestamosModel.Store.V_ESTACIONACTIVO">
+      <End Role="V_ESTACION" EntitySet="V_ESTACION" />
+      <End Role="ACTIVO" EntitySet="ACTIVOS" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="EQUIPO_SOLICITADO">
     <Key>
@@ -185,7 +189,6 @@
   <EntityType Name="V_ESTACION">
     <Key>
       <PropertyRef Name="ID" />
-      <PropertyRef Name="NOMBRE" />
     </Key>
     <Property Name="ID" Type="varchar2" Nullable="false" MaxLength="26" />
     <Property Name="NOMBRE" Type="varchar2" Nullable="false" MaxLength="100" />
@@ -437,6 +440,18 @@
       </Principal>
       <Dependent Role="TRANSACCIONE">
         <PropertyRef Name="ACTIVOID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="V_ESTACIONACTIVO">
+    <End Role="V_ESTACION" Type="PrestamosModel.Store.V_ESTACION" Multiplicity="0..1" />
+    <End Role="ACTIVO" Type="PrestamosModel.Store.ACTIVOS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="V_ESTACION">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ACTIVO">
+        <PropertyRef Name="V_ESTACIONID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

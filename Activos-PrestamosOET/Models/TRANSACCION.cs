@@ -12,7 +12,7 @@ namespace Activos_PrestamosOET.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TRANSACCIONE
+    public partial class TRANSACCION
     {
         public int ID { get; set; }
         public System.DateTime FECHA { get; set; }

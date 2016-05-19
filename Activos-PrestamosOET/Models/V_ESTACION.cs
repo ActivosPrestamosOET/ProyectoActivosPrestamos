@@ -14,9 +14,18 @@ namespace Activos_PrestamosOET.Models
     
     public partial class V_ESTACION
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public V_ESTACION()
+        {
+            this.ACTIVOes = new HashSet<ACTIVO>();
+        }
+    
         public string ID { get; set; }
         public string NOMBRE { get; set; }
         public string SIGLAS { get; set; }
         public string RESERVABLE { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ACTIVO> ACTIVOes { get; set; }
     }
 }

@@ -269,7 +269,7 @@
     <Compile Include="Models\TIPOS_TRANSACCIONES.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\TRANSACCIONE.cs">
+    <Compile Include="Models\TRANSACCION.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\USUARIO.cs">

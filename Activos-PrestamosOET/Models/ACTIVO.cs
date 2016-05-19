@@ -18,7 +18,7 @@ namespace Activos_PrestamosOET.Models
         public ACTIVO()
         {
             this.PRESTAMOes = new HashSet<PRESTAMO>();
-            this.TRANSACCIONES = new HashSet<TRANSACCIONE>();
+            this.TRANSACCIONES = new HashSet<TRANSACCION>();
         }
     
         public string ID { get; set; }
@@ -59,6 +59,7 @@ namespace Activos_PrestamosOET.Models
         public virtual V_ANFITRIONA V_ANFITRIONA { get; set; }
         public virtual TIPOS_TRANSACCIONES TIPOS_TRANSACCIONES { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<TRANSACCIONE> TRANSACCIONES { get; set; }
+        public virtual ICollection<TRANSACCION> TRANSACCIONES { get; set; }
+        public virtual V_ESTACION V_ESTACION { get; set; }
     }
 }

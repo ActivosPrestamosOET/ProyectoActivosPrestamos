@@ -120,10 +120,14 @@
       <End Role="TIPOS_TRANSACCIONES" EntitySet="TIPOS_TRANSACCIONES" />
       <End Role="ACTIVO" EntitySet="ACTIVOS" />
     </AssociationSet>
-    <EntitySet Name="TRANSACCIONES" EntityType="PrestamosModel.TRANSACCIONE" />
+    <EntitySet Name="TRANSACCIONES" EntityType="PrestamosModel.TRANSACCION" />
     <AssociationSet Name="FK_ACTIVOTRANSACCION" Association="PrestamosModel.FK_ACTIVOTRANSACCION">
       <End Role="ACTIVO" EntitySet="ACTIVOS" />
       <End Role="TRANSACCIONE" EntitySet="TRANSACCIONES" />
+    </AssociationSet>
+    <AssociationSet Name="V_ESTACIONACTIVO" Association="PrestamosModel.V_ESTACIONACTIVO">
+      <End Role="V_ESTACION" EntitySet="V_ESTACION" />
+      <End Role="ACTIVO" EntitySet="ACTIVOS" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="ACTIVO">
@@ -166,6 +170,7 @@
     <NavigationProperty Name="V_ANFITRIONA" Relationship="PrestamosModel.V_ANFITRIONAACTIVO" FromRole="ACTIVO" ToRole="V_ANFITRIONA" />
     <NavigationProperty Name="TIPOS_TRANSACCIONES" Relationship="PrestamosModel.FK_TIPO_TRANSACCIONACTIVO" FromRole="ACTIVO" ToRole="TIPOS_TRANSACCIONES" />
     <NavigationProperty Name="TRANSACCIONES" Relationship="PrestamosModel.FK_ACTIVOTRANSACCION" FromRole="ACTIVO" ToRole="TRANSACCIONE" />
+    <NavigationProperty Name="V_ESTACION" Relationship="PrestamosModel.V_ESTACIONACTIVO" FromRole="ACTIVO" ToRole="V_ESTACION" />
   </EntityType>
   <EntityType Name="USUARIO">
     <Key>
@@ -282,12 +287,12 @@
   <EntityType Name="V_ESTACION">
     <Key>
       <PropertyRef Name="ID" />
-      <PropertyRef Name="NOMBRE" />
     </Key>
     <Property Name="ID" Type="String" Nullable="false" MaxLength="26" FixedLength="false" Unicode="false" />
     <Property Name="NOMBRE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="SIGLAS" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
     <Property Name="RESERVABLE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ACTIVOes" Relationship="PrestamosModel.V_ESTACIONACTIVO" FromRole="V_ESTACION" ToRole="ACTIVO" />
   </EntityType>
   <EntityType Name="V_MONEDA">
     <Key>
@@ -439,7 +444,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityType Name="TRANSACCIONE">
+  <EntityType Name="TRANSACCION">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
@@ -453,13 +458,25 @@
   </EntityType>
   <Association Name="FK_ACTIVOTRANSACCION">
     <End Type="PrestamosModel.ACTIVO" Role="ACTIVO" Multiplicity="1" />
-    <End Type="PrestamosModel.TRANSACCIONE" Role="TRANSACCIONE" Multiplicity="*" />
+    <End Type="PrestamosModel.TRANSACCION" Role="TRANSACCIONE" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="ACTIVO">
         <PropertyRef Name="ID" />
       </Principal>
       <Dependent Role="TRANSACCIONE">
         <PropertyRef Name="ACTIVOID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="V_ESTACIONACTIVO">
+    <End Type="PrestamosModel.V_ESTACION" Role="V_ESTACION" Multiplicity="0..1" />
+    <End Type="PrestamosModel.ACTIVO" Role="ACTIVO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="V_ESTACION">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ACTIVO">
+        <PropertyRef Name="V_ESTACIONID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

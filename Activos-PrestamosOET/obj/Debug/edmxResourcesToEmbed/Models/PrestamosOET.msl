@@ -200,7 +200,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="TRANSACCIONES">
-      <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.TRANSACCIONE)">
+      <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.TRANSACCION)">
         <MappingFragment StoreEntitySet="TRANSACCIONES">
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="FECHA" ColumnName="FECHA" />
