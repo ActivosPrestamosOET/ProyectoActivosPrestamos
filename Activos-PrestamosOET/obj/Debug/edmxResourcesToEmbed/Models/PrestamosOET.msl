@@ -8,6 +8,7 @@
           <ScalarProperty Name="TIPO_ACTIVO" ColumnName="TIPO_ACTIVO" />
           <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
           <ScalarProperty Name="CANTIDADAPROBADA" ColumnName="CANTIDADAPROBADA" />
+          <ScalarProperty Name="TIPOS_ACTIVOSID" ColumnName="TIPOS_ACTIVOSID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -34,6 +35,12 @@
     <EntitySetMapping Name="ACTIVOS">
       <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.ACTIVO)">
         <MappingFragment StoreEntitySet="ACTIVOS">
+          <ScalarProperty Name="CENTRO_DE_COSTOId" ColumnName="CENTRO_DE_COSTOId" />
+          <ScalarProperty Name="V_MONEDAID" ColumnName="V_MONEDAID" />
+          <ScalarProperty Name="V_PROVEEDORIDPROVEEDOR" ColumnName="V_PROVEEDORIDPROVEEDOR" />
+          <ScalarProperty Name="V_ANFITRIONAID" ColumnName="V_ANFITRIONAID" />
+          <ScalarProperty Name="V_ESTACIONID" ColumnName="V_ESTACIONID" />
+          <ScalarProperty Name="V_USUARIOSIDUSUARIO" ColumnName="V_USUARIOSIDUSUARIO" />
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="NUMERO_SERIE" ColumnName="NUMERO_SERIE" />
           <ScalarProperty Name="FECHA_COMPRA" ColumnName="FECHA_COMPRA" />
@@ -51,13 +58,8 @@
           <ScalarProperty Name="TIPO_TRANSACCIONID" ColumnName="TIPO_TRANSACCIONID" />
           <ScalarProperty Name="ESTADO_ACTIVOID" ColumnName="ESTADO_ACTIVOID" />
           <ScalarProperty Name="TIPO_ACTIVOID" ColumnName="TIPO_ACTIVOID" />
-          <ScalarProperty Name="ANFITRIONAID" ColumnName="ANFITRIONAID" />
-          <ScalarProperty Name="PROVEEDORIDPROVEEDOR" ColumnName="PROVEEDORIDPROVEEDOR" />
           <ScalarProperty Name="COMENTARIO" ColumnName="COMENTARIO" />
           <ScalarProperty Name="DESECHADO" ColumnName="DESECHADO" />
-          <ScalarProperty Name="USUARIOSIDUSUARIO" ColumnName="USUARIOSIDUSUARIO" />
-          <ScalarProperty Name="ESTACIONID" ColumnName="ESTACIONID" />
-          <ScalarProperty Name="DEPARTAMENTOIDDEPARTAMENTO" ColumnName="DEPARTAMENTOIDDEPARTAMENTO" />
           <ScalarProperty Name="MODELO" ColumnName="MODELO" />
         </MappingFragment>
       </EntityTypeMapping>

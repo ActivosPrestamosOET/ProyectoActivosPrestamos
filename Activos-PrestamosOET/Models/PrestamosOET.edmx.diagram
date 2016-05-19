@@ -16,7 +16,6 @@
         <EntityTypeShape EntityType="PrestamosModel.TIPOS_ACTIVOS" Width="1.5" PointX="2.25" PointY="9" />
         <AssociationConnector Association="PrestamosModel.FK_TIPO_ACTIVOACTIVO" />
         <AssociationConnector Association="PrestamosModel.TIPOS_ACTIVOSEQUIPO_SOLICITADO" />
-        <AssociationConnector Association="PrestamosModel.TIPOS_ACTIVOSEQUIPO_SOLICITADO" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

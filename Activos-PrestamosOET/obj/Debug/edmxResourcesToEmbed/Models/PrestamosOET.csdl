@@ -11,6 +11,8 @@
     <Property Name="CANTIDAD" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
     <NavigationProperty Name="PRESTAMO" Relationship="Self.FK_A_PRESTAMOS" FromRole="EQUIPO_SOLICITADO" ToRole="PRESTAMOS" />
     <Property Name="CANTIDADAPROBADA" Type="Decimal" Precision="38" Scale="0" />
+    <NavigationProperty Name="TIPOS_ACTIVOS" Relationship="PrestamosModel.TIPOS_ACTIVOSEQUIPO_SOLICITADO" FromRole="EQUIPO_SOLICITADO" ToRole="TIPOS_ACTIVOS" />
+    <Property Name="TIPOS_ACTIVOSID" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="PRESTAMO">
     <Key>
@@ -77,12 +79,16 @@
       <End Role="TIPOS_ACTIVOS" EntitySet="TIPOS_ACTIVOS" />
       <End Role="ACTIVO" EntitySet="ACTIVOS" />
     </AssociationSet>
+    <AssociationSet Name="TIPOS_ACTIVOSEQUIPO_SOLICITADO" Association="PrestamosModel.TIPOS_ACTIVOSEQUIPO_SOLICITADO">
+      <End Role="TIPOS_ACTIVOS" EntitySet="TIPOS_ACTIVOS" />
+      <End Role="EQUIPO_SOLICITADO" EntitySet="EQUIPO_SOLICITADO" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="ACTIVO">
     <Key>
       <PropertyRef Name="ID" />
     </Key>
-    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="ID" Type="String" Nullable="false" />
     <Property Name="NUMERO_SERIE" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
     <Property Name="FECHA_COMPRA" Type="DateTime" Nullable="false" />
     <Property Name="INICIO_SERVICIO" Type="DateTime" />
@@ -99,16 +105,17 @@
     <Property Name="TIPO_TRANSACCIONID" Type="Int32" Nullable="false" />
     <Property Name="ESTADO_ACTIVOID" Type="Int32" Nullable="false" />
     <Property Name="TIPO_ACTIVOID" Type="Int32" Nullable="false" />
-    <Property Name="ANFITRIONAID" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
-    <Property Name="PROVEEDORIDPROVEEDOR" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="COMENTARIO" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
     <Property Name="DESECHADO" Type="Boolean" Nullable="false" />
-    <Property Name="USUARIOSIDUSUARIO" Type="String" MaxLength="26" FixedLength="false" Unicode="false" />
-    <Property Name="ESTACIONID" Type="String" MaxLength="26" FixedLength="false" Unicode="false" />
-    <Property Name="DEPARTAMENTOIDDEPARTAMENTO" Type="Decimal" Precision="8" Scale="2" />
     <Property Name="MODELO" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="PRESTAMOes" Relationship="PrestamosModel.ACTIVOPRESTAMO" FromRole="ACTIVO" ToRole="PRESTAMO" />
     <NavigationProperty Name="TIPOS_ACTIVOS" Relationship="PrestamosModel.FK_TIPO_ACTIVOACTIVO" FromRole="ACTIVO" ToRole="TIPOS_ACTIVOS" />
+    <Property Name="V_USUARIOSIDUSUARIO" Type="String" MaxLength="26" FixedLength="false" Unicode="false" />
+    <Property Name="V_ESTACIONID" Type="String" MaxLength="26" FixedLength="false" Unicode="false" />
+    <Property Name="V_ANFITRIONAID" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="V_PROVEEDORIDPROVEEDOR" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="V_MONEDAID" Type="String" Nullable="false" MaxLength="26" FixedLength="false" Unicode="false" />
+    <Property Name="CENTRO_DE_COSTOId" Type="Int32" />
   </EntityType>
   <EntityType Name="USUARIO">
     <Key>
@@ -162,6 +169,7 @@
     <Property Name="ID" Type="Int32" Nullable="false" />
     <Property Name="NOMBRE" Type="String" Nullable="false" MaxLength="127" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="ACTIVOS" Relationship="PrestamosModel.FK_TIPO_ACTIVOACTIVO" FromRole="TIPOS_ACTIVOS" ToRole="ACTIVO" />
+    <NavigationProperty Name="EQUIPO_SOLICITADO" Relationship="PrestamosModel.TIPOS_ACTIVOSEQUIPO_SOLICITADO" FromRole="TIPOS_ACTIVOS" ToRole="EQUIPO_SOLICITADO" />
   </EntityType>
   <Association Name="FK_TIPO_ACTIVOACTIVO">
     <End Type="PrestamosModel.TIPOS_ACTIVOS" Role="TIPOS_ACTIVOS" Multiplicity="1" />
@@ -172,6 +180,18 @@
       </Principal>
       <Dependent Role="ACTIVO">
         <PropertyRef Name="TIPO_ACTIVOID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TIPOS_ACTIVOSEQUIPO_SOLICITADO">
+    <End Type="PrestamosModel.TIPOS_ACTIVOS" Role="TIPOS_ACTIVOS" Multiplicity="1" />
+    <End Type="PrestamosModel.EQUIPO_SOLICITADO" Role="EQUIPO_SOLICITADO" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TIPOS_ACTIVOS">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="EQUIPO_SOLICITADO">
+        <PropertyRef Name="TIPOS_ACTIVOSID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
