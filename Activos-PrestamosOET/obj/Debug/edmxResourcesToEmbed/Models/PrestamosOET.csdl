@@ -355,6 +355,9 @@
     <Property Name="DESCRIPCION" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
     <Property Name="CORREO" Type="String" MaxLength="400" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="ACTIVOes" Relationship="PrestamosModel.V_USUARIOSACTIVO" FromRole="V_USUARIOS" ToRole="ACTIVO" />
+    <Property Name="NOMBRE" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="IDESTACION" Type="String" Nullable="false" MaxLength="26" FixedLength="false" Unicode="false" />
+    <Property Name="ESTADO" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
   </EntityType>
   <Association Name="V_MONEDAACTIVO">
     <End Type="PrestamosModel.V_MONEDA" Role="V_MONEDA" Multiplicity="1" />

@@ -11,7 +11,7 @@ namespace Activos_PrestamosOET.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
     public partial class V_MONEDA
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,7 +21,9 @@ namespace Activos_PrestamosOET.Models
         }
     
         public string ID { get; set; }
+        [Display(Name = "Moneda")]
         public string NOMBRE { get; set; }
+        [Display(Name = "Símbolo de la moneda")]
         public string SIMBOLO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

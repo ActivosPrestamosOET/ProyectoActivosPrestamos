@@ -253,6 +253,9 @@
     <Property Name="IDUSUARIO" Type="varchar2" Nullable="false" MaxLength="26" />
     <Property Name="DESCRIPCION" Type="varchar2" Nullable="true" MaxLength="255" />
     <Property Name="CORREO" Type="varchar2" Nullable="true" MaxLength="400" />
+    <Property Name="NOMBRE" Type="varchar2" Nullable="false" MaxLength="100" />
+    <Property Name="IDESTACION" Type="varchar2" Nullable="false" MaxLength="26" />
+    <Property Name="ESTADO" Type="number" Nullable="false" Precision="38" />
   </EntityType>
   <EntityType Name="CENTROS_DE_COSTOS">
     <Key>

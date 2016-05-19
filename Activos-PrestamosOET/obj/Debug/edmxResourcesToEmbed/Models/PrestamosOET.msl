@@ -180,6 +180,9 @@
           <ScalarProperty Name="IDCONTACTO" ColumnName="IDCONTACTO" />
           <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
           <ScalarProperty Name="CORREO" ColumnName="CORREO" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+          <ScalarProperty Name="IDESTACION" ColumnName="IDESTACION" />
+          <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

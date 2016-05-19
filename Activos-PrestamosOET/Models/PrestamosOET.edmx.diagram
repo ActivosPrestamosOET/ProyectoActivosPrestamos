@@ -23,7 +23,7 @@
         <EntityTypeShape EntityType="PrestamosModel.V_ANFITRIONA" Width="1.5" PointX="0.625" PointY="0.75" />
         <EntityTypeShape EntityType="PrestamosModel.V_MONEDA" Width="1.5" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="PrestamosModel.V_PROVEEDOR" Width="2.125" PointX="0.625" PointY="6.375" />
-        <EntityTypeShape EntityType="PrestamosModel.V_TIPO_CAMBIO" Width="1.5" PointX="4.375" PointY="4" />
+        <EntityTypeShape EntityType="PrestamosModel.V_TIPO_CAMBIO" Width="1.5" PointX="3.75" PointY="4.25" />
         <EntityTypeShape EntityType="PrestamosModel.V_USUARIOS" Width="1.5" PointX="4.75" PointY="0.75" />
         <AssociationConnector Association="PrestamosModel.V_MONEDAACTIVO" />
         <EntityTypeShape EntityType="PrestamosModel.CENTROS_DE_COSTOS" Width="1.5" PointX="3.75" PointY="11.875" />

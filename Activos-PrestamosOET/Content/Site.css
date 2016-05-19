@@ -4,7 +4,7 @@
 
 body {
     padding-top: 140px;
-    padding-bottom: 20px;
+    padding-bottom: 30px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -21,12 +21,13 @@ body {
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
+/* Set width on the form input elements since they're 100% wide by default
 input,
 select,
 textarea {
-    max-width: 100%;
+    max-width: 280px;
 }
+*/
 
 /* Barra que aparece por encima del navbar con el logo de la OET.*/
 .barra-logo {
@@ -47,8 +48,8 @@ textarea {
 textarea {
     resize: none;
 }
-/* Para marcar labels con el asterizco rojo */
 
+/* Para marcar labels con el asterizco rojo */
 label.required:after {
     color: #a94442;
     content: " *";
@@ -64,7 +65,7 @@ html, body {
 }
 
 .wrapper {
-    min-height: 90%;
+    min-height: 100%;
     height: auto !important;
     margin: 0 0 -4em;
 }
@@ -74,9 +75,8 @@ html, body {
 }
 
 .cuerpo-footer {
-    background-color: #EEE;
-    padding: 40px;
+    background-color: #F4F5F0;
+    padding: 10px;
     margin: 0px;
     width: 100%;
 }
-
