@@ -227,6 +227,7 @@
     <Compile Include="Controllers\PRESTAMOesController.cs" />
     <Compile Include="Controllers\SendMailerController.cs" />
     <Compile Include="Controllers\TiposActivosController.cs" />
+    <Compile Include="Controllers\TiposTransaccionesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -425,6 +426,11 @@
     <Content Include="Views\EstadosActivos\Details.cshtml" />
     <Content Include="Views\EstadosActivos\Edit.cshtml" />
     <Content Include="Views\EstadosActivos\Index.cshtml" />
+    <Content Include="Views\TiposTransacciones\Create.cshtml" />
+    <Content Include="Views\TiposTransacciones\Delete.cshtml" />
+    <Content Include="Views\TiposTransacciones\Details.cshtml" />
+    <Content Include="Views\TiposTransacciones\Edit.cshtml" />
+    <Content Include="Views\TiposTransacciones\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
