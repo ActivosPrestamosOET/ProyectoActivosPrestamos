@@ -218,6 +218,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CentrosDeCostosController.cs" />
     <Compile Include="Controllers\EQUIPO_SOLICITADOController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventarioController.cs" />
@@ -407,6 +408,11 @@
     <Content Include="Views\PRESTAMOes\Detalles.cshtml" />
     <Content Include="Views\SendMailer\Index.cshtml" />
     <Content Include="Views\PRESTAMOes\Devolucion.cshtml" />
+    <Content Include="Views\CentrosDeCostos\Create.cshtml" />
+    <Content Include="Views\CentrosDeCostos\Delete.cshtml" />
+    <Content Include="Views\CentrosDeCostos\Details.cshtml" />
+    <Content Include="Views\CentrosDeCostos\Edit.cshtml" />
+    <Content Include="Views\CentrosDeCostos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
