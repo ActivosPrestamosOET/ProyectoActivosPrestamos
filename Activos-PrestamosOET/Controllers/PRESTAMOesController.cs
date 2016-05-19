@@ -377,9 +377,10 @@ namespace Activos_PrestamosOET.Controllers
             {                
                 List<String> temp = new List<String>();
                 if (x.TIPO_ACTIVO != null)
-                {                            
-                    temp.Add(x.TIPO_ACTIVO);
-                    llenarTablaDetails(x.TIPOS_ACTIVOSID.ToString());
+                {   
+                                             
+                    temp.Add(x.TIPOS_ACTIVOS.NOMBRE.ToString());
+                    ViewBag.Activos_enCat = llenarTablaDetails(x.TIPOS_ACTIVOSID.ToString());
                 }
                 else
                 {
@@ -1339,7 +1340,7 @@ namespace Activos_PrestamosOET.Controllers
         // Requiere: valor seleccionado en el dropdown de Categoría, valor del botón seleccionado, valor de la fecha inicial y la fecha final
         // Modifica: se encarga de llenar la tabla de Inventario, de la categoría que recibe cómo parámetro.
         // Regresa: N/A.
-        private void llenarTablaDetails(String Categoria)
+        private List<List<String>> llenarTablaDetails(String Categoria)
         {
 
 
@@ -1348,7 +1349,7 @@ namespace Activos_PrestamosOET.Controllers
             foreach (Activos_PrestamosOET.Models.ACTIVO x in activos)
             {
 
-                    if (Categoria.Equals(a.TIPO_ACTIVOID) && x.PRESTABLE == true)
+                    if (Categoria.Equals(x.TIPO_ACTIVOID.ToString()) && x.PRESTABLE == true)
                     {
                     List<String> temp = new List<String>();
                     if (x.FABRICANTE != null) { temp.Add(x.FABRICANTE); } else { temp.Add(""); }
@@ -1358,11 +1359,12 @@ namespace Activos_PrestamosOET.Controllers
                     activos_enCat.Add(temp);
                 }
             }
-            ViewBag.Activos_enCat = activos_enCat;
+            
             if (activos_enCat.Count == 0)
             {
                 ViewBag.NoActivos = "No hay Activos Prestables con esta categoría.";
-            }   
+            }
+            return activos_enCat;
     }
 
 }
