@@ -476,21 +476,7 @@ namespace Activos_PrestamosOET.Controllers
             }
             ViewBag.Equipo_Solict = equipo;
 
-            /*  -------------------------------------------------------------------------------------------  */
-
-            /*
-         	var lista1 = from o in db.PRESTAMOS
-                      	from o2 in db.EQUIPO_SOLICITADO
-                      	where o.ID == o2.ID_PRESTAMO
-                      	select new { EQUIPO_SOLICITADO = o2.TIPO_ACTIVO, EQUIPO_SOLICITADO_CANTIDAD = o2.CANTIDAD };
-         	List<Tuple<string, decimal>> l1 = new List<Tuple<string, decimal>>();
-         	foreach (var m in lista1)
-         	{
-             	var t1 = new Tuple<string, decimal>(m.EQUIPO_SOLICITADO, m.EQUIPO_SOLICITADO_CANTIDAD);
-             	l1.Add(t1);
-         	}
-         	ViewBag.Equipo_Solict = l1;
-         	*/
+            
             return View(pRESTAMO);
         }
 
@@ -568,12 +554,12 @@ namespace Activos_PrestamosOET.Controllers
 
 
 
-            var lista = db.PRESTAMOS.Include(i => i.USUARIO).SingleOrDefault(h => h.ID == ID);
+            /*var lista = db.PRESTAMOS.Include(i => i.USUARIO).SingleOrDefault(h => h.ID == ID);
 
 
 
             ViewBag.Nombre = lista.USUARIO.NOMBRE;
-            /*  -------------------------------------------------------------------------------------------  */
+            /*  -------------------------------------------------------------------------------------------  
             var equipoSol = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
             var equipoSolicitado = equipoSol.EQUIPO_SOLICITADO;
 
@@ -683,7 +669,9 @@ namespace Activos_PrestamosOET.Controllers
 
 
             
-            return View(pRESTAMO);
+            return View(pRESTAMO);*/
+
+            return Details(ID);
         }
 
        

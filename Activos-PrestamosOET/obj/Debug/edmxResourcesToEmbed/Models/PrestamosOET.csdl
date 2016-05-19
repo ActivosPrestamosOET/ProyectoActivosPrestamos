@@ -105,16 +105,17 @@
     <Property Name="TIPO_TRANSACCIONID" Type="Int32" Nullable="false" />
     <Property Name="ESTADO_ACTIVOID" Type="Int32" Nullable="false" />
     <Property Name="TIPO_ACTIVOID" Type="Int32" Nullable="false" />
-    <Property Name="ANFITRIONAID" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
-    <Property Name="PROVEEDORIDPROVEEDOR" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="COMENTARIO" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
     <Property Name="DESECHADO" Type="Boolean" Nullable="false" />
-    <Property Name="USUARIOSIDUSUARIO" Type="String" MaxLength="26" FixedLength="false" Unicode="false" />
-    <Property Name="ESTACIONID" Type="String" MaxLength="26" FixedLength="false" Unicode="false" />
-    <Property Name="DEPARTAMENTOIDDEPARTAMENTO" Type="Decimal" Precision="8" Scale="2" />
     <Property Name="MODELO" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="PRESTAMOes" Relationship="PrestamosModel.ACTIVOPRESTAMO" FromRole="ACTIVO" ToRole="PRESTAMO" />
     <NavigationProperty Name="TIPOS_ACTIVOS" Relationship="PrestamosModel.FK_TIPO_ACTIVOACTIVO" FromRole="ACTIVO" ToRole="TIPOS_ACTIVOS" />
+    <Property Name="V_USUARIOSIDUSUARIO" Type="String" MaxLength="26" FixedLength="false" Unicode="false" />
+    <Property Name="V_ESTACIONID" Type="String" MaxLength="26" FixedLength="false" Unicode="false" />
+    <Property Name="V_ANFITRIONAID" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="V_PROVEEDORIDPROVEEDOR" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="V_MONEDAID" Type="String" Nullable="false" MaxLength="26" FixedLength="false" Unicode="false" />
+    <Property Name="CENTRO_DE_COSTOId" Type="Int32" />
   </EntityType>
   <EntityType Name="USUARIO">
     <Key>
