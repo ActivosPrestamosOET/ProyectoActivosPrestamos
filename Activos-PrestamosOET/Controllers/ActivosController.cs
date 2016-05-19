@@ -123,6 +123,7 @@ namespace Activos_PrestamosOET.Controllers
                     break;
             }
 
+            int tamano_pagina = 6;
             int num_pagina = (pagina ?? 1);
 
             return View(aCTIVOS.ToPagedList(num_pagina, tamano_pagina));
