@@ -220,6 +220,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CentrosDeCostosController.cs" />
     <Compile Include="Controllers\EQUIPO_SOLICITADOController.cs" />
+    <Compile Include="Controllers\EstadosActivosController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventarioController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -419,6 +420,11 @@
     <Content Include="Views\TiposActivos\Details.cshtml" />
     <Content Include="Views\TiposActivos\Edit.cshtml" />
     <Content Include="Views\TiposActivos\Index.cshtml" />
+    <Content Include="Views\EstadosActivos\Create.cshtml" />
+    <Content Include="Views\EstadosActivos\Delete.cshtml" />
+    <Content Include="Views\EstadosActivos\Details.cshtml" />
+    <Content Include="Views\EstadosActivos\Edit.cshtml" />
+    <Content Include="Views\EstadosActivos\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
