@@ -96,5 +96,14 @@
         <ScalarProperty Name="ID" ColumnName="PRESTAMOes_ID" />
       </EndProperty>
     </AssociationSetMapping>
+    <EntitySetMapping Name="V_COURSES">
+      <EntityTypeMapping TypeName="PrestamosModel.V_COURSES">
+        <MappingFragment StoreEntitySet="V_COURSES">
+          <ScalarProperty Name="COURSE_NAME" ColumnName="COURSE_NAME" />
+          <ScalarProperty Name="COURSES_CODE" ColumnName="COURSES_CODE" />
+          <ScalarProperty Name="COURSES" ColumnName="COURSES" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>
