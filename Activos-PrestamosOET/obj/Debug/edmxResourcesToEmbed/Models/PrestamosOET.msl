@@ -8,6 +8,7 @@
           <ScalarProperty Name="TIPO_ACTIVO" ColumnName="TIPO_ACTIVO" />
           <ScalarProperty Name="CANTIDAD" ColumnName="CANTIDAD" />
           <ScalarProperty Name="CANTIDADAPROBADA" ColumnName="CANTIDADAPROBADA" />
+          <ScalarProperty Name="TIPOS_ACTIVOSID" ColumnName="TIPOS_ACTIVOSID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
