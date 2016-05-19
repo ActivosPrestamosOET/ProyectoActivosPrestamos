@@ -1334,5 +1334,35 @@ namespace Activos_PrestamosOET.Controllers
 
             return View(pRESTAMO);
         }
+
+        // Requiere: valor seleccionado en el dropdown de Categoría, valor del botón seleccionado, valor de la fecha inicial y la fecha final
+        // Modifica: se encarga de llenar la tabla de Inventario, de la categoría que recibe cómo parámetro.
+        // Regresa: N/A.
+        private void llenarTablaDetails(String Categoria)
+        {
+
+
+            var activos_enCat = new List<List<String>>();
+            var activos = db.ACTIVOS;
+            foreach (Activos_PrestamosOET.Models.ACTIVO x in activos)
+            {
+
+                    if (Categoria.Equals(a.TIPO_ACTIVOID) && x.PRESTABLE == true)
+                    {
+                    List<String> temp = new List<String>();
+                    if (x.FABRICANTE != null) { temp.Add(x.FABRICANTE); } else { temp.Add(""); }
+                    if (x.MODELO != null) { temp.Add(x.MODELO); } else { temp.Add(""); }
+                    if (x.NUMERO_SERIE != null) { temp.Add(x.NUMERO_SERIE); } else { temp.Add(""); }
+
+                    activos_enCat.Add(temp);
+                }
+            }
+            ViewBag.Activos_enCat = activos_enCat;
+            if (activos_enCat.Count == 0)
+            {
+                ViewBag.NoActivos = "No hay Activos Prestables con esta categoría.";
+            }   
     }
+
+}
 }
