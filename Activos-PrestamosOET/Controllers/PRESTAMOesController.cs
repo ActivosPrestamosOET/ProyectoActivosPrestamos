@@ -378,7 +378,8 @@ namespace Activos_PrestamosOET.Controllers
                 List<String> temp = new List<String>();
                 if (x.TIPO_ACTIVO != null)
                 {                            
-                    temp.Add(x.TIPO_ACTIVO);                                                                                               
+                    temp.Add(x.TIPO_ACTIVO);
+                    llenarTablaDetails(x.TIPOS_ACTIVOSID.ToString());
                 }
                 else
                 {

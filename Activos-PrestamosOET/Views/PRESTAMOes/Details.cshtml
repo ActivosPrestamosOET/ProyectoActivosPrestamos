@@ -270,7 +270,7 @@
                                             <table class="table table-striped table-hover ">
                                                 <thead>
                                                     <tr>
-                                                        
+
                                                         <th></th>
                                                         <th>Fabricante</th>
                                                         <th>Modelo</th>
@@ -278,13 +278,19 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    
+                                                        
+                                                @foreach (List<String> w in ViewBag.Activos_enCat)
+                        {
                                                     <tr>
                                                         <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado"></td>
-                                                        <td>Column content</td>
-                                                        <td>Column content</td>
-                                                        <td>Column content</td>
-                                                        
-                                                    </tr>                  
+                                                        @foreach (String hilera in w)
+                                                        {
+                                                            <td>@hilera</td>
+                                                        }
+                                                    </tr>
+                                                }
+                                                               
                 </tbody>
             </table>
                                 </div>
