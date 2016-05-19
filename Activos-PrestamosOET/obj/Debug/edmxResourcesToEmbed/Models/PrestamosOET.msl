@@ -35,12 +35,6 @@
     <EntitySetMapping Name="ACTIVOS">
       <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.ACTIVO)">
         <MappingFragment StoreEntitySet="ACTIVOS">
-          <ScalarProperty Name="CENTRO_DE_COSTOId" ColumnName="CENTRO_DE_COSTOId" />
-          <ScalarProperty Name="V_MONEDAID" ColumnName="V_MONEDAID" />
-          <ScalarProperty Name="V_PROVEEDORIDPROVEEDOR" ColumnName="V_PROVEEDORIDPROVEEDOR" />
-          <ScalarProperty Name="V_ANFITRIONAID" ColumnName="V_ANFITRIONAID" />
-          <ScalarProperty Name="V_ESTACIONID" ColumnName="V_ESTACIONID" />
-          <ScalarProperty Name="V_USUARIOSIDUSUARIO" ColumnName="V_USUARIOSIDUSUARIO" />
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="NUMERO_SERIE" ColumnName="NUMERO_SERIE" />
           <ScalarProperty Name="FECHA_COMPRA" ColumnName="FECHA_COMPRA" />
@@ -61,6 +55,12 @@
           <ScalarProperty Name="COMENTARIO" ColumnName="COMENTARIO" />
           <ScalarProperty Name="DESECHADO" ColumnName="DESECHADO" />
           <ScalarProperty Name="MODELO" ColumnName="MODELO" />
+          <ScalarProperty Name="V_USUARIOSIDUSUARIO" ColumnName="V_USUARIOSIDUSUARIO" />
+          <ScalarProperty Name="V_ESTACIONID" ColumnName="V_ESTACIONID" />
+          <ScalarProperty Name="V_ANFITRIONAID" ColumnName="V_ANFITRIONAID" />
+          <ScalarProperty Name="V_PROVEEDORIDPROVEEDOR" ColumnName="V_PROVEEDORIDPROVEEDOR" />
+          <ScalarProperty Name="V_MONEDAID" ColumnName="V_MONEDAID" />
+          <ScalarProperty Name="CENTRO_DE_COSTOId" ColumnName="CENTRO_DE_COSTOId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -85,6 +85,129 @@
         <MappingFragment StoreEntitySet="TIPOS_ACTIVOS">
           <ScalarProperty Name="ID" ColumnName="ID" />
           <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESTADOS_ACTIVOS">
+      <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.ESTADOS_ACTIVOS)">
+        <MappingFragment StoreEntitySet="ESTADOS_ACTIVOS">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="V_ANFITRIONA">
+      <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.V_ANFITRIONA)">
+        <MappingFragment StoreEntitySet="V_ANFITRIONA">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+          <ScalarProperty Name="SIGLAS" ColumnName="SIGLAS" />
+          <ScalarProperty Name="MONEDA" ColumnName="MONEDA" />
+          <ScalarProperty Name="TIPOCAMBIO" ColumnName="TIPOCAMBIO" />
+          <ScalarProperty Name="TIPOUSUARIO" ColumnName="TIPOUSUARIO" />
+          <ScalarProperty Name="TIPOCAMBIO_CONTA" ColumnName="TIPOCAMBIO_CONTA" />
+          <ScalarProperty Name="MONEDA_CONTA" ColumnName="MONEDA_CONTA" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="V_ESTACION">
+      <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.V_ESTACION)">
+        <MappingFragment StoreEntitySet="V_ESTACION">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+          <ScalarProperty Name="SIGLAS" ColumnName="SIGLAS" />
+          <ScalarProperty Name="RESERVABLE" ColumnName="RESERVABLE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="V_MONEDA">
+      <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.V_MONEDA)">
+        <MappingFragment StoreEntitySet="V_MONEDA">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+          <ScalarProperty Name="SIMBOLO" ColumnName="SIMBOLO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="V_PROVEEDOR">
+      <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.V_PROVEEDOR)">
+        <MappingFragment StoreEntitySet="V_PROVEEDOR">
+          <ScalarProperty Name="IDPROVEEDOR" ColumnName="IDPROVEEDOR" />
+          <ScalarProperty Name="FECHAINGRESO" ColumnName="FECHAINGRESO" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+          <ScalarProperty Name="RAZONSOCIAL" ColumnName="RAZONSOCIAL" />
+          <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+          <ScalarProperty Name="TIPOCEDULA" ColumnName="TIPOCEDULA" />
+          <ScalarProperty Name="CEDULA" ColumnName="CEDULA" />
+          <ScalarProperty Name="TELEFONO" ColumnName="TELEFONO" />
+          <ScalarProperty Name="FAX" ColumnName="FAX" />
+          <ScalarProperty Name="SITIOWEB" ColumnName="SITIOWEB" />
+          <ScalarProperty Name="CORREOELECTRONICO" ColumnName="CORREOELECTRONICO" />
+          <ScalarProperty Name="LOCACION" ColumnName="LOCACION" />
+          <ScalarProperty Name="IDPAIS" ColumnName="IDPAIS" />
+          <ScalarProperty Name="IDPROVINCIA" ColumnName="IDPROVINCIA" />
+          <ScalarProperty Name="DIRECCION" ColumnName="DIRECCION" />
+          <ScalarProperty Name="IDFORMAPAGO" ColumnName="IDFORMAPAGO" />
+          <ScalarProperty Name="IDPLAZO" ColumnName="IDPLAZO" />
+          <ScalarProperty Name="DESCUENTO" ColumnName="DESCUENTO" />
+          <ScalarProperty Name="INTERESMORA" ColumnName="INTERESMORA" />
+          <ScalarProperty Name="COMENTARIO" ColumnName="COMENTARIO" />
+          <ScalarProperty Name="CONGELAR" ColumnName="CONGELAR" />
+          <ScalarProperty Name="CREADO" ColumnName="CREADO" />
+          <ScalarProperty Name="CREADOR" ColumnName="CREADOR" />
+          <ScalarProperty Name="MODIFICADO" ColumnName="MODIFICADO" />
+          <ScalarProperty Name="MODIFICADOR" ColumnName="MODIFICADOR" />
+          <ScalarProperty Name="MONEDA" ColumnName="MONEDA" />
+          <ScalarProperty Name="NOMBRE_CORTO" ColumnName="NOMBRE_CORTO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="V_TIPO_CAMBIO">
+      <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.V_TIPO_CAMBIO)">
+        <MappingFragment StoreEntitySet="V_TIPO_CAMBIO">
+          <ScalarProperty Name="IDDOCUMENTO" ColumnName="IDDOCUMENTO" />
+          <ScalarProperty Name="TIPOCAMBIO" ColumnName="TIPOCAMBIO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="V_USUARIOS">
+      <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.V_USUARIOS)">
+        <MappingFragment StoreEntitySet="V_USUARIOS">
+          <ScalarProperty Name="IDUSUARIO" ColumnName="IDUSUARIO" />
+          <ScalarProperty Name="USUARIO" ColumnName="USUARIO" />
+          <ScalarProperty Name="CLAVE" ColumnName="CLAVE" />
+          <ScalarProperty Name="ANFITRION" ColumnName="ANFITRION" />
+          <ScalarProperty Name="IDCONTACTO" ColumnName="IDCONTACTO" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="CORREO" ColumnName="CORREO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CENTROS_DE_COSTOS">
+      <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.CENTROS_DE_COSTOS)">
+        <MappingFragment StoreEntitySet="CENTROS_DE_COSTOS">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TIPOS_TRANSACCIONES">
+      <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.TIPOS_TRANSACCIONES)">
+        <MappingFragment StoreEntitySet="TIPOS_TRANSACCIONES">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TRANSACCIONES">
+      <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.TRANSACCIONE)">
+        <MappingFragment StoreEntitySet="TRANSACCIONES">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="FECHA" ColumnName="FECHA" />
+          <ScalarProperty Name="RESPONSABLE" ColumnName="RESPONSABLE" />
+          <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="ACTIVOID" ColumnName="ACTIVOID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

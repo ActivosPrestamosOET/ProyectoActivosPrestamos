@@ -12,22 +12,21 @@ namespace Activos_PrestamosOET.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class V_ANFITRIONA
+    public partial class V_USUARIOS
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public V_ANFITRIONA()
+        public V_USUARIOS()
         {
             this.ACTIVOes = new HashSet<ACTIVO>();
         }
     
-        public string ID { get; set; }
-        public string NOMBRE { get; set; }
-        public string SIGLAS { get; set; }
-        public string MONEDA { get; set; }
-        public string TIPOCAMBIO { get; set; }
-        public decimal TIPOUSUARIO { get; set; }
-        public string TIPOCAMBIO_CONTA { get; set; }
-        public string MONEDA_CONTA { get; set; }
+        public string USUARIO { get; set; }
+        public string CLAVE { get; set; }
+        public string ANFITRION { get; set; }
+        public string IDCONTACTO { get; set; }
+        public string IDUSUARIO { get; set; }
+        public string DESCRIPCION { get; set; }
+        public string CORREO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ACTIVO> ACTIVOes { get; set; }

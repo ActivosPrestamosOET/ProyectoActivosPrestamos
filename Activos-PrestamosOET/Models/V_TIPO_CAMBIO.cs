@@ -12,11 +12,9 @@ namespace Activos_PrestamosOET.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class V_ESTACION
+    public partial class V_TIPO_CAMBIO
     {
-        public string ID { get; set; }
-        public string NOMBRE { get; set; }
-        public string SIGLAS { get; set; }
-        public string RESERVABLE { get; set; }
+        public string IDDOCUMENTO { get; set; }
+        public decimal TIPOCAMBIO { get; set; }
     }
 }

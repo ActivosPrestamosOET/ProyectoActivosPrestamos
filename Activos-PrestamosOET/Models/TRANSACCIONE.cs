@@ -12,11 +12,15 @@ namespace Activos_PrestamosOET.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class V_ESTACION
+    public partial class TRANSACCIONE
     {
-        public string ID { get; set; }
-        public string NOMBRE { get; set; }
-        public string SIGLAS { get; set; }
-        public string RESERVABLE { get; set; }
+        public int ID { get; set; }
+        public System.DateTime FECHA { get; set; }
+        public string RESPONSABLE { get; set; }
+        public string ESTADO { get; set; }
+        public string DESCRIPCION { get; set; }
+        public string ACTIVOID { get; set; }
+    
+        public virtual ACTIVO ACTIVO { get; set; }
     }
 }

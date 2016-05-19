@@ -18,6 +18,7 @@ namespace Activos_PrestamosOET.Models
         public ACTIVO()
         {
             this.PRESTAMOes = new HashSet<PRESTAMO>();
+            this.TRANSACCIONES = new HashSet<TRANSACCIONE>();
         }
     
         public string ID { get; set; }
@@ -26,7 +27,7 @@ namespace Activos_PrestamosOET.Models
         public Nullable<System.DateTime> INICIO_SERVICIO { get; set; }
         public System.DateTime FECHA_INGRESO { get; set; }
         public string FABRICANTE { get; set; }
-        public int PRECIO { get; set; }
+        public decimal PRECIO { get; set; }
         public string DESCRIPCION { get; set; }
         public bool EXENTO { get; set; }
         public bool PRESTABLE { get; set; }
@@ -50,5 +51,14 @@ namespace Activos_PrestamosOET.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRESTAMO> PRESTAMOes { get; set; }
         public virtual TIPOS_ACTIVOS TIPOS_ACTIVOS { get; set; }
+        public virtual ESTADOS_ACTIVOS ESTADOS_ACTIVOS { get; set; }
+        public virtual V_MONEDA V_MONEDA { get; set; }
+        public virtual CENTROS_DE_COSTOS CENTROS_DE_COSTOS { get; set; }
+        public virtual V_USUARIOS V_USUARIOS { get; set; }
+        public virtual V_PROVEEDOR V_PROVEEDOR { get; set; }
+        public virtual V_ANFITRIONA V_ANFITRIONA { get; set; }
+        public virtual TIPOS_TRANSACCIONES TIPOS_TRANSACCIONES { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TRANSACCIONE> TRANSACCIONES { get; set; }
     }
 }
