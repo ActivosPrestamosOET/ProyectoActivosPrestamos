@@ -1127,11 +1127,26 @@ namespace Activos_PrestamosOET.Controllers
             if (b == "Actualizar devolución")
             {
                 int cont = 0;
-                foreach (var y in equipo_sol)
+                if (!column5_checkAll) {
+                    foreach (var y in equipo_sol)
+                    {
+                        bool t = column5_checkbox[cont];
+                        if (t)
+                        { //si fueron todos seleccionados en esa fila, de ese tipo
+                            foreach (var x in activos_asignados)
+                            {
+                                if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
+                                {
+                                    //activos_asignados.Remove(x); //se borra de la tabla m a n
+                                }
+                            }
+                        }
+                        cont++;
+                    }
+                } else
                 {
-                    bool t = column5_checkbox[cont];
-                    if (t)
-                    { //si fueron todos seleccionados en esa fila, de ese tipo
+                    foreach (var y in equipo_sol)
+                    {
                         foreach (var x in activos_asignados)
                         {
                             if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
@@ -1140,8 +1155,8 @@ namespace Activos_PrestamosOET.Controllers
                             }
                         }
                     }
-                    cont++;
                 }
+                
 
 
                 if (column5_checkAll) { }// {pRESTAMO.Estado = 5;}
