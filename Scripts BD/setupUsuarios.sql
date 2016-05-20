@@ -11,23 +11,31 @@ CREATE TABLE "ActivosUserRoles" (
   PRIMARY KEY ("UserId", "RoleId")
 );
 
+-- creacion de usuarios----------------------------------------------------------------------
 
-CREATE TABLE "ActivosUsers" (
-  "Id" NVARCHAR2(128) NOT NULL,
-  "Email" NVARCHAR2(256) NULL,
-  "EmailConfirmed" NUMBER(1) NOT NULL,
-  "PasswordHash" NVARCHAR2(256) NULL,
-  "SecurityStamp" NVARCHAR2(256) NULL,
-  "PhoneNumber" NVARCHAR2(256) NULL,
-  "PhoneNumberConfirmed" NUMBER(1) NOT NULL,
-  "TwoFactorEnabled" NUMBER(1) NOT NULL,
-  "LockoutEndDateUtc" TIMESTAMP(7) NULL,
-  "LockoutEnabled" NUMBER(1) NOT NULL,
-  "AccessFailedCount" NUMBER(10) NOT NULL,
-  "UserName" NVARCHAR2(256) NOT NULL,
-  PRIMARY KEY ("Id")
-);
+  CREATE TABLE "ActivosUsers" 
+   (	"Id" NVARCHAR2(128), 
+	"Email" NVARCHAR2(256), 
+	"EmailConfirmed" NUMBER(1,0), 
+	"PasswordHash" NVARCHAR2(256), 
+	"SecurityStamp" NVARCHAR2(256), 
+	"PhoneNumber" NVARCHAR2(256), 
+	"PhoneNumberConfirmed" NUMBER(1,0), 
+	"TwoFactorEnabled" NUMBER(1,0), 
+	"LockoutEndDateUtc" TIMESTAMP (7), 
+	"LockoutEnabled" NUMBER(1,0), 
+	"AccessFailedCount" NUMBER(10,0), 
+	"UserName" NVARCHAR2(256), 
+	"Nombre" NVARCHAR2(100), 
+	"Apellidos" NVARCHAR2(100), 
+	"Cedula" NVARCHAR2(20), 
+	"EstacionID" VARCHAR2(26 BYTE)
+   ) ;
+   ALTER TABLE "ActivosUsers" ADD PRIMARY KEY ("Id") ENABLE;
+   ALTER TABLE "ActivosUsers" ADD CONSTRAINT "FK_Users_Estacion" FOREIGN KEY ("EstacionID")
+	  REFERENCES "ACTIVOS"."ESTACION" ("ID") ON DELETE CASCADE ENABLE
 
+---------------------------------------------------------------------------------------------
 
 CREATE TABLE "ActivosUserClaims" (
   "Id" NUMBER(10) NOT NULL,

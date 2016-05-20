@@ -79,6 +79,24 @@ namespace Activos_PrestamosOET.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Cedula")]
+        public string Cedula { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "El {0} debe contener maximo {2} caracteres.")]
+        [Display(Name = "Nombre")]
+        public string Nombre { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "El {0} debe contener maximo {2} caracteres.")]
+        [Display(Name = "Apellidos")]
+        public string Apellidos { get; set; }
+
+        [Required]
+        [Display(Name = "Estacion")]
+        public string EstacionID { get; set; }
     }
 
     public class ResetPasswordViewModel
