@@ -379,7 +379,7 @@ namespace Activos_PrestamosOET.Controllers
                 if (x.TIPO_ACTIVO != null)
                 {   
                                              
-                    temp.Add(x.TIPOS_ACTIVOS.NOMBRE.ToString());
+                    temp.Add(x.TIPO_ACTIVO.ToString());
                     ViewBag.Activos_enCat = llenarTablaDetails(x.TIPOS_ACTIVOSID.ToString());
                 }
                 else
