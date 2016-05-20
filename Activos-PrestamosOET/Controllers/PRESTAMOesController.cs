@@ -33,7 +33,7 @@ namespace Activos_PrestamosOET.Controllers
             + consecutivo.ToString("D3");
         }
 
-        protected String traerCategoria(String tipo)
+        protected int traerCategoria(String tipo)
         {
             var consultaCat = from t in db.TIPOS_ACTIVOS
                               where t.NOMBRE.Equals(tipo)
@@ -45,7 +45,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 categorias.Add(c.ToString());
             }
-            String cat = categorias[0];
+            int cat = Int32.Parse(categorias[0]);
 
             return cat;
         }
@@ -750,13 +750,14 @@ namespace Activos_PrestamosOET.Controllers
                     EQUIPO_SOLICITADO equipo = new EQUIPO_SOLICITADO();
                     if (Cantidad[i] == 0)
                     {
-                        equipo.CANTIDAD = 0;
+                        continue;
                     }
                     else
                     {
                         equipo.CANTIDAD = Cantidad[i];
                     }
-                    equipo.TIPO_ACTIVO = traerCategoria(cat[i]);
+                    equipo.TIPO_ACTIVO = cat[i];
+                    equipo.TIPOS_ACTIVOSID = traerCategoria(cat[i]);
                     equipo.ID_PRESTAMO = prestamo.ID;
                     db.EQUIPO_SOLICITADO.Add(equipo);
                     db.SaveChanges();
