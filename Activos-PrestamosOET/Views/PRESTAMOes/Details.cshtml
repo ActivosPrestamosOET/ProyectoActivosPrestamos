@@ -290,18 +290,19 @@
                                                 </thead>
                                                 <tbody>
                                                     
-                                                        
-                                                @foreach (List<String> w in ViewBag.Activos_enCat)
-                        {
+                                              @if (ViewBag.Activos_enCat != null)
+                                              {
+                                                foreach (List<String> w in ViewBag.Activos_enCat)
+                                                {
                                                     <tr>
                                                         <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado"></td>
-                                                        @foreach (String hilera in w)
-                                                        {
-                                                            <td>@hilera</td>
-                                                        }
+                                                        <td>@w[0] &nbsp;</td>
+                                                        <td>@w[1] &nbsp;</td>
+                                                        <td>@w[2] &nbsp;</td>
                                                     </tr>
                                                 }
-                                                               
+                                              }
+
                 </tbody>
             </table>
                                 </div>
