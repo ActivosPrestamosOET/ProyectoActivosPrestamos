@@ -1079,12 +1079,6 @@ namespace Activos_PrestamosOET.Controllers
                 }
             }
             /*  -------------------------------------------------------------------------------------------  */
-            var cat = (from ac in db.ACTIVOS
-                       from t in db.TIPOS_ACTIVOS
-                       where ac.PRESTABLE.Equals(true) &&
-                              t.ID.Equals(ac.TIPO_ACTIVOID)
-                       select new { t.NOMBRE, t.ID }).Distinct();
-
             var equipo_sol = from o in db.PRESTAMOS
                              from o2 in db.EQUIPO_SOLICITADO
                              where o.ID == id && o2.CANTIDAD > 0
@@ -1099,22 +1093,7 @@ namespace Activos_PrestamosOET.Controllers
                     if (x.ID == x.ID_EQUIPO)
                     {
                         List<String> temp = new List<String>();
-                        if (x.TIPO != null)
-                        {
-                            foreach (var y in cat)
-                            {
-                                if (x.TIPO == y.ID.ToString())
-                                {
-
-                                    temp.Add(y.NOMBRE);
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            temp.Add("");
-                        }
+                        if (x.TIPO != null) { temp.Add(x.TIPO.ToString()); } else { temp.Add(""); }
                         if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
                         if (x.CANTAP != 0) { temp.Add(x.CANTAP.ToString()); } else { temp.Add(""); }
                         equipo.Add(temp);
@@ -1130,7 +1109,7 @@ namespace Activos_PrestamosOET.Controllers
 
 
         [HttpPost]
-        public ActionResult Devolucion(string ID, int[] seleccionaTodos, string column5_checkAll, string b, [Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p)
+        public ActionResult Devolucion(string ID, bool[] column5_checkbox, bool column5_checkAll, string b, [Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p)
         {
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
             pRESTAMO.OBSERVACIONES_APROBADO = p.OBSERVACIONES_APROBADO;
@@ -1140,41 +1119,47 @@ namespace Activos_PrestamosOET.Controllers
                 db.SaveChanges();
             }
 
-            var prestamo = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(d => p.ID == ID);
+            var prestamo = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
             var equipo_sol = prestamo.EQUIPO_SOLICITADO;
             var activos_asignados = prestamo.ACTIVOes;
 
             /*---------------------------------------------------------------------------*/
-            if (b == "Aceptar")
+            if (b == "Actualizar devolución")
             {
-                int a = 0;
-                foreach (var x in activos_asignados)
+                int cont = 0;
+                foreach (var y in equipo_sol)
                 {
-                    string t = column5_checkAll;
-
+                    bool t = column5_checkbox[cont];
+                    if (t)
+                    { //si fueron todos seleccionados en esa fila, de ese tipo
+                        foreach (var x in activos_asignados)
+                        {
+                            if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
+                            {
+                                //activos_asignados.Remove(x); //se borra de la tabla m a n
+                            }
+                        }
+                    }
+                    cont++;
                 }
 
 
-                pRESTAMO.Estado = 2;
+                if (column5_checkAll) { }// {pRESTAMO.Estado = 5;}
+
                 if (ModelState.IsValid)
                 {
                     db.Entry(pRESTAMO).State = EntityState.Modified;
                     db.SaveChanges();
                 }
 
-                ViewBag.Mensaje = "El préstamo ha sido aprobado con éxito";
+                ViewBag.Mensaje = "Los activos han sido devueltos correctamente.";
             }
 
 
 
-            var lista = db.PRESTAMOS.Include(i => i.USUARIO).SingleOrDefault(d => p.ID == ID);
+            var lista = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
             ViewBag.Nombre = lista.USUARIO.NOMBRE;
             /*  -------------------------------------------------------------------------------------------  */
-            var cat = (from ac in db.ACTIVOS
-                       from t in db.TIPOS_ACTIVOS
-                       where ac.PRESTABLE.Equals(true) &&
-                              t.ID.Equals(ac.TIPO_ACTIVOID)
-                       select new { t.NOMBRE, t.ID }).Distinct();
 
             var equipo = new List<List<String>>();
             foreach (var x in equipo_sol)
@@ -1184,22 +1169,7 @@ namespace Activos_PrestamosOET.Controllers
                     if (prestamo.ID == x.ID_PRESTAMO)
                     {
                         List<String> temp = new List<String>();
-                        if (x.TIPO_ACTIVO != null)
-                        {
-                            foreach (var y in cat)
-                            {
-                                if (x.TIPO_ACTIVO == y.ID.ToString())
-                                {
-                                    temp.Add(y.NOMBRE);
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            temp.Add("");
-
-                        }
+                        if (x.TIPO_ACTIVO != null) { temp.Add(x.TIPO_ACTIVO.ToString()); } else { temp.Add(""); }
                         if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
                         if (x.CANTIDADAPROBADA != 0) { temp.Add(x.CANTIDADAPROBADA.ToString()); } else { temp.Add(""); }
                         equipo.Add(temp);
@@ -1207,7 +1177,7 @@ namespace Activos_PrestamosOET.Controllers
                 }
             }
 
-            var prestamos = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).SingleOrDefault(d => p.ID == ID);
+            var prestamos = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
             DateTime dt = prestamos.FECHA_RETIRO;
             dt = dt.AddDays(prestamos.PERIODO_USO);
 
