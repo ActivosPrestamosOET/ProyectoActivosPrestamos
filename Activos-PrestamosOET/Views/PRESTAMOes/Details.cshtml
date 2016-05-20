@@ -26,14 +26,10 @@
 
 
 <script>
-    @for(int i=0; i< ViewBag.Equipo_Solict.Count; i++)
-        {
-    <text>
-    $('#myModal'.concat(i.toString())).on('shown.bs.modal', function () { $('#myInput').focus() });
-    </text>
-    }
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').focus()
+    })
 </script>
-
 <style>
     .multiselect {
         width: 200px;
@@ -229,7 +225,7 @@
         <tbody>
             @if (ViewBag.Equipo_Solict != null)
                 {
-                    int modal = 0;
+
                     foreach (List<String> s in ViewBag.Equipo_Solict)
                     {
                     <tr>
@@ -263,7 +259,7 @@
                             </button>
 
                             <!-- Modal -->
-                            <div class="modal" id="myModal@modal">
+                            <div class="modal" id="myModal">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -320,9 +316,12 @@
                         </div>
                     </div>
 
-                  modal++; 
-            </tr>           
+            </tr>
+
+
                 }
+
+
 
             }
             </tbody>
