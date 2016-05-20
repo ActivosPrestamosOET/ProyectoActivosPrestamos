@@ -33,7 +33,7 @@ namespace Activos_PrestamosOET.Controllers
             + consecutivo.ToString("D3");
         }
 
-        protected String traerCategoria(String tipo)
+        protected int traerCategoria(String tipo)
         {
             var consultaCat = from t in db.TIPOS_ACTIVOS
                               where t.NOMBRE.Equals(tipo)
@@ -45,7 +45,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 categorias.Add(c.ToString());
             }
-            String cat = categorias[0];
+            int cat = Int32.Parse(categorias[0]);
 
             return cat;
         }
@@ -377,8 +377,10 @@ namespace Activos_PrestamosOET.Controllers
             {                
                 List<String> temp = new List<String>();
                 if (x.TIPO_ACTIVO != null)
-                {                            
-                    temp.Add(x.TIPO_ACTIVO);                                                                                               
+                {   
+                                             
+                    temp.Add(x.TIPOS_ACTIVOS.NOMBRE.ToString());
+                    ViewBag.Activos_enCat = llenarTablaDetails(x.TIPOS_ACTIVOSID.ToString());
                 }
                 else
                 {
@@ -681,6 +683,7 @@ namespace Activos_PrestamosOET.Controllers
         {
             ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
             ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
+            ViewBag.Cursos = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
 
             List<String> categorias = new List<String>();
 
@@ -747,13 +750,14 @@ namespace Activos_PrestamosOET.Controllers
                     EQUIPO_SOLICITADO equipo = new EQUIPO_SOLICITADO();
                     if (Cantidad[i] == 0)
                     {
-                        equipo.CANTIDAD = 0;
+                        continue;
                     }
                     else
                     {
                         equipo.CANTIDAD = Cantidad[i];
                     }
-                    equipo.TIPO_ACTIVO = traerCategoria(cat[i]);
+                    equipo.TIPO_ACTIVO = cat[i];
+                    equipo.TIPOS_ACTIVOSID = traerCategoria(cat[i]);
                     equipo.ID_PRESTAMO = prestamo.ID;
                     db.EQUIPO_SOLICITADO.Add(equipo);
                     db.SaveChanges();
@@ -1334,5 +1338,36 @@ namespace Activos_PrestamosOET.Controllers
 
             return View(pRESTAMO);
         }
+
+        // Requiere: valor seleccionado en el dropdown de Categoría, valor del botón seleccionado, valor de la fecha inicial y la fecha final
+        // Modifica: se encarga de llenar la tabla de Inventario, de la categoría que recibe cómo parámetro.
+        // Regresa: N/A.
+        private List<List<String>> llenarTablaDetails(String Categoria)
+        {
+
+
+            var activos_enCat = new List<List<String>>();
+            var activos = db.ACTIVOS;
+            foreach (Activos_PrestamosOET.Models.ACTIVO x in activos)
+            {
+
+                    if (Categoria.Equals(x.TIPO_ACTIVOID.ToString()) && x.PRESTABLE == true)
+                    {
+                    List<String> temp = new List<String>();
+                    if (x.FABRICANTE != null) { temp.Add(x.FABRICANTE); } else { temp.Add(""); }
+                    if (x.MODELO != null) { temp.Add(x.MODELO); } else { temp.Add(""); }
+                    if (x.NUMERO_SERIE != null) { temp.Add(x.NUMERO_SERIE); } else { temp.Add(""); }
+
+                    activos_enCat.Add(temp);
+                }
+            }
+            
+            if (activos_enCat.Count == 0)
+            {
+                ViewBag.NoActivos = "No hay Activos Prestables con esta categoría.";
+            }
+            return activos_enCat;
     }
+
+}
 }

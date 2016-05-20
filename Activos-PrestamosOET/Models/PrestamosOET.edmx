@@ -5,8 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="PrestamosModel.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'ACTIVOS.ACTIVOPRESTAMO' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="ACTIVOPRESTAMO">
           <Key>
             <PropertyRef Name="PRESTAMOes_ID" />
@@ -99,6 +97,16 @@ warning 6002: The table/view 'ACTIVOS.ACTIVOPRESTAMO' does not have a primary ke
           <Property Name="ESTADO" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="CORREO" Type="varchar2" MaxLength="400" />
         </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'ACTIVOS.V_COURSES' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="V_COURSES">
+          <Key>
+            <PropertyRef Name="COURSES" />
+          </Key>
+          <Property Name="COURSES" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="COURSES_CODE" Type="varchar2" MaxLength="100" />
+          <Property Name="COURSE_NAME" Type="varchar2" MaxLength="1000" />
+        </EntityType>
         <Association Name="FK_A_PRESTAMOS">
           <End Role="PRESTAMOS" Type="Self.PRESTAMOS" Multiplicity="1" />
           <End Role="EQUIPO_SOLICITADO" Type="Self.EQUIPO_SOLICITADO" Multiplicity="*" />
@@ -172,16 +180,18 @@ warning 6002: The table/view 'ACTIVOS.ACTIVOPRESTAMO' does not have a primary ke
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="PrestamosModelStoreContainer">
+          <EntitySet Name="ACTIVOPRESTAMO" EntityType="Self.ACTIVOPRESTAMO" Schema="ACTIVOS" store:Type="Tables" />
           <EntitySet Name="ACTIVOS" EntityType="Self.ACTIVOS" Schema="ACTIVOS" store:Type="Tables" />
           <EntitySet Name="EQUIPO_SOLICITADO" EntityType="Self.EQUIPO_SOLICITADO" Schema="ACTIVOS" store:Type="Tables" />
           <EntitySet Name="PRESTAMOS" EntityType="Self.PRESTAMOS" Schema="ACTIVOS" store:Type="Tables" />
           <EntitySet Name="TIPOS_ACTIVOS" EntityType="Self.TIPOS_ACTIVOS" Schema="ACTIVOS" store:Type="Tables" />
           <EntitySet Name="USUARIOS" EntityType="Self.USUARIOS" Schema="ACTIVOS" store:Type="Tables" />
-          <EntitySet Name="ACTIVOPRESTAMO" EntityType="Self.ACTIVOPRESTAMO" store:Type="Tables" store:Schema="ACTIVOS">
+          <EntitySet Name="V_COURSES" EntityType="Self.V_COURSES" store:Type="Views" store:Schema="ACTIVOS">
             <DefiningQuery>SELECT 
-"ACTIVOPRESTAMO"."PRESTAMOes_ID" AS "PRESTAMOes_ID", 
-"ACTIVOPRESTAMO"."ACTIVOes_ID" AS "ACTIVOes_ID"
-FROM "ACTIVOS"."ACTIVOPRESTAMO" "ACTIVOPRESTAMO"</DefiningQuery>
+"V_COURSES"."COURSES" AS "COURSES", 
+"V_COURSES"."COURSES_CODE" AS "COURSES_CODE", 
+"V_COURSES"."COURSE_NAME" AS "COURSE_NAME"
+FROM "ACTIVOS"."V_COURSES" "V_COURSES"</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_A_PRESTAMOS" Association="Self.FK_A_PRESTAMOS">
             <End Role="PRESTAMOS" EntitySet="PRESTAMOS" />
@@ -295,6 +305,7 @@ FROM "ACTIVOS"."ACTIVOPRESTAMO" "ACTIVOPRESTAMO"</DefiningQuery>
             <End Role="TIPOS_ACTIVOS" EntitySet="TIPOS_ACTIVOS" />
             <End Role="EQUIPO_SOLICITADO" EntitySet="EQUIPO_SOLICITADO" />
           </AssociationSet>
+          <EntitySet Name="V_COURSES" EntityType="PrestamosModel.V_COURSES" />
         </EntityContainer>
         <EntityType Name="ACTIVO">
           <Key>
@@ -407,6 +418,14 @@ FROM "ACTIVOS"."ACTIVOPRESTAMO" "ACTIVOPRESTAMO"</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="V_COURSES">
+          <Key>
+            <PropertyRef Name="COURSES" />
+          </Key>
+          <Property Name="COURSES" Type="Int32" Nullable="false" />
+          <Property Name="COURSES_CODE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="COURSE_NAME" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -508,6 +527,15 @@ FROM "ACTIVOS"."ACTIVOPRESTAMO" "ACTIVOPRESTAMO"</DefiningQuery>
                 <ScalarProperty Name="ID" ColumnName="PRESTAMOes_ID" />
             </EndProperty>
         </AssociationSetMapping>
+          <EntitySetMapping Name="V_COURSES">
+            <EntityTypeMapping TypeName="PrestamosModel.V_COURSES">
+              <MappingFragment StoreEntitySet="V_COURSES">
+                <ScalarProperty Name="COURSE_NAME" ColumnName="COURSE_NAME" />
+                <ScalarProperty Name="COURSES_CODE" ColumnName="COURSES_CODE" />
+                <ScalarProperty Name="COURSES" ColumnName="COURSES" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
     </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
