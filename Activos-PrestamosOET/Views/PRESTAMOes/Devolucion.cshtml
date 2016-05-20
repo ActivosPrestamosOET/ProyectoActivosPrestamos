@@ -104,7 +104,7 @@
     </div>
 </div>
 
-@using (Html.BeginForm("Details", "PRESTAMOes", FormMethod.Post))
+@using (Html.BeginForm("Devolucion", "PRESTAMOes", FormMethod.Post))
 {
     @Html.HiddenFor(model => model.ID);
     <table class="table" name="tablaEquipo" style="margin-top:20px">
@@ -114,7 +114,9 @@
                 <th class="col-md-1">Cantidad Solicitada</th>
                 <th class="col-md-1">Cantidad Aprobada</th>
                 <th class="col-md-1">Devolver</th>
-                <th class="col-md-1" id="columna">Devolver Todo<input type="checkbox" onclick="seleccionaTodos('column5', this)" name="column5_checkAll"></th>
+                <!--<th class="col-md-1" id="columna">Devolver Todo<input type="checkbox" onclick="seleccionaTodos('column5', this)" name="column5_checkAll"></th>-->
+                <th class="col-md-1" id="columna">Devolver Todo @Html.CheckBox("column5_checkAll", false, new { @onclick = "seleccionaTodos('column5', this)" })</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -127,7 +129,7 @@
                         <td class="col-md-1">@s[1] &nbsp;</td>
                         <td class="col-md-1">@s[2] &nbsp;</td>
                         <td></td>
-                        <td><input type="checkbox" name="column5_checkbox">Devolver todos</td>
+                        <td>@Html.CheckBox("column5_checkbox", false)Devolver Todos</td>
                     </tr>
                 }
             }
