@@ -1218,12 +1218,12 @@ namespace Activos_PrestamosOET.Controllers
             foreach (Activos_PrestamosOET.Models.ACTIVO x in activos)
             {
 
-                    if (Categoria.Equals(x.TIPO_ACTIVOID.ToString()) && x.PRESTABLE == true)
+                    if (Categoria.Equals(x.TIPO_ACTIVOID.ToString()) && x.PRESTABLE == true && x.ESTADO_PRESTADO== 0)
                     {
                     List<String> temp = new List<String>();
                     if (x.FABRICANTE != null) { temp.Add(x.FABRICANTE); } else { temp.Add(""); }
                     if (x.MODELO != null) { temp.Add(x.MODELO); } else { temp.Add(""); }
-                    if (x.NUMERO_SERIE != null) { temp.Add(x.NUMERO_SERIE); } else { temp.Add(""); }
+                    if (x.PLACA != null) { temp.Add(x.PLACA); } else { temp.Add(""); }
 
                     activos_enCat.Add(temp);
                 }
