@@ -2,23 +2,27 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Mail;
+using System.Diagnostics;
+using System.Configuration;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
+using SendGrid;
+//using System.Web;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Activos_PrestamosOET.Models;
-using System.Net.Http;
-using System.Net.Mail;
-//using SendGrid;
-using System.Net;
-using System.Configuration;
-using System.Diagnostics;
+
+
+
 namespace Activos_PrestamosOET
 {
+    /*
     public class EmailService : IIdentityMessageService
     {
         public Task SendAsync(IdentityMessage message)
@@ -26,7 +30,8 @@ namespace Activos_PrestamosOET
             // Plug in your email service here to send an email.
             return Task.FromResult(0);
         }
-    }/*
+    }
+    */
     public class EmailService : IIdentityMessageService
     {
         public Task SendAsync(IdentityMessage message)
@@ -39,7 +44,7 @@ namespace Activos_PrestamosOET
             var myMessage = new SendGridMessage();
             myMessage.AddTo(message.Destination);
             myMessage.From = new System.Net.Mail.MailAddress(
-                                "andresbejar@gmail.com", "Admin");
+                                "oet.email@gmail.com", "Doroteos");
             myMessage.Subject = message.Subject;
             myMessage.Text = message.Body;
             myMessage.Html = message.Body;
@@ -50,7 +55,7 @@ namespace Activos_PrestamosOET
                        );
 
             // Create a Web transport for sending email.
-            var transportWeb = new Web(credentials);
+            /*var transportWeb = new Web(credentials);
 
             // Send the email.
             if (transportWeb != null)
@@ -58,11 +63,11 @@ namespace Activos_PrestamosOET
                 return transportWeb.DeliverAsync(myMessage);
             }
             else
-            {
+            {*/
                 return Task.FromResult(0);
-            }
+          //  }
         }
-    }*/
+    }
 
 
     public class SmsService : IIdentityMessageService
