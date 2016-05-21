@@ -46,6 +46,8 @@ namespace Activos_PrestamosOET.Models
         public string V_PROVEEDORIDPROVEEDOR { get; set; }
         public string V_MONEDAID { get; set; }
         public Nullable<int> CENTRO_DE_COSTOId { get; set; }
+        public string PLACA { get; set; }
+        public Nullable<int> ESTADO_PRESTADO { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRESTAMO> PRESTAMOes { get; set; }
