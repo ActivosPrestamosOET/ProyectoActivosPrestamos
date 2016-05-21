@@ -295,13 +295,13 @@
                                                     
                                               @if (ViewBag.Activos_enCat != null)
                                               {
-                                                  foreach (List<String> w in ViewBag.Activos_enCat)
+                                                  foreach (List<List<String>> w in ViewBag.Activos_enCat)
                                                   {
                                                     <tr>
                                                         <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado"></td>
-                                                        <td>@w[0] &nbsp;</td>
-                                                        <td>@w[1] &nbsp;</td>
-                                                        <td>@w[2] &nbsp;</td>
+                                                        <td>@w[0][0] &nbsp;</td>
+                                                        <td>@w[0][1] &nbsp;</td>
+                                                        <td>@w[0][2] &nbsp;</td>
                                                     </tr>
                                                   }
                                               }

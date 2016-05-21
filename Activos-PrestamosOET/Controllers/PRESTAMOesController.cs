@@ -373,6 +373,8 @@ namespace Activos_PrestamosOET.Controllers
             var equipoSolicitado = equipoSol.EQUIPO_SOLICITADO;
 
             var equipo = new List<List<String>>();
+            var act = new List<List<String>>();
+            var activos = new List<List<List<String>>>();
             foreach (var x in equipoSolicitado)
             {                
                 List<String> temp = new List<String>();
@@ -380,7 +382,7 @@ namespace Activos_PrestamosOET.Controllers
                 {   
                                              
                     temp.Add(x.TIPO_ACTIVO.ToString());
-                    ViewBag.Activos_enCat = llenarTablaDetails(x.TIPOS_ACTIVOSID.ToString());
+                    act = llenarTablaDetails(x.TIPOS_ACTIVOSID.ToString());
                 }
                 else
                 {
@@ -402,11 +404,12 @@ namespace Activos_PrestamosOET.Controllers
                 {
                     temp.Add("");
                 }
-                equipo.Add(temp);              
+                equipo.Add(temp);
+                activos.Add(act);
             }
-
-            //Segmento de código para colocar colores a las cantidad de solicitudes por categoría.
-            var prestamosConEquipo = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).SingleOrDefault(p => p.ID == id);//Se hace joint entre prestamos y equipo solicitado por id del préstamo           
+            ViewBag.Activos_enCat = activos;
+        //Segmento de código para colocar colores a las cantidad de solicitudes por categoría.
+        var prestamosConEquipo = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).SingleOrDefault(p => p.ID == id);//Se hace joint entre prestamos y equipo solicitado por id del préstamo           
             var equipoMayorCero = prestamosConEquipo.EQUIPO_SOLICITADO.Where(q => q.CANTIDAD > 0);//Se verifica que se seleccionen los equipos seleccionados que tengan más 0 soliciudes
             var prestamosPorFechas = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).Where(p => p.FECHA_RETIRO <= prestamosConEquipo.FECHA_RETIRO && p.ID != id);//Se selccionan las solicitudes de préstamo qe se encuentran "abiertos" para el momento de inicio del préstamo consultado.
             Dictionary<string, int> hashConValoresPorTipoActivo = new Dictionary<string, int>();//diccionario que almacena las cantidades de préstamos vigentes.
