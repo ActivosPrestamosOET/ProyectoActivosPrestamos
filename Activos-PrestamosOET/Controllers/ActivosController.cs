@@ -21,7 +21,7 @@ namespace Activos_PrestamosOET.Controllers
 
             ViewBag.OrdenActual = orden;
             ViewBag.NumPlacaParam = String.IsNullOrEmpty(orden) ? "num_placa_desc" : "";
-            ViewBag.EstadoParam = orden == "Estado" ? "estado_desc" : "Estado";
+            ViewBag.EstadoParam = (orden == "Estado") ? "estado_desc" : "Estado" ;
 
             var aCTIVOS = from a in db.ACTIVOS select a;
 
@@ -113,10 +113,10 @@ namespace Activos_PrestamosOET.Controllers
                     aCTIVOS = aCTIVOS.OrderByDescending(a => a.PLACA);
                     break;
                 case "Estado":
-                    aCTIVOS = aCTIVOS.OrderBy(a => a.ESTADOS_ACTIVOS);
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.ESTADOS_ACTIVOS.NOMBRE);
                     break;
                 case "estado_desc":
-                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.ESTADOS_ACTIVOS);
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.ESTADOS_ACTIVOS.NOMBRE);
                     break;
                 default:
                     aCTIVOS = aCTIVOS.OrderBy(a => a.PLACA);
