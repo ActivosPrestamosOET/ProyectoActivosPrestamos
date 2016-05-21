@@ -115,7 +115,7 @@
                         @Html.LabelFor(model => model.FECHA_COMPRA, htmlAttributes: new { @class = "control-label required" })
                     </div>
                     <div class="col-xs-12 col-sm-8">
-                        @Html.EditorFor(model => model.FECHA_COMPRA, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.EditorFor(model => model.FECHA_COMPRA, new { htmlAttributes = new { @class = "form-control datepicker" } })
                         @Html.ValidationMessageFor(model => model.FECHA_COMPRA, "", new { @class = "text-danger" })
                     </div>
                 </div>
