@@ -182,3 +182,7 @@ C:\Users\Carolina\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET
 C:\Users\andre_000\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache
 C:\Users\andre_000\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.dll
 C:\Users\andre_000\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.pdb
+C:\Users\Carolina\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGrid.dll
+C:\Users\Carolina\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGridMail.dll
+C:\Users\Carolina\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Formatting.dll
+C:\Users\Carolina\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGrid.SmtpApi.dll
