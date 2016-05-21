@@ -148,6 +148,8 @@
             <Property Name="V_PROVEEDORIDPROVEEDOR" Type="varchar2" Nullable="false" MaxLength="50" />
             <Property Name="V_MONEDAID" Type="varchar2" Nullable="false" MaxLength="26" />
             <Property Name="CENTRO_DE_COSTOId" Type="number" Nullable="true" Precision="10" />
+            <Property Name="PLACA" Type="nvarchar2" Nullable="true" MaxLength="64" />
+            <Property Name="ESTADO_PRESTADO" Type="number" Nullable="true" Precision="10" />
         </EntityType>
         <EntityType Name="USUARIOS">
             <Key>
@@ -690,6 +692,8 @@
           <NavigationProperty Name="TIPOS_TRANSACCIONES" Relationship="PrestamosModel.FK_TIPO_TRANSACCIONACTIVO" FromRole="ACTIVO" ToRole="TIPOS_TRANSACCIONES" />
           <NavigationProperty Name="TRANSACCIONES" Relationship="PrestamosModel.FK_ACTIVOTRANSACCION" FromRole="ACTIVO" ToRole="TRANSACCIONE" />
           <NavigationProperty Name="V_ESTACION" Relationship="PrestamosModel.V_ESTACIONACTIVO" FromRole="ACTIVO" ToRole="V_ESTACION" />
+          <Property Name="PLACA" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+          <Property Name="ESTADO_PRESTADO" Type="Int32" />
         </EntityType>
         <EntityType Name="USUARIO">
           <Key>
@@ -1068,6 +1072,8 @@
                     <ScalarProperty Name="V_PROVEEDORIDPROVEEDOR" ColumnName="V_PROVEEDORIDPROVEEDOR" />
                     <ScalarProperty Name="V_MONEDAID" ColumnName="V_MONEDAID" />
                     <ScalarProperty Name="CENTRO_DE_COSTOId" ColumnName="CENTRO_DE_COSTOId" />
+                    <ScalarProperty Name="PLACA" ColumnName="PLACA" />
+                    <ScalarProperty Name="ESTADO_PRESTADO" ColumnName="ESTADO_PRESTADO" />
                 </MappingFragment>
             </EntityTypeMapping>
         </EntitySetMapping>

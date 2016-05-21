@@ -139,7 +139,7 @@
                 <thead>
                     <tr>
                         <th>
-                            @Html.ActionLink("Número de serie", "Index", new { orden = ViewBag.NumSerieParam })
+                            @Html.ActionLink("Número de placa", "Index", new { orden = ViewBag.NumPlacaParam })
                         </th>
                         <th>
                             @Html.ActionLink("Estado", "Index", new { ViewBag.EstadoParam })
@@ -155,7 +155,7 @@
             {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.NUMERO_SERIE)
+                                @Html.DisplayFor(modelItem => item.PLACA)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.ESTADOS_ACTIVOS.NOMBRE)

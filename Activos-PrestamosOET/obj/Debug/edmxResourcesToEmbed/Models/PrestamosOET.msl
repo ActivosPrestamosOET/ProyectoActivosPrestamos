@@ -61,6 +61,8 @@
           <ScalarProperty Name="V_PROVEEDORIDPROVEEDOR" ColumnName="V_PROVEEDORIDPROVEEDOR" />
           <ScalarProperty Name="V_MONEDAID" ColumnName="V_MONEDAID" />
           <ScalarProperty Name="CENTRO_DE_COSTOId" ColumnName="CENTRO_DE_COSTOId" />
+          <ScalarProperty Name="PLACA" ColumnName="PLACA" />
+          <ScalarProperty Name="ESTADO_PRESTADO" ColumnName="ESTADO_PRESTADO" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

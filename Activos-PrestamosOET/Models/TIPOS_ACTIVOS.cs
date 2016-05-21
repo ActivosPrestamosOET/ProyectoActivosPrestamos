@@ -22,7 +22,6 @@ namespace Activos_PrestamosOET.Models
         }
     
         public int ID { get; set; }
-
         [Display(Name = "Tipo de activo")]
         [Required(ErrorMessage = "El nombre es requerido")]
         public string NOMBRE { get; set; }

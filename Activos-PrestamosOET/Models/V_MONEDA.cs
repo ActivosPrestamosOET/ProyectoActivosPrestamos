@@ -21,11 +21,13 @@ namespace Activos_PrestamosOET.Models
         }
     
         public string ID { get; set; }
+
         [Display(Name = "Moneda")]
         public string NOMBRE { get; set; }
+
         [Display(Name = "Símbolo de la moneda")]
         public string SIMBOLO { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ACTIVO> ACTIVOes { get; set; }
     }

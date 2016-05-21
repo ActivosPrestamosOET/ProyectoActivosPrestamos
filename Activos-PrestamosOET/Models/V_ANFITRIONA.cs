@@ -21,7 +21,6 @@ namespace Activos_PrestamosOET.Models
         }
     
         public string ID { get; set; }
-
         [Display(Name = "Compañía")]
         public string NOMBRE { get; set; }
         public string SIGLAS { get; set; }

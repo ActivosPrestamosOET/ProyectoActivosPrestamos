@@ -171,6 +171,8 @@
     <NavigationProperty Name="TIPOS_TRANSACCIONES" Relationship="PrestamosModel.FK_TIPO_TRANSACCIONACTIVO" FromRole="ACTIVO" ToRole="TIPOS_TRANSACCIONES" />
     <NavigationProperty Name="TRANSACCIONES" Relationship="PrestamosModel.FK_ACTIVOTRANSACCION" FromRole="ACTIVO" ToRole="TRANSACCIONE" />
     <NavigationProperty Name="V_ESTACION" Relationship="PrestamosModel.V_ESTACIONACTIVO" FromRole="ACTIVO" ToRole="V_ESTACION" />
+    <Property Name="PLACA" Type="String" MaxLength="64" FixedLength="false" Unicode="true" />
+    <Property Name="ESTADO_PRESTADO" Type="Int32" />
   </EntityType>
   <EntityType Name="USUARIO">
     <Key>

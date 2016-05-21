@@ -20,7 +20,7 @@ namespace Activos_PrestamosOET.Controllers
         {
 
             ViewBag.OrdenActual = orden;
-            ViewBag.NumSerieParam = String.IsNullOrEmpty(orden) ? "num_serie_desc" : "";
+            ViewBag.NumPlacaParam = String.IsNullOrEmpty(orden) ? "num_placa_desc" : "";
             ViewBag.EstadoParam = orden == "Estado" ? "estado_desc" : "Estado";
 
             var aCTIVOS = from a in db.ACTIVOS select a;
@@ -109,8 +109,8 @@ namespace Activos_PrestamosOET.Controllers
 
             switch (orden)
             {
-                case "num_serie_desc":
-                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.NUMERO_SERIE);
+                case "num_placa_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.PLACA);
                     break;
                 case "Estado":
                     aCTIVOS = aCTIVOS.OrderBy(a => a.ESTADOS_ACTIVOS);
@@ -119,7 +119,7 @@ namespace Activos_PrestamosOET.Controllers
                     aCTIVOS = aCTIVOS.OrderByDescending(a => a.ESTADOS_ACTIVOS);
                     break;
                 default:
-                    aCTIVOS = aCTIVOS.OrderBy(a => a.NUMERO_SERIE);
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.PLACA);
                     break;
             }
 
@@ -169,7 +169,7 @@ namespace Activos_PrestamosOET.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_USUARIOSIDUSUARIO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId")] ACTIVO aCTIVO)
+        public ActionResult Create([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_USUARIOSIDUSUARIO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId,PLACA,ESTADO_PRESTADO")] ACTIVO aCTIVO)
         {
 
             var estado = db.ESTADOS_ACTIVOS.ToList().Where(ea => ea.NOMBRE == "Disponible");
@@ -237,7 +237,7 @@ namespace Activos_PrestamosOET.Controllers
         // POST: Activos/Asignar/7
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Asignar([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_USUARIOSIDUSUARIO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId")] ACTIVO aCTIVO)
+        public ActionResult Asignar([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_USUARIOSIDUSUARIO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId,PLACA,ESTADO_PRESTADO")] ACTIVO aCTIVO)
         {
 
             var original = db.ACTIVOS.Find(aCTIVO.ID);
@@ -287,7 +287,7 @@ namespace Activos_PrestamosOET.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_USUARIOSIDUSUARIO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId")] ACTIVO aCTIVO)
+        public ActionResult Edit([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_USUARIOSIDUSUARIO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId,PLACA,ESTADO_PRESTADO")] ACTIVO aCTIVO)
         {
             var original = db.ACTIVOS.Find(aCTIVO.ID);
             if (ModelState.IsValid)
@@ -311,6 +311,8 @@ namespace Activos_PrestamosOET.Controllers
                 original.V_PROVEEDORIDPROVEEDOR = aCTIVO.V_PROVEEDORIDPROVEEDOR;
                 original.DESECHADO = aCTIVO.DESECHADO;
                 original.MODELO = aCTIVO.MODELO;
+                original.PLACA = aCTIVO.PLACA;
+                original.ESTADO_PRESTADO = aCTIVO.ESTADO_PRESTADO;
 
                 db.SaveChanges();
                 return RedirectToAction("Index");

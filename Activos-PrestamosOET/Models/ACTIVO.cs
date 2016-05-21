@@ -12,7 +12,6 @@ namespace Activos_PrestamosOET.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-
     public partial class ACTIVO
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,12 +21,14 @@ namespace Activos_PrestamosOET.Models
             this.TRANSACCIONES = new HashSet<TRANSACCION>();
 
             //OJO: si se regenera el modelo esto muere. Tal vez seria mejor moverlo a otro archivo y aprovechar
-            //que la clase es partial.
+            //que la clase es partial.            
+
 
             this.FECHA_INGRESO = DateTime.Now.Date; // Se le quema la fecha de ingreso
             this.ID = DateTime.Now.Day.ToString("D2") + DateTime.Now.Month.ToString("D2") + DateTime.Now.Year.ToString() + DateTime.Now.Hour.ToString("D2") + DateTime.Now.Minute.ToString("D2") + DateTime.Now.Second.ToString("D2") + DateTime.Now.Millisecond.ToString("D3"); /// Se genera el ID con el estandar de la OET.
 
         }
+
         public string ID { get; set; }
 
         [Display(Name = "Número de serie")]
@@ -62,6 +63,7 @@ namespace Activos_PrestamosOET.Models
         [Display(Name = "Descripción")]
         [DataType(DataType.MultilineText)]
         [StringLength(256, MinimumLength = 6, ErrorMessage = "El campo tiene que tener menos de 256 caracteres y más de 6.")]
+        [Required(ErrorMessage = "Es necesario que ingrese una descripción del activo")]
         public string DESCRIPCION { get; set; }
 
         [Display(Name = "Exento de impuestos")]
@@ -75,7 +77,7 @@ namespace Activos_PrestamosOET.Models
 
 
         [Display(Name = "Ingresado por")]
-        [Required(ErrorMessage = "Quien lo ingresó es requerido")]
+        //[Required(ErrorMessage = "Quien lo ingresó es requerido")]
         public string INGRESADO_POR { get; set; }
 
         [Display(Name = "Número de factura")]
@@ -127,6 +129,11 @@ namespace Activos_PrestamosOET.Models
 
         [Display(Name = "Centro de Costo")]
         public Nullable<int> CENTRO_DE_COSTOId { get; set; }
+        [Display(Name = "Número de placa")]
+        [Required(ErrorMessage = "El número de placa es requerido")]
+        public string PLACA { get; set; }
+        [Display(Name = "Estado del prestamo")]
+        public Nullable<int> ESTADO_PRESTADO { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRESTAMO> PRESTAMOes { get; set; }

@@ -43,6 +43,14 @@
         </div>
         <div class="row">
             <div class="col-xs-12 col-sm-5">
+                @Html.LabelFor(model => model.PLACA, htmlAttributes: new { @class="control-label" })
+            </div>
+            <div class="col-xs-12 col-sm-7">
+                @Html.DisplayFor(model => model.PLACA)
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-5">
                 @Html.LabelFor(model => model.NUMERO_SERIE, htmlAttributes: new { @class = "control-label" })
             </div>
             <div class="col-xs-12 col-sm-7">

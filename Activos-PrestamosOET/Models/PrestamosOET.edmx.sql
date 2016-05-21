@@ -1,13 +1,33 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for Oracle database
 -- --------------------------------------------------
--- Date Created: 19/5/2016 3:35:27 p. m.
+-- Date Created: 21/5/2016 4:36:08 p. m.
 -- Generated from EDMX file: C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\Models\PrestamosOET.edmx
 -- --------------------------------------------------
 
 -- --------------------------------------------------
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
+
+-- ALTER TABLE "ACTIVOS"."EQUIPO_SOLICITADO" DROP CONSTRAINT "FK_A_PRESTAMOS" CASCADE;
+
+-- ALTER TABLE "ACTIVOS"."ACTIVOPRESTAMO" DROP CONSTRAINT "FK_ACTIVOPRESTAMO_ACTIVOS" CASCADE;
+
+-- ALTER TABLE "ACTIVOS"."ACTIVOPRESTAMO" DROP CONSTRAINT "FK_ACTIVOPRESTAMO_PRESTAMO" CASCADE;
+
+-- ALTER TABLE "ACTIVOS"."TRANSACCIONES" DROP CONSTRAINT "FK_ACTIVOTRANSACCION" CASCADE;
+
+-- ALTER TABLE "ACTIVOS"."PRESTAMOS" DROP CONSTRAINT "FK_Aprueba" CASCADE;
+
+-- ALTER TABLE "ACTIVOS"."ACTIVOS" DROP CONSTRAINT "FK_CENTRO_DE_COSTOACTIVO" CASCADE;
+
+-- ALTER TABLE "ACTIVOS"."ACTIVOS" DROP CONSTRAINT "FK_ESTADO_ACTIVOACTIVO" CASCADE;
+
+-- ALTER TABLE "ACTIVOS"."PRESTAMOS" DROP CONSTRAINT "FK_Solicita" CASCADE;
+
+-- ALTER TABLE "ACTIVOS"."ACTIVOS" DROP CONSTRAINT "FK_TIPO_ACTIVOACTIVO" CASCADE;
+
+-- ALTER TABLE "ACTIVOS"."ACTIVOS" DROP CONSTRAINT "FK_TIPO_TRANSACCIONACTIVO" CASCADE;
 -- --------------------------------------------------
 -- Dropping existing tables
 -- --------------------------------------------------
@@ -31,8 +51,6 @@
 -- DROP TABLE "ACTIVOS"."TRANSACCIONES";
 
 -- DROP TABLE "ACTIVOS"."USUARIOS";
-
--- DROP TABLE "V_USUARIOS";
 
 -- --------------------------------------------------
 -- Creating all tables
@@ -92,7 +110,9 @@ CREATE TABLE "ACTIVOS"."ACTIVOS" (
    "V_ANFITRIONAID" VARCHAR2(2 CHAR) NOT NULL,
    "V_PROVEEDORIDPROVEEDOR" VARCHAR2(50 CHAR) NOT NULL,
    "V_MONEDAID" VARCHAR2(26 CHAR) NOT NULL,
-   "CENTRO_DE_COSTOId" NUMBER(10) 
+   "CENTRO_DE_COSTOId" NUMBER(10) ,
+   "PLACA" NVARCHAR2(64) ,
+   "ESTADO_PRESTADO" NUMBER(10) 
 );
 
 -- Creating table 'USUARIOS'

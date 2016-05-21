@@ -21,6 +21,7 @@ namespace Activos_PrestamosOET.Models
         }
     
         public int Id { get; set; }
+
         [Display(Name = "Centro de costo")]
         public string Nombre { get; set; }
     

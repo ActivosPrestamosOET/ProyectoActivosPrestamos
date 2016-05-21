@@ -21,7 +21,6 @@ namespace Activos_PrestamosOET.Models
         }
     
         public int ID { get; set; }
-
         [Display(Name = "Estado del activo")]
         [Required(ErrorMessage = "El nombre es requerido")]
         public string NOMBRE { get; set; }
