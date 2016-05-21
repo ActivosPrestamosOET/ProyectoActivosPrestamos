@@ -1228,6 +1228,11 @@ namespace Activos_PrestamosOET.Controllers
             
             if (activos_enCat.Count == 0)
             {
+                List<String> temp = new List<String>();
+                temp.Add("");
+                temp.Add("");
+                temp.Add("");
+                activos_enCat.Add(temp);
                 ViewBag.NoActivos = "No hay Activos Prestables con esta categoría.";
             }
             return activos_enCat;
