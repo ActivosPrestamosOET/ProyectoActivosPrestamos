@@ -117,6 +117,8 @@
     <Property Name="V_PROVEEDORIDPROVEEDOR" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="V_MONEDAID" Type="String" Nullable="false" MaxLength="26" FixedLength="false" Unicode="false" />
     <Property Name="CENTRO_DE_COSTOId" Type="Int32" />
+    <Property Name="PLACA" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="true" />
+    <Property Name="ESTADO_PRESTADO" Type="Int32" />
   </EntityType>
   <EntityType Name="USUARIO">
     <Key>

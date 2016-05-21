@@ -35,6 +35,8 @@
     <EntitySetMapping Name="ACTIVOS">
       <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.ACTIVO)">
         <MappingFragment StoreEntitySet="ACTIVOS">
+          <ScalarProperty Name="ESTADO_PRESTADO" ColumnName="ESTADO_PRESTADO" />
+          <ScalarProperty Name="PLACA" ColumnName="PLACA" />
           <ScalarProperty Name="CENTRO_DE_COSTOId" ColumnName="CENTRO_DE_COSTOId" />
           <ScalarProperty Name="V_MONEDAID" ColumnName="V_MONEDAID" />
           <ScalarProperty Name="V_PROVEEDORIDPROVEEDOR" ColumnName="V_PROVEEDORIDPROVEEDOR" />

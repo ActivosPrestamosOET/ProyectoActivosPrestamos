@@ -38,6 +38,8 @@
     <Property Name="V_PROVEEDORIDPROVEEDOR" Type="varchar2" MaxLength="50" Nullable="false" />
     <Property Name="V_MONEDAID" Type="varchar2" MaxLength="26" Nullable="false" />
     <Property Name="CENTRO_DE_COSTOId" Type="number" Precision="10" Scale="0" />
+    <Property Name="PLACA" Type="nvarchar2" MaxLength="64" Nullable="false" />
+    <Property Name="ESTADO_PRESTADO" Type="number" Precision="10" Scale="0" />
   </EntityType>
   <EntityType Name="EQUIPO_SOLICITADO">
     <Key>
