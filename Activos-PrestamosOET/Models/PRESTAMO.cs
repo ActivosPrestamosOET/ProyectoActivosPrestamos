@@ -11,8 +11,7 @@ namespace Activos_PrestamosOET.Models
 {
     using System;
     using System.Collections.Generic;
-    using Web.Models.Validation;
-    using System.ComponentModel.DataAnnotations;
+    
     public partial class PRESTAMO
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -25,15 +24,7 @@ namespace Activos_PrestamosOET.Models
         public string ID { get; set; }
         public Nullable<long> NUMERO_BOLETA { get; set; }
         public string MOTIVO { get; set; }
-        [Display(Name = "Fecha de solicitud")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public System.DateTime FECHA_SOLICITUD { get; set; }
-        [Display(Name = "Fecha de retiro")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        [Required(ErrorMessage = "Por favor ingrese una rango válido")]
-        [DateMustBeEqualOrGreaterThanCurrentDateValidation]
         public System.DateTime FECHA_RETIRO { get; set; }
         public int PERIODO_USO { get; set; }
         public string SOFTWARE_REQUERIDO { get; set; }
@@ -45,57 +36,6 @@ namespace Activos_PrestamosOET.Models
         public string CED_SOLICITA { get; set; }
         public string CED_APRUEBA { get; set; }
     
-        /*
-        [Display(Name = "Id de la boleta")]
-        public string ID { get; set; }
-
-        [Display(Name = "N�mero de boleta")]
-        public Nullable<long> NUMERO_BOLETA { get; set; }
-
-        [Display(Name = "Motivo")]
-        [Required(ErrorMessage = "Por favor ingrese un motivo v�lido")]
-        public string MOTIVO { get; set; }
-
-        [Display(Name = "Fecha de solicitud")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        public Nullable<System.DateTime> FECHA_SOLICITUD { get; set; }
-
-        [Display(Name = "Fecha de retiro")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-        [Required(ErrorMessage = "Por favor ingrese una rango v�lido")]
-        [DateMustBeEqualOrGreaterThanCurrentDateValidation]
-        public Nullable<System.DateTime> FECHA_RETIRO { get; set; }
-
-        [Display(Name = "Periodo de uso")]
-        [Required(ErrorMessage = "Por favor ingrese una rango v�lido")]
-        public int PERIODO_USO { get; set; }
-
-        [Display(Name = "Software requerido")]
-        public string SOFTWARE_REQUERIDO { get; set; }
-
-        [Display(Name = "Observaciones del solicitante")]
-        public string OBSERVACIONES_SOLICITANTE { get; set; }
-
-        [Display(Name = "Observaciones de qui�n aprueba")]
-        public string OBSERVACIONES_APROBADO { get; set; }
-
-        [Display(Name = "Observaciones al devolver pr�stamos")]
-        public string OBSERVACIONES_RECIBIDO { get; set; }
-
-        [Display(Name = "Sigla del Curso")]
-        public string SIGLA_CURSO { get; set; }
-
-        [Display(Name = "Estado")]
-        public short Estado { get; set; }
-
-        [Display(Name = "C�dula del solicitante")]
-        public string CED_SOLICITA { get; set; }
-
-        [Display(Name = "C�dula de qui�n aprueba")]
-        public string CED_APRUEBA { get; set; }
-*/
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<EQUIPO_SOLICITADO> EQUIPO_SOLICITADO { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
