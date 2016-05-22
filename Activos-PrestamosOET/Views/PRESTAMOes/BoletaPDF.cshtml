@@ -1,0 +1,122 @@
+﻿@model Activos_PrestamosOET.Models.PRESTAMO
+
+@{
+    ViewBag.Title = "BoletaPDF";
+}
+
+<h2>BoletaPDF</h2>
+
+<div>
+    <h4>PRESTAMO</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.NUMERO_BOLETA)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.NUMERO_BOLETA)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MOTIVO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MOTIVO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_SOLICITUD)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_SOLICITUD)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FECHA_RETIRO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FECHA_RETIRO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PERIODO_USO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PERIODO_USO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SOFTWARE_REQUERIDO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OBSERVACIONES_SOLICITANTE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OBSERVACIONES_SOLICITANTE)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OBSERVACIONES_APROBADO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OBSERVACIONES_APROBADO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OBSERVACIONES_RECIBIDO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OBSERVACIONES_RECIBIDO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SIGLA_CURSO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SIGLA_CURSO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Estado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USUARIO.USUARIO1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USUARIO.USUARIO1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.USUARIO1.USUARIO1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.USUARIO1.USUARIO1)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

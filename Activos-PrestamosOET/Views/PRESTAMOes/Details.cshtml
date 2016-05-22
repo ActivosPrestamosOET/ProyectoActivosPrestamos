@@ -319,7 +319,14 @@
                                             }
                                 </div>
                     <div class="modal-footer">
-                        <button type="button" name="a"  class="btn btn-primary">Asignar</button>
+@if (ViewBag.NoActivos != null && vacio == true)
+{
+                        <button type="button" name="a"  class="btn btn-primary" disabled="disabled" readonly="readonly">Asignar</button>
+}
+else
+{
+    <button type="button" name="a" class="btn btn-primary">Asignar</button>
+}
                         <button type="button" name="a"  class="btn btn-default" data-dismiss="modal">Cancelar</button>
                         
                     </div>
