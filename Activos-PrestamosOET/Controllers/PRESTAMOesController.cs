@@ -1141,6 +1141,7 @@ namespace Activos_PrestamosOET.Controllers
                                 if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
                                 {
                                     //activos_asignados.Remove(x); //se borra de la tabla m a n
+                                    x.ESTADO_PRESTADO = 0;
                                 }
                             }
                         }
@@ -1155,6 +1156,7 @@ namespace Activos_PrestamosOET.Controllers
                             if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
                             {
                                 //activos_asignados.Remove(x); //se borra de la tabla m a n
+                                x.ESTADO_PRESTADO = 0;
                             }
                         }
                     }
