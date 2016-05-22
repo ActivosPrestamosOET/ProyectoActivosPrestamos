@@ -245,7 +245,7 @@
                         @if (ViewBag.Mensaje2 != null)
                         {
                             <td>
-                                @Html.TextBox("cantidad_aprobada", @s[2], null, new { @class = "form-control col-md-2", @type = "number", @min = "0", @readonly = "readonly", @disabled = "disabled" })
+                                @Html.TextBox("cantidad_aprobada", @s[2], null, new { @class = "form-control col-md-2", @type = "number", @min = "0", @readonly = "readonly" })
                             </td>
                         }
                         else
@@ -292,11 +292,13 @@
                                                         @if (z[0] == "")
                                                         {
                                                             vacio = true;
-                                                            <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado" disabled="disabled" readonly="readonly"></td>
+                                                            <td>@Html.CheckBox("activoSeleccionado", false, new { @readonly = "readonly", @value = @z[2] })</td>
+                                                           @* <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado" disabled="disabled" readonly="readonly"></td>*@
                                                         }
                                                         else
                                                         {
-                                                            <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado"></td>
+                                                            <td>@Html.CheckBox("activoSeleccionado", false, new { @value = @z[2]})</td>
+                                                            @* <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado"></td>*@
 
                                                         }
                                                         <td>@z[0] &nbsp;</td>
