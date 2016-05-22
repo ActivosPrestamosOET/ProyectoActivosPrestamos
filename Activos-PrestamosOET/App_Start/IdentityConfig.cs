@@ -10,7 +10,8 @@ using System.Configuration;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using SendGrid;
-//using System.Web;
+using System.Web;
+using System.Web.Services;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
@@ -55,7 +56,7 @@ namespace Activos_PrestamosOET
                        );
 
             // Create a Web transport for sending email.
-            /*var transportWeb = new Web(credentials);
+            var transportWeb = new SendGrid.Web(credentials);
 
             // Send the email.
             if (transportWeb != null)
@@ -63,9 +64,9 @@ namespace Activos_PrestamosOET
                 return transportWeb.DeliverAsync(myMessage);
             }
             else
-            {*/
+            {
                 return Task.FromResult(0);
-          //  }
+            }
         }
     }
 
