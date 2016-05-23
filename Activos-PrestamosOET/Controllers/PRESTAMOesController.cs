@@ -563,6 +563,11 @@ namespace Activos_PrestamosOET.Controllers
                 ViewBag.Mensaje2 = "El préstamo ha sido denegado con éxito";
             }
 
+            if (b == "Imprimir Boleta")
+            {
+                DownloadPDF("BoletaPDF", pRESTAMO, "BoletaSoliciud");
+            }
+
             return RedirectToAction("Details", new { id = ID });
         }
 
@@ -1273,6 +1278,30 @@ namespace Activos_PrestamosOET.Controllers
             return activos_enCat;
         }
 
+        protected void addActivosToPrestamo(string[] placas, string id)
+        {
+            LinkedList<ACTIVO> activosPorAgregar = new LinkedList<ACTIVO>();
+            var prestamo = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
+            foreach (string p in placas)
+            {
+                if (p != "false")
+                {
+                    var activo = db.ACTIVOS.SingleOrDefault(i => i.PLACA == p);
+                    activo.ESTADO_PRESTADO = 1;
+
+
+                    activosPorAgregar.AddLast(activo);
+                    prestamo.ACTIVOes.Add(activo);
+                    if (ModelState.IsValid)
+                    {
+                        db.Entry(activo).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
+                }
+            }
+        }
+
         public byte[] GetPDF(string pHTML)
         {
             byte[] bPDF = null;
@@ -1306,47 +1335,59 @@ namespace Activos_PrestamosOET.Controllers
             return bPDF;
         }
 
-        protected void addActivosToPrestamo(string[] placas, string id)
+        public void DownloadPDF(string viewName, object model, string nombreArchivo)
         {
-            LinkedList<ACTIVO> activosPorAgregar = new LinkedList<ACTIVO>();
-            var prestamo = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
-            foreach (string p in placas)
-            {
-                if (p != "false")
-                {
-                    var activo = db.ACTIVOS.SingleOrDefault(i => i.PLACA == p);
-                    activo.ESTADO_PRESTADO = 1;
-                   
-                    
-                    activosPorAgregar.AddLast(activo);
-                    prestamo.ACTIVOes.Add(activo);
-                    if (ModelState.IsValid)
-                    {
-                        db.Entry(activo).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
-
-                }
-            }
-            
-            
-
-
-
-        }
-
-        public void DownloadPDF()
-        {
-            string HTMLContent = "Hello <b>World</b>";
+            string HTMLContent = RenderRazorViewToString(viewName, model);
 
             Response.Clear();
             Response.ContentType = "application/pdf";
-            Response.AddHeader("content-disposition", "attachment;filename=" + "PDFfile.pdf");
+            Response.AddHeader("content-disposition", "attachment;filename=" + nombreArchivo + ".pdf");
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
             Response.BinaryWrite(GetPDF(HTMLContent));
             Response.End();
         }
 
+        /*   public static string RenderViewToString(string controllerName, string viewName, object viewData)
+           {
+               using (var writer = new StringWriter())
+               {
+                   var routeData = new RouteData();
+                   routeData.Values.Add("controller", controllerName);
+                   var fakeControllerContext = new ControllerContext(new HttpContextWrapper(new HttpContext(new HttpRequest(null, "http://google.com", null), new HttpResponse(null))), routeData, new FakeController());
+                   var razorViewEngine = new RazorViewEngine();
+                   var razorViewResult = razorViewEngine.FindView(fakeControllerContext, viewName, "", false);
+
+                   var viewContext = new ViewContext(fakeControllerContext, razorViewResult.View, new ViewDataDictionary(viewData), new TempDataDictionary(), writer);
+                   razorViewResult.View.Render(viewContext, writer);
+                   return writer.ToString();
+               } */
+
+        public string RenderRazorViewToString(string viewName, object model)
+        {
+            // PRESTAMO pRESTAMO = db.PRESTAMOS.Find();
+            ViewData.Model = model;
+            using (var sw = new StringWriter())
+            {
+                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext,
+                                                                         viewName);
+                var viewContext = new ViewContext(ControllerContext, viewResult.View,
+                                             ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
+                return sw.GetStringBuilder().ToString();
+            }
+        }
+
+        public ActionResult BoletaPDF(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
+
+            return View(pRESTAMO);
+        }
 
     }
 }
