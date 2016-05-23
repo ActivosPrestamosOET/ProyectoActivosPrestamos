@@ -25,7 +25,7 @@ namespace Activos_PrestamosOET.Models
 
         public string EstacionID { get; set; }
 
-        [Display(Name = "Nombre")]
+        [Display(Name = "Nombre completo")]
         public string FullName
         {
             get

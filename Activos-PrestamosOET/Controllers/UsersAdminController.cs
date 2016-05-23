@@ -179,22 +179,6 @@ namespace Activos_PrestamosOET.Controllers
             });
             ViewBag.EstacionID = new SelectList(db.V_ESTACION, "ID", "NOMBRE", editUser.EstacionID);
             return View(editUser);
-            //return View(new EditUserViewModel()
-            //{
-            //    Id = user.Id,
-            //    Email = user.Email,
-            //    // Info personal
-            //    Nombre = user.Nombre,
-            //    Apellidos = user.Apellidos,
-            //    Cedula = user.Cedula,
-            //    EstacionID = user.EstacionID,
-            //    RolesList = RoleManager.Roles.ToList().Select(x => new SelectListItem()
-            //    {
-            //        Selected = userRoles.Contains(x.Name),
-            //        Text = x.Name,
-            //        Value = x.Name
-            //    })
-            //});
         }
 
         //

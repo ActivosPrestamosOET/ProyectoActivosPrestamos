@@ -3,70 +3,120 @@
     ViewBag.Title = "Editar";
 }
 
-<h2>Edit</h2>
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal">
-        <h4>Edit User Form.</h4>
-        <hr />
-        @Html.ValidationSummary(true)
-        @Html.HiddenFor(model => model.Id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Email)
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Nombre, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Apellidos, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Apellidos, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Cedula, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.Cedula, new { @class = "form-control" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.EstacionID, "Estación", htmlAttributes: new { @class = "col-md-2 control-label required" })
-            <div class="col-md-10">
-                @Html.DropDownList("EstacionID", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.EstacionID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.Label("Roles", new { @class = "control-label col-md-2" })
-            <span class=" col-md-10">
-                @foreach (var item in Model.RolesList)
-                {
-                    <input type="checkbox" name="SelectedRole" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
-                    @Html.Label(item.Value, new { @class = "control-label" })
-                }
-            </span>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </div>
+<div class="row">
+    <div class="col-xs-12">
+        <br />
+        @Html.ActionLink("Regresar", "Index")
     </div>
-}
-
-<div>
-    @Html.ActionLink("Regresar", "Index")
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <h2>Editar un usuario</h2>
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-xs-12 col-sm-4 col-sm-offset-4">
+                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <div class="col-xs-12 col-lg-3">
+                                @Html.LabelFor(m => m.Nombre, new { @class = "control-label required" })
+                            </div>
+                            <div class="col-xs-12 col-lg-9">
+                                @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <div class="col-xs-12 col-lg-3">
+                                @Html.LabelFor(m => m.Apellidos, new { @class = "control-label required" })
+                            </div>
+                            <div class="col-xs-12 col-lg-9">
+                                @Html.TextBoxFor(m => m.Apellidos, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <div class="col-xs-12 col-lg-3">
+                                @Html.LabelFor(m => m.Cedula, new { @class = "control-label required" })
+                            </div>
+                            <div class="col-xs-12 col-lg-9">
+                                @Html.TextBoxFor(m => m.Cedula, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <div class="col-xs-12 col-lg-3">
+                                @Html.LabelFor(m => m.Email, new { @class = "control-label required" })
+                            </div>
+                            <div class="col-xs-12 col-lg-9">
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <div class="col-xs-12 col-lg-3">
+                                @Html.LabelFor(model => model.EstacionID, "Estación", htmlAttributes: new { @class = "control-label required" })
+                            </div>
+                            <div class="col-xs-12 col-lg-9">
+                                @Html.DropDownList("EstacionID", null, "-- Seleccione una estación --", htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.EstacionID, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <div class="col-xs-12 col-lg-3">
+                                <label class="control-label required">Roles</label>
+                            </div>
+                            <div class="col-xs-12 col-lg-9">
+                                <div class="dropdown">
+                                    <button class="form-control dropdown-toggle" type="button" id="drop_roles" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" style="text-align:left;">
+                                        -- Seleccione los roles -- <span class="pull-right"> <span class="caret"></span></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="drop_roles" style="padding:5px 10px;">
+                                        @foreach (var item in Model.RolesList)
+                                        {
+                                            <li>
+                                                <input type="checkbox" name="SelectedRole" value="@item.Value" checked="@item.Selected" class="checkbox-inline" />
+                                                @Html.Label(item.Value, new { @class = "control-label" })
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <p class="text-danger"><small>(*) Campos obligatorios</small></p>
+                        <div class="pull-right">
+                            <input type="submit" class="btn btn-default" value="Guardar cambios" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>
 
 @section Scripts {

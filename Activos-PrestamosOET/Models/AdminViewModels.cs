@@ -11,7 +11,7 @@ namespace Activos_PrestamosOET.Models
     public class RoleViewModel
     {
         public string Id { get; set; }
-        [Required(AllowEmptyStrings = false)]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El nombre es obligatorio")]
         [Display(Name = "Nombre de rol")]
         public string Name { get; set; }
     }
@@ -21,8 +21,8 @@ namespace Activos_PrestamosOET.Models
     {
         public string Id { get; set; }
 
-        [Required(AllowEmptyStrings = false)]
-        [Display(Name = "Email")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "El correo es obligatorio" )]
+        [Display(Name = "Correo")]
         [EmailAddress]
         public string Email { get; set; }
 
@@ -31,7 +31,7 @@ namespace Activos_PrestamosOET.Models
         public string Apellidos { get; set; }
         public string Cedula { get; set; }
 
-        [Display(Name = "Estacion")]
+        [Display(Name = "Estación")]
         public string EstacionID { get; set; }
 
 

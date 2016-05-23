@@ -182,6 +182,7 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             // If we got this far, something failed, redisplay form
+            ViewBag.EstacionID = new SelectList(db.V_ESTACION, "ID", "NOMBRE");
             return View(model);
         }
 
