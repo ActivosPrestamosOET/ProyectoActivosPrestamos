@@ -377,8 +377,10 @@ namespace Activos_PrestamosOET.Controllers
             var equipoSolicitado = equipoSol.EQUIPO_SOLICITADO;
 
             var equipo = new List<List<String>>();
+            var actPrevios = new List<List<String>>();
             var act = new List<List<String>>();
             var activos = new List<List<List<String>>>();
+            var activosPrevios = new List<List<List<String>>>();
             foreach (var x in equipoSolicitado)
             {                
                 List<String> temp = new List<String>();
@@ -386,6 +388,7 @@ namespace Activos_PrestamosOET.Controllers
                 {   
                                              
                     temp.Add(x.TIPO_ACTIVO.ToString());
+                    actPrevios = llenarTablaDetails(x.TIPOS_ACTIVOSID.ToString(), id);
                     act = llenarTablaDetails(x.TIPOS_ACTIVOSID.ToString());
                 }
                 else
@@ -409,8 +412,10 @@ namespace Activos_PrestamosOET.Controllers
                     temp.Add("");
                 }
                 equipo.Add(temp);
+                activosPrevios.Add(actPrevios);
                 activos.Add(act);
             }
+            ViewBag.Activos_enPrevio = activosPrevios;
             ViewBag.Activos_enCat = activos;
         //Segmento de código para colocar colores a las cantidad de solicitudes por categoría.
         var prestamosConEquipo = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).SingleOrDefault(p => p.ID == id);//Se hace joint entre prestamos y equipo solicitado por id del préstamo           
@@ -511,8 +516,6 @@ namespace Activos_PrestamosOET.Controllers
             
             if (b == "Aceptar")
             {
-
-
                 int a = 0;
                 foreach (var x in equipo_sol)
                 {
@@ -1219,9 +1222,9 @@ namespace Activos_PrestamosOET.Controllers
         private List<List<String>> llenarTablaDetails(String Categoria)
         {
 
-
+            int tipo = int.Parse(Categoria);
             var activos_enCat = new List<List<String>>();
-            var activos = db.ACTIVOS;
+            var activos = db.ACTIVOS.Where(c => c.TIPO_ACTIVOID == tipo);
             foreach (Activos_PrestamosOET.Models.ACTIVO x in activos)
             {
 
@@ -1247,6 +1250,28 @@ namespace Activos_PrestamosOET.Controllers
             }
             return activos_enCat;
     }
+        private List<List<String>> llenarTablaDetails(String Categoria, string id)
+        {
+
+
+            var activos_enCat = new List<List<String>>();
+            var activos = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
+            foreach (ACTIVO x in activos.ACTIVOes)
+            {
+
+                if (Categoria.Equals(x.TIPO_ACTIVOID.ToString()))
+                    {
+                    List<String> temp = new List<String>();
+                    if (x.FABRICANTE != null) { temp.Add(x.FABRICANTE); } else { temp.Add(""); }
+                    if (x.MODELO != null) { temp.Add(x.MODELO); } else { temp.Add(""); }
+                    if (x.PLACA != null) { temp.Add(x.PLACA); } else { temp.Add(""); }
+
+                    activos_enCat.Add(temp);
+                }              
+            }
+            
+            return activos_enCat;
+        }
 
         public byte[] GetPDF(string pHTML)
         {

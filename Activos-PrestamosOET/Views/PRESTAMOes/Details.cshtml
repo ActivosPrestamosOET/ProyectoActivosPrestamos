@@ -281,13 +281,41 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    
-                                              @if (ViewBag.Activos_enCat != null)
-                                              {                                                
-                                                    List<List<String>> w = ViewBag.Activos_enCat[modal];
-
-                                                    foreach (List<String> z in w)
+                                              
+                                                    @if (ViewBag.Activos_enPrevio != null)
                                                     {
+                                                        List<List<String>> a = ViewBag.Activos_enPrevio[modal];
+
+                                                        foreach (List<String> b in a)
+                                                        {
+                                                            <tr>
+                                                                @if (b[0] == "")
+                                                                {
+                                                                    vacio = true;
+                                                                    <td>@Html.CheckBox("activoSeleccionado", true, new { @readonly = "readonly", @value = @b[2] })</td>
+                                                                    @* <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado" disabled="disabled" readonly="readonly"></td>*@
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>@Html.CheckBox("activoSeleccionado", true, new { @value = @b[2] })</td>
+                                                                    @* <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado"></td>*@
+
+                                                                }
+                                                                <td>@b[0] &nbsp;</td>
+                                                                <td>@b[1] &nbsp;</td>
+                                                                <td>@b[2] &nbsp;</td>
+                                                            </tr>
+                                                        }
+
+                                                    }
+                                                    
+                                                       @if (ViewBag.Activos_enCat != null)
+                                                       {
+                                                           
+                                                           List<List<String>> w = ViewBag.Activos_enCat[modal];
+
+                                                           foreach (List<String> z in w)
+                                                           {
                                                     <tr>
                                                         @if (z[0] == "")
                                                         {
@@ -308,6 +336,9 @@
                                                       }
                                                   
                                               }
+                                                    
+                                                          
+                                             
 
                 </tbody>
             </table>
