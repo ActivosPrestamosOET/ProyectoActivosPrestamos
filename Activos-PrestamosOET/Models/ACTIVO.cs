@@ -11,7 +11,7 @@ namespace Activos_PrestamosOET.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
     public partial class ACTIVO
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,37 +19,122 @@ namespace Activos_PrestamosOET.Models
         {
             this.PRESTAMOes = new HashSet<PRESTAMO>();
             this.TRANSACCIONES = new HashSet<TRANSACCION>();
+
+            //OJO: si se regenera el modelo esto muere. Tal vez seria mejor moverlo a otro archivo y aprovechar
+            //que la clase es partial.            
+
+
+            this.FECHA_INGRESO = DateTime.Now.Date; // Se le quema la fecha de ingreso
+            this.ID = DateTime.Now.Day.ToString("D2") + DateTime.Now.Month.ToString("D2") + DateTime.Now.Year.ToString() + DateTime.Now.Hour.ToString("D2") + DateTime.Now.Minute.ToString("D2") + DateTime.Now.Second.ToString("D2") + DateTime.Now.Millisecond.ToString("D3"); /// Se genera el ID con el estandar de la OET.
+
         }
-    
+
         public string ID { get; set; }
+
+        [Display(Name = "Número de serie")]
         public string NUMERO_SERIE { get; set; }
+
+        [Display(Name = "Fecha de compra")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Required(ErrorMessage = "Fecha de compra es requerido")]
         public System.DateTime FECHA_COMPRA { get; set; }
+
+        [Display(Name = "Inicio de servicio")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public Nullable<System.DateTime> INICIO_SERVICIO { get; set; }
+
+        [Display(Name = "Fecha de ingreso")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public System.DateTime FECHA_INGRESO { get; set; }
+
+        [Display(Name = "Fabricante")]
+        [Required(ErrorMessage = "Fabricante es requerido")]
         public string FABRICANTE { get; set; }
+
+        [Display(Name = "Precio")]
+        [DataType(DataType.Currency)]
+        [Range(1, int.MaxValue, ErrorMessage = "El precio debe tener un valor positivo")]
+        [Required(ErrorMessage = "Precio es requerido")]
         public decimal PRECIO { get; set; }
+
+        [Display(Name = "Descripción")]
+        [DataType(DataType.MultilineText)]
+        [StringLength(256, MinimumLength = 6, ErrorMessage = "El campo tiene que tener menos de 256 caracteres y más de 6.")]
+        [Required(ErrorMessage = "Es necesario que ingrese una descripción del activo")]
         public string DESCRIPCION { get; set; }
+
+        [Display(Name = "Exento de impuestos")]
         public bool EXENTO { get; set; }
+
+        [Display(Name = "Sujeto a préstamos")]
         public bool PRESTABLE { get; set; }
+
+        [Display(Name = "Tipo de capital")]
         public bool TIPO_CAPITAL { get; set; }
+
+
+        [Display(Name = "Ingresado por")]
+        //[Required(ErrorMessage = "Quien lo ingresó es requerido")]
         public string INGRESADO_POR { get; set; }
+
+        [Display(Name = "Número de factura")]
+        [Required(ErrorMessage = "Número de documento es requerido")]
         public string NUMERO_DOCUMENTO { get; set; }
+
+        [Display(Name = "Número de lote")]
         public string NUMERO_LOTE { get; set; }
+
+        [Display(Name = "Tipo de transacción")]
+        [Required(ErrorMessage = "Tipo de transacción es requerido")]
         public int TIPO_TRANSACCIONID { get; set; }
+
+
+        [Display(Name = "Estado")]
         public int ESTADO_ACTIVOID { get; set; }
+
+        [Display(Name = "Tipo de activo")]
+        [Required(ErrorMessage = "Tipo de activo es requerido")]
         public int TIPO_ACTIVOID { get; set; }
+
+        [Display(Name = "Comentarios")]
+        [DataType(DataType.MultilineText)]
         public string COMENTARIO { get; set; }
+
+        [Display(Name = "Desechado")]
         public bool DESECHADO { get; set; }
+
+        [Display(Name = "Modelo")]
         public string MODELO { get; set; }
+
+        [Display(Name = "Usuario")]
         public string V_USUARIOSIDUSUARIO { get; set; }
+
+        [Display(Name = "Estación")]
         public string V_ESTACIONID { get; set; }
+
+        [Display(Name = "Compañía")]
+        [Required(ErrorMessage = "Compañía es requerido")]
         public string V_ANFITRIONAID { get; set; }
+
+        [Display(Name = "Proveedor")]
+        [Required(ErrorMessage = "El proveedor es requerido")]
         public string V_PROVEEDORIDPROVEEDOR { get; set; }
+
+        [Display(Name = "Tipo de moneda")]
+        [Required(ErrorMessage = "El tipo de moneda es requerido")]
         public string V_MONEDAID { get; set; }
+
+        [Display(Name = "Centro de Costo")]
         public Nullable<int> CENTRO_DE_COSTOId { get; set; }
+        [Display(Name = "Número de placa")]
+        [Required(ErrorMessage = "El número de placa es requerido")]
         public string PLACA { get; set; }
+        [Display(Name = "Estado del prestamo")]
         public Nullable<int> ESTADO_PRESTADO { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRESTAMO> PRESTAMOes { get; set; }
         public virtual TIPOS_ACTIVOS TIPOS_ACTIVOS { get; set; }

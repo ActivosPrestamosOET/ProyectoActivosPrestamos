@@ -36,7 +36,7 @@
         <EntityTypeShape EntityType="PrestamosModel.TRANSACCION" Width="1.5" PointX="7.5" PointY="13.125" />
         <AssociationConnector Association="PrestamosModel.FK_ACTIVOTRANSACCION" />
         <AssociationConnector Association="PrestamosModel.V_ESTACIONACTIVO" />
-        <EntityTypeShape EntityType="PrestamosModel.V_COURSES" Width="1.5" PointX="8.25" PointY="5" />
+        <EntityTypeShape EntityType="PrestamosModel.V_COURSES" Width="1.5" PointX="16.375" PointY="6.875" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

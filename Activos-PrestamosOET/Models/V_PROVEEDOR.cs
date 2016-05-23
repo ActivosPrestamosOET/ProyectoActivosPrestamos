@@ -11,7 +11,7 @@ namespace Activos_PrestamosOET.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
     public partial class V_PROVEEDOR
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -19,9 +19,10 @@ namespace Activos_PrestamosOET.Models
         {
             this.ACTIVOes = new HashSet<ACTIVO>();
         }
-    
+
         public string IDPROVEEDOR { get; set; }
         public System.DateTime FECHAINGRESO { get; set; }
+        [Display(Name = "Proveedor")]
         public string NOMBRE { get; set; }
         public string RAZONSOCIAL { get; set; }
         public bool ESTADO { get; set; }
@@ -47,7 +48,7 @@ namespace Activos_PrestamosOET.Models
         public string MODIFICADOR { get; set; }
         public string MONEDA { get; set; }
         public string NOMBRE_CORTO { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ACTIVO> ACTIVOes { get; set; }
     }

@@ -11,7 +11,7 @@ namespace Activos_PrestamosOET.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
     public partial class TIPOS_ACTIVOS
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -20,10 +20,12 @@ namespace Activos_PrestamosOET.Models
             this.ACTIVOS = new HashSet<ACTIVO>();
             this.EQUIPO_SOLICITADO = new HashSet<EQUIPO_SOLICITADO>();
         }
-    
+
         public int ID { get; set; }
+        [Display(Name = "Tipo de activo")]
+        [Required(ErrorMessage = "El nombre es requerido")]
         public string NOMBRE { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ACTIVO> ACTIVOS { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
