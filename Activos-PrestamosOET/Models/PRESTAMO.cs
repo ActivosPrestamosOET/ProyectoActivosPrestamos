@@ -23,12 +23,14 @@ namespace Activos_PrestamosOET.Models
             this.EQUIPO_SOLICITADO = new HashSet<EQUIPO_SOLICITADO>();
             this.ACTIVOes = new HashSet<ACTIVO>();
         }
-        [DisplayName("Id del préstamo")]
+        
         public string ID { get; set; }
+        //[DisplayName("Id del préstamo")]
         [DisplayName("Número de boleta")]
         public Nullable<long> NUMERO_BOLETA { get; set; }
+        
         [DisplayName("Motivo")]
-        [StringLength(250)]
+        //[StringLength(250)]
         public string MOTIVO { get; set; }
         [DisplayName("Fecha de solicitud")]        
         public System.DateTime FECHA_SOLICITUD { get; set; }

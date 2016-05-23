@@ -102,12 +102,15 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach (var x in Model.ACTIVOes)
+                            {
                             <tr>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
-                                <td>Column content</td>
+                                <td>@x.TIPOS_ACTIVOS.NOMBRE</td>
+                                <td>@x.FABRICANTE</td>
+                                <td>@x.MODELO</td>
+                                <td>@x.PLACA</td>
                             </tr>
+                            }
                         </tbody>
                     </table>
                     <br />
