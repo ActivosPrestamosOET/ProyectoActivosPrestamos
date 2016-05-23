@@ -495,7 +495,7 @@ namespace Activos_PrestamosOET.Controllers
         //Retorna: Devuelve un información necesaria para el despliegue de la vista como: nombre de solicitante, el estado, el equipo solicitado y sus cantidades, además, despliega un mensaje de confirmacion diferente de acuerdo a si el boton fue aceptar o denegar
 
         [HttpPost]
-        public ActionResult Details(string ID, int[] cantidad_aprobada,string[] activoSeleccionado, string b, [Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p)
+        public ActionResult Details(string ID, int[] cantidad_aprobada, string[] activoSeleccionado, string b, [Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p)
         {
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
             pRESTAMO.OBSERVACIONES_APROBADO = p.OBSERVACIONES_APROBADO;
@@ -508,7 +508,7 @@ namespace Activos_PrestamosOET.Controllers
             var prestamo = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
 
             var equipo_sol = prestamo.EQUIPO_SOLICITADO;
-            
+
             if (b == "Aceptar")
             {
 
@@ -560,7 +560,7 @@ namespace Activos_PrestamosOET.Controllers
                 ViewBag.Mensaje2 = "El préstamo ha sido denegado con éxito";
             }
 
-            if (b == "Imprimir Boleta")
+            if (b == "Descargar Boleta")
             {
                 DownloadPDF("BoletaPDF", pRESTAMO, "BoletaSoliciud");
             }
