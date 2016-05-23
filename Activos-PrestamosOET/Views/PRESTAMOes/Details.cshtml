@@ -358,7 +358,10 @@ else
                 </div>
             </div>
 
+            @Html.ActionLink("Imprimir Boleta", "BoletaPDF", new { id = Model.ID }, new { @class = "btn btn-default" })
+                                <br/>
             <input type="submit" name="b" value="Imprimir Boleta" class="btn btn-default" />
+
 
                 <div id="Botones_aceptar_cancelar" class="col-md-offset-9 col-md-12">
 
