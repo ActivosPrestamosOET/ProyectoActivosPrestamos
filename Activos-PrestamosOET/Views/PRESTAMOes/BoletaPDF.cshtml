@@ -7,111 +7,146 @@
 
 <div>
     <h4>Solicitud de equipo de cómputo</h4>
-    <hr />
+    <br />
+    <div class="container">
+        <div class="row">
 
-            @Html.DisplayNameFor(model => model.NUMERO_BOLETA)
-       
+            <div class="col-md-2">
+                <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.NUMERO_BOLETA):</label>
+            </div>
+            <div class="col-md-4">
+                @Html.DisplayFor(model => model.NUMERO_BOLETA)
+            </div>
+            <div class="col-md-2">
+                <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_SOLICITUD):</label>
+            </div>
+            <div class="col-md-4">
+                @Html.DisplayFor(model => model.FECHA_SOLICITUD)
+            </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.NUMERO_BOLETA)
-        </dd>
+            <br />
+            <br />
+            <div class="col-md-2">
+                <label class="control-label" for="inputDefault">Solicitante:</label>
+            </div>
+            <div class="col-md-4">
+                @ViewBag.Nombre
+            </div>
+            <div class="col-md-2">
+                <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_RETIRO):</label>
+            </div>
+            <div class="col-md-4">
+                @Html.DisplayFor(model => model.FECHA_RETIRO)
+            </div>
+            <br />
+            <br />
+            <div class="col-md-2">
+                <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.MOTIVO):</label>
+            </div>
+            <div class="col-md-4">
+                @Html.DisplayFor(model => model.MOTIVO)
+            </div>
+            <div class="col-md-2">
+                <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.PERIODO_USO):</label>
+            </div>
+            <div class="col-md-4">
+                @Html.DisplayFor(model => model.PERIODO_USO)
+            </div>
+            <br />
+            <br />
+            <div class="col-md-2">
+                <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.Estado):</label>
+            </div>
+            <div class="col-md-4">
 
-        <dt>
-            @Html.DisplayNameFor(model => model.MOTIVO)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.MOTIVO)
-        </dd>
+                @switch (Model.Estado)
+                {
+                    case 1:
+                        <text>Pendiente</text>
+                        break;
+                    case 2:
+                        <text>Aprobada</text>
+                        break;
+                    case 3:
+                        <text>Denegada</text>
+                        break;
+                    case 4:
+                        <text>Abierta</text>
+                        break;
+                    case 5:
+                        <text>Cerrada</text>
+                        break;
+                    case 6:
+                        <text>Cancelada</text>
+                        break;
+                }
+            </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.FECHA_SOLICITUD)
-        </dt>
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO):</label>
+                <div class="col-lg-4">
+                    @Html.DisplayFor(model => model.SOFTWARE_REQUERIDO)
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.OBSERVACIONES_SOLICITANTE):</label>
+                <div class="col-lg-10">
+                    @Html.DisplayFor(model => model.OBSERVACIONES_SOLICITANTE)
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.OBSERVACIONES_APROBADO):</label>
+                <div class="col-lg-10">
+                    @Html.DisplayFor(model => model.OBSERVACIONES_APROBADO)
+                </div>
+            </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.FECHA_SOLICITUD)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FECHA_RETIRO)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.FECHA_RETIRO)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PERIODO_USO)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PERIODO_USO)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SOFTWARE_REQUERIDO)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OBSERVACIONES_SOLICITANTE)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OBSERVACIONES_SOLICITANTE)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OBSERVACIONES_APROBADO)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OBSERVACIONES_APROBADO)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OBSERVACIONES_RECIBIDO)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OBSERVACIONES_RECIBIDO)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.SIGLA_CURSO)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.SIGLA_CURSO)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Estado)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.USUARIO.USUARIO1)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.USUARIO.USUARIO1)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.USUARIO1.USUARIO1)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.USUARIO1.USUARIO1)
-        </dd>
-
-    </dl>
+            <br/>
+            <br />
+            <p>Equipo asignado a ésta solicitud: </p>
+            <br />
+            <br />
+            <table class="table table-striped table-hover ">
+                <thead>
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Fabricante</th>
+                        <th>Modelo</th>
+                        <th>Placa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                        <td>Column content</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br />
+            <br />
+            <p>Nombre/Firma de entregado: </p>
+            <br />
+            <br />
+            <br />
+            <br />
+            <p>Nombre/Firma de recibido: </p>
+            <br />
+            <br />
+            <br />
+            <br />
+            <span>Importante: </span> <p>Para brindar un servicio correcto, Informática requiere que los equipos sean solicitados con 4 días de anterioridad a la fecha de entrega, y se debe contar con el visto bueno del Coordinador del área de la que forma parte el solicitante. 
+            El equipo se entregará y recibirá en la oficina de Informática en la fecha indicada. 
+            Informática   se   hace   responsable   de   entregar   el   equipo   funcionando,   sin   embargo   es responsabilidad  del  usuario,  antes  del  uso  del  mismo,  proceder  a  probar  y  verificar  que  el mismo cumple con todos los requisitos para su adecuado uso. 
+            El personal de Informática contará con 4 días hábiles para revisar el estado del equipo, luego de su entrega. 
+            El usuario del equipo se hace responsables del mismo.  </p>
+            <br />
+            <br />
+        </div>
 </div>
+
 
