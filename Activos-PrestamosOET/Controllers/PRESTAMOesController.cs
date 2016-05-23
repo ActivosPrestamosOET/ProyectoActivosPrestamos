@@ -495,7 +495,7 @@ namespace Activos_PrestamosOET.Controllers
         //Retorna: Devuelve un información necesaria para el despliegue de la vista como: nombre de solicitante, el estado, el equipo solicitado y sus cantidades, además, despliega un mensaje de confirmacion diferente de acuerdo a si el boton fue aceptar o denegar
 
         [HttpPost]
-        public ActionResult Details(string ID, int[] cantidad_aprobada, string b, [Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p)
+        public ActionResult Details(string ID, int[] cantidad_aprobada,string[] activoSeleccionado, string b, [Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p)
         {
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
             pRESTAMO.OBSERVACIONES_APROBADO = p.OBSERVACIONES_APROBADO;
@@ -508,9 +508,10 @@ namespace Activos_PrestamosOET.Controllers
             var prestamo = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
 
             var equipo_sol = prestamo.EQUIPO_SOLICITADO;
-
+            
             if (b == "Aceptar")
             {
+
 
                 int a = 0;
                 foreach (var x in equipo_sol)
@@ -541,7 +542,7 @@ namespace Activos_PrestamosOET.Controllers
                     db.Entry(pRESTAMO).State = EntityState.Modified;
                     db.SaveChanges();
                 }
-
+                addActivosToPrestamo(activoSeleccionado, ID);
                 ViewBag.Mensaje = "El préstamo ha sido aprobado con éxito";
 
             }
@@ -1278,6 +1279,35 @@ namespace Activos_PrestamosOET.Controllers
             bPDF = ms.ToArray();
 
             return bPDF;
+        }
+
+        protected void addActivosToPrestamo(string[] placas, string id)
+        {
+            LinkedList<ACTIVO> activosPorAgregar = new LinkedList<ACTIVO>();
+            var prestamo = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
+            foreach (string p in placas)
+            {
+                if (p != "false")
+                {
+                    var activo = db.ACTIVOS.SingleOrDefault(i => i.PLACA == p);
+                    activo.ESTADO_PRESTADO = 1;
+                   
+                    
+                    activosPorAgregar.AddLast(activo);
+                    prestamo.ACTIVOes.Add(activo);
+                    if (ModelState.IsValid)
+                    {
+                        db.Entry(activo).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
+                }
+            }
+            
+            
+
+
+
         }
 
         public void DownloadPDF()
