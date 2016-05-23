@@ -11,33 +11,16 @@ namespace Activos_PrestamosOET.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+    
     public partial class TRANSACCION
     {
         public int ID { get; set; }
-
-        [Display(Name = "Fecha")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [Required(ErrorMessage = "Tiene que asignarle una fecha a la transacción.")]
         public System.DateTime FECHA { get; set; }
-
-        [Display(Name = "Responsable")]
-        [Required(ErrorMessage = "Tiene que asignarle un responsable a la transacción.")]
         public string RESPONSABLE { get; set; }
-
-        [Display(Name = "Estado")]
-        [Required(ErrorMessage = "La transacción tiene que tener el estado del activo.")]
         public string ESTADO { get; set; }
-
-        [Display(Name = "Descripción")]
-        [Required(ErrorMessage = "La transacción tiene que tener una descripción.")]
         public string DESCRIPCION { get; set; }
-
-        [Display(Name = "Activo asociado")]
-        [Required(ErrorMessage = "La transacción se le tiene que asignar a un activo.")]
         public string ACTIVOID { get; set; }
-
+    
         public virtual ACTIVO ACTIVO { get; set; }
     }
 }

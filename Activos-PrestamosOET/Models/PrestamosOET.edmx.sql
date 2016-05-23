@@ -1,33 +1,13 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for Oracle database
 -- --------------------------------------------------
--- Date Created: 21/5/2016 4:36:08 p. m.
+-- Date Created: 23/5/2016 1:13:27 p. m.
 -- Generated from EDMX file: C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\Models\PrestamosOET.edmx
 -- --------------------------------------------------
 
 -- --------------------------------------------------
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
-
--- ALTER TABLE "ACTIVOS"."EQUIPO_SOLICITADO" DROP CONSTRAINT "FK_A_PRESTAMOS" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."ACTIVOPRESTAMO" DROP CONSTRAINT "FK_ACTIVOPRESTAMO_ACTIVOS" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."ACTIVOPRESTAMO" DROP CONSTRAINT "FK_ACTIVOPRESTAMO_PRESTAMO" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."TRANSACCIONES" DROP CONSTRAINT "FK_ACTIVOTRANSACCION" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."PRESTAMOS" DROP CONSTRAINT "FK_Aprueba" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."ACTIVOS" DROP CONSTRAINT "FK_CENTRO_DE_COSTOACTIVO" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."ACTIVOS" DROP CONSTRAINT "FK_ESTADO_ACTIVOACTIVO" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."PRESTAMOS" DROP CONSTRAINT "FK_Solicita" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."ACTIVOS" DROP CONSTRAINT "FK_TIPO_ACTIVOACTIVO" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."ACTIVOS" DROP CONSTRAINT "FK_TIPO_TRANSACCIONACTIVO" CASCADE;
 -- --------------------------------------------------
 -- Dropping existing tables
 -- --------------------------------------------------
@@ -51,6 +31,8 @@
 -- DROP TABLE "ACTIVOS"."TRANSACCIONES";
 
 -- DROP TABLE "ACTIVOS"."USUARIOS";
+
+-- DROP TABLE "V_COURSES";
 
 -- --------------------------------------------------
 -- Creating all tables
@@ -241,6 +223,13 @@ CREATE TABLE "ACTIVOS"."TRANSACCIONES" (
    "ACTIVOID" NVARCHAR2(256) NOT NULL
 );
 
+-- Creating table 'V_COURSES'
+CREATE TABLE "ACTIVOS"."V_COURSES" (
+   "COURSES" NUMBER(10) NOT NULL,
+   "COURSES_CODE" VARCHAR2(100 CHAR) ,
+   "COURSE_NAME" VARCHAR2(1000 CHAR) 
+);
+
 -- Creating table 'ACTIVOPRESTAMO'
 CREATE TABLE "ACTIVOS"."ACTIVOPRESTAMO" (
    "ACTIVOes_ID" NVARCHAR2(256) NOT NULL,
@@ -368,6 +357,14 @@ ADD CONSTRAINT "PK_TIPOS_TRANSACCIONES"
 ALTER TABLE "ACTIVOS"."TRANSACCIONES"
 ADD CONSTRAINT "PK_TRANSACCIONES"
    PRIMARY KEY ("ID" )
+   ENABLE
+   VALIDATE;
+
+
+-- Creating primary key on "COURSES"in table 'V_COURSES'
+ALTER TABLE "ACTIVOS"."V_COURSES"
+ADD CONSTRAINT "PK_V_COURSES"
+   PRIMARY KEY ("COURSES" )
    ENABLE
    VALIDATE;
 

@@ -11,7 +11,7 @@ namespace Activos_PrestamosOET.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+    
     public partial class V_USUARIOS
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -27,7 +27,6 @@ namespace Activos_PrestamosOET.Models
         public string IDUSUARIO { get; set; }
         public string DESCRIPCION { get; set; }
         public string CORREO { get; set; }
-        [Display(Name = "Responsable")]
         public string NOMBRE { get; set; }
         public string IDESTACION { get; set; }
         public decimal ESTADO { get; set; }
