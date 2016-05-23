@@ -19,12 +19,12 @@ namespace Activos_PrestamosOET.Models
         {
             this.ACTIVOS = new HashSet<ACTIVO>();
         }
-    
+
         public int Id { get; set; }
 
         [Display(Name = "Centro de costo")]
         public string Nombre { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ACTIVO> ACTIVOS { get; set; }
     }

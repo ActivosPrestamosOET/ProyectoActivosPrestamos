@@ -19,7 +19,7 @@ namespace Activos_PrestamosOET.Models
         {
             this.ACTIVOes = new HashSet<ACTIVO>();
         }
-    
+
         public string IDPROVEEDOR { get; set; }
         public System.DateTime FECHAINGRESO { get; set; }
         [Display(Name = "Proveedor")]
@@ -48,7 +48,7 @@ namespace Activos_PrestamosOET.Models
         public string MODIFICADOR { get; set; }
         public string MONEDA { get; set; }
         public string NOMBRE_CORTO { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ACTIVO> ACTIVOes { get; set; }
     }

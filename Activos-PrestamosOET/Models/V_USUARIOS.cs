@@ -19,7 +19,7 @@ namespace Activos_PrestamosOET.Models
         {
             this.ACTIVOes = new HashSet<ACTIVO>();
         }
-    
+
         public string USUARIO { get; set; }
         public string CLAVE { get; set; }
         public string ANFITRION { get; set; }
@@ -31,7 +31,7 @@ namespace Activos_PrestamosOET.Models
         public string NOMBRE { get; set; }
         public string IDESTACION { get; set; }
         public decimal ESTADO { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ACTIVO> ACTIVOes { get; set; }
     }

@@ -129,6 +129,7 @@
       <End Role="V_ESTACION" EntitySet="V_ESTACION" />
       <End Role="ACTIVO" EntitySet="ACTIVOS" />
     </AssociationSet>
+    <EntitySet Name="V_COURSES" EntityType="PrestamosModel.V_COURSES" />
   </EntityContainer>
   <EntityType Name="ACTIVO">
     <Key>
@@ -485,4 +486,12 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="V_COURSES">
+    <Key>
+      <PropertyRef Name="COURSES" />
+    </Key>
+    <Property Name="COURSES" Type="Int32" Nullable="false" />
+    <Property Name="COURSES_CODE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="COURSE_NAME" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+  </EntityType>
 </Schema>

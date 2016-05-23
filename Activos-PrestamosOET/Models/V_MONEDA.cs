@@ -19,7 +19,7 @@ namespace Activos_PrestamosOET.Models
         {
             this.ACTIVOes = new HashSet<ACTIVO>();
         }
-    
+
         public string ID { get; set; }
 
         [Display(Name = "Moneda")]

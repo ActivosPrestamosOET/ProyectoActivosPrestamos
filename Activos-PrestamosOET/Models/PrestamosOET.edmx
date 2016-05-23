@@ -21,6 +21,7 @@
             <EntitySet Name="CENTROS_DE_COSTOS" EntityType="PrestamosModel.Store.CENTROS_DE_COSTOS" store:Type="Tables" Schema="ACTIVOS" />
             <EntitySet Name="TIPOS_TRANSACCIONES" EntityType="PrestamosModel.Store.TIPOS_TRANSACCIONES" store:Type="Tables" Schema="ACTIVOS" />
             <EntitySet Name="TRANSACCIONES" EntityType="PrestamosModel.Store.TRANSACCIONES" store:Type="Tables" Schema="ACTIVOS" />
+            <EntitySet Name="V_COURSES" EntityType="PrestamosModel.Store.V_COURSES" store:Type="Tables" Schema="ACTIVOS" />
             <EntitySet Name="ACTIVOPRESTAMO" EntityType="PrestamosModel.Store.ACTIVOPRESTAMO" store:Type="Tables" Schema="ACTIVOS" />
             <AssociationSet Name="FK_A_PRESTAMOS" Association="PrestamosModel.Store.FK_A_PRESTAMOS">
                 <End Role="PRESTAMOS" EntitySet="PRESTAMOS" />
@@ -288,6 +289,14 @@
             <Property Name="ESTADO" Type="nvarchar2" Nullable="false" MaxLength="30" />
             <Property Name="DESCRIPCION" Type="nvarchar2" Nullable="false" MaxLength="256" />
             <Property Name="ACTIVOID" Type="nvarchar2" Nullable="false" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="V_COURSES">
+            <Key>
+                <PropertyRef Name="COURSES" />
+            </Key>
+            <Property Name="COURSES" Type="number" Nullable="false" Precision="10" />
+            <Property Name="COURSES_CODE" Type="varchar2" Nullable="true" MaxLength="100" />
+            <Property Name="COURSE_NAME" Type="varchar2" Nullable="true" MaxLength="1000" />
         </EntityType>
         <EntityType Name="ACTIVOPRESTAMO">
             <Key>
@@ -650,6 +659,7 @@
             <End Role="V_ESTACION" EntitySet="V_ESTACION" />
             <End Role="ACTIVO" EntitySet="ACTIVOS" />
           </AssociationSet>
+          <EntitySet Name="V_COURSES" EntityType="PrestamosModel.V_COURSES" />
         </EntityContainer>
         <EntityType Name="ACTIVO">
           <Key>
@@ -1006,6 +1016,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="V_COURSES">
+          <Key>
+            <PropertyRef Name="COURSES" />
+          </Key>
+          <Property Name="COURSES" Type="Int32" Nullable="false" />
+          <Property Name="COURSES_CODE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="COURSE_NAME" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1224,6 +1242,15 @@
                     <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
                     <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
                     <ScalarProperty Name="ACTIVOID" ColumnName="ACTIVOID" />
+                </MappingFragment>
+            </EntityTypeMapping>
+        </EntitySetMapping>
+        <EntitySetMapping Name="V_COURSES">
+            <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.V_COURSES)">
+                <MappingFragment StoreEntitySet="V_COURSES">
+                    <ScalarProperty Name="COURSES" ColumnName="COURSES" />
+                    <ScalarProperty Name="COURSES_CODE" ColumnName="COURSES_CODE" />
+                    <ScalarProperty Name="COURSE_NAME" ColumnName="COURSE_NAME" />
                 </MappingFragment>
             </EntityTypeMapping>
         </EntitySetMapping>

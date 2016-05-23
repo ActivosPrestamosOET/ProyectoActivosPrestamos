@@ -216,6 +216,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="V_COURSES">
+      <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.V_COURSES)">
+        <MappingFragment StoreEntitySet="V_COURSES">
+          <ScalarProperty Name="COURSES" ColumnName="COURSES" />
+          <ScalarProperty Name="COURSES_CODE" ColumnName="COURSES_CODE" />
+          <ScalarProperty Name="COURSE_NAME" ColumnName="COURSE_NAME" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <AssociationSetMapping Name="ACTIVOPRESTAMO" TypeName="PrestamosModel.ACTIVOPRESTAMO" StoreEntitySet="ACTIVOPRESTAMO">
       <EndProperty Name="ACTIVO">
         <ScalarProperty Name="ID" ColumnName="ACTIVOes_ID" />

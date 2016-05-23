@@ -9,7 +9,11 @@ using System;
 using PagedList;
 using System.Globalization;
 using System.Collections.Generic;
-
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.text.html.simpleparser;
+using System.Web;
+using System.IO;
 
 namespace Activos_PrestamosOET.Controllers
 {
@@ -33,7 +37,7 @@ namespace Activos_PrestamosOET.Controllers
             + consecutivo.ToString("D3");
         }
 
-        protected String traerCategoria(String tipo)
+        protected int traerCategoria(String tipo)
         {
             var consultaCat = from t in db.TIPOS_ACTIVOS
                               where t.NOMBRE.Equals(tipo)
@@ -45,7 +49,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 categorias.Add(c.ToString());
             }
-            String cat = categorias[0];
+            int cat = Int32.Parse(categorias[0]);
 
             return cat;
         }
@@ -373,12 +377,19 @@ namespace Activos_PrestamosOET.Controllers
             var equipoSolicitado = equipoSol.EQUIPO_SOLICITADO;
 
             var equipo = new List<List<String>>();
+            var actPrevios = new List<List<String>>();
+            var act = new List<List<String>>();
+            var activos = new List<List<List<String>>>();
+            var activosPrevios = new List<List<List<String>>>();
             foreach (var x in equipoSolicitado)
             {                
                 List<String> temp = new List<String>();
                 if (x.TIPO_ACTIVO != null)
-                {                            
-                    temp.Add(x.TIPO_ACTIVO);                                                                                               
+                {   
+                                             
+                    temp.Add(x.TIPO_ACTIVO.ToString());
+                    actPrevios = llenarTablaDetails(x.TIPOS_ACTIVOSID.ToString(), id);
+                    act = llenarTablaDetails(x.TIPOS_ACTIVOSID.ToString());
                 }
                 else
                 {
@@ -400,11 +411,14 @@ namespace Activos_PrestamosOET.Controllers
                 {
                     temp.Add("");
                 }
-                equipo.Add(temp);              
+                equipo.Add(temp);
+                activosPrevios.Add(actPrevios);
+                activos.Add(act);
             }
-
-            //Segmento de código para colocar colores a las cantidad de solicitudes por categoría.
-            var prestamosConEquipo = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).SingleOrDefault(p => p.ID == id);//Se hace joint entre prestamos y equipo solicitado por id del préstamo           
+            ViewBag.Activos_enPrevio = activosPrevios;
+            ViewBag.Activos_enCat = activos;
+        //Segmento de código para colocar colores a las cantidad de solicitudes por categoría.
+        var prestamosConEquipo = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).SingleOrDefault(p => p.ID == id);//Se hace joint entre prestamos y equipo solicitado por id del préstamo           
             var equipoMayorCero = prestamosConEquipo.EQUIPO_SOLICITADO.Where(q => q.CANTIDAD > 0);//Se verifica que se seleccionen los equipos seleccionados que tengan más 0 soliciudes
             var prestamosPorFechas = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).Where(p => p.FECHA_RETIRO <= prestamosConEquipo.FECHA_RETIRO && p.ID != id);//Se selccionan las solicitudes de préstamo qe se encuentran "abiertos" para el momento de inicio del préstamo consultado.
             Dictionary<string, int> hashConValoresPorTipoActivo = new Dictionary<string, int>();//diccionario que almacena las cantidades de préstamos vigentes.
@@ -486,7 +500,7 @@ namespace Activos_PrestamosOET.Controllers
         //Retorna: Devuelve un información necesaria para el despliegue de la vista como: nombre de solicitante, el estado, el equipo solicitado y sus cantidades, además, despliega un mensaje de confirmacion diferente de acuerdo a si el boton fue aceptar o denegar
 
         [HttpPost]
-        public ActionResult Details(string ID, int[] cantidad_aprobada, string b, [Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p)
+        public ActionResult Details(string ID, int[] cantidad_aprobada, string[] activoSeleccionado, string b, [Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p)
         {
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
             pRESTAMO.OBSERVACIONES_APROBADO = p.OBSERVACIONES_APROBADO;
@@ -502,7 +516,6 @@ namespace Activos_PrestamosOET.Controllers
 
             if (b == "Aceptar")
             {
-
                 int a = 0;
                 foreach (var x in equipo_sol)
                 {
@@ -532,7 +545,7 @@ namespace Activos_PrestamosOET.Controllers
                     db.Entry(pRESTAMO).State = EntityState.Modified;
                     db.SaveChanges();
                 }
-
+                addActivosToPrestamo(activoSeleccionado, ID);
                 ViewBag.Mensaje = "El préstamo ha sido aprobado con éxito";
 
             }
@@ -550,128 +563,12 @@ namespace Activos_PrestamosOET.Controllers
                 ViewBag.Mensaje2 = "El préstamo ha sido denegado con éxito";
             }
 
-
-
-
-
-            /*var lista = db.PRESTAMOS.Include(i => i.USUARIO).SingleOrDefault(h => h.ID == ID);
-
-
-
-            ViewBag.Nombre = lista.USUARIO.NOMBRE;
-            /*  -------------------------------------------------------------------------------------------  
-            var equipoSol = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
-            var equipoSolicitado = equipoSol.EQUIPO_SOLICITADO;
-
-            var equipo = new List<List<String>>();
-            foreach (var x in equipoSolicitado)
+            if (b == "Descargar Boleta")
             {
-                List<String> temp = new List<String>();
-                if (x.TIPO_ACTIVO != null)
-                {
-                    temp.Add(x.TIPO_ACTIVO);
-                }
-                else
-                {
-                    temp.Add("");
-                }
-                if (x.CANTIDAD != 0)
-                {
-                    temp.Add(x.CANTIDAD.ToString());
-                }
-                else
-                {
-                    temp.Add("");
-                }
-                if (x.CANTIDADAPROBADA != 0)
-                {
-                    temp.Add(x.CANTIDADAPROBADA.ToString());
-                }
-                else
-                {
-                    temp.Add("");
-                }
-                equipo.Add(temp);
+                DownloadPDF("BoletaPDF", pRESTAMO, "BoletaSoliciud");
             }
 
-            //Segmento de código para colocar colores a las cantidad de solicitudes por categoría.
-            var prestamosConEquipo = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).SingleOrDefault(H => H.ID == ID);//Se hace joint entre prestamos y equipo solicitado por id del préstamo           
-            var equipoMayorCero = prestamosConEquipo.EQUIPO_SOLICITADO.Where(q => q.CANTIDAD > 0);//Se verifica que se seleccionen los equipos seleccionados que tengan más 0 soliciudes
-            var prestamosPorFechas = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).Where(h => h.FECHA_RETIRO <= prestamosConEquipo.FECHA_RETIRO && h.ID != ID);//Se selccionan las solicitudes de préstamo qe se encuentran "abiertos" para el momento de inicio del préstamo consultado.
-            Dictionary<string, int> hashConValoresPorTipoActivo = new Dictionary<string, int>();//diccionario que almacena las cantidades de préstamos vigentes.
-            if (prestamosPorFechas.ToList() != null)
-            {
-                foreach (var f in prestamosPorFechas)
-                {
-                    if (f.FECHA_RETIRO.AddDays(f.PERIODO_USO) >= prestamosConEquipo.FECHA_RETIRO)
-                    {
-                        var equipoFechasMayorCero = f.EQUIPO_SOLICITADO.Where(q => q.CANTIDAD > 0);//Se seleccionan pedidos con una cantidad mayor a 0
-                        if (equipoFechasMayorCero.ToList() != null)
-                        {
-                            foreach (var e in equipoFechasMayorCero)
-                            {
-                                foreach (var pp in equipoMayorCero)
-                                {
-                                    if (e.TIPO_ACTIVO == pp.TIPO_ACTIVO)//Si los prestamos "abiertos" tienen un articulo solicitado en el prestamo consultado, se registra la categoría y la cantidad
-                                    {//Se guarda en el diccionario
-                                        if (hashConValoresPorTipoActivo.ContainsKey(pp.TIPOS_ACTIVOSID.ToString()))
-                                        {
-                                            int value = Convert.ToInt32(hashConValoresPorTipoActivo[pp.TIPOS_ACTIVOSID.ToString()]);
-                                            value += Convert.ToInt32(e.CANTIDAD);
-                                            hashConValoresPorTipoActivo[pp.TIPOS_ACTIVOSID.ToString()] = value;
-                                        }
-                                        else
-                                        {
-                                            hashConValoresPorTipoActivo.Add(pp.TIPOS_ACTIVOSID.ToString(), int.Parse(e.CANTIDAD.ToString()));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            List<string> disp = new List<string>();
-            foreach (var e in equipoMayorCero)
-            {
-                int tipo = e.TIPOS_ACTIVOSID;
-                //Se consulta la cantidad total de activos prestables de una categoría 
-                int contador = (from a in db.ACTIVOS
-                                where a.TIPO_ACTIVOID == tipo
-                                select a).Count();
-                int total = 0;
-                if (hashConValoresPorTipoActivo.ContainsKey(e.TIPOS_ACTIVOSID.ToString()))
-                {
-
-                    total = Convert.ToInt32(e.CANTIDAD) + hashConValoresPorTipoActivo[e.TIPOS_ACTIVOSID.ToString()];//
-                }
-                else
-                {
-                    total = Convert.ToInt32(e.CANTIDAD);
-                }
-                if (total <= contador)//Si el total de activos solicitados para un periodo específico es meonr que el total de activos prestables, se retorna un disponible ("d")
-                {
-                    disp.Add("d");
-                }
-                else//Caso contrario, se retorna un indisponible ("i")
-                {
-                    disp.Add("i");
-                }
-            }
-            int k = 0;
-            foreach (var l in equipo)//Se agrega el resultado del cálculo para cada categoría al final del vector a retornar.
-            {
-                l.Add(disp[k]);
-                k++;
-            }
-            ViewBag.Equipo_Solict = equipo;
-
-
-            
-            return View(pRESTAMO);*/
-
-            return Details(ID);
+            return RedirectToAction("Details", new { id = ID });
         }
 
        
@@ -681,6 +578,7 @@ namespace Activos_PrestamosOET.Controllers
         {
             ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
             ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
+            ViewBag.Cursos = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
 
             List<String> categorias = new List<String>();
 
@@ -747,13 +645,14 @@ namespace Activos_PrestamosOET.Controllers
                     EQUIPO_SOLICITADO equipo = new EQUIPO_SOLICITADO();
                     if (Cantidad[i] == 0)
                     {
-                        equipo.CANTIDAD = 0;
+                        continue;
                     }
                     else
                     {
                         equipo.CANTIDAD = Cantidad[i];
                     }
-                    equipo.TIPO_ACTIVO = traerCategoria(cat[i]);
+                    equipo.TIPO_ACTIVO = cat[i];
+                    equipo.TIPOS_ACTIVOSID = traerCategoria(cat[i]);
                     equipo.ID_PRESTAMO = prestamo.ID;
                     db.EQUIPO_SOLICITADO.Add(equipo);
                     db.SaveChanges();
@@ -1196,12 +1095,6 @@ namespace Activos_PrestamosOET.Controllers
                 }
             }
             /*  -------------------------------------------------------------------------------------------  */
-            var cat = (from ac in db.ACTIVOS
-                       from t in db.TIPOS_ACTIVOS
-                       where ac.PRESTABLE.Equals(true) &&
-                              t.ID.Equals(ac.TIPO_ACTIVOID)
-                       select new { t.NOMBRE, t.ID }).Distinct();
-
             var equipo_sol = from o in db.PRESTAMOS
                              from o2 in db.EQUIPO_SOLICITADO
                              where o.ID == id && o2.CANTIDAD > 0
@@ -1216,22 +1109,7 @@ namespace Activos_PrestamosOET.Controllers
                     if (x.ID == x.ID_EQUIPO)
                     {
                         List<String> temp = new List<String>();
-                        if (x.TIPO != null)
-                        {
-                            foreach (var y in cat)
-                            {
-                                if (x.TIPO == y.ID.ToString())
-                                {
-
-                                    temp.Add(y.NOMBRE);
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            temp.Add("");
-                        }
+                        if (x.TIPO != null) { temp.Add(x.TIPO.ToString()); } else { temp.Add(""); }
                         if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
                         if (x.CANTAP != 0) { temp.Add(x.CANTAP.ToString()); } else { temp.Add(""); }
                         equipo.Add(temp);
@@ -1247,7 +1125,7 @@ namespace Activos_PrestamosOET.Controllers
 
 
         [HttpPost]
-        public ActionResult Devolucion(string ID, int[] seleccionaTodos, string column5_checkAll, string b, [Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p)
+        public ActionResult Devolucion(string ID, bool[] column5_checkbox, bool column5_checkAll, string b, [Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p)
         {
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
             pRESTAMO.OBSERVACIONES_APROBADO = p.OBSERVACIONES_APROBADO;
@@ -1257,41 +1135,64 @@ namespace Activos_PrestamosOET.Controllers
                 db.SaveChanges();
             }
 
-            var prestamo = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(d => p.ID == ID);
+            var prestamo = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
             var equipo_sol = prestamo.EQUIPO_SOLICITADO;
             var activos_asignados = prestamo.ACTIVOes;
 
             /*---------------------------------------------------------------------------*/
-            if (b == "Aceptar")
+            if (b == "Actualizar devolución")
             {
-                int a = 0;
-                foreach (var x in activos_asignados)
+                int cont = 0;
+                if (!column5_checkAll) {
+                    foreach (var y in equipo_sol)
+                    {
+                        bool t = column5_checkbox[cont];
+                        if (t)
+                        { //si fueron todos seleccionados en esa fila, de ese tipo
+                            foreach (var x in activos_asignados)
+                            {
+                                if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
+                                {
+                                    //activos_asignados.Remove(x); //se borra de la tabla m a n
+                                    x.ESTADO_PRESTADO = 0;
+                                }
+                            }
+                        }
+                        cont++;
+                    }
+                } else
                 {
-                    string t = column5_checkAll;
-
+                    foreach (var y in equipo_sol)
+                    {
+                        foreach (var x in activos_asignados)
+                        {
+                            if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
+                            {
+                                //activos_asignados.Remove(x); //se borra de la tabla m a n
+                                x.ESTADO_PRESTADO = 0;
+                            }
+                        }
+                    }
                 }
+                
 
 
-                pRESTAMO.Estado = 2;
+                if (column5_checkAll) { }// {pRESTAMO.Estado = 5;}
+
                 if (ModelState.IsValid)
                 {
                     db.Entry(pRESTAMO).State = EntityState.Modified;
                     db.SaveChanges();
                 }
 
-                ViewBag.Mensaje = "El préstamo ha sido aprobado con éxito";
+                ViewBag.Mensaje = "Los activos han sido devueltos correctamente.";
             }
 
 
 
-            var lista = db.PRESTAMOS.Include(i => i.USUARIO).SingleOrDefault(d => p.ID == ID);
+            var lista = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
             ViewBag.Nombre = lista.USUARIO.NOMBRE;
             /*  -------------------------------------------------------------------------------------------  */
-            var cat = (from ac in db.ACTIVOS
-                       from t in db.TIPOS_ACTIVOS
-                       where ac.PRESTABLE.Equals(true) &&
-                              t.ID.Equals(ac.TIPO_ACTIVOID)
-                       select new { t.NOMBRE, t.ID }).Distinct();
 
             var equipo = new List<List<String>>();
             foreach (var x in equipo_sol)
@@ -1301,22 +1202,7 @@ namespace Activos_PrestamosOET.Controllers
                     if (prestamo.ID == x.ID_PRESTAMO)
                     {
                         List<String> temp = new List<String>();
-                        if (x.TIPO_ACTIVO != null)
-                        {
-                            foreach (var y in cat)
-                            {
-                                if (x.TIPO_ACTIVO == y.ID.ToString())
-                                {
-                                    temp.Add(y.NOMBRE);
-                                    break;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            temp.Add("");
-
-                        }
+                        if (x.TIPO_ACTIVO != null) { temp.Add(x.TIPO_ACTIVO.ToString()); } else { temp.Add(""); }
                         if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
                         if (x.CANTIDADAPROBADA != 0) { temp.Add(x.CANTIDADAPROBADA.ToString()); } else { temp.Add(""); }
                         equipo.Add(temp);
@@ -1324,7 +1210,7 @@ namespace Activos_PrestamosOET.Controllers
                 }
             }
 
-            var prestamos = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).SingleOrDefault(d => p.ID == ID);
+            var prestamos = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
             DateTime dt = prestamos.FECHA_RETIRO;
             dt = dt.AddDays(prestamos.PERIODO_USO);
 
@@ -1334,5 +1220,174 @@ namespace Activos_PrestamosOET.Controllers
 
             return View(pRESTAMO);
         }
+
+        // Requiere: valor seleccionado en el dropdown de Categoría, valor del botón seleccionado, valor de la fecha inicial y la fecha final
+        // Modifica: se encarga de llenar la tabla de Inventario, de la categoría que recibe cómo parámetro.
+        // Regresa: N/A.
+        private List<List<String>> llenarTablaDetails(String Categoria)
+        {
+
+            int tipo = int.Parse(Categoria);
+            var activos_enCat = new List<List<String>>();
+            var activos = db.ACTIVOS.Where(c => c.TIPO_ACTIVOID == tipo);
+            foreach (Activos_PrestamosOET.Models.ACTIVO x in activos)
+            {
+
+                    if (Categoria.Equals(x.TIPO_ACTIVOID.ToString()) && x.PRESTABLE == true && x.ESTADO_PRESTADO== 0)
+                    {
+                    List<String> temp = new List<String>();
+                    if (x.FABRICANTE != null) { temp.Add(x.FABRICANTE); } else { temp.Add(""); }
+                    if (x.MODELO != null) { temp.Add(x.MODELO); } else { temp.Add(""); }
+                    if (x.PLACA != null) { temp.Add(x.PLACA); } else { temp.Add(""); }
+
+                    activos_enCat.Add(temp);
+                }
+            }
+            
+            if (activos_enCat.Count == 0)
+            {
+                List<String> temp = new List<String>();
+                temp.Add("");
+                temp.Add("");
+                temp.Add("");
+                activos_enCat.Add(temp);
+                ViewBag.NoActivos = "No hay Activos Prestables con esta categoría.";
+            }
+            return activos_enCat;
+    }
+        private List<List<String>> llenarTablaDetails(String Categoria, string id)
+        {
+
+
+            var activos_enCat = new List<List<String>>();
+            var activos = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
+            foreach (ACTIVO x in activos.ACTIVOes)
+            {
+
+                if (Categoria.Equals(x.TIPO_ACTIVOID.ToString()))
+                    {
+                    List<String> temp = new List<String>();
+                    if (x.FABRICANTE != null) { temp.Add(x.FABRICANTE); } else { temp.Add(""); }
+                    if (x.MODELO != null) { temp.Add(x.MODELO); } else { temp.Add(""); }
+                    if (x.PLACA != null) { temp.Add(x.PLACA); } else { temp.Add(""); }
+
+                    activos_enCat.Add(temp);
+                }              
+            }
+            
+            return activos_enCat;
+        }
+
+        protected void addActivosToPrestamo(string[] placas, string id)
+        {
+            LinkedList<ACTIVO> activosPorAgregar = new LinkedList<ACTIVO>();
+            var prestamo = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
+            foreach (string p in placas)
+            {
+                if (p != "false")
+                {
+                    var activo = db.ACTIVOS.SingleOrDefault(i => i.PLACA == p);
+                    activo.ESTADO_PRESTADO = 1;
+
+
+                    activosPorAgregar.AddLast(activo);
+                    prestamo.ACTIVOes.Add(activo);
+                    if (ModelState.IsValid)
+                    {
+                        db.Entry(activo).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
+                }
+            }
+        }
+
+        public byte[] GetPDF(string pHTML)
+        {
+            byte[] bPDF = null;
+
+            MemoryStream ms = new MemoryStream();
+            TextReader txtReader = new StringReader(pHTML);
+
+            // 1: create object of a itextsharp document class
+            Document doc = new Document(PageSize.A4, 25, 25, 25, 25);
+
+            // 2: we create a itextsharp pdfwriter that listens to the document and directs a XML-stream to a file
+            PdfWriter oPdfWriter = PdfWriter.GetInstance(doc, ms);
+
+            // 3: we create a worker parse the document
+            HTMLWorker htmlWorker = new HTMLWorker(doc);
+
+            // 4: we open document and start the worker on the document
+            doc.Open();
+            htmlWorker.StartDocument();
+
+            // 5: parse the html into the document
+            htmlWorker.Parse(txtReader);
+
+            // 6: close the document and the worker
+            htmlWorker.EndDocument();
+            htmlWorker.Close();
+            doc.Close();
+
+            bPDF = ms.ToArray();
+
+            return bPDF;
+        }
+
+        public void DownloadPDF(string viewName, object model, string nombreArchivo)
+        {
+            string HTMLContent = RenderRazorViewToString(viewName, model);
+
+            Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=" + nombreArchivo + ".pdf");
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.BinaryWrite(GetPDF(HTMLContent));
+            Response.End();
+        }
+
+        /*   public static string RenderViewToString(string controllerName, string viewName, object viewData)
+           {
+               using (var writer = new StringWriter())
+               {
+                   var routeData = new RouteData();
+                   routeData.Values.Add("controller", controllerName);
+                   var fakeControllerContext = new ControllerContext(new HttpContextWrapper(new HttpContext(new HttpRequest(null, "http://google.com", null), new HttpResponse(null))), routeData, new FakeController());
+                   var razorViewEngine = new RazorViewEngine();
+                   var razorViewResult = razorViewEngine.FindView(fakeControllerContext, viewName, "", false);
+
+                   var viewContext = new ViewContext(fakeControllerContext, razorViewResult.View, new ViewDataDictionary(viewData), new TempDataDictionary(), writer);
+                   razorViewResult.View.Render(viewContext, writer);
+                   return writer.ToString();
+               } */
+
+        public string RenderRazorViewToString(string viewName, object model)
+        {
+            // PRESTAMO pRESTAMO = db.PRESTAMOS.Find();
+            ViewData.Model = model;
+            using (var sw = new StringWriter())
+            {
+                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext,
+                                                                         viewName);
+                var viewContext = new ViewContext(ControllerContext, viewResult.View,
+                                             ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
+                return sw.GetStringBuilder().ToString();
+            }
+        }
+
+        public ActionResult BoletaPDF(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
+
+            return View(pRESTAMO);
+        }
+
     }
 }

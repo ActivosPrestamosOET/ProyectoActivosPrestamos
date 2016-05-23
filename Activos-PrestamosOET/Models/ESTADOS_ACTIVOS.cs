@@ -19,12 +19,12 @@ namespace Activos_PrestamosOET.Models
         {
             this.ACTIVOS = new HashSet<ACTIVO>();
         }
-    
+
         public int ID { get; set; }
         [Display(Name = "Estado del activo")]
         [Required(ErrorMessage = "El nombre es requerido")]
         public string NOMBRE { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ACTIVO> ACTIVOS { get; set; }
     }

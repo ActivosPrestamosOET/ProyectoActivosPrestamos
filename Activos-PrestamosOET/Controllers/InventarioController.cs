@@ -83,7 +83,7 @@ namespace Local.Controllers
 
                     if (x.FABRICANTE != null) { temp.Add(x.FABRICANTE); } else { temp.Add(""); }
                     if (x.MODELO != null) { temp.Add(x.MODELO); } else { temp.Add(""); }
-                    if (x.NUMERO_SERIE != null) { temp.Add(x.NUMERO_SERIE); } else { temp.Add(""); }
+                    if (x.PLACA != null) { temp.Add(x.PLACA); } else { temp.Add(""); }
 
                     if (x.TIPO_ACTIVOID != 0)
                     {
@@ -218,7 +218,7 @@ namespace Local.Controllers
 
                     if (x.FABRICANTE != null) { temp.Add(x.FABRICANTE); } else { temp.Add(""); }
                     if (x.MODELO != null) { temp.Add(x.MODELO); } else { temp.Add(""); }
-                    if (x.NUMERO_SERIE != null) { temp.Add(x.NUMERO_SERIE); } else { temp.Add(""); }
+                    if (x.PLACA != null) { temp.Add(x.PLACA); } else { temp.Add(""); }
                     if (x.TIPO_ACTIVOID != 0)
                     {
                         foreach (Activos_PrestamosOET.Models.TIPOS_ACTIVOS tipos in db.TIPOS_ACTIVOS)
