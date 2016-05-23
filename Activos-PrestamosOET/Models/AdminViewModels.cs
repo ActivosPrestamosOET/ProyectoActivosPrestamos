@@ -27,8 +27,11 @@ namespace Activos_PrestamosOET.Models
         public string Email { get; set; }
 
         // Info personal:
+        [Display(Name ="Nombre")]
         public string Nombre { get; set; }
+        [Display(Name ="Apellidos")]
         public string Apellidos { get; set; }
+        [Display(Name = "Cédula")]
         public string Cedula { get; set; }
 
         [Display(Name = "Estación")]
@@ -36,5 +39,6 @@ namespace Activos_PrestamosOET.Models
 
 
         public IEnumerable<SelectListItem> RolesList { get; set; }
+       
     }
 }

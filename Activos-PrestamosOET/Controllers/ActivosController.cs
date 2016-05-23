@@ -11,6 +11,7 @@ using PagedList;
 
 namespace Activos_PrestamosOET.Controllers
 {
+    [Authorize]
     public class ActivosController : Controller
     {
         private PrestamosEntities db = new PrestamosEntities();

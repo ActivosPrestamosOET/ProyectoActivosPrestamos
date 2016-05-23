@@ -48,30 +48,39 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li id="A1">@Html.ActionLink("Inicio", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Activos", "Index", "Activos")</li>
-                    @*@if (Request.IsAuthenticated && User.IsInRole("superadmin"))
-                        {*@
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administrador de tablas <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Centros de costos", "Index", "CentrosDeCostos")</li>
-                            <li>@Html.ActionLink("Estados de los activos", "Index", "EstadosActivos")</li>
-                            <li>@Html.ActionLink("Tipos de activos", "Index", "TiposActivos")</li>
-                            <li>@Html.ActionLink("Tipos de transacciones", "Index", "TiposTransacciones")</li>
-                        </ul>
-                    </li>
-                    <li>@Html.ActionLink("RolesAdmin", "Index", "RolesAdmin")</li>
-                    <li>@Html.ActionLink("UsersAdmin", "Index", "UsersAdmin")</li>
-                    @*}*@
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Prestamos <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li id="A2">@Html.ActionLink("Nueva Solicitud", "Create", "PRESTAMOes")</li>
-                            <li id="A3">@Html.ActionLink("Historial de Solicitudes", "Historial", "PRESTAMOes")</li>
-                            <li id="A4">@Html.ActionLink("Revisión de Préstamos", "Index", "PRESTAMOes")</li>
-                            <li id="A6">@Html.ActionLink("Inventario", "Index", "Inventario")</li>
-                        </ul>
-                    </li>
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink("Activos", "Index", "Activos")</li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Prestamos <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li id="A2">@Html.ActionLink("Nueva Solicitud", "Create", "PRESTAMOes")</li>
+                                <li id="A3">@Html.ActionLink("Historial de Solicitudes", "Historial", "PRESTAMOes")</li>
+                                <li id="A4">@Html.ActionLink("Revisión de Préstamos", "Index", "PRESTAMOes")</li>
+                                <li id="A6">@Html.ActionLink("Inventario", "Index", "Inventario")</li>
+                            </ul>
+                        </li>
+                        @*TODO: Descomentar esto cuando ya este todo lo de roles*@
+                        @*@if (User.IsInRole("superadmin"))
+                            {*@
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuarios <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Usuarios", "Index", "UsersAdmin")</li>
+                                <li>@Html.ActionLink("Roles", "Index", "RolesAdmin")</li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administrador de tablas <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Centros de costos", "Index", "CentrosDeCostos")</li>
+                                <li>@Html.ActionLink("Estados de los activos", "Index", "EstadosActivos")</li>
+                                <li>@Html.ActionLink("Tipos de activos", "Index", "TiposActivos")</li>
+                                <li>@Html.ActionLink("Tipos de transacciones", "Index", "TiposTransacciones")</li>
+                            </ul>
+                        </li>
+                        @*}*@
+                    }
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

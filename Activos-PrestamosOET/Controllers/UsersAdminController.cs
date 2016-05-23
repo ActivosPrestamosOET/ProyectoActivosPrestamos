@@ -13,6 +13,7 @@ using Activos_PrestamosOET.Models;
 
 namespace Activos_PrestamosOET.Controllers
 {
+    [Authorize]
     //[Authorize(Roles = "superadmin")]
     public class UsersAdminController : Controller
     {
@@ -73,6 +74,8 @@ namespace Activos_PrestamosOET.Controllers
             var user = await UserManager.FindByIdAsync(id);
 
             ViewBag.RoleNames = await UserManager.GetRolesAsync(user.Id);
+            var estaciones = db.V_ESTACION.ToList();
+            ViewBag.Estacion = estaciones.Where(e => e.ID.Equals(user.EstacionID)).ToList()[0].NOMBRE;
 
             return View(user);
         }
@@ -97,8 +100,7 @@ namespace Activos_PrestamosOET.Controllers
                 var user = new ApplicationUser
                 {
                     UserName = userViewModel.Email,
-                    Email =
-                    userViewModel.Email,
+                    Email =  userViewModel.Email,
                     // Add the Address Info:
                     Nombre = userViewModel.Nombre,
                     Apellidos = userViewModel.Apellidos,

@@ -17,10 +17,13 @@ namespace Activos_PrestamosOET.Models
             // Add custom user claims here
             return userIdentity;
         }
+        [Display(Name ="Nombre")]
         public string Nombre { get; set; }
 
+        [Display(Name ="Apellidos")]
         public string Apellidos { get; set; }
 
+        [Display(Name ="Cédula")]
         public string Cedula { get; set; }
 
         public string EstacionID { get; set; }
@@ -33,7 +36,6 @@ namespace Activos_PrestamosOET.Models
                 return this.Nombre + " " + this.Apellidos;
             }
         }
-
 
     }
 
