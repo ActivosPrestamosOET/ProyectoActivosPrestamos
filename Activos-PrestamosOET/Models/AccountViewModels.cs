@@ -5,8 +5,8 @@ namespace Activos_PrestamosOET.Models
 {
     public class ExternalLoginConfirmationViewModel
     {
-        [Required]
-        [Display(Name = "Email")]
+        [Required(ErrorMessage ="El correo es requerido.")]
+        [Display(Name = "Correo")]
         public string Email { get; set; }
     }
 
@@ -25,78 +25,97 @@ namespace Activos_PrestamosOET.Models
 
     public class VerifyCodeViewModel
     {
-        [Required]
+        [Required(ErrorMessage ="El proveedor es requerido.")]
         public string Provider { get; set; }
 
-        [Required]
-        [Display(Name = "Code")]
+        [Required(ErrorMessage = "El código es requerido.")]
+        [Display(Name = "Código")]
         public string Code { get; set; }
         public string ReturnUrl { get; set; }
 
-        [Display(Name = "Remember this browser?")]
+        [Display(Name = "¿Recordar este navegador?")]
         public bool RememberBrowser { get; set; }
 
+        [Display(Name = "¿Recordar mis datos?")]
         public bool RememberMe { get; set; }
     }
 
     public class ForgotViewModel
     {
-        [Required]
-        [Display(Name = "Email")]
+        [Required(ErrorMessage = "El correo es requerido.")]
+        [Display(Name = "Correo")]
         public string Email { get; set; }
     }
 
     public class LoginViewModel
     {
-        [Required]
-        [Display(Name = "Email")]
+        [Required(ErrorMessage = "El correo es requerido.")]
+        [Display(Name = "Correo")]
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "La contraseña es requerida.")]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Contraseña")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "¿Recordar mis datos?")]
         public bool RememberMe { get; set; }
     }
 
     public class RegisterViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "El correo es requerido.")]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "Correo")]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessage = "La contraseña es requerida.")]
+        [StringLength(100, ErrorMessage = "La {0} debe tener al menos {2} caracteres de largo.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Contraseña")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Confirmar contraseña")]
+        [Compare("Password", ErrorMessage = "Las contraseñas no coinciden.")]
         public string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage = "La cédula es requerida.")]
+        [Display(Name = "Cédula")]
+        public string Cedula { get; set; }
+
+        [Required(ErrorMessage = "El nombre es requerido.")]
+        [StringLength(100, ErrorMessage = "El {0} debe contener maximo {2} caracteres.")]
+        [Display(Name = "Nombre")]
+        public string Nombre { get; set; }
+
+        [Required(ErrorMessage = "Los apellidos son requeridos.")]
+        [StringLength(100, ErrorMessage = "El {0} debe contener maximo {2} caracteres.")]
+        [Display(Name = "Apellidos")]
+        public string Apellidos { get; set; }
+
+        [Required(ErrorMessage = "La estación es requerida.")]
+        [Display(Name = "Estación")]
+        public string EstacionID { get; set; }
     }
 
     public class ResetPasswordViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "El correo es requerido.")]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "Correo")]
         public string Email { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [Required(ErrorMessage = "La contraseña es requerida.")]
+        [StringLength(100, ErrorMessage = "La {0} debe tener al menos {2} caracteres de largo.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Contraseña")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Confirmar contraseña")]
+        [Compare("Password", ErrorMessage = "Las contraseñas no coinciden.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
@@ -104,9 +123,9 @@ namespace Activos_PrestamosOET.Models
 
     public class ForgotPasswordViewModel
     {
-        [Required]
+        [Required(ErrorMessage = "El correo es requerido.")]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "Correo")]
         public string Email { get; set; }
     }
 }
