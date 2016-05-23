@@ -3,6 +3,22 @@
     ViewBag.Title = "Detalles";
 }
 
+@if (ViewBag.Mensaje != null)
+{
+    <div class="alert alert-dismissible alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        @ViewBag.Mensaje
+    </div>
+}
+@if (ViewBag.Mensaje2 != null)
+{
+    <div class="alert alert-dismissible alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        @ViewBag.Mensaje2
+    </div>
+}
+
+
 <div>
     <p>@Html.ActionLink("Regresar a Solicitudes", "Index", null, new { @class = "btn btn-default" })</p>
 </div>
@@ -115,7 +131,7 @@
                 <th class="col-md-1">Cantidad Aprobada</th>
                 <th class="col-md-1">Devolver</th>
                 <!--<th class="col-md-1" id="columna">Devolver Todo<input type="checkbox" onclick="seleccionaTodos('column5', this)" name="column5_checkAll"></th>-->
-                <th class="col-md-1" id="columna">Devolver Todo @Html.CheckBox("column5_checkAll", false, new { @onclick = "seleccionaTodos('column5', this)" })</th>
+                <th class="col-md-1" id="columna">@Html.CheckBox("column5_checkAll", false, new { @onclick = "seleccionaTodos('column5', this)" }) Devolver Todo</th>
                 
             </tr>
         </thead>
@@ -190,7 +206,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td>@Html.CheckBox("column5_checkbox", false)Devolver Todos</td>
+                        <td>@Html.CheckBox("column5_checkbox", false)</td>
                     </tr>
                 }
             }
