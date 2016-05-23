@@ -242,6 +242,9 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.RoleNames = await UserManager.GetRolesAsync(user.Id);
+            var estaciones = db.V_ESTACION.ToList();
+            ViewBag.Estacion = estaciones.Where(e => e.ID.Equals(user.EstacionID)).ToList()[0].NOMBRE;
             return View(user);
         }
 
@@ -251,6 +254,7 @@ namespace Activos_PrestamosOET.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(string id)
         {
+            var user = await UserManager.FindByIdAsync(id);
             if (ModelState.IsValid)
             {
                 if (id == null)
@@ -258,7 +262,6 @@ namespace Activos_PrestamosOET.Controllers
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
 
-                var user = await UserManager.FindByIdAsync(id);
                 if (user == null)
                 {
                     return HttpNotFound();
@@ -271,6 +274,9 @@ namespace Activos_PrestamosOET.Controllers
                 }
                 return RedirectToAction("Index");
             }
+            ViewBag.RoleNames = await UserManager.GetRolesAsync(user.Id);
+            var estaciones = db.V_ESTACION.ToList();
+            ViewBag.Estacion = estaciones.Where(e => e.ID.Equals(user.EstacionID)).ToList()[0].NOMBRE;
             return View();
         }
     }
