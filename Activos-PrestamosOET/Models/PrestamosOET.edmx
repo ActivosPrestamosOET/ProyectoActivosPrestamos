@@ -98,6 +98,14 @@
             <Property Name="CANTIDAD" Type="number" Nullable="false" Precision="38" />
             <Property Name="CANTIDADAPROBADA" Type="number" Nullable="true" Precision="38" />
             <Property Name="TIPOS_ACTIVOSID" Type="number" Nullable="false" Precision="10" />
+    <Schema Namespace="PrestamosModel.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ACTIVOPRESTAMO">
+          <Key>
+            <PropertyRef Name="PRESTAMOes_ID" />
+            <PropertyRef Name="ACTIVOes_ID" />
+          </Key>
+          <Property Name="PRESTAMOes_ID" Type="varchar2" MaxLength="25" Nullable="false" />
+          <Property Name="ACTIVOes_ID" Type="nvarchar2" MaxLength="256" Nullable="false" />
         </EntityType>
         <EntityType Name="PRESTAMOS">
             <Key>
@@ -303,6 +311,20 @@
         <End Role="EQUIPO_SOLICITADO" Type="PrestamosModel.Store.EQUIPO_SOLICITADO" Multiplicity="*">
         </End>
         <ReferentialConstraint>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'ACTIVOS.V_COURSES' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="V_COURSES">
+          <Key>
+            <PropertyRef Name="COURSES" />
+          </Key>
+          <Property Name="COURSES" Type="number" Precision="10" Scale="0" Nullable="false" />
+          <Property Name="COURSES_CODE" Type="varchar2" MaxLength="100" />
+          <Property Name="COURSE_NAME" Type="varchar2" MaxLength="1000" />
+        </EntityType>
+        <Association Name="FK_A_PRESTAMOS">
+          <End Role="PRESTAMOS" Type="Self.PRESTAMOS" Multiplicity="1" />
+          <End Role="EQUIPO_SOLICITADO" Type="Self.EQUIPO_SOLICITADO" Multiplicity="*" />
+          <ReferentialConstraint>
             <Principal Role="PRESTAMOS">
                 <PropertyRef Name="ID" />
             </Principal>
@@ -515,6 +537,48 @@
             <Dependent Role="ACTIVOPRESTAMO">
                 <PropertyRef Name="PRESTAMOes_ID" />
             </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PrestamosModelStoreContainer">
+          <EntitySet Name="ACTIVOPRESTAMO" EntityType="Self.ACTIVOPRESTAMO" Schema="ACTIVOS" store:Type="Tables" />
+          <EntitySet Name="ACTIVOS" EntityType="Self.ACTIVOS" Schema="ACTIVOS" store:Type="Tables" />
+          <EntitySet Name="EQUIPO_SOLICITADO" EntityType="Self.EQUIPO_SOLICITADO" Schema="ACTIVOS" store:Type="Tables" />
+          <EntitySet Name="PRESTAMOS" EntityType="Self.PRESTAMOS" Schema="ACTIVOS" store:Type="Tables" />
+          <EntitySet Name="TIPOS_ACTIVOS" EntityType="Self.TIPOS_ACTIVOS" Schema="ACTIVOS" store:Type="Tables" />
+          <EntitySet Name="USUARIOS" EntityType="Self.USUARIOS" Schema="ACTIVOS" store:Type="Tables" />
+          <EntitySet Name="V_COURSES" EntityType="Self.V_COURSES" store:Type="Views" store:Schema="ACTIVOS">
+            <DefiningQuery>SELECT 
+"V_COURSES"."COURSES" AS "COURSES", 
+"V_COURSES"."COURSES_CODE" AS "COURSES_CODE", 
+"V_COURSES"."COURSE_NAME" AS "COURSE_NAME"
+FROM "ACTIVOS"."V_COURSES" "V_COURSES"</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_A_PRESTAMOS" Association="Self.FK_A_PRESTAMOS">
+            <End Role="PRESTAMOS" EntitySet="PRESTAMOS" />
+            <End Role="EQUIPO_SOLICITADO" EntitySet="EQUIPO_SOLICITADO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ACTIVOPRESTAMO_ACTIVOS" Association="Self.FK_ACTIVOPRESTAMO_ACTIVOS">
+            <End Role="ACTIVOS" EntitySet="ACTIVOS" />
+            <End Role="ACTIVOPRESTAMO" EntitySet="ACTIVOPRESTAMO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ACTIVOPRESTAMO_PRESTAMO" Association="Self.FK_ACTIVOPRESTAMO_PRESTAMO">
+            <End Role="PRESTAMOS" EntitySet="PRESTAMOS" />
+            <End Role="ACTIVOPRESTAMO" EntitySet="ACTIVOPRESTAMO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Aprueba" Association="Self.FK_Aprueba">
+            <End Role="USUARIOS" EntitySet="USUARIOS" />
+            <End Role="PRESTAMOS" EntitySet="PRESTAMOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Solicita" Association="Self.FK_Solicita">
+            <End Role="USUARIOS" EntitySet="USUARIOS" />
+            <End Role="PRESTAMOS" EntitySet="PRESTAMOS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TIPO_ACTIVOACTIVO" Association="Self.FK_TIPO_ACTIVOACTIVO">
+            <End Role="TIPOS_ACTIVOS" EntitySet="TIPOS_ACTIVOS" />
+            <End Role="ACTIVOS" EntitySet="ACTIVOS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
         </ReferentialConstraint>
     </Association>
 </Schema></edmx:StorageModels>
@@ -650,6 +714,7 @@
             <End Role="V_ESTACION" EntitySet="V_ESTACION" />
             <End Role="ACTIVO" EntitySet="ACTIVOS" />
           </AssociationSet>
+          <EntitySet Name="V_COURSES" EntityType="PrestamosModel.V_COURSES" />
         </EntityContainer>
         <EntityType Name="ACTIVO">
           <Key>
@@ -1006,6 +1071,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="V_COURSES">
+          <Key>
+            <PropertyRef Name="COURSES" />
+          </Key>
+          <Property Name="COURSES" Type="Int32" Nullable="false" />
+          <Property Name="COURSES_CODE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="COURSE_NAME" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1046,7 +1119,15 @@
         <EntitySetMapping Name="ACTIVOS">
             <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.ACTIVO)">
                 <MappingFragment StoreEntitySet="ACTIVOS">
-                    <ScalarProperty Name="ID" ColumnName="ID" />
+                    <ScalarProperty Name="ESTADO_PRESTADO" ColumnName="ESTADO_PRESTADO" />
+                <ScalarProperty Name="PLACA" ColumnName="PLACA" />
+                <ScalarProperty Name="CENTRO_DE_COSTOId" ColumnName="CENTRO_DE_COSTOId" />
+                <ScalarProperty Name="V_MONEDAID" ColumnName="V_MONEDAID" />
+                <ScalarProperty Name="V_PROVEEDORIDPROVEEDOR" ColumnName="V_PROVEEDORIDPROVEEDOR" />
+                <ScalarProperty Name="V_ANFITRIONAID" ColumnName="V_ANFITRIONAID" />
+                <ScalarProperty Name="V_ESTACIONID" ColumnName="V_ESTACIONID" />
+                <ScalarProperty Name="V_USUARIOSIDUSUARIO" ColumnName="V_USUARIOSIDUSUARIO" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
                     <ScalarProperty Name="NUMERO_SERIE" ColumnName="NUMERO_SERIE" />
                     <ScalarProperty Name="FECHA_COMPRA" ColumnName="FECHA_COMPRA" />
                     <ScalarProperty Name="INICIO_SERVICIO" ColumnName="INICIO_SERVICIO" />
@@ -1235,6 +1316,15 @@
                 <ScalarProperty Name="ID" ColumnName="PRESTAMOes_ID" />
             </EndProperty>
         </AssociationSetMapping>
+          <EntitySetMapping Name="V_COURSES">
+            <EntityTypeMapping TypeName="PrestamosModel.V_COURSES">
+              <MappingFragment StoreEntitySet="V_COURSES">
+                <ScalarProperty Name="COURSE_NAME" ColumnName="COURSE_NAME" />
+                <ScalarProperty Name="COURSES_CODE" ColumnName="COURSES_CODE" />
+                <ScalarProperty Name="COURSES" ColumnName="COURSES" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
     </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

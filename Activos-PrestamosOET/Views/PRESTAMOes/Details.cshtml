@@ -26,9 +26,12 @@
 
 
 <script>
-    $('#myModal').on('shown.bs.modal', function () {
-        $('#myInput').focus()
-    })
+    @for(int i=0; i< ViewBag.Equipo_Solict.Count; i++)
+    {
+    <text>
+    $('#myModal</text>@i<text>').on('shown.bs.modal', function () { $('#myInput').focus() });
+    </text>
+    }
 </script>
 <style>
     .multiselect {
@@ -224,10 +227,10 @@
         </thead>
         <tbody>
             @if (ViewBag.Equipo_Solict != null)
+            {
+                int modal = 0;
+                foreach (List<String> s in ViewBag.Equipo_Solict)
                 {
-
-                    foreach (List<String> s in ViewBag.Equipo_Solict)
-                    {
                     <tr>
                         <td>@s[0] &nbsp;</td>
                         @if (s[3] == "d")
@@ -242,7 +245,7 @@
                         @if (ViewBag.Mensaje2 != null)
                         {
                             <td>
-                                @Html.TextBox("cantidad_aprobada", @s[2], null, new { @class = "form-control col-md-2", @type = "number", @min = "0", @readonly = "readonly", @disabled = "disabled" })
+                                @Html.TextBox("cantidad_aprobada", @s[2], null, new { @class = "form-control col-md-2", @type = "number", @min = "0", @readonly = "readonly" })
                             </td>
                         }
                         else
@@ -254,12 +257,12 @@
                         <td>
 
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal@(modal)">
                                 Seleccionar
                             </button>
 
                             <!-- Modal -->
-                            <div class="modal" id="myModal">
+                            <div class="modal" id="myModal@(modal)">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -267,10 +270,10 @@
                                             <h4 class="modal-title" id="myModalLabel">Seleccion de Equipo</h4>
                                         </div>
                                         <div class="modal-body">
+                                            @{bool vacio = false;}
                                             <table class="table table-striped table-hover ">
                                                 <thead>
                                                     <tr>
-                                                        
                                                         <th></th>
                                                         <th>Fabricante</th>
                                                         <th>Modelo</th>
@@ -278,26 +281,92 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                              
+                                                    @if (ViewBag.Activos_enPrevio != null)
+                                                    {
+                                                        List<List<String>> a = ViewBag.Activos_enPrevio[modal];
+
+                                                        foreach (List<String> b in a)
+                                                        {
+                                                            <tr>
+                                                                @if (b[0] == "")
+                                                                {
+                                                                    vacio = true;
+                                                                    <td>@Html.CheckBox("activoSeleccionado", true, new { @readonly = "readonly", @value = @b[2] })</td>
+                                                                    @* <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado" disabled="disabled" readonly="readonly"></td>*@
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>@Html.CheckBox("activoSeleccionado", true, new { @value = @b[2] })</td>
+                                                                    @* <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado"></td>*@
+
+                                                                }
+                                                                <td>@b[0] &nbsp;</td>
+                                                                <td>@b[1] &nbsp;</td>
+                                                                <td>@b[2] &nbsp;</td>
+                                                            </tr>
+                                                        }
+
+                                                    }
+                                                    
+                                                       @if (ViewBag.Activos_enCat != null)
+                                                       {
+                                                           
+                                                           List<List<String>> w = ViewBag.Activos_enCat[modal];
+
+                                                           foreach (List<String> z in w)
+                                                           {
                                                     <tr>
-                                                        <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado"></td>
-                                                        <td>Column content</td>
-                                                        <td>Column content</td>
-                                                        <td>Column content</td>
-                                                        
-                                                    </tr>                  
+                                                        @if (z[0] == "")
+                                                        {
+                                                            vacio = true;
+                                                            <td>@Html.CheckBox("activoSeleccionado", false, new { @readonly = "readonly", @value = @z[2] })</td>
+                                                           @* <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado" disabled="disabled" readonly="readonly"></td>*@
+                                                        }
+                                                        else
+                                                        {
+                                                            <td>@Html.CheckBox("activoSeleccionado", false, new { @value = @z[2]})</td>
+                                                            @* <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado"></td>*@
+
+                                                        }
+                                                        <td>@z[0] &nbsp;</td>
+                                                        <td>@z[1] &nbsp;</td>
+                                                        <td>@z[2] &nbsp;</td>
+                                                    </tr>
+                                                      }
+                                                  
+                                              }
+                                                    
+                                                          
+                                             
+
                 </tbody>
             </table>
+                                            @if (ViewBag.NoActivos != null && vacio==true)
+                                            {
+
+                                                <div class="alert alert-dismissible alert-warning">
+                                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                                    @ViewBag.NoActivos
+                                                </div>
+                                            }
                                 </div>
                     <div class="modal-footer">
-
-                        <button type="button" name="a"  class="btn btn-primary">Asignar</button>
+@if (ViewBag.NoActivos != null && vacio == true)
+{
+                        <button type="button" name="a"  class="btn btn-primary" disabled="disabled" readonly="readonly">Asignar</button>
+}
+else
+{
+    <button type="button" name="a" class="btn btn-primary">Asignar</button>
+}
                         <button type="button" name="a"  class="btn btn-default" data-dismiss="modal">Cancelar</button>
                         
                     </div>
                             </div>
                         </div>
                     </div>
-
+                            @{modal++;}
             </tr>
 
 
@@ -321,6 +390,12 @@
                     </div>
                 </div>
             </div>
+
+            @Html.ActionLink("Ver Vista de la Boleta", "BoletaPDF", new { id = Model.ID }, new { @class = "btn btn-default" })
+                                <br/>
+                                <br />
+            <input type="submit" name="b" value="Descargar Boleta" class="btn btn-default" />
+
 
                 <div id="Botones_aceptar_cancelar" class="col-md-offset-9 col-md-12">
 
