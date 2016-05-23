@@ -3,34 +3,60 @@
 @{
     ViewBag.Title = "Administración de roles";
 }
+<div class="row">
+    <div class="col-xs-12">
+        <h2>@ViewBag.Title</h2>
+        <hr />
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            Nombre
+                        </th>
+                        <th colspan="3" class="text-center">
+                            Acciones
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
 
-<h2>@ViewBag.Title</h2>
-<p>
-    @Html.ActionLink("Crear nuevo rol", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-
-        </th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Detalles", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Borrar", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
-
-</table>
-
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td class="text-center">
+                                <a href="@Url.Action("Edit", new {id= item.Id})">
+                                    <span class="glyphicon glyphicon-edit text-warning" aria-hidden="true" title="Editar"></span>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a href="@Url.Action("Details", new { id = item.Id })">
+                                    <span class="glyphicon glyphicon-eye-open text-info" aria-hidden="true" title="Detalles"></span>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <a href="@Url.Action("Delete", new { id = item.Id })">
+                                    <span class="glyphicon glyphicon-erase text-danger" aria-hidden="true" title="Eliminar"></span>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+        <div class="pull-right">
+            @Html.ActionLink("Crear nuevo rol", "Create", new object { }, new { @class = "btn btn-default" })
+        </div>
+    </div>
+</div>

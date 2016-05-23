@@ -141,6 +141,7 @@ namespace Activos_PrestamosOET.Controllers
                 {
                     ModelState.AddModelError("", adminresult.Errors.First());
                     ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
+                    ViewBag.EstacionID = new SelectList(db.V_ESTACION, "ID", "NOMBRE");
                     return View();
 
                 }
