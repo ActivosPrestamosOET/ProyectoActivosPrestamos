@@ -14,7 +14,28 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.html.simpleparser;
 using System.Web;
 using System.IO;
+using System.Net.Http;
+using System.Net.Mail;
+using Newtonsoft.Json.Linq;
 
+
+
+
+
+//using System.Security.Claims;
+//using System.Threading.Tasks;
+
+//using Microsoft.AspNet.Identity;
+//using Microsoft.AspNet.Identity.EntityFramework;
+//using Microsoft.AspNet.Identity.Owin;
+//using Microsoft.Owin;
+//using Microsoft.Owin.Security;
+
+
+using SendGrid;
+
+using System.Configuration;
+using System.Diagnostics;
 namespace Activos_PrestamosOET.Controllers
 {
 
@@ -603,12 +624,73 @@ namespace Activos_PrestamosOET.Controllers
 
             return RedirectToAction("Details", new { id = ID });
         }
+        private static void SendAsync(SendGrid.SendGridMessage message)
+        {
 
-       
+            //string apikey = Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
+            // Create a Web transport for sending email.
+            var credentials = new NetworkCredential(
+                       ConfigurationManager.AppSettings["mailAccount"],
+                       ConfigurationManager.AppSettings["mailPassword"]
+                       );
+            var transportWeb = new SendGrid.Web(credentials);
+
+            // Send the email.
+            try
+            {
+                transportWeb.DeliverAsync(message).Wait();
+                Console.WriteLine("Email sent to " + message.To.GetValue(0));
+                Console.WriteLine("\n\nPress any key to continue.");
+                Console.ReadKey();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("\n\nPress any key to continue.");
+                Console.ReadKey();
+            }
+        }
+        /*
+        private static void SendEmail(string to)
+        {
+            // Create the email object first, then add the properties.
+            var myMessage = new SendGrid.SendGridMessage();
+            myMessage.AddTo(to);
+            myMessage.From = new System.Net.Mail.MailAddress(
+                                "andresbejar@gmail.com", "Admin");//new MailAddress(from, fromName);
+            myMessage.Subject = "Testing the SendGrid Library";
+            myMessage.Text = "Hello World! %tag%";
+
+            var subs = new List<String> { "私は%type%ラーメンが大好き" };
+            myMessage.AddSubstitution("%tag%", subs);
+            myMessage.AddSection("%type%", "とんこつ");
+
+            SendAsync(myMessage);
+        }*/
+        private static void SolicitudBien(string to, string mensaje,string subj)
+        {
+            // Create the email object first, then add the properties.
+            var myMessage = new SendGrid.SendGridMessage();
+            myMessage.AddTo(to);
+            myMessage.From = new System.Net.Mail.MailAddress(
+                                "andresbejar@gmail.com", "Admin");//new MailAddress(from, fromName);
+            myMessage.Subject = subj; //"Solicitud de Prestamo";
+            myMessage.Text = mensaje;//"Su solicitud ha sido realizada con éxito! \n "+mensaje;
+            /*
+            var subs = new List<String> { "%type%" };
+            myMessage.AddSubstitution("%tag%", subs);
+            myMessage.AddSection("%type%", "Éxito!");
+            */
+            SendAsync(myMessage);
+        }
 
         // GET: PRESTAMOes/Create
         public ActionResult Create()
         {
+            //string subj = "Solicitud de Prestamo";
+            //string mensajito = "Su solicitud ha sido realizada con éxito! \n El numero de boleta es hhh\n";
+            //string email = "andreittttta@hotmail.com";
+            //SolicitudBien(email, mensajito, subj);
             ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
             ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
             ViewBag.Cursos = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
@@ -651,6 +733,7 @@ namespace Activos_PrestamosOET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,CED_SOLICITA,CED_APRUEBA")] PRESTAMO p, int[] Cantidad, String[] Categoria)
         {
+            
             //p.FECHA_RETIRO
             PRESTAMO prestamo = new PRESTAMO();
             var allErrors = ModelState.Values.SelectMany(v => v.Errors);
@@ -694,7 +777,13 @@ namespace Activos_PrestamosOET.Controllers
                 TempData.Keep();
                 return RedirectToAction("Historial");
             }
-
+            string subj = "Solicitud de Prestamo";
+            string mensajito = "Su solicitud ha sido realizada con éxito! \n El numero de boleta es " + p.NUMERO_BOLETA.ToString()+"\n";
+            USUARIO este = db.USUARIOS.Find(p.CED_SOLICITA);
+            string email = este.CORREO;
+            //SolicitudBien(email,mensajito,subj);
+            email = "andreittttta@hotmail.com";
+            SolicitudBien(email, mensajito, subj);
             ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", p.CED_SOLICITA);
             ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", p.CED_APRUEBA);
             return View(prestamo);
@@ -935,6 +1024,13 @@ namespace Activos_PrestamosOET.Controllers
                 //Redirecciona al historial
                 return RedirectToAction("Historial");
             }
+            string subj = "Edición de Solicitud";
+            string mensajito = "Ha editado la solicitud con numero de boleta " + p.NUMERO_BOLETA.ToString() + " exitosamente \n Gracias por preferirnos\n";
+            USUARIO este = db.USUARIOS.Find(P.CED_SOLICITA);
+            string email = este.CORREO;
+            SolicitudBien(email, mensajito, subj);
+
+            //SolicitudBien("andreittttta@hotmail.com", mensajito, subj);
             return View(P);
         }
 

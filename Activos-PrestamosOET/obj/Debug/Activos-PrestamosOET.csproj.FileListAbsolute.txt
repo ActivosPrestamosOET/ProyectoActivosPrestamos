@@ -405,7 +405,6 @@ C:\Users\Daniel\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System
 C:\Users\Daniel\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Primitives.xml
 C:\Users\Daniel\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csproj.App.config
 C:\Users\andre_000\Documents\GitHub\New folder\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csproj.App.config
-C:\Users\andre_000\Documents\GitHub\New folder\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache
 C:\Users\andre_000\Documents\GitHub\New folder\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.dll
 C:\Users\andre_000\Documents\GitHub\New folder\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.pdb
 C:\Users\andre_000\Documents\GitHub\New folder\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\ApplicationInsights.config
