@@ -757,17 +757,19 @@ namespace Activos_PrestamosOET.Controllers
                     db.EQUIPO_SOLICITADO.Add(equipo);
                     db.SaveChanges();
                 }
+                p = db.PRESTAMOS.Find(prestamo.ID);
+                string subj = "Solicitud de Prestamo";
+                string mensajito = "Su solicitud ha sido realizada con éxito! \n El numero de boleta es " + p.NUMERO_BOLETA.ToString() + "\n";
+                USUARIO este = db.USUARIOS.Find(p.CED_SOLICITA);
+                string email = este.CORREO;
+                //SolicitudBien(email,mensajito,subj);
+                email = "andreittttta@hotmail.com";
+                SolicitudBien(email, mensajito, subj);
                 TempData["confirmacion"] = "La solicitud fue enviada con éxito";
                 TempData.Keep();
                 return RedirectToAction("Historial");
             }
-            string subj = "Solicitud de Prestamo";
-            string mensajito = "Su solicitud ha sido realizada con éxito! \n El numero de boleta es " + p.NUMERO_BOLETA.ToString()+"\n";
-            USUARIO este = db.USUARIOS.Find(p.CED_SOLICITA);
-            string email = este.CORREO;
-            //SolicitudBien(email,mensajito,subj);
-            email = "andreittttta@hotmail.com";
-            SolicitudBien(email, mensajito, subj);
+            
             ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", p.CED_SOLICITA);
             ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", p.CED_APRUEBA);
             return View(prestamo);
