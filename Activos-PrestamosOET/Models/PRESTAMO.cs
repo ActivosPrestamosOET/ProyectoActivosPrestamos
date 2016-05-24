@@ -14,7 +14,6 @@ namespace Activos_PrestamosOET.Models
     using System.ComponentModel;
     using System.ComponentModel.DataAnnotations;
     using System.Web.Mvc;
-    using Web.Models.Validation;
 
     public partial class PRESTAMO
     {
@@ -33,15 +32,10 @@ namespace Activos_PrestamosOET.Models
         [DisplayName("Motivo")]
         //[StringLength(250)]
         public string MOTIVO { get; set; }
-        [DisplayName("Fecha de solicitud")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [DisplayName("Fecha de solicitud")]        
         public System.DateTime FECHA_SOLICITUD { get; set; }
         [DisplayName("Inicio del préstamo")]
-        [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         [Required(ErrorMessage = "La fecha de inicio del préstamo es requerida")]
-        [DateMustBeEqualOrGreaterThanCurrentDateValidation]
         public System.DateTime FECHA_RETIRO { get; set; }
         [DisplayName("Periodo del préstamo")]
         [Required(ErrorMessage = "El periodo de uso es requerido")]
