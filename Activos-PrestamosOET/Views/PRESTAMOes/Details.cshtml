@@ -116,7 +116,7 @@
 
         <div class="container">
             <div class="row">
-
+                
 
                 <div class="col-md-2">
                     <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.NUMERO_BOLETA):</label>
@@ -165,7 +165,7 @@
                     <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.Estado):</label>
                 </div>
                 <div class="col-md-4">
-
+                    @{bool asignarEquipos = false;}
 
                     @switch (Model.Estado)
                     {
@@ -177,9 +177,11 @@
                             break;
                         case 3:
                             <text>Denegada</text>
+                            asignarEquipos = true;
                             break;
                         case 4:
                             <text>Abierta</text>
+                            asignarEquipos = true;
                             break;
                         case 5:
                             <text>Cerrada</text>
@@ -263,12 +265,22 @@
                             </td>
                         }
                         <td>
-
+                            @if (asignarEquipos == true)
+                            {
                             <!-- Button trigger modal -->
                             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal@(modal)">
+                                
                                 Seleccionar
                             </button>
+                            }
+                            else
+                            {
+                                                            <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-default" disabled="disabled" readonly="readonly" data-toggle="modal" data-target="#myModal@(modal)">
 
+                                    Seleccionar
+                                </button>
+                            }
                             <!-- Modal -->
                             <div class="modal" id="myModal@(modal)">
                                 <div class="modal-dialog">
@@ -387,9 +399,7 @@
                 </div>
             </div>
 
-            @Html.ActionLink("Ver Vista de la Boleta", "BoletaPDF", new { id = Model.ID }, new { @class = "btn btn-default" })
-                                <br/>
-                                <br />
+
             <input type="submit" name="b" value="Descargar Boleta" class="btn btn-default" />
 
 
