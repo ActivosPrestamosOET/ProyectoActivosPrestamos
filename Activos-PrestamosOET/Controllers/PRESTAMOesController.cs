@@ -306,7 +306,7 @@ namespace Activos_PrestamosOET.Controllers
 
                     if (x.TIPO != null)
                     {
-                        if (x.TIPO == y.NOMBRE)
+                        if (x.TIPO == y.ID.ToString())
                         {
 
                             temp.Add(y.NOMBRE);
