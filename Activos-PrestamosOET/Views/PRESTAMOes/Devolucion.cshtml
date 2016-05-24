@@ -3,6 +3,24 @@
     ViewBag.Title = "Detalles";
 }
 
+@if (ViewBag.Mensaje != null)
+{
+    <div class="alert alert-dismissible alert-success">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        @ViewBag.Mensaje
+    </div>
+}
+
+
+
+@if (ViewBag.Mensaje2 != null)
+{
+    <div class="alert alert-dismissible alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        @ViewBag.Mensaje2
+    </div>
+}
+
 <div>
     <p>@Html.ActionLink("Regresar a Solicitudes", "Index", null, new { @class = "btn btn-default" })</p>
 </div>
@@ -115,7 +133,7 @@
                 <th class="col-md-1">Cantidad Aprobada</th>
                 <th class="col-md-1">Devolver</th>
                 <!--<th class="col-md-1" id="columna">Devolver Todo<input type="checkbox" onclick="seleccionaTodos('column5', this)" name="column5_checkAll"></th>-->
-                <th class="col-md-1" id="columna">Devolver Todo @Html.CheckBox("column5_checkAll", false, new { @onclick = "seleccionaTodos('column5', this)" })</th>
+                <th class="col-md-1" id="columna">@Html.CheckBox("column5_checkAll", false, new { @onclick = "seleccionaTodos('column5', this)" }) Devolver Todo</th>
                 
             </tr>
         </thead>
@@ -123,8 +141,10 @@
             @if (ViewBag.Equipo_Solict != null)
             {
                 int modal = 0;
+ 
                 foreach (List<String> s in ViewBag.Equipo_Solict)
                 {
+                    String cat = s[0];
                     <tr>
                         <td class="col-md-1">@s[0] &nbsp;</td>
                         <td class="col-md-1">@s[1] &nbsp;</td>
@@ -161,20 +181,20 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-
-                                                    @if (ViewBag.Activos_enCat != null)
+                                         
+                                                    @if (ViewBag.EquipoPorCat != null)
                                                     {
-                                                        List<List<String>> w = ViewBag.Activos_enCat[modal];
-
-                                                        foreach (List<String> z in w)
+                                                        Dictionary<String, List< List < String > > > datosActivos = ViewBag.EquipoPorCat;
+                                                        foreach(List < String > c in datosActivos[ "Impresora" ])
                                                         {
                                                             <tr>
                                                                 <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado"></td>
-                                                                <td>@z[0] &nbsp;</td>
-                                                                <td>@z[1] &nbsp;</td>
-                                                                <td>@z[2] &nbsp;</td>
+                                                                <td>@c[0] &nbsp;</td>
+                                                                <td>@c[1] &nbsp;</td>
+                                                                <td>@c[2] &nbsp;</td>
                                                             </tr>
                                                         }
+                                                        
 
                                                     }
 
@@ -182,7 +202,7 @@
                                             </table>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" name="a" class="btn btn-primary">Asignar</button>
+                                            <button type="button" name="devolver" class="btn btn-primary">Devolver</button>
                                             <button type="button" name="a" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 
                                         </div>
@@ -190,7 +210,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td>@Html.CheckBox("column5_checkbox", false)Devolver Todos</td>
+                        <td>@Html.CheckBox("column5_checkbox", false)</td>
                     </tr>
                 }
             }
