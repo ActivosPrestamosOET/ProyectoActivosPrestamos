@@ -152,7 +152,7 @@ namespace Activos_PrestamosOET.Models
 
         public string descripcion()
         {
-
+            //TODO: cambiar los IDs por los nombres
             string esta_exento, capital, prestable;
             esta_exento = this.EXENTO ? "Exento" : "Gravado";
             capital = this.TIPO_CAPITAL ? "Capital mayor" : "Capital menor";
@@ -171,7 +171,7 @@ namespace Activos_PrestamosOET.Models
             if (this.CENTROS_DE_COSTOS != null) atributos += this.CENTROS_DE_COSTOS.Nombre + "-";
             if (this.V_USUARIOS != null) atributos += "Responsable: " + this.V_USUARIOS.NOMBRE + "-";
             if (this.V_ESTACION != null) atributos += this.V_ESTACION.NOMBRE + "-";
-            atributos += this.TIPOS_TRANSACCIONES.NOMBRE + "-" + this.V_ANFITRIONA.NOMBRE + "-";
+            atributos += this.TIPO_TRANSACCIONID + "-" + this.V_ANFITRIONAID + "-";
             if (this.INGRESADO_POR != null) atributos += this.INGRESADO_POR + "-";
             atributos += this.FECHA_INGRESO;
             return atributos;
