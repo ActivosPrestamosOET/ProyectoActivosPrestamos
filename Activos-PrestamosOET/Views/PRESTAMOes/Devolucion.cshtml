@@ -141,8 +141,10 @@
             @if (ViewBag.Equipo_Solict != null)
             {
                 int modal = 0;
+ 
                 foreach (List<String> s in ViewBag.Equipo_Solict)
                 {
+                    String cat = s[0];
                     <tr>
                         <td class="col-md-1">@s[0] &nbsp;</td>
                         <td class="col-md-1">@s[1] &nbsp;</td>
@@ -179,20 +181,20 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-
-                                                    @if (ViewBag.Activos_enCat != null)
+                                         
+                                                    @if (ViewBag.EquipoPorCat != null)
                                                     {
-                                                        List<List<String>> w = ViewBag.Activos_enCat[modal];
-
-                                                        foreach (List<String> z in w)
+                                                        Dictionary<String, List< List < String > > > datosActivos = ViewBag.EquipoPorCat;
+                                                        foreach(List < String > c in datosActivos[ "Impresora" ])
                                                         {
                                                             <tr>
                                                                 <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado"></td>
-                                                                <td>@z[0] &nbsp;</td>
-                                                                <td>@z[1] &nbsp;</td>
-                                                                <td>@z[2] &nbsp;</td>
+                                                                <td>@c[0] &nbsp;</td>
+                                                                <td>@c[1] &nbsp;</td>
+                                                                <td>@c[2] &nbsp;</td>
                                                             </tr>
                                                         }
+                                                        
 
                                                     }
 
@@ -200,7 +202,7 @@
                                             </table>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" name="a" class="btn btn-primary">Asignar</button>
+                                            <button type="button" name="devolver" class="btn btn-primary">Devolver</button>
                                             <button type="button" name="a" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 
                                         </div>
