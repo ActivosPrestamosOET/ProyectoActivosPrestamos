@@ -773,7 +773,7 @@ namespace Activos_PrestamosOET.Controllers
                 ctx.Refresh(RefreshMode.ClientWins, prest);
                 //User.Identity.Name;
                 string subj = "Solicitud de Prestamo";
-                string mensajito = "Su solicitud ha sido realizada con éxito! \n El numero de boleta es " + prest.NUMERO_BOLETA.ToString() + "\n";
+                string mensajito = "Su solicitud ha sido realizada con éxito! \nEl numero de boleta es " + prest.NUMERO_BOLETA.ToString() + "\n";
                 USUARIO este = db.USUARIOS.Find(cedSol);
                 string email = User.Identity.Name; //este.CORREO;
                 //SolicitudBien(email,mensajito,subj);
