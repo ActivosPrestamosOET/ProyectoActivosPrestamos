@@ -150,9 +150,9 @@ namespace Activos_PrestamosOET.Models
         public virtual ICollection<TRANSACCION> TRANSACCIONES { get; set; }
         public virtual V_ESTACION V_ESTACION { get; set; }
 
-        public string descripcion()
+        public string descripcion(string proveedor, string transaccion, string anfitriona)
         {
-            //TODO: cambiar los IDs por los nombres
+           
             string esta_exento, capital, prestable;
             esta_exento = this.EXENTO ? "Exento" : "Gravado";
             capital = this.TIPO_CAPITAL ? "Capital mayor" : "Capital menor";
@@ -164,14 +164,14 @@ namespace Activos_PrestamosOET.Models
             atributos += this.FABRICANTE + "-";
             if (this.NUMERO_LOTE != null) atributos += this.NUMERO_LOTE + "-";
             atributos += this.NUMERO_DOCUMENTO + "-" + this.PRECIO + "-" + esta_exento + "-" + capital + "-" +
-                         this.V_PROVEEDORIDPROVEEDOR + "-" + this.FECHA_COMPRA.Date + "-";
+                         proveedor + "-" + this.FECHA_COMPRA.Date + "-";
             if (this.INICIO_SERVICIO != null) atributos += this.INICIO_SERVICIO + "-";
             atributos += prestable + "-";
             if (this.V_ESTACION != null) atributos += this.V_ESTACION.NOMBRE + "-";
             if (this.CENTROS_DE_COSTOS != null) atributos += this.CENTROS_DE_COSTOS.Nombre + "-";
             if (this.V_USUARIOS != null) atributos += "Responsable: " + this.V_USUARIOS.NOMBRE + "-";
             if (this.V_ESTACION != null) atributos += this.V_ESTACION.NOMBRE + "-";
-            atributos += this.TIPO_TRANSACCIONID + "-" + this.V_ANFITRIONAID + "-";
+            atributos += transaccion + "-" + anfitriona + "-";
             if (this.INGRESADO_POR != null) atributos += this.INGRESADO_POR + "-";
             atributos += this.FECHA_INGRESO;
             return atributos;

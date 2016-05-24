@@ -146,7 +146,7 @@ namespace Activos_PrestamosOET.Controllers
                 return HttpNotFound();
             }
 
-            tRANSACCION = tRANSACCION.Where(a => a.ACTIVOID.Equals(id));
+            tRANSACCION = tRANSACCION.Where(a => a.ACTIVOID.Equals(id)).OrderByDescending(a=>a.FECHA);
 
             aCTIVO.TRANSACCIONES = new HashSet<TRANSACCION>(tRANSACCION);
 
@@ -202,7 +202,18 @@ namespace Activos_PrestamosOET.Controllers
             {
                 db.ACTIVOS.Add(aCTIVO);
                 db.SaveChanges();
-                controladora_transaccion.Create(DateTime.Now.Date, User.Identity.GetUserName(), "Creado", aCTIVO.descripcion(), aCTIVO.ID);
+
+
+                var consulta_proveedor = db.V_PROVEEDOR.ToList().Where(ea => ea.IDPROVEEDOR == aCTIVO.V_PROVEEDORIDPROVEEDOR);
+                var proveedor = consulta_proveedor.ToList()[0].NOMBRE;
+                var consulta_anfitriona = db.V_ANFITRIONA.ToList().Where(ea => ea.ID == aCTIVO.V_ANFITRIONAID);
+                var anfitriona = consulta_anfitriona.ToList()[0].NOMBRE;
+                var consulta_transaccion = db.TIPOS_TRANSACCIONES.ToList().Where(ea => ea.ID == aCTIVO.TIPO_TRANSACCIONID);
+                var transaccion = consulta_transaccion.ToList()[0].NOMBRE;
+
+
+
+                controladora_transaccion.Create(User.Identity.GetUserName(), "Creado", aCTIVO.descripcion(proveedor, transaccion, anfitriona), aCTIVO.ID);
                 return RedirectToAction("Index");
             }
 
@@ -257,7 +268,16 @@ namespace Activos_PrestamosOET.Controllers
                 original.CENTRO_DE_COSTOId = aCTIVO.CENTRO_DE_COSTOId;
                 db.SaveChanges();
 
-                controladora_transaccion.Create(DateTime.Now.Date, User.Identity.GetUserName(), original.ESTADOS_ACTIVOS.NOMBRE, original.descripcion(), original.ID);
+                var consulta_proveedor = db.V_PROVEEDOR.ToList().Where(ea => ea.IDPROVEEDOR == original.V_PROVEEDORIDPROVEEDOR);
+                var proveedor = consulta_proveedor.ToList()[0].NOMBRE;
+                var consulta_anfitriona = db.V_ANFITRIONA.ToList().Where(ea => ea.ID == original.V_ANFITRIONAID);
+                var anfitriona = consulta_anfitriona.ToList()[0].NOMBRE;
+                var consulta_transaccion = db.TIPOS_TRANSACCIONES.ToList().Where(ea => ea.ID == original.TIPO_TRANSACCIONID);
+                var transaccion = consulta_transaccion.ToList()[0].NOMBRE;
+
+
+
+                controladora_transaccion.Create(User.Identity.GetUserName(),original.ESTADOS_ACTIVOS.NOMBRE, original.descripcion(proveedor, transaccion, anfitriona), original.ID);
                 return RedirectToAction("Index");
             }
             ViewBag.V_USUARIOSIDUSUARIO = new SelectList(db.V_USUARIOS, "IDUSUARIO", "NOMBRE", aCTIVO.V_USUARIOSIDUSUARIO);
@@ -319,7 +339,14 @@ namespace Activos_PrestamosOET.Controllers
 
                 db.SaveChanges();
 
-                controladora_transaccion.Create(DateTime.Now.Date, User.Identity.GetUserName(), "Editado", original.descripcion(), original.ID);
+                var consulta_proveedor = db.V_PROVEEDOR.ToList().Where(ea => ea.IDPROVEEDOR == original.V_PROVEEDORIDPROVEEDOR);
+                var proveedor = consulta_proveedor.ToList()[0].NOMBRE;
+                var consulta_anfitriona = db.V_ANFITRIONA.ToList().Where(ea => ea.ID == original.V_ANFITRIONAID);
+                var anfitriona = consulta_anfitriona.ToList()[0].NOMBRE;
+                var consulta_transaccion = db.TIPOS_TRANSACCIONES.ToList().Where(ea => ea.ID == original.TIPO_TRANSACCIONID);
+                var transaccion = consulta_transaccion.ToList()[0].NOMBRE;
+
+                controladora_transaccion.Create(User.Identity.GetUserName(), "Editado", original.descripcion(proveedor, transaccion, anfitriona), original.ID);
 
                 return RedirectToAction("Index");
             }
@@ -356,10 +383,18 @@ namespace Activos_PrestamosOET.Controllers
             aCTIVO.DESECHADO = true;
             var estado = db.ESTADOS_ACTIVOS.ToList().Where(ea => ea.NOMBRE == "Desechado");
             aCTIVO.ESTADO_ACTIVOID = estado.ToList()[0].ID;
-            
-           // db.ACTIVOS.Remove(aCTIVO); // Quitar esta linea cuando se cambie el estado por desechado
+
+            // db.ACTIVOS.Remove(aCTIVO); // Quitar esta linea cuando se cambie el estado por desechado
+
+            var consulta_proveedor = db.V_PROVEEDOR.ToList().Where(ea => ea.IDPROVEEDOR == aCTIVO.V_PROVEEDORIDPROVEEDOR);
+            var proveedor = consulta_proveedor.ToList()[0].NOMBRE;
+            var consulta_anfitriona = db.V_ANFITRIONA.ToList().Where(ea => ea.ID == aCTIVO.V_ANFITRIONAID);
+            var anfitriona = consulta_anfitriona.ToList()[0].NOMBRE;
+            var consulta_transaccion = db.TIPOS_TRANSACCIONES.ToList().Where(ea => ea.ID == aCTIVO.TIPO_TRANSACCIONID);
+            var transaccion = consulta_transaccion.ToList()[0].NOMBRE;
+
             db.SaveChanges();
-            controladora_transaccion.Create(DateTime.Now.Date, User.Identity.GetUserName(), "Eliminado", aCTIVO.descripcion(), aCTIVO.ID);
+            controladora_transaccion.Create(User.Identity.GetUserName(), "Eliminado", aCTIVO.descripcion(proveedor, transaccion, anfitriona), aCTIVO.ID);
             return RedirectToAction("Index");
         }
 

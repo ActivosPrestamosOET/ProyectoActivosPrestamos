@@ -17,7 +17,7 @@ namespace Activos_PrestamosOET.Models
         public int ID { get; set; }
 
         [Display(Name = "Fecha")]
-        [DataType(DataType.Date)]
+        [DataType(DataType.DateTime)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "Tiene que asignarle una fecha a la transacción.")]
         public System.DateTime FECHA { get; set; }
