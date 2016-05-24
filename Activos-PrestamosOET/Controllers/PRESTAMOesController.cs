@@ -37,6 +37,25 @@ namespace Activos_PrestamosOET.Controllers
             + consecutivo.ToString("D3");
         }
 
+        protected List<String> equipoPorCategoria(String categoria, String id)
+        {
+            List<String> equipo = new List<String>();
+            var activos = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
+            int cat = int.Parse(categoria);
+            var act = from a in activos.ACTIVOes.Where(i => i.TIPO_ACTIVOID == cat)
+                      select new {FABRICANTE = a.FABRICANTE, MODELO = a.MODELO, PLACA = a.PLACA};
+
+            foreach(var a in act)
+            {
+                equipo.Add(a.FABRICANTE);
+                equipo.Add(a.MODELO);
+                equipo.Add(a.PLACA);
+            }
+            
+            return equipo;
+        }
+
+
         protected int traerCategoria(String tipo)
         {
             var consultaCat = from t in db.TIPOS_ACTIVOS
@@ -1102,6 +1121,11 @@ namespace Activos_PrestamosOET.Controllers
 
 
             var equipo = new List<List<String>>();
+
+           var eq  = new List<String>();
+
+            eq = equipoPorCategoria("13", id);
+
             foreach (var x in equipo_sol)
             {
                 if (x.ID == id)
@@ -1125,10 +1149,10 @@ namespace Activos_PrestamosOET.Controllers
 
 
         [HttpPost]
-        public ActionResult Devolucion(string ID, bool[] column5_checkbox, bool column5_checkAll, string b, [Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p)
+        public ActionResult Devolucion(string ID, bool[] column5_checkbox, bool column5_checkAll, string b, string OBSERVACIONES_APROBADO)
         {
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
-            pRESTAMO.OBSERVACIONES_APROBADO = p.OBSERVACIONES_APROBADO;
+            pRESTAMO.OBSERVACIONES_APROBADO = OBSERVACIONES_APROBADO;
             if (ModelState.IsValid)
             {
                 db.Entry(pRESTAMO).State = EntityState.Modified;
@@ -1143,7 +1167,8 @@ namespace Activos_PrestamosOET.Controllers
             if (b == "Actualizar devolución")
             {
                 int cont = 0;
-                if (!column5_checkAll) {
+                if (!column5_checkAll)
+                {
                     foreach (var y in equipo_sol)
                     {
                         bool t = column5_checkbox[cont];
@@ -1153,14 +1178,14 @@ namespace Activos_PrestamosOET.Controllers
                             {
                                 if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
                                 {
-                                    //activos_asignados.Remove(x); //se borra de la tabla m a n
                                     x.ESTADO_PRESTADO = 0;
                                 }
                             }
                         }
                         cont++;
                     }
-                } else
+                }
+                else
                 {
                     foreach (var y in equipo_sol)
                     {
@@ -1168,24 +1193,30 @@ namespace Activos_PrestamosOET.Controllers
                         {
                             if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
                             {
-                                //activos_asignados.Remove(x); //se borra de la tabla m a n
                                 x.ESTADO_PRESTADO = 0;
                             }
                         }
                     }
                 }
-                
 
-
-                if (column5_checkAll) { }// {pRESTAMO.Estado = 5;}
+                if (column5_checkAll) { pRESTAMO.Estado = 5; }
 
                 if (ModelState.IsValid)
                 {
                     db.Entry(pRESTAMO).State = EntityState.Modified;
                     db.SaveChanges();
                 }
+                bool hasErrors = ViewData.ModelState.Values.Any(x => x.Errors.Count > 1);
+                if (!hasErrors)
+                {
+                    ViewBag.Mensaje = "Los activos han sido devueltos correctamente.";
+                }
+                else
+                {
+                    ViewBag.Mensaje2 = "Los activos no han sido devueltos correctamente.";
+                }
 
-                ViewBag.Mensaje = "Los activos han sido devueltos correctamente.";
+
             }
 
 
@@ -1209,17 +1240,13 @@ namespace Activos_PrestamosOET.Controllers
                     }
                 }
             }
-
-            var prestamos = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
-            DateTime dt = prestamos.FECHA_RETIRO;
-            dt = dt.AddDays(prestamos.PERIODO_USO);
-
             ViewBag.Equipo_Solict = equipo;
 
             /*  -------------------------------------------------------------------------------------------  */
 
             return View(pRESTAMO);
         }
+
 
         // Requiere: valor seleccionado en el dropdown de Categoría, valor del botón seleccionado, valor de la fecha inicial y la fecha final
         // Modifica: se encarga de llenar la tabla de Inventario, de la categoría que recibe cómo parámetro.
