@@ -729,7 +729,8 @@ namespace Activos_PrestamosOET.Controllers
             var allErrors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
-                prestamo.ID = generarID();
+                string id = generarID();
+                prestamo.ID = id;
                 prestamo.MOTIVO = p.MOTIVO;
                 prestamo.NUMERO_BOLETA = 1;// calcularNumBoleta();
                 prestamo.OBSERVACIONES_APROBADO = "";
@@ -763,9 +764,10 @@ namespace Activos_PrestamosOET.Controllers
                     db.EQUIPO_SOLICITADO.Add(equipo);
                     db.SaveChanges();
                 }
-                p = db.PRESTAMOS.Find(prestamo.ID);
+                PRESTAMO prest =  new PRESTAMO();
+                prest=db.PRESTAMOS.Find(id);
                 string subj = "Solicitud de Prestamo";
-                string mensajito = "Su solicitud ha sido realizada con éxito! \n El numero de boleta es " + p.NUMERO_BOLETA.ToString() + "\n";
+                string mensajito = "Su solicitud ha sido realizada con éxito! \n El numero de boleta es " + prest.NUMERO_BOLETA.ToString() + "\n";
                 USUARIO este = db.USUARIOS.Find(p.CED_SOLICITA);
                 string email = este.CORREO;
                 //SolicitudBien(email,mensajito,subj);
