@@ -650,23 +650,7 @@ namespace Activos_PrestamosOET.Controllers
                 Console.ReadKey();
             }
         }
-        /*
-        private static void SendEmail(string to)
-        {
-            // Create the email object first, then add the properties.
-            var myMessage = new SendGrid.SendGridMessage();
-            myMessage.AddTo(to);
-            myMessage.From = new System.Net.Mail.MailAddress(
-                                "andresbejar@gmail.com", "Admin");//new MailAddress(from, fromName);
-            myMessage.Subject = "Testing the SendGrid Library";
-            myMessage.Text = "Hello World! %tag%";
 
-            var subs = new List<String> { "私は%type%ラーメンが大好き" };
-            myMessage.AddSubstitution("%tag%", subs);
-            myMessage.AddSection("%type%", "とんこつ");
-
-            SendAsync(myMessage);
-        }*/
         private static void SolicitudBien(string to, string mensaje,string subj)
         {
             // Create the email object first, then add the properties.
