@@ -17,7 +17,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Mail;
 using Newtonsoft.Json.Linq;
-
+//using System.Security.Claims;
 
 
 
@@ -641,19 +641,20 @@ namespace Activos_PrestamosOET.Controllers
             var transportWeb = new SendGrid.Web(credentials);
 
             // Send the email.
-            try
-            {
-                transportWeb.DeliverAsync(message).Wait();
-                Console.WriteLine("Email sent to " + message.To.GetValue(0));
-                Console.WriteLine("\n\nPress any key to continue.");
-                Console.ReadKey();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("\n\nPress any key to continue.");
-                Console.ReadKey();
-            }
+            //try
+            //{
+                //transportWeb.DeliverAsync(message).Wait();
+            transportWeb.DeliverAsync(message);
+                //Console.WriteLine("Email sent to " + message.To.GetValue(0));
+                //Console.WriteLine("\n\nPress any key to continue.");
+                //Console.ReadKey();
+            //}
+            //catch (Exception ex)
+            //{
+                //Console.WriteLine(ex.Message);
+                //Console.WriteLine("\n\nPress any key to continue.");
+                //Console.ReadKey();
+            //}
         }
 
         private static void SolicitudBien(string to, string mensaje,string subj)
@@ -728,7 +729,9 @@ namespace Activos_PrestamosOET.Controllers
             var allErrors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
-                prestamo.ID = generarID();
+                string id = generarID();
+                string cedSol = p.CED_SOLICITA;
+                prestamo.ID = id;
                 prestamo.MOTIVO = p.MOTIVO;
                 prestamo.NUMERO_BOLETA = 1;// calcularNumBoleta();
                 prestamo.OBSERVACIONES_APROBADO = "";
@@ -737,7 +740,7 @@ namespace Activos_PrestamosOET.Controllers
                 prestamo.PERIODO_USO = p.PERIODO_USO;
                 prestamo.SIGLA_CURSO = p.SIGLA_CURSO;
                 prestamo.CED_APRUEBA = p.CED_APRUEBA;
-                prestamo.CED_SOLICITA = p.CED_SOLICITA;
+                prestamo.CED_SOLICITA = cedSol;
                 prestamo.FECHA_RETIRO = p.FECHA_RETIRO;
                 prestamo.FECHA_SOLICITUD = System.DateTimeOffset.Now.Date;//SELECT SYSDATE FROM DUAL
                 prestamo.SOFTWARE_REQUERIDO = p.SOFTWARE_REQUERIDO;
@@ -762,13 +765,15 @@ namespace Activos_PrestamosOET.Controllers
                     db.EQUIPO_SOLICITADO.Add(equipo);
                     db.SaveChanges();
                 }
-                p = db.PRESTAMOS.Find(prestamo.ID);
+                PRESTAMO prest =  new PRESTAMO();
+                prest=db.PRESTAMOS.Find(id);
+                //User.Identity.Name;
                 string subj = "Solicitud de Prestamo";
-                string mensajito = "Su solicitud ha sido realizada con éxito! \n El numero de boleta es " + p.NUMERO_BOLETA.ToString() + "\n";
-                USUARIO este = db.USUARIOS.Find(p.CED_SOLICITA);
-                string email = este.CORREO;
+                string mensajito = "Su solicitud ha sido realizada con éxito! \n El numero de boleta es " + prest.NUMERO_BOLETA.ToString() + "\n";
+                USUARIO este = db.USUARIOS.Find(cedSol);
+                string email = User.Identity.Name; //este.CORREO;
                 //SolicitudBien(email,mensajito,subj);
-                email = "andreittttta@hotmail.com";
+                //email = "andreittttta@hotmail.com";
                 SolicitudBien(email, mensajito, subj);
                 TempData["confirmacion"] = "La solicitud fue enviada con éxito";
                 TempData.Keep();
