@@ -187,7 +187,7 @@
                                                         Dictionary<String, List< List < String > > > datosActivos = ViewBag.EquipoPorCat;
                                                         foreach(List < String > c in datosActivos[ s[0] ])
                                                         {
-                                                            <tr>
+                                                              <tr>
                                                                 <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado"></td>
                                                                 <td>@c[0] &nbsp;</td>
                                                                 <td>@c[1] &nbsp;</td>
@@ -195,7 +195,6 @@
                                                             </tr>
                                                         }
                                                         
-
                                                     }
 
                                                 </tbody>
@@ -210,7 +209,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td>@Html.CheckBox("column5_checkbox", false)</td>
+                        <td>@Html.CheckBox("column5_checkbox", false, new { @onclick = "seleccionaCategoria( this)" })</td>
                         @{ modal++; }
                     </tr>
                 }
@@ -245,6 +244,20 @@
     </text>
     }
 </script>
+
+<script>
+    function seleccionaCategoria(checkBox) {
+        if(checkBox.checked == true)
+        {
+            var checkboxes = document.getElementById("activoSeleccionado");
+            for (var i = 0; i < checkboxes.length; i++) {
+                checkboxes[i].checked = true;
+            }
+
+        }
+    }
+</script>
+
 <script>
     function seleccionaTodos(columnNo, checkBox) {
         if (checkBox.checked == true) {
