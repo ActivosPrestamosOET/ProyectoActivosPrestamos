@@ -37,11 +37,11 @@ namespace Activos_PrestamosOET.Controllers
             + consecutivo.ToString("D3");
         }
 
-        protected List<String> equipoPorCategoria(String categoria, String id)
+        protected List<String> equipoPorCategoria(int cat, String id)
         {
             List<String> equipo = new List<String>();
             var activos = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
-            int cat = int.Parse(categoria);
+           // int cat = int.Parse(categoria);
             var act = from a in activos.ACTIVOes.Where(i => i.TIPO_ACTIVOID == cat)
                       select new {FABRICANTE = a.FABRICANTE, MODELO = a.MODELO, PLACA = a.PLACA};
 
@@ -1120,12 +1120,21 @@ namespace Activos_PrestamosOET.Controllers
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
 
 
+           var equipo_cat = new List<List<String>>();
+           var categorias_sol = from p in db.PRESTAMOS
+                                 from e in db.EQUIPO_SOLICITADO
+                                 where p.ID == id && e.ID_PRESTAMO == p.ID
+                                 select new { CAT = e.TIPOS_ACTIVOSID };
+
+            foreach (var c in categorias_sol)
+            {
+                var eq  = new List<String>();
+                eq = equipoPorCategoria(c.CAT, id);
+                equipo_cat.Add(eq);
+            }
+
+
             var equipo = new List<List<String>>();
-
-           var eq  = new List<String>();
-
-            eq = equipoPorCategoria("13", id);
-
             foreach (var x in equipo_sol)
             {
                 if (x.ID == id)
@@ -1142,6 +1151,7 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             ViewBag.Equipo_Solict = equipo;
+            ViewBag.EquipoPorCat  = equipo_cat;
             return View(pRESTAMO);
         }
 
