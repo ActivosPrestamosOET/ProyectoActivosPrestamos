@@ -185,7 +185,7 @@
                                                     @if (ViewBag.EquipoPorCat != null)
                                                     {
                                                         Dictionary<String, List< List < String > > > datosActivos = ViewBag.EquipoPorCat;
-                                                        foreach(List < String > c in datosActivos[ "Impresora" ])
+                                                        foreach(List < String > c in datosActivos[ s[0] ])
                                                         {
                                                             <tr>
                                                                 <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado"></td>
@@ -211,6 +211,7 @@
                             </div>
                         </td>
                         <td>@Html.CheckBox("column5_checkbox", false)</td>
+                        @{ modal++; }
                     </tr>
                 }
             }
