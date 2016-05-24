@@ -12,9 +12,11 @@
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script>
+    if (!Modernizr.inputtypes.date) {
       $(function() {
         $( "#datepicker" ).datepicker();
       });
+    }
 </script>
 <script>
          $.datepicker.regional['es'] = {
@@ -36,10 +38,24 @@
          };
 
          $.datepicker.setDefaults($.datepicker.regional['es']);
-         $(function() {
-             $('.date-picker').datepicker();
+         $(function () {
+             if (!Modernizr.inputtypes.date) {
+                 $('.date-picker').datepicker();
+             }
          });
 </script>
+<!--<script>
+Modernizr.load({
+  test: Modernizr.inputtypes.date,
+  nope: ['http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js', 'http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.7/jquery-ui.min.js', 'jquery-ui.css'],
+  complete: function () {
+    $('input[type=date]').datepicker({
+        dateFormat: 'dd/mm/yy'
+    });
+  }
+});
+</script>
+    -->
 <script type="text/javascript">
     $(document).ready(function () {
         $("[id$=A2]").addClass("active");
@@ -90,7 +106,7 @@
                     <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_RETIRO):*</label>
                 </div>
                 <div class="col-md-4">
-                    @Html.EditorFor(model => model.FECHA_RETIRO, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.FECHA_RETIRO, new { htmlAttributes = new { @class = "form-control date-picker" } })
                     @Html.ValidationMessageFor(model => model.FECHA_RETIRO, "", new { @class = "text-danger" })
                 </div>
                 <br />
