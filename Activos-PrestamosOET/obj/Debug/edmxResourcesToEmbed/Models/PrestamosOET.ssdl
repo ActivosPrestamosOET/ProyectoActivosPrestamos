@@ -282,7 +282,7 @@
     <Property Name="FECHA" Type="date" Nullable="false" />
     <Property Name="RESPONSABLE" Type="nvarchar2" Nullable="false" MaxLength="63" />
     <Property Name="ESTADO" Type="nvarchar2" Nullable="false" MaxLength="30" />
-    <Property Name="DESCRIPCION" Type="nvarchar2" Nullable="false" MaxLength="256" />
+    <Property Name="DESCRIPCION" Type="nvarchar2" Nullable="false" MaxLength="1024" />
     <Property Name="ACTIVOID" Type="nvarchar2" Nullable="false" MaxLength="256" />
   </EntityType>
   <EntityType Name="V_COURSES">

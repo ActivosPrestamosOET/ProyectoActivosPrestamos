@@ -18,8 +18,6 @@ namespace Activos_PrestamosOET.Controllers
             nueva_transaccion.FECHA = DateTime.Now;
             nueva_transaccion.ESTADO = estado;
             nueva_transaccion.DESCRIPCION = descripcion;
-            // Prueba: se cree que las transacciones no entran en save changes debido a que la tabla espera maximo 255 caracteres, pero estan entrando mas
-            nueva_transaccion.DESCRIPCION = "Descripcion foo"; // Update: la prueba funciono, aumentar el tamaño del campo descripcion corregiria el error.
             nueva_transaccion.ACTIVOID = activo_id;
             nueva_transaccion.RESPONSABLE = responsable;
 

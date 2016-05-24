@@ -458,7 +458,7 @@
     <Property Name="FECHA" Type="DateTime" Nullable="false" />
     <Property Name="RESPONSABLE" Type="String" Nullable="false" MaxLength="63" FixedLength="false" Unicode="true" />
     <Property Name="ESTADO" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
-    <Property Name="DESCRIPCION" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="DESCRIPCION" Type="String" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="true" />
     <Property Name="ACTIVOID" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="ACTIVO" Relationship="PrestamosModel.FK_ACTIVOTRANSACCION" FromRole="TRANSACCIONE" ToRole="ACTIVO" />
   </EntityType>

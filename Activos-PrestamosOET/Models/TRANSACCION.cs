@@ -18,7 +18,7 @@ namespace Activos_PrestamosOET.Models
 
         [Display(Name = "Fecha")]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:G}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "Tiene que asignarle una fecha a la transacción.")]
         public System.DateTime FECHA { get; set; }
 
@@ -31,6 +31,7 @@ namespace Activos_PrestamosOET.Models
         public string ESTADO { get; set; }
 
         [Display(Name = "Descripción")]
+        [MaxLength(1024, ErrorMessage ="La descripción no puede superar los 1024 caracteres.")]
         [Required(ErrorMessage = "La transacción tiene que tener una descripción.")]
         public string DESCRIPCION { get; set; }
 
