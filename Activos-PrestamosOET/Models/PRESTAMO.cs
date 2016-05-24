@@ -32,15 +32,18 @@ namespace Activos_PrestamosOET.Models
         [DisplayName("Motivo")]
         //[StringLength(250)]
         public string MOTIVO { get; set; }
-        [DisplayName("Fecha de solicitud")]        
+        [DisplayName("Fecha de solicitud")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public System.DateTime FECHA_SOLICITUD { get; set; }
         [DisplayName("Inicio del préstamo")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         [Required(ErrorMessage = "La fecha de inicio del préstamo es requerida")]
         public System.DateTime FECHA_RETIRO { get; set; }
         [DisplayName("Periodo del préstamo")]
         [Required(ErrorMessage = "El periodo de uso es requerido")]
-        [Range(1, 99,
-            ErrorMessage = "El periodo de uso debe ubicarse entre 1 y 99 días")]
+        [Range(1, 99, ErrorMessage = "El periodo de uso debe ubicarse entre 1 y 99 días")]
         public int PERIODO_USO { get; set; }
         [DisplayName("Software requerido")]
         [StringLength(250)]
