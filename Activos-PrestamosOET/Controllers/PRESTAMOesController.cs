@@ -365,6 +365,17 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            if (TempData["Mensaje"] != null)
+            {
+                ViewBag.Mensaje = TempData["Mensaje"].ToString();
+                TempData.Remove("Mensaje");
+            }
+            if (TempData["Mensaje2"] != null)
+            {
+                ViewBag.Mensaje2 = TempData["Mensaje2"].ToString();
+                TempData.Remove("Mensaje2");
+            }
+           
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
             // ViewBag.clear();
 
@@ -477,6 +488,7 @@ namespace Activos_PrestamosOET.Controllers
             List<string> disp = new List<string>();
             foreach (var e in equipoMayorCero)
             {
+                
                 int tipo = e.TIPOS_ACTIVOSID;
                 //Se consulta la cantidad total de activos prestables de una categoría 
                 int contador = (from a in db.ACTIVOS
@@ -566,6 +578,7 @@ namespace Activos_PrestamosOET.Controllers
                 }
                 addActivosToPrestamo(activoSeleccionado, ID);
                 ViewBag.Mensaje = "El préstamo ha sido aprobado con éxito";
+                TempData["Mensaje"] = "El préstamo ha sido aprobado con éxito";
 
             }
 
@@ -580,6 +593,7 @@ namespace Activos_PrestamosOET.Controllers
                 }
 
                 ViewBag.Mensaje2 = "El préstamo ha sido denegado con éxito";
+                TempData["Mensaje2"] = "El préstamo ha sido denegado con éxito";
             }
 
             if (b == "Descargar Boleta")
