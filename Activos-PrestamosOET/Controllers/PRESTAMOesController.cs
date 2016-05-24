@@ -37,6 +37,25 @@ namespace Activos_PrestamosOET.Controllers
             + consecutivo.ToString("D3");
         }
 
+        protected List<String> equipoPorCategoria(String categoria, String id)
+        {
+            List<String> equipo = new List<String>();
+            var activos = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
+            int cat = int.Parse(categoria);
+            var act = from a in activos.ACTIVOes.Where(i => i.TIPO_ACTIVOID == cat)
+                      select new {FABRICANTE = a.FABRICANTE, MODELO = a.MODELO, PLACA = a.PLACA};
+
+            foreach(var a in act)
+            {
+                equipo.Add(a.FABRICANTE);
+                equipo.Add(a.MODELO);
+                equipo.Add(a.PLACA);
+            }
+            
+            return equipo;
+        }
+
+
         protected int traerCategoria(String tipo)
         {
             var consultaCat = from t in db.TIPOS_ACTIVOS
@@ -1102,6 +1121,11 @@ namespace Activos_PrestamosOET.Controllers
 
 
             var equipo = new List<List<String>>();
+
+           var eq  = new List<String>();
+
+            eq = equipoPorCategoria("13", id);
+
             foreach (var x in equipo_sol)
             {
                 if (x.ID == id)
