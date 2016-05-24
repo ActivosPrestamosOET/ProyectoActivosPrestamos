@@ -14,7 +14,28 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.html.simpleparser;
 using System.Web;
 using System.IO;
+using System.Net.Http;
+using System.Net.Mail;
+using Newtonsoft.Json.Linq;
 
+
+
+
+
+//using System.Security.Claims;
+//using System.Threading.Tasks;
+
+//using Microsoft.AspNet.Identity;
+//using Microsoft.AspNet.Identity.EntityFramework;
+//using Microsoft.AspNet.Identity.Owin;
+//using Microsoft.Owin;
+//using Microsoft.Owin.Security;
+
+
+using SendGrid;
+
+using System.Configuration;
+using System.Diagnostics;
 namespace Activos_PrestamosOET.Controllers
 {
 
@@ -325,7 +346,7 @@ namespace Activos_PrestamosOET.Controllers
 
                     if (x.TIPO != null)
                     {
-                        if (x.TIPO == y.ID.ToString())
+                        if (x.TIPO == y.NOMBRE)
                         {
 
                             temp.Add(y.NOMBRE);
@@ -365,6 +386,17 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            if (TempData["Mensaje"] != null)
+            {
+                ViewBag.Mensaje = TempData["Mensaje"].ToString();
+                TempData.Remove("Mensaje");
+            }
+            if (TempData["Mensaje2"] != null)
+            {
+                ViewBag.Mensaje2 = TempData["Mensaje2"].ToString();
+                TempData.Remove("Mensaje2");
+            }
+           
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
             // ViewBag.clear();
 
@@ -477,6 +509,7 @@ namespace Activos_PrestamosOET.Controllers
             List<string> disp = new List<string>();
             foreach (var e in equipoMayorCero)
             {
+                
                 int tipo = e.TIPOS_ACTIVOSID;
                 //Se consulta la cantidad total de activos prestables de una categoría 
                 int contador = (from a in db.ACTIVOS
@@ -566,6 +599,7 @@ namespace Activos_PrestamosOET.Controllers
                 }
                 addActivosToPrestamo(activoSeleccionado, ID);
                 ViewBag.Mensaje = "El préstamo ha sido aprobado con éxito";
+                TempData["Mensaje"] = "El préstamo ha sido aprobado con éxito";
 
             }
 
@@ -580,6 +614,7 @@ namespace Activos_PrestamosOET.Controllers
                 }
 
                 ViewBag.Mensaje2 = "El préstamo ha sido denegado con éxito";
+                TempData["Mensaje2"] = "El préstamo ha sido denegado con éxito";
             }
 
             if (b == "Descargar Boleta")
@@ -589,12 +624,57 @@ namespace Activos_PrestamosOET.Controllers
 
             return RedirectToAction("Details", new { id = ID });
         }
+        private static void SendAsync(SendGrid.SendGridMessage message)
+        {
 
-       
+            //string apikey = Environment.GetEnvironmentVariable("SENDGRID_APIKEY");
+            // Create a Web transport for sending email.
+            var credentials = new NetworkCredential(
+                       ConfigurationManager.AppSettings["mailAccount"],
+                       ConfigurationManager.AppSettings["mailPassword"]
+                       );
+            var transportWeb = new SendGrid.Web(credentials);
+
+            // Send the email.
+            try
+            {
+                transportWeb.DeliverAsync(message).Wait();
+                Console.WriteLine("Email sent to " + message.To.GetValue(0));
+                Console.WriteLine("\n\nPress any key to continue.");
+                Console.ReadKey();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine("\n\nPress any key to continue.");
+                Console.ReadKey();
+            }
+        }
+
+        private static void SolicitudBien(string to, string mensaje,string subj)
+        {
+            // Create the email object first, then add the properties.
+            var myMessage = new SendGrid.SendGridMessage();
+            myMessage.AddTo(to);
+            myMessage.From = new System.Net.Mail.MailAddress(
+                                "andresbejar@gmail.com", "Admin");//new MailAddress(from, fromName);
+            myMessage.Subject = subj; //"Solicitud de Prestamo";
+            myMessage.Text = mensaje;//"Su solicitud ha sido realizada con éxito! \n "+mensaje;
+            /*
+            var subs = new List<String> { "%type%" };
+            myMessage.AddSubstitution("%tag%", subs);
+            myMessage.AddSection("%type%", "Éxito!");
+            */
+            SendAsync(myMessage);
+        }
 
         // GET: PRESTAMOes/Create
         public ActionResult Create()
         {
+            //string subj = "Solicitud de Prestamo";
+            //string mensajito = "Su solicitud ha sido realizada con éxito! \n El numero de boleta es hhh\n";
+            //string email = "andreittttta@hotmail.com";
+            //SolicitudBien(email, mensajito, subj);
             ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
             ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
             ViewBag.Cursos = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
@@ -637,6 +717,7 @@ namespace Activos_PrestamosOET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,CED_SOLICITA,CED_APRUEBA")] PRESTAMO p, int[] Cantidad, String[] Categoria)
         {
+            
             //p.FECHA_RETIRO
             PRESTAMO prestamo = new PRESTAMO();
             var allErrors = ModelState.Values.SelectMany(v => v.Errors);
@@ -676,11 +757,19 @@ namespace Activos_PrestamosOET.Controllers
                     db.EQUIPO_SOLICITADO.Add(equipo);
                     db.SaveChanges();
                 }
+                p = db.PRESTAMOS.Find(prestamo.ID);
+                string subj = "Solicitud de Prestamo";
+                string mensajito = "Su solicitud ha sido realizada con éxito! \n El numero de boleta es " + p.NUMERO_BOLETA.ToString() + "\n";
+                USUARIO este = db.USUARIOS.Find(p.CED_SOLICITA);
+                string email = este.CORREO;
+                //SolicitudBien(email,mensajito,subj);
+                email = "andreittttta@hotmail.com";
+                SolicitudBien(email, mensajito, subj);
                 TempData["confirmacion"] = "La solicitud fue enviada con éxito";
                 TempData.Keep();
                 return RedirectToAction("Historial");
             }
-
+            
             ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", p.CED_SOLICITA);
             ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", p.CED_APRUEBA);
             return View(prestamo);
@@ -704,6 +793,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.Cursos = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
             //Determina el estado de la solicitud para desplegarlo en la pantalla mas adelante
             ViewBag.Estadillo = "";
             if (pRESTAMO.Estado == 1)
@@ -772,7 +862,7 @@ namespace Activos_PrestamosOET.Controllers
 
                     if (x.TIPO != null)
                     {
-                        if (x.TIPO == y.ID.ToString())
+                        if (x.TIPO == y.NOMBRE)
                         {
 
                             temp.Add(y.NOMBRE);
@@ -831,16 +921,16 @@ namespace Activos_PrestamosOET.Controllers
                 bool noEsta = true;
                 foreach (var x in equipo_sol)
                 {
-                    if (y.ID.ToString() == x.TIPO)
+                    if (y.NOMBRE == x.TIPO)
                     {
-                        EQUIPO_SOLICITADO pr = db.EQUIPO_SOLICITADO.Find(id, y.ID.ToString(), x.CANTIDAD);
+                        EQUIPO_SOLICITADO pr = db.EQUIPO_SOLICITADO.Find(id, y.NOMBRE, x.CANTIDAD);
                         //busca si el elemento de la tabla equipo solicitado existe
                         if (pr == null)
                         {
                             //Si no existe lo crea
                             pr = new EQUIPO_SOLICITADO();
                             pr.ID_PRESTAMO = id;
-                            pr.TIPO_ACTIVO = y.ID.ToString();
+                            pr.TIPO_ACTIVO = y.NOMBRE;
                             pr.CANTIDAD = cantidad[a];
                             //Lo agrega a la tabla
                             if (ModelState.IsValid)
@@ -856,7 +946,7 @@ namespace Activos_PrestamosOET.Controllers
                             decimal temp = cantidad[a];
                             noEsta = false;
                             eq.ID_PRESTAMO = pr.ID_PRESTAMO;
-                            eq.TIPO_ACTIVO = pr.TIPO_ACTIVO;
+                            eq.TIPO_ACTIVO = y.NOMBRE;
                             eq.CANTIDAD = temp;
                             eq.CANTIDADAPROBADA = pr.CANTIDADAPROBADA;
                             db.EQUIPO_SOLICITADO.Remove(pr);
@@ -875,7 +965,7 @@ namespace Activos_PrestamosOET.Controllers
                     //Si no se ha guardado en la tabla anteriormente lo crea y lo guarda
                     EQUIPO_SOLICITADO pr = new EQUIPO_SOLICITADO();
                     pr.ID_PRESTAMO = id;
-                    pr.TIPO_ACTIVO = y.ID.ToString();
+                    pr.TIPO_ACTIVO = y.NOMBRE;
                     pr.CANTIDAD = cantidad[a];
                     if (ModelState.IsValid)
                     {
@@ -920,6 +1010,13 @@ namespace Activos_PrestamosOET.Controllers
                 //Redirecciona al historial
                 return RedirectToAction("Historial");
             }
+            string subj = "Edición de Solicitud";
+            string mensajito = "Ha editado la solicitud con numero de boleta " + p.NUMERO_BOLETA.ToString() + " exitosamente \n Gracias por preferirnos\n";
+            USUARIO este = db.USUARIOS.Find(P.CED_SOLICITA);
+            string email = este.CORREO;
+            SolicitudBien(email, mensajito, subj);
+
+            //SolicitudBien("andreittttta@hotmail.com", mensajito, subj);
             return View(P);
         }
 
@@ -944,30 +1041,7 @@ namespace Activos_PrestamosOET.Controllers
             }
             //Para determinar el estado en que se encuentra la solicitud en este momento
             ViewBag.Estadillo = "";
-            if (pRESTAMO.Estado == 1)
-            {
-                ViewBag.Estadillo = "Pendiente";
-            }
-            else if (pRESTAMO.Estado == 2)
-            {
-                ViewBag.Estadillo = "Aceptada";
-            }
-            else if (pRESTAMO.Estado == 3)
-            {
-                ViewBag.Estadillo = "Denegada";
-            }
-            else if (pRESTAMO.Estado == 4)
-            {
-                ViewBag.Estadillo = "Abierta";
-            }
-            else if (pRESTAMO.Estado == 5)
-            {
-                ViewBag.Estadillo = "Cerrada";
-            }
-            else if (pRESTAMO.Estado == 6)
-            {
-                ViewBag.Estadillo = "Cancelada";
-            }
+            ViewBag.Estadillo = "Cancelada";
             //Para determinar cual usuario fue el que hizo la solicitud
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
@@ -1008,7 +1082,7 @@ namespace Activos_PrestamosOET.Controllers
 
                     if (x.TIPO != null)
                     {
-                        if (x.TIPO == y.ID.ToString())
+                        if (x.TIPO == y.NOMBRE)
                         {
 
                             temp.Add(y.NOMBRE);
