@@ -330,7 +330,6 @@ C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Act
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGrid.dll
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGrid.SmtpApi.dll
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGridMail.dll
-C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGridPlus.dll
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Extensions.dll
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Formatting.dll
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Primitives.dll
@@ -352,9 +351,6 @@ C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Act
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\PagedList.xml
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\PagedList.Mvc.xml
-C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGrid.SmtpApi.pdb
-C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGrid.SmtpApi.xml
-C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGridPlus.xml
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Extensions.xml
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Formatting.xml
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Primitives.xml
@@ -380,5 +376,6 @@ C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Act
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csproj.App.config
+C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.dll
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.pdb
