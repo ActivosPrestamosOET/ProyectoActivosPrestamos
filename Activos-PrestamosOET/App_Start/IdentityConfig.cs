@@ -25,7 +25,7 @@ namespace Activos_PrestamosOET
         {
             return configSendGridasync(message);
         }
-
+        
         private Task configSendGridasync(IdentityMessage message)
         {
             var myMessage = new SendGridMessage();
