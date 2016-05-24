@@ -36,6 +36,8 @@ using SendGrid;
 
 using System.Configuration;
 using System.Diagnostics;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Core.Objects;
 namespace Activos_PrestamosOET.Controllers
 {
 
@@ -767,6 +769,8 @@ namespace Activos_PrestamosOET.Controllers
                 }
                 PRESTAMO prest =  new PRESTAMO();
                 prest=db.PRESTAMOS.Find(id);
+                var ctx = ((IObjectContextAdapter)db).ObjectContext;
+                ctx.Refresh(RefreshMode.ClientWins, prest);
                 //User.Identity.Name;
                 string subj = "Solicitud de Prestamo";
                 string mensajito = "Su solicitud ha sido realizada con éxito! \n El numero de boleta es " + prest.NUMERO_BOLETA.ToString() + "\n";
