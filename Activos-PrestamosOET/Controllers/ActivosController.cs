@@ -211,6 +211,7 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
             ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA, "ID", "NOMBRE", aCTIVO.V_ANFITRIONAID);
             ViewBag.V_MONEDAID = new SelectList(db.V_MONEDA, "ID", "SIMBOLO", aCTIVO.V_MONEDAID);
+            ViewBag.FECHA_INGRESO = DateTime.Now.ToString("dd/MM/yyyy");
             ViewBag.INGRESADO_POR = User.Identity.Name;
             return View(aCTIVO);
         }
@@ -284,6 +285,7 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
             ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA, "ID", "NOMBRE", aCTIVO.V_ANFITRIONAID);
             ViewBag.V_MONEDAID = new SelectList(db.V_MONEDA, "ID", "SIMBOLO", aCTIVO.V_MONEDAID);
+            ViewBag.FECHA_INGRESO = aCTIVO.FECHA_INGRESO.Date;
             return View(aCTIVO);
         }
 
@@ -328,6 +330,7 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
             ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA, "ID", "NOMBRE", aCTIVO.V_ANFITRIONAID);
             ViewBag.V_MONEDAID = new SelectList(db.V_MONEDA, "ID", "SIMBOLO", aCTIVO.V_MONEDAID);
+            ViewBag.FECHA_INGRESO = aCTIVO.FECHA_INGRESO.Date;
             return View(aCTIVO);
         }
 
