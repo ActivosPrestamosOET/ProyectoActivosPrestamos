@@ -325,7 +325,7 @@ namespace Activos_PrestamosOET.Controllers
 
                     if (x.TIPO != null)
                     {
-                        if (x.TIPO == y.ID.ToString())
+                        if (x.TIPO == y.NOMBRE)
                         {
 
                             temp.Add(y.NOMBRE);
@@ -786,7 +786,7 @@ namespace Activos_PrestamosOET.Controllers
 
                     if (x.TIPO != null)
                     {
-                        if (x.TIPO == y.ID.ToString())
+                        if (x.TIPO == y.NOMBRE)
                         {
 
                             temp.Add(y.NOMBRE);
@@ -845,16 +845,16 @@ namespace Activos_PrestamosOET.Controllers
                 bool noEsta = true;
                 foreach (var x in equipo_sol)
                 {
-                    if (y.ID.ToString() == x.TIPO)
+                    if (y.NOMBRE == x.TIPO)
                     {
-                        EQUIPO_SOLICITADO pr = db.EQUIPO_SOLICITADO.Find(id, y.ID.ToString(), x.CANTIDAD);
+                        EQUIPO_SOLICITADO pr = db.EQUIPO_SOLICITADO.Find(id, y.NOMBRE, x.CANTIDAD);
                         //busca si el elemento de la tabla equipo solicitado existe
                         if (pr == null)
                         {
                             //Si no existe lo crea
                             pr = new EQUIPO_SOLICITADO();
                             pr.ID_PRESTAMO = id;
-                            pr.TIPO_ACTIVO = y.ID.ToString();
+                            pr.TIPO_ACTIVO = y.NOMBRE;
                             pr.CANTIDAD = cantidad[a];
                             //Lo agrega a la tabla
                             if (ModelState.IsValid)
@@ -870,7 +870,7 @@ namespace Activos_PrestamosOET.Controllers
                             decimal temp = cantidad[a];
                             noEsta = false;
                             eq.ID_PRESTAMO = pr.ID_PRESTAMO;
-                            eq.TIPO_ACTIVO = pr.TIPO_ACTIVO;
+                            eq.TIPO_ACTIVO = y.NOMBRE;
                             eq.CANTIDAD = temp;
                             eq.CANTIDADAPROBADA = pr.CANTIDADAPROBADA;
                             db.EQUIPO_SOLICITADO.Remove(pr);
@@ -889,7 +889,7 @@ namespace Activos_PrestamosOET.Controllers
                     //Si no se ha guardado en la tabla anteriormente lo crea y lo guarda
                     EQUIPO_SOLICITADO pr = new EQUIPO_SOLICITADO();
                     pr.ID_PRESTAMO = id;
-                    pr.TIPO_ACTIVO = y.ID.ToString();
+                    pr.TIPO_ACTIVO = y.NOMBRE;
                     pr.CANTIDAD = cantidad[a];
                     if (ModelState.IsValid)
                     {
@@ -958,30 +958,7 @@ namespace Activos_PrestamosOET.Controllers
             }
             //Para determinar el estado en que se encuentra la solicitud en este momento
             ViewBag.Estadillo = "";
-            if (pRESTAMO.Estado == 1)
-            {
-                ViewBag.Estadillo = "Pendiente";
-            }
-            else if (pRESTAMO.Estado == 2)
-            {
-                ViewBag.Estadillo = "Aceptada";
-            }
-            else if (pRESTAMO.Estado == 3)
-            {
-                ViewBag.Estadillo = "Denegada";
-            }
-            else if (pRESTAMO.Estado == 4)
-            {
-                ViewBag.Estadillo = "Abierta";
-            }
-            else if (pRESTAMO.Estado == 5)
-            {
-                ViewBag.Estadillo = "Cerrada";
-            }
-            else if (pRESTAMO.Estado == 6)
-            {
-                ViewBag.Estadillo = "Cancelada";
-            }
+            ViewBag.Estadillo = "Cancelada";
             //Para determinar cual usuario fue el que hizo la solicitud
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
@@ -1022,7 +999,7 @@ namespace Activos_PrestamosOET.Controllers
 
                     if (x.TIPO != null)
                     {
-                        if (x.TIPO == y.ID.ToString())
+                        if (x.TIPO == y.NOMBRE)
                         {
 
                             temp.Add(y.NOMBRE);
