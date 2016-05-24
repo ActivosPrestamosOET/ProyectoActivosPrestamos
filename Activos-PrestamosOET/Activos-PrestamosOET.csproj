@@ -269,6 +269,7 @@
     <Compile Include="Controllers\SendMailerController.cs" />
     <Compile Include="Controllers\TiposActivosController.cs" />
     <Compile Include="Controllers\TiposTransaccionesController.cs" />
+    <Compile Include="Controllers\TransaccionesController.cs" />
     <Compile Include="Controllers\UsersAdminController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

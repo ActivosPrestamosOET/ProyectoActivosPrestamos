@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Activos_PrestamosOET.Models;
 using PagedList;
+using Microsoft.AspNet.Identity;
 
 namespace Activos_PrestamosOET.Controllers
 {
@@ -15,7 +16,7 @@ namespace Activos_PrestamosOET.Controllers
     public class ActivosController : Controller
     {
         private PrestamosEntities db = new PrestamosEntities();
-
+        private TransaccionesController controladora_transaccion = new TransaccionesController();
         // GET: Activos
         public ActionResult Index(string orden, string filtro, string busqueda, string V_PROVEEDORIDPROVEEDOR, string TIPO_ACTIVOID, string V_ANFITRIONAID, string TIPO_TRANSACCIONID, string ESTADO_ACTIVOID, string V_ESTACIONID, string fecha_antes, string fecha_despues, string usuario, string fabricante, int? pagina)
         {
@@ -155,6 +156,7 @@ namespace Activos_PrestamosOET.Controllers
         // GET: Activos/Create
         public ActionResult Create()
         {
+            ViewBag.INGRESADO_POR = User.Identity.Name;
             ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES, "ID", "NOMBRE");
             ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS, "ID", "NOMBRE");
             ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE");
@@ -175,7 +177,7 @@ namespace Activos_PrestamosOET.Controllers
 
             var estado = db.ESTADOS_ACTIVOS.ToList().Where(ea => ea.NOMBRE == "Disponible");
             aCTIVO.ESTADO_ACTIVOID = estado.ToList()[0].ID;
-
+            aCTIVO.INGRESADO_POR = User.Identity.Name; //Esto deberia de ir en el modelo 
             /* TODO: La manera correcta de hacer esto es en el modelo (en el constructor). Para al siguiente sprint se debe pasar esto 
              * al modelo para respetar el MVC.
              */
@@ -200,6 +202,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 db.ACTIVOS.Add(aCTIVO);
                 db.SaveChanges();
+                controladora_transaccion.Create(DateTime.Now.Date, User.Identity.GetUserName(), "Creado", aCTIVO.descripcion(), aCTIVO.ID);
                 return RedirectToAction("Index");
             }
 
@@ -208,7 +211,7 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
             ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA, "ID", "NOMBRE", aCTIVO.V_ANFITRIONAID);
             ViewBag.V_MONEDAID = new SelectList(db.V_MONEDA, "ID", "SIMBOLO", aCTIVO.V_MONEDAID);
-
+            ViewBag.INGRESADO_POR = User.Identity.Name;
             return View(aCTIVO);
         }
 
@@ -254,6 +257,7 @@ namespace Activos_PrestamosOET.Controllers
                 original.CENTRO_DE_COSTOId = aCTIVO.CENTRO_DE_COSTOId;
                 db.SaveChanges();
 
+                controladora_transaccion.Create(DateTime.Now.Date, User.Identity.GetUserName(), original.ESTADOS_ACTIVOS.NOMBRE, original.descripcion(), original.ID);
                 return RedirectToAction("Index");
             }
             ViewBag.V_USUARIOSIDUSUARIO = new SelectList(db.V_USUARIOS, "IDUSUARIO", "NOMBRE", aCTIVO.V_USUARIOSIDUSUARIO);
@@ -296,12 +300,10 @@ namespace Activos_PrestamosOET.Controllers
                 original.NUMERO_SERIE = aCTIVO.NUMERO_SERIE;
                 original.FECHA_COMPRA = aCTIVO.FECHA_COMPRA;
                 original.INICIO_SERVICIO = aCTIVO.INICIO_SERVICIO;
-                original.FECHA_INGRESO = aCTIVO.FECHA_INGRESO;
                 original.FABRICANTE = aCTIVO.FABRICANTE;
                 original.PRECIO = aCTIVO.PRECIO;
                 original.DESCRIPCION = aCTIVO.DESCRIPCION;
                 original.EXENTO = aCTIVO.EXENTO;
-                original.PRESTABLE = aCTIVO.PRESTABLE;
                 original.TIPO_CAPITAL = aCTIVO.TIPO_CAPITAL;
                 original.INGRESADO_POR = aCTIVO.INGRESADO_POR;
                 original.NUMERO_DOCUMENTO = aCTIVO.NUMERO_DOCUMENTO;
@@ -316,6 +318,9 @@ namespace Activos_PrestamosOET.Controllers
                 original.ESTADO_PRESTADO = aCTIVO.ESTADO_PRESTADO;
 
                 db.SaveChanges();
+
+                controladora_transaccion.Create(DateTime.Now.Date, User.Identity.GetUserName(), "Editado", original.descripcion(), original.ID);
+
                 return RedirectToAction("Index");
             }
             ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES, "ID", "NOMBRE", aCTIVO.TIPO_TRANSACCIONID);
@@ -323,7 +328,6 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
             ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA, "ID", "NOMBRE", aCTIVO.V_ANFITRIONAID);
             ViewBag.V_MONEDAID = new SelectList(db.V_MONEDA, "ID", "SIMBOLO", aCTIVO.V_MONEDAID);
-
             return View(aCTIVO);
         }
 
@@ -348,13 +352,14 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             ACTIVO aCTIVO = db.ACTIVOS.Find(id);
-            /*
+            
             aCTIVO.DESECHADO = true;
             var estado = db.ESTADOS_ACTIVOS.ToList().Where(ea => ea.NOMBRE == "Desechado");
             aCTIVO.ESTADO_ACTIVOID = estado.ToList()[0].ID;
-            */
-            db.ACTIVOS.Remove(aCTIVO); // Quitar esta linea cuando se cambie el estado por desechado
+            
+           // db.ACTIVOS.Remove(aCTIVO); // Quitar esta linea cuando se cambie el estado por desechado
             db.SaveChanges();
+            controladora_transaccion.Create(DateTime.Now.Date, User.Identity.GetUserName(), "Eliminado", aCTIVO.descripcion(), aCTIVO.ID);
             return RedirectToAction("Index");
         }
 
