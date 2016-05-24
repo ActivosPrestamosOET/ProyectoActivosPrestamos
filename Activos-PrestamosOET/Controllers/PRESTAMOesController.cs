@@ -718,6 +718,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.Cursos = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
             //Determina el estado de la solicitud para desplegarlo en la pantalla mas adelante
             ViewBag.Estadillo = "";
             if (pRESTAMO.Estado == 1)
