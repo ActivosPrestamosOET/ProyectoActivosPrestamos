@@ -643,7 +643,8 @@ namespace Activos_PrestamosOET.Controllers
             // Send the email.
             //try
             //{
-                transportWeb.DeliverAsync(message).Wait();
+                //transportWeb.DeliverAsync(message).Wait();
+            transportWeb.DeliverAsync(message);
                 //Console.WriteLine("Email sent to " + message.To.GetValue(0));
                 //Console.WriteLine("\n\nPress any key to continue.");
                 //Console.ReadKey();
