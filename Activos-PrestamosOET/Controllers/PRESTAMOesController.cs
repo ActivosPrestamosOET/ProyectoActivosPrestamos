@@ -641,19 +641,19 @@ namespace Activos_PrestamosOET.Controllers
             var transportWeb = new SendGrid.Web(credentials);
 
             // Send the email.
-            try
-            {
+            //try
+            //{
                 transportWeb.DeliverAsync(message).Wait();
-                Console.WriteLine("Email sent to " + message.To.GetValue(0));
-                Console.WriteLine("\n\nPress any key to continue.");
-                Console.ReadKey();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("\n\nPress any key to continue.");
-                Console.ReadKey();
-            }
+                //Console.WriteLine("Email sent to " + message.To.GetValue(0));
+                //Console.WriteLine("\n\nPress any key to continue.");
+                //Console.ReadKey();
+            //}
+            //catch (Exception ex)
+            //{
+                //Console.WriteLine(ex.Message);
+                //Console.WriteLine("\n\nPress any key to continue.");
+                //Console.ReadKey();
+            //}
         }
 
         private static void SolicitudBien(string to, string mensaje,string subj)
