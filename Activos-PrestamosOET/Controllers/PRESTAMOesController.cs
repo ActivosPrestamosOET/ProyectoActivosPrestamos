@@ -58,22 +58,25 @@ namespace Activos_PrestamosOET.Controllers
             + consecutivo.ToString("D3");
         }
 
-        protected List<String> equipoPorCategoria(int cat, String id)
+        protected List<List<String>> equipoPorCategoria(int cat, String id)
         {
-            List<String> equipo = new List<String>();
-            var activos = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
-           // int cat = int.Parse(categoria);
-            var act = from a in activos.ACTIVOes.Where(i => i.TIPO_ACTIVOID == cat)
-                      select new {FABRICANTE = a.FABRICANTE, MODELO = a.MODELO, PLACA = a.PLACA};
+            List<List<String>> equipos = new List<List<String>>();
 
-            foreach(var a in act)
+            var activos = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
+            // int cat = int.Parse(categoria);
+            var act = from a in activos.ACTIVOes.Where(i => i.TIPO_ACTIVOID == cat)
+                      select new { FABRICANTE = a.FABRICANTE, MODELO = a.MODELO, PLACA = a.PLACA };
+
+            foreach (var a in act)
             {
+                List<String> equipo = new List<String>();
                 equipo.Add(a.FABRICANTE);
                 equipo.Add(a.MODELO);
                 equipo.Add(a.PLACA);
+                equipos.Add(equipo);
             }
-            
-            return equipo;
+
+            return equipos;
         }
 
 
@@ -1196,17 +1199,17 @@ namespace Activos_PrestamosOET.Controllers
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
 
 
-           var equipo_cat = new List<List<String>>();
-           var categorias_sol = from p in db.PRESTAMOS
+            var equipo_cat = new Dictionary<String, List<List<String>>>();
+            var categorias_sol = from p in db.PRESTAMOS
                                  from e in db.EQUIPO_SOLICITADO
                                  where p.ID == id && e.ID_PRESTAMO == p.ID
-                                 select new { CAT = e.TIPOS_ACTIVOSID };
+                                 select new { CAT = e.TIPO_ACTIVO, TIPO = e.TIPOS_ACTIVOSID };
 
             foreach (var c in categorias_sol)
             {
-                var eq  = new List<String>();
-                eq = equipoPorCategoria(c.CAT, id);
-                equipo_cat.Add(eq);
+                var eq = new List<List<String>>();
+                eq = equipoPorCategoria(c.TIPO, id);
+                equipo_cat.Add(c.CAT.ToString(), eq);
             }
 
 
@@ -1227,7 +1230,8 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             ViewBag.Equipo_Solict = equipo;
-            ViewBag.EquipoPorCat  = equipo_cat;
+            ViewBag.EquipoPorCat = equipo_cat;
+
             return View(pRESTAMO);
         }
 
