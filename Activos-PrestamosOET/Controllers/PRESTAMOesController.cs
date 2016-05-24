@@ -754,7 +754,7 @@ namespace Activos_PrestamosOET.Controllers
 
                     if (x.TIPO != null)
                     {
-                        if (x.TIPO == y.NOMBRE)
+                        if (x.TIPO == y.ID.ToString())
                         {
 
                             temp.Add(y.NOMBRE);
@@ -813,9 +813,9 @@ namespace Activos_PrestamosOET.Controllers
                 bool noEsta = true;
                 foreach (var x in equipo_sol)
                 {
-                    if (y.NOMBRE == x.TIPO)
+                    if (y.ID.ToString() == x.TIPO)
                     {
-                        EQUIPO_SOLICITADO pr = db.EQUIPO_SOLICITADO.Find(id, y.NOMBRE, x.CANTIDAD);
+                        EQUIPO_SOLICITADO pr = db.EQUIPO_SOLICITADO.Find(id, y.ID.ToString(), x.CANTIDAD);
                         //busca si el elemento de la tabla equipo solicitado existe
                         if (pr == null)
                         {
@@ -838,7 +838,7 @@ namespace Activos_PrestamosOET.Controllers
                             decimal temp = cantidad[a];
                             noEsta = false;
                             eq.ID_PRESTAMO = pr.ID_PRESTAMO;
-                            eq.TIPO_ACTIVO = y.NOMBRE;
+                            eq.TIPO_ACTIVO = pr.TIPO_ACTIVO;
                             eq.CANTIDAD = temp;
                             eq.CANTIDADAPROBADA = pr.CANTIDADAPROBADA;
                             db.EQUIPO_SOLICITADO.Remove(pr);
