@@ -590,12 +590,14 @@ namespace Activos_PrestamosOET.Controllers
                     }
                 }
 
-
-                pRESTAMO.Estado = 2;
-                if (ModelState.IsValid)
+                if (pRESTAMO.Estado == 1)
                 {
-                    db.Entry(pRESTAMO).State = EntityState.Modified;
-                    db.SaveChanges();
+                    pRESTAMO.Estado = 2;
+                    if (ModelState.IsValid)
+                    {
+                        db.Entry(pRESTAMO).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
                 }
                 addActivosToPrestamo(activoSeleccionado, ID);
                 ViewBag.Mensaje = "El préstamo ha sido aprobado con éxito";
@@ -1400,13 +1402,18 @@ namespace Activos_PrestamosOET.Controllers
                     var activo = db.ACTIVOS.SingleOrDefault(i => i.PLACA == p);
                     activo.ESTADO_PRESTADO = 1;
 
-
+                    prestamo.Estado = 4;
                     activosPorAgregar.AddLast(activo);
                     prestamo.ACTIVOes.Add(activo);
                     if (ModelState.IsValid)
                     {
                         db.Entry(activo).State = EntityState.Modified;
+                        db.Entry(prestamo).State = EntityState.Modified;
                         db.SaveChanges();
+                    }
+                    else
+                    {
+                        var errors = ModelState.Values.SelectMany(v => v.Errors);
                     }
 
                 }

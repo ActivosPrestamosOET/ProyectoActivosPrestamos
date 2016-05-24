@@ -41,7 +41,7 @@ namespace Activos_PrestamosOET.Models
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         [Required(ErrorMessage = "La fecha de inicio del préstamo es requerida")]
-        [DateMustBeEqualOrGreaterThanCurrentDateValidation]
+        //[DateMustBeEqualOrGreaterThanCurrentDateValidation]
         public System.DateTime FECHA_RETIRO { get; set; }
         [DisplayName("Periodo del préstamo")]
         [Required(ErrorMessage = "El periodo de uso es requerido")]
