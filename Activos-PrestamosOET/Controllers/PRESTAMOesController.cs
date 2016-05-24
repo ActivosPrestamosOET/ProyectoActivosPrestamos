@@ -306,7 +306,7 @@ namespace Activos_PrestamosOET.Controllers
 
                     if (x.TIPO != null)
                     {
-                        if (x.TIPO == y.NOMBRE)
+                        if (x.TIPO == y.ID.ToString())
                         {
 
                             temp.Add(y.NOMBRE);
@@ -371,8 +371,8 @@ namespace Activos_PrestamosOET.Controllers
                 }
             }
             /*  -------------------------------------------------------------------------------------------  */
-
-
+            
+            
             var equipoSol = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(p => p.ID == id);
             var equipoSolicitado = equipoSol.EQUIPO_SOLICITADO;
 
@@ -382,11 +382,11 @@ namespace Activos_PrestamosOET.Controllers
             var activos = new List<List<List<String>>>();
             var activosPrevios = new List<List<List<String>>>();
             foreach (var x in equipoSolicitado)
-            {
+            {                
                 List<String> temp = new List<String>();
                 if (x.TIPO_ACTIVO != null)
-                {
-
+                {   
+                                             
                     temp.Add(x.TIPO_ACTIVO.ToString());
                     actPrevios = llenarTablaDetails(x.TIPOS_ACTIVOSID.ToString(), id);
                     act = llenarTablaDetails(x.TIPOS_ACTIVOSID.ToString());
@@ -417,8 +417,8 @@ namespace Activos_PrestamosOET.Controllers
             }
             ViewBag.Activos_enPrevio = activosPrevios;
             ViewBag.Activos_enCat = activos;
-            //Segmento de código para colocar colores a las cantidad de solicitudes por categoría.
-            var prestamosConEquipo = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).SingleOrDefault(p => p.ID == id);//Se hace joint entre prestamos y equipo solicitado por id del préstamo           
+        //Segmento de código para colocar colores a las cantidad de solicitudes por categoría.
+        var prestamosConEquipo = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).SingleOrDefault(p => p.ID == id);//Se hace joint entre prestamos y equipo solicitado por id del préstamo           
             var equipoMayorCero = prestamosConEquipo.EQUIPO_SOLICITADO.Where(q => q.CANTIDAD > 0);//Se verifica que se seleccionen los equipos seleccionados que tengan más 0 soliciudes
             var prestamosPorFechas = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).Where(p => p.FECHA_RETIRO <= prestamosConEquipo.FECHA_RETIRO && p.ID != id);//Se selccionan las solicitudes de préstamo qe se encuentran "abiertos" para el momento de inicio del préstamo consultado.
             Dictionary<string, int> hashConValoresPorTipoActivo = new Dictionary<string, int>();//diccionario que almacena las cantidades de préstamos vigentes.
@@ -450,7 +450,7 @@ namespace Activos_PrestamosOET.Controllers
                                     }
                                 }
                             }
-                        }
+                        }                       
                     }
                 }
             }
@@ -490,7 +490,7 @@ namespace Activos_PrestamosOET.Controllers
             }
             ViewBag.Equipo_Solict = equipo;
 
-
+            
             return View(pRESTAMO);
         }
 
@@ -571,7 +571,7 @@ namespace Activos_PrestamosOET.Controllers
             return RedirectToAction("Details", new { id = ID });
         }
 
-
+       
 
         // GET: PRESTAMOes/Create
         public ActionResult Create()
@@ -685,7 +685,6 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Cursos = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
             //Determina el estado de la solicitud para desplegarlo en la pantalla mas adelante
             ViewBag.Estadillo = "";
             if (pRESTAMO.Estado == 1)
@@ -754,7 +753,7 @@ namespace Activos_PrestamosOET.Controllers
 
                     if (x.TIPO != null)
                     {
-                        if (x.TIPO == y.NOMBRE)
+                        if (x.TIPO == y.ID.ToString())
                         {
 
                             temp.Add(y.NOMBRE);
@@ -813,16 +812,16 @@ namespace Activos_PrestamosOET.Controllers
                 bool noEsta = true;
                 foreach (var x in equipo_sol)
                 {
-                    if (y.NOMBRE == x.TIPO)
+                    if (y.ID.ToString() == x.TIPO)
                     {
-                        EQUIPO_SOLICITADO pr = db.EQUIPO_SOLICITADO.Find(id, y.NOMBRE, x.CANTIDAD);
+                        EQUIPO_SOLICITADO pr = db.EQUIPO_SOLICITADO.Find(id, y.ID.ToString(), x.CANTIDAD);
                         //busca si el elemento de la tabla equipo solicitado existe
                         if (pr == null)
                         {
                             //Si no existe lo crea
                             pr = new EQUIPO_SOLICITADO();
                             pr.ID_PRESTAMO = id;
-                            pr.TIPO_ACTIVO = y.NOMBRE;//y.ID.ToString();
+                            pr.TIPO_ACTIVO = y.ID.ToString();
                             pr.CANTIDAD = cantidad[a];
                             //Lo agrega a la tabla
                             if (ModelState.IsValid)
@@ -838,7 +837,7 @@ namespace Activos_PrestamosOET.Controllers
                             decimal temp = cantidad[a];
                             noEsta = false;
                             eq.ID_PRESTAMO = pr.ID_PRESTAMO;
-                            eq.TIPO_ACTIVO = y.NOMBRE;
+                            eq.TIPO_ACTIVO = pr.TIPO_ACTIVO;
                             eq.CANTIDAD = temp;
                             eq.CANTIDADAPROBADA = pr.CANTIDADAPROBADA;
                             db.EQUIPO_SOLICITADO.Remove(pr);
@@ -857,7 +856,7 @@ namespace Activos_PrestamosOET.Controllers
                     //Si no se ha guardado en la tabla anteriormente lo crea y lo guarda
                     EQUIPO_SOLICITADO pr = new EQUIPO_SOLICITADO();
                     pr.ID_PRESTAMO = id;
-                    pr.TIPO_ACTIVO = y.NOMBRE;//y.ID.ToString();
+                    pr.TIPO_ACTIVO = y.ID.ToString();
                     pr.CANTIDAD = cantidad[a];
                     if (ModelState.IsValid)
                     {
@@ -990,7 +989,7 @@ namespace Activos_PrestamosOET.Controllers
 
                     if (x.TIPO != null)
                     {
-                        if (x.TIPO == y.NOMBRE)
+                        if (x.TIPO == y.ID.ToString())
                         {
 
                             temp.Add(y.NOMBRE);
@@ -1144,8 +1143,7 @@ namespace Activos_PrestamosOET.Controllers
             if (b == "Actualizar devolución")
             {
                 int cont = 0;
-                if (!column5_checkAll)
-                {
+                if (!column5_checkAll) {
                     foreach (var y in equipo_sol)
                     {
                         bool t = column5_checkbox[cont];
@@ -1162,8 +1160,7 @@ namespace Activos_PrestamosOET.Controllers
                         }
                         cont++;
                     }
-                }
-                else
+                } else
                 {
                     foreach (var y in equipo_sol)
                     {
@@ -1177,7 +1174,7 @@ namespace Activos_PrestamosOET.Controllers
                         }
                     }
                 }
-
+                
 
 
                 if (column5_checkAll) { }// {pRESTAMO.Estado = 5;}
@@ -1236,8 +1233,8 @@ namespace Activos_PrestamosOET.Controllers
             foreach (Activos_PrestamosOET.Models.ACTIVO x in activos)
             {
 
-                if (Categoria.Equals(x.TIPO_ACTIVOID.ToString()) && x.PRESTABLE == true && x.ESTADO_PRESTADO == 0)
-                {
+                    if (Categoria.Equals(x.TIPO_ACTIVOID.ToString()) && x.PRESTABLE == true && x.ESTADO_PRESTADO== 0)
+                    {
                     List<String> temp = new List<String>();
                     if (x.FABRICANTE != null) { temp.Add(x.FABRICANTE); } else { temp.Add(""); }
                     if (x.MODELO != null) { temp.Add(x.MODELO); } else { temp.Add(""); }
@@ -1246,7 +1243,7 @@ namespace Activos_PrestamosOET.Controllers
                     activos_enCat.Add(temp);
                 }
             }
-
+            
             if (activos_enCat.Count == 0)
             {
                 List<String> temp = new List<String>();
@@ -1257,7 +1254,7 @@ namespace Activos_PrestamosOET.Controllers
                 ViewBag.NoActivos = "No hay Activos Prestables con esta categoría.";
             }
             return activos_enCat;
-        }
+    }
         private List<List<String>> llenarTablaDetails(String Categoria, string id)
         {
 
@@ -1268,16 +1265,16 @@ namespace Activos_PrestamosOET.Controllers
             {
 
                 if (Categoria.Equals(x.TIPO_ACTIVOID.ToString()))
-                {
+                    {
                     List<String> temp = new List<String>();
                     if (x.FABRICANTE != null) { temp.Add(x.FABRICANTE); } else { temp.Add(""); }
                     if (x.MODELO != null) { temp.Add(x.MODELO); } else { temp.Add(""); }
                     if (x.PLACA != null) { temp.Add(x.PLACA); } else { temp.Add(""); }
 
                     activos_enCat.Add(temp);
-                }
+                }              
             }
-
+            
             return activos_enCat;
         }
 
