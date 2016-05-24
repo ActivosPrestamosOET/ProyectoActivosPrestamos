@@ -39,8 +39,7 @@ namespace Activos_PrestamosOET.Models
         public System.DateTime FECHA_RETIRO { get; set; }
         [DisplayName("Periodo del préstamo")]
         [Required(ErrorMessage = "El periodo de uso es requerido")]
-        [Range(1, 99,
-            ErrorMessage = "El periodo de uso debe ubicarse entre 1 y 99 días")]
+        //[Range(1, 99,ErrorMessage = "El periodo de uso debe ubicarse entre 1 y 99 días")]
         public int PERIODO_USO { get; set; }
         [DisplayName("Software requerido")]
         [StringLength(250)]
