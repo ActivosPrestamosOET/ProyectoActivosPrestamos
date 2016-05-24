@@ -685,7 +685,6 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.Cursos = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
             //Determina el estado de la solicitud para desplegarlo en la pantalla mas adelante
             ViewBag.Estadillo = "";
             if (pRESTAMO.Estado == 1)
@@ -822,7 +821,7 @@ namespace Activos_PrestamosOET.Controllers
                             //Si no existe lo crea
                             pr = new EQUIPO_SOLICITADO();
                             pr.ID_PRESTAMO = id;
-                            pr.TIPO_ACTIVO = y.NOMBRE;//y.ID.ToString();
+                            pr.TIPO_ACTIVO = y.ID.ToString();
                             pr.CANTIDAD = cantidad[a];
                             //Lo agrega a la tabla
                             if (ModelState.IsValid)
@@ -857,7 +856,7 @@ namespace Activos_PrestamosOET.Controllers
                     //Si no se ha guardado en la tabla anteriormente lo crea y lo guarda
                     EQUIPO_SOLICITADO pr = new EQUIPO_SOLICITADO();
                     pr.ID_PRESTAMO = id;
-                    pr.TIPO_ACTIVO = y.NOMBRE;//y.ID.ToString();
+                    pr.TIPO_ACTIVO = y.ID.ToString();
                     pr.CANTIDAD = cantidad[a];
                     if (ModelState.IsValid)
                     {
