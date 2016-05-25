@@ -1128,6 +1128,13 @@ namespace Activos_PrestamosOET.Controllers
                 db.Entry(pRESTAMO).State = EntityState.Modified;
                 //guarda los cambios en la base
                 db.SaveChanges();
+                //Enviar email notificando que se cancelo la solicitud
+                string subj = "Cancelación de Solicitud: " + pRESTAMO.NUMERO_BOLETA;
+                var consultaUrl = Url.Action("Detalles", "PRESTAMOes", new { id = pRESTAMO.ID }, protocol: Request.Url.Scheme);
+                string link = " " + consultaUrl + " ";
+                string email = User.Identity.Name;
+                string mensajito = "Se ha cancelado la solicitud con numero de boleta " + pRESTAMO.NUMERO_BOLETA + " exitosamente. Puede consultar esta solicitud en el siguiente link: " + link + " \n Gracias por preferirnos.\n";
+                SolicitudBien(email, mensajito, subj);
                 //Redirecciona la pagina al historial
                 return RedirectToAction("Historial");
             }
