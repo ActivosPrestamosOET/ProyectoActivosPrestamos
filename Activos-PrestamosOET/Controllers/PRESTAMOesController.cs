@@ -697,7 +697,7 @@ namespace Activos_PrestamosOET.Controllers
 
             ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
             ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
-            ViewBag.Cursos = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
+            ViewBag.SIGLA_CURSO = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
 
             List<String> categorias = new List<String>();
 
