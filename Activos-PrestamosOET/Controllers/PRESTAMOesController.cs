@@ -83,6 +83,20 @@ namespace Activos_PrestamosOET.Controllers
             return nuevoVec;
         }
 
+        protected bool hayFilaEntera(bool [] vec)
+        {
+            bool ret = false;
+            foreach(bool b in vec)
+            {
+                if(b)
+                {
+                    ret = true;
+                    break;
+                }
+            }
+            return ret;
+        }
+
         protected List<List<String>> equipoPorCategoria(int cat, String id)
         {
             List<List<String>> equipos = new List<List<String>>();
@@ -90,7 +104,8 @@ namespace Activos_PrestamosOET.Controllers
             var activos = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
             // int cat = int.Parse(categoria);
             var act = from a in activos.ACTIVOes.Where(i => i.TIPO_ACTIVOID == cat)
-                      select new { FABRICANTE = a.FABRICANTE, MODELO = a.MODELO, PLACA = a.PLACA };
+                      where a.ESTADO_PRESTADO == 1
+                      select new { FABRICANTE = a.FABRICANTE, MODELO = a.MODELO, PLACA = a.PLACA, ID = a.ID };
 
             foreach (var a in act)
             {
@@ -98,6 +113,7 @@ namespace Activos_PrestamosOET.Controllers
                 equipo.Add(a.FABRICANTE);
                 equipo.Add(a.MODELO);
                 equipo.Add(a.PLACA);
+                equipo.Add(a.ID);
                 equipos.Add(equipo);
             }
 
@@ -1266,6 +1282,8 @@ namespace Activos_PrestamosOET.Controllers
 
             ViewBag.Equipo_Solict = equipo;
             ViewBag.EquipoPorCat = equipo_cat;
+            TempData["activos"] = equipo_cat;
+            TempData.Keep();
 
             return View(pRESTAMO);
         }
@@ -1279,7 +1297,18 @@ namespace Activos_PrestamosOET.Controllers
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
             pRESTAMO.OBSERVACIONES_APROBADO = OBSERVACIONES_APROBADO;
 
+            Dictionary<String, List<List<String>>> dic = (Dictionary<String, List<List<String>>>) TempData["activos"];
+
             List<bool> devolucionActivos = corregirVectorBool(activoSeleccionado);
+            List<String> idPrestados = new List<String>();
+
+            foreach (KeyValuePair<String, List<List<String>> > entrada in dic)
+            {
+                foreach(List<String> l in entrada.Value)
+                {
+                    idPrestados.Add(l[3]);
+                }
+            }
 
             if (ModelState.IsValid)
             {
@@ -1295,54 +1324,7 @@ namespace Activos_PrestamosOET.Controllers
             /*---------------------------------------------------------------------------*/
             if (b == "Actualizar devolución")
             {
-                int cont = 0;
-
-
-                foreach (var y in equipo_sol)
-                {
-                    bool t = column5_checkbox[cont];
-                    if (t)
-                    { //si fueron todos seleccionados en esa fila, de ese tipo
-                        foreach (var x in activos_asignados)
-                        {
-                            if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
-                            {
-                                x.ESTADO_PRESTADO = 0;
-                            }
-                        }
-                    }
-                    cont++;
-                }
-
-                //Arreglar el flujo cuando haya tiempo
-                int c = 0;
-
-                bool todos = true;
-
-                foreach (var y in equipo_sol)
-                {
-                    foreach (var x in activos_asignados)
-                    {
-
-                        if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
-                        {
-                            if (devolucionActivos[c] == true)
-                            {
-                                x.ESTADO_PRESTADO = 0;
-                            }
-                            else
-                            {
-                                todos = false;
-                            }
-                        }
-
-                        c++;
-                    }
-                    c = 0;
-                }
-
-                if (todos) { pRESTAMO.Estado = 5; }
-
+               
                 if (column5_checkAll)
                 {
                     foreach (var y in equipo_sol)
@@ -1355,9 +1337,50 @@ namespace Activos_PrestamosOET.Controllers
                             }
                         }
                     }
+                    pRESTAMO.Estado = 5;
+                }
+                else if(hayFilaEntera(column5_checkbox))
+                {
+                    int cont = 0;
+                    foreach (var y in equipo_sol)
+                    {
+                        bool t = column5_checkbox[cont];
+                        if (t)
+                        { //si fueron todos seleccionados en esa fila, de ese tipo
+                            foreach (var x in activos_asignados)
+                            {
+                                if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
+                                {
+                                    x.ESTADO_PRESTADO = 0;
+                                }
+                            }
+                        }
+                        cont++;
+                    }
+                }
+                else //Si no se devolvieron todos ni una categoría entera, entonces se procesan las devoluciones individuales
+                {
+                   
+                    bool todos = true;
+                    for(int i = 0; i < idPrestados.Count(); i++)
+                    {
+                        String id = idPrestados[i];
+                        ACTIVO act = db.ACTIVOS.Find(id);
+                        if (devolucionActivos[i])
+                            act.ESTADO_PRESTADO = 0;
+                        else
+                        {
+                            //act.ESTADO_PRESTADO = ;
+                            todos = false;
+                        }
+                        db.Entry(act).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+ 
+                     if (todos) { pRESTAMO.Estado = 5; }
                 }
 
-                if (column5_checkAll) { pRESTAMO.Estado = 5; }
+               // if (column5_checkAll) { pRESTAMO.Estado = 5; }
 
                 if (ModelState.IsValid)
                 {
@@ -1374,35 +1397,32 @@ namespace Activos_PrestamosOET.Controllers
                     ViewBag.Mensaje2 = "Los activos no han sido devueltos correctamente.";
                 }
 
-
             }
 
 
-
-            var lista = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
-            ViewBag.Nombre = lista.USUARIO.NOMBRE;
-            /*  -------------------------------------------------------------------------------------------  */
-
-            var equipo = new List<List<String>>();
-            foreach (var x in equipo_sol)
-            {
-                if (prestamo.ID == ID)
-                {
-                    if (prestamo.ID == x.ID_PRESTAMO)
-                    {
-                        List<String> temp = new List<String>();
-                        if (x.TIPO_ACTIVO != null) { temp.Add(x.TIPO_ACTIVO.ToString()); } else { temp.Add(""); }
-                        if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
-                        if (x.CANTIDADAPROBADA != 0) { temp.Add(x.CANTIDADAPROBADA.ToString()); } else { temp.Add(""); }
-                        equipo.Add(temp);
-                    }
-                }
-            }
-            ViewBag.Equipo_Solict = equipo;
+            //var lista = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
+            //ViewBag.Nombre = lista.USUARIO.NOMBRE;
+            ///*  -------------------------------------------------------------------------------------------  */
+            //var equipo = new List<List<String>>();
+            //foreach (var x in equipo_sol)
+            //{
+            //    if (prestamo.ID == ID)
+            //    {
+            //        if (prestamo.ID == x.ID_PRESTAMO)
+            //        {
+            //            List<String> temp = new List<String>();
+            //            if (x.TIPO_ACTIVO != null) { temp.Add(x.TIPO_ACTIVO.ToString()); } else { temp.Add(""); }
+            //            if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
+            //            if (x.CANTIDADAPROBADA != 0) { temp.Add(x.CANTIDADAPROBADA.ToString()); } else { temp.Add(""); }
+            //            equipo.Add(temp);
+            //        }
+            //    }
+            //}
+            //ViewBag.Equipo_Solict = equipo;
 
             /*  -------------------------------------------------------------------------------------------  */
 
-            return View(pRESTAMO);
+            return RedirectToAction("Devolucion", new { id = ID }); ;
         }
 
 
