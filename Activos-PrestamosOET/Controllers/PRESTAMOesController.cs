@@ -1008,6 +1008,7 @@ namespace Activos_PrestamosOET.Controllers
                 var consultaUrl = Url.Action("Detalles", "PRESTAMOes", new { id = P.ID }, protocol: Request.Url.Scheme);
                 string link = " " + consultaUrl + " ";
                 string email = User.Identity.Name;
+                string mensajito = "Se ha editado la solicitud con numero de boleta " + numBol + " exitosamente. Puede consultar esta solicitud en el siguiente link: "+link+" \n Gracias por preferirnos.\n";
                 SolicitudBien(email, mensajito, subj);
                 //Redirecciona al historial
                 return RedirectToAction("Historial");
