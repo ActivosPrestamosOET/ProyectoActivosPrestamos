@@ -631,6 +631,10 @@ namespace Activos_PrestamosOET.Controllers
 
             return RedirectToAction("Details", new { id = ID });
         }
+
+        //Requiere: Recibe el mensaje que se quiere enviar por correo electronico.
+        // Modifica: Envia un correo electronico.
+        //Retorna: N/A
         private static void SendAsync(SendGrid.SendGridMessage message)
         {
 
@@ -644,6 +648,9 @@ namespace Activos_PrestamosOET.Controllers
             transportWeb.DeliverAsync(message);
         }
 
+        //Requiere: Recibe 3 strings, el primero es la direccion electronica a la que se quiere enviar el email, la segunda indica el mensaje a enviar y la tercera es el asunto.
+        // Modifica: Envia un correo electronico.
+        //Retorna: N/A
         private static void SolicitudBien(string to, string mensaje,string subj)
         {
             // Create the email object first, then add the properties.
@@ -659,6 +666,9 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: PRESTAMOes/Create
+        //Requiere: N/A.
+        // Modifica: Crea la vista del Create de prestamo.
+        //Retorna: una vista
         public ActionResult Create()
         {
 
@@ -700,6 +710,10 @@ namespace Activos_PrestamosOET.Controllers
 
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
+
+        //Requiere: PRESTAMO p, int[] Cantidad, String[] Categoria.
+        // Modifica: Inserta en la base de datos el p ingresado como parametro, envia una notificacion por medio de email y redirecciona al historial.
+        //Retorna: una vista
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,CED_SOLICITA,CED_APRUEBA")] PRESTAMO p, int[] Cantidad, String[] Categoria)
