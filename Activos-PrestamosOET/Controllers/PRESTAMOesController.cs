@@ -641,22 +641,7 @@ namespace Activos_PrestamosOET.Controllers
                        ConfigurationManager.AppSettings["mailPassword"]
                        );
             var transportWeb = new SendGrid.Web(credentials);
-
-            // Send the email.
-            //try
-            //{
-                //transportWeb.DeliverAsync(message).Wait();
             transportWeb.DeliverAsync(message);
-                //Console.WriteLine("Email sent to " + message.To.GetValue(0));
-                //Console.WriteLine("\n\nPress any key to continue.");
-                //Console.ReadKey();
-            //}
-            //catch (Exception ex)
-            //{
-                //Console.WriteLine(ex.Message);
-                //Console.WriteLine("\n\nPress any key to continue.");
-                //Console.ReadKey();
-            //}
         }
 
         private static void SolicitudBien(string to, string mensaje,string subj)
@@ -665,25 +650,18 @@ namespace Activos_PrestamosOET.Controllers
             var myMessage = new SendGrid.SendGridMessage();
             myMessage.AddTo(to);
             myMessage.From = new System.Net.Mail.MailAddress(
-                                "andresbejar@gmail.com", "Admin");//new MailAddress(from, fromName);
-            myMessage.Subject = subj; //"Solicitud de Prestamo";
-            myMessage.Text = mensaje;//"Su solicitud ha sido realizada con éxito! \n "+mensaje;
+                                "andresbejar@gmail.com", "Admin");
+            myMessage.Subject = subj; 
+            myMessage.Text = mensaje;
             myMessage.Html = mensaje;
-            /*
-            var subs = new List<String> { "%type%" };
-            myMessage.AddSubstitution("%tag%", subs);
-            myMessage.AddSection("%type%", "Éxito!");
-            */
+
             SendAsync(myMessage);
         }
 
         // GET: PRESTAMOes/Create
         public ActionResult Create()
         {
-            //string subj = "Solicitud de Prestamo";
-            //string mensajito = "Su solicitud ha sido realizada con éxito! \n El numero de boleta es hhh\n";
-            //string email = "andreittttta@hotmail.com";
-            //SolicitudBien(email, mensajito, subj);
+
             ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
             ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
             ViewBag.Cursos = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
@@ -770,10 +748,12 @@ namespace Activos_PrestamosOET.Controllers
                 }
                 PRESTAMO prest =  new PRESTAMO();
                 prest=db.PRESTAMOS.Find(idd);
+                //Refresca el contexti del objeto PRESTAMO prest de la base de datos para obtener el numero de solicitud correcto.
                 var ctx = ((IObjectContextAdapter)db).ObjectContext;
                 ctx.Refresh(RefreshMode.ClientWins, prest);
+
+                //Envia el correo de notificacion
                 string subj = "Solicitud de Prestamo: "+prest.NUMERO_BOLETA.ToString();
-                
                 var consultaUrl = Url.Action("Detalles", "PRESTAMOes", new { id = idd }, protocol: Request.Url.Scheme);
                 string link = " " + consultaUrl + " ";
                 string mensajito = "Su solicitud ha sido realizada con éxito." +" \n "+ "El numero de boleta es " + prest.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:"+link;
@@ -1023,25 +1003,15 @@ namespace Activos_PrestamosOET.Controllers
             {
                 db.Entry(P).State = EntityState.Modified;
                 db.SaveChanges();
-                string subj = "Edición de Solicitud: "+numBol; 
-                string mensajito = "Ha editado la solicitud con numero de boleta " + numBol + " exitosamente \n Gracias por preferirnos\n";
-                string email = User.Identity.Name; //este.CORREO;
-                                                   //SolicitudBien(email,mensajito,subj);
-                                                   //email = "andreittttta@hotmail.com";
+                //Envia el correo de notificacion
+                string subj = "Edición de Solicitud: "+numBol;
+                var consultaUrl = Url.Action("Detalles", "PRESTAMOes", new { id = P.ID }, protocol: Request.Url.Scheme);
+                string link = " " + consultaUrl + " ";
+                string email = User.Identity.Name;
                 SolicitudBien(email, mensajito, subj);
                 //Redirecciona al historial
                 return RedirectToAction("Historial");
             }
-            /*
-            string subj = "Edición de Solicitud";
-            string mensajito = "Ha editado la solicitud con numero de boleta " + p.NUMERO_BOLETA.ToString() + " exitosamente \n Gracias por preferirnos\n";
-            USUARIO este = db.USUARIOS.Find(P.CED_SOLICITA);
-            string email = este.CORREO;
-            SolicitudBien(email, mensajito, subj);
-            */
-
-
-            //SolicitudBien("andreittttta@hotmail.com", mensajito, subj);
             return View(P);
         }
 
