@@ -1338,6 +1338,7 @@ namespace Activos_PrestamosOET.Controllers
 
                         c++;
                     }
+                    c = 0;
                 }
 
                 if (todos) { pRESTAMO.Estado = 5; }
