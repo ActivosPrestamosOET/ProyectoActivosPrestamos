@@ -60,6 +60,29 @@ namespace Activos_PrestamosOET.Controllers
             + consecutivo.ToString("D3");
         }
 
+        protected List<bool> corregirVectorBool(bool[] vec)
+        {
+            List<bool> nuevoVec = new List<bool>();
+            int longitud = vec.Count();
+            int cuenta = 0;
+
+            while (longitud > cuenta)
+            {
+                if (vec[cuenta] == true)
+                {
+                    nuevoVec.Add(true);
+                    cuenta += 2;
+                }
+                else
+                {
+                    nuevoVec.Add(false);
+                    cuenta++;
+                }
+            }
+
+            return nuevoVec;
+        }
+
         protected List<List<String>> equipoPorCategoria(int cat, String id)
         {
             List<List<String>> equipos = new List<List<String>>();
@@ -1251,15 +1274,19 @@ namespace Activos_PrestamosOET.Controllers
 
 
         [HttpPost]
-        public ActionResult Devolucion(string ID, bool[] column5_checkbox, bool column5_checkAll, string b, string OBSERVACIONES_APROBADO)
+        public ActionResult Devolucion(string ID, bool[] column5_checkbox, bool column5_checkAll, string b, string OBSERVACIONES_APROBADO, bool[] activoSeleccionado)
         {
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
             pRESTAMO.OBSERVACIONES_APROBADO = OBSERVACIONES_APROBADO;
+
+            List<bool> devolucionActivos = corregirVectorBool(activoSeleccionado);
+
             if (ModelState.IsValid)
             {
                 db.Entry(pRESTAMO).State = EntityState.Modified;
                 db.SaveChanges();
             }
+
 
             var prestamo = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
             var equipo_sol = prestamo.EQUIPO_SOLICITADO;
@@ -1269,25 +1296,53 @@ namespace Activos_PrestamosOET.Controllers
             if (b == "Actualizar devolución")
             {
                 int cont = 0;
-                if (!column5_checkAll)
+
+
+                foreach (var y in equipo_sol)
                 {
-                    foreach (var y in equipo_sol)
-                    {
-                        bool t = column5_checkbox[cont];
-                        if (t)
-                        { //si fueron todos seleccionados en esa fila, de ese tipo
-                            foreach (var x in activos_asignados)
+                    bool t = column5_checkbox[cont];
+                    if (t)
+                    { //si fueron todos seleccionados en esa fila, de ese tipo
+                        foreach (var x in activos_asignados)
+                        {
+                            if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
                             {
-                                if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
-                                {
-                                    x.ESTADO_PRESTADO = 0;
-                                }
+                                x.ESTADO_PRESTADO = 0;
                             }
                         }
-                        cont++;
+                    }
+                    cont++;
+                }
+
+                //Arreglar el flujo cuando haya tiempo
+                int c = 0;
+
+                bool todos = true;
+
+                foreach (var y in equipo_sol)
+                {
+                    foreach (var x in activos_asignados)
+                    {
+
+                        if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
+                        {
+                            if (devolucionActivos[c] == true)
+                            {
+                                x.ESTADO_PRESTADO = 0;
+                            }
+                            else
+                            {
+                                todos = false;
+                            }
+                        }
+
+                        c++;
                     }
                 }
-                else
+
+                if (todos) { pRESTAMO.Estado = 5; }
+
+                if (column5_checkAll)
                 {
                     foreach (var y in equipo_sol)
                     {
