@@ -772,7 +772,7 @@ namespace Activos_PrestamosOET.Controllers
                 var ctx = ((IObjectContextAdapter)db).ObjectContext;
                 ctx.Refresh(RefreshMode.ClientWins, prest);
                 //User.Identity.Name;
-                string subj = "Solicitud de Prestamo";
+                string subj = "Solicitud de Prestamo: "+prest.NUMERO_BOLETA.ToString();
                 string mensajito = "Su solicitud ha sido realizada con éxito! \nEl numero de boleta es " + prest.NUMERO_BOLETA.ToString() + "\n";
                 USUARIO este = db.USUARIOS.Find(cedSol);
                 string email = User.Identity.Name; //este.CORREO;
@@ -917,6 +917,7 @@ namespace Activos_PrestamosOET.Controllers
         {
             //Busca el prestamo en la base de datos
             PRESTAMO P = db.PRESTAMOS.Find(id);
+            string numBol = P.NUMERO_BOLETA.ToString();
             //Busca el equipo previamente solicitado
             var equipo_sol = from o in db.PRESTAMOS
                              from o2 in db.EQUIPO_SOLICITADO
@@ -1021,14 +1022,23 @@ namespace Activos_PrestamosOET.Controllers
             {
                 db.Entry(P).State = EntityState.Modified;
                 db.SaveChanges();
+                string subj = "Edición de Solicitud: "+numBol; 
+                string mensajito = "Ha editado la solicitud con numero de boleta " + numBol + " exitosamente \n Gracias por preferirnos\n";
+                string email = User.Identity.Name; //este.CORREO;
+                                                   //SolicitudBien(email,mensajito,subj);
+                                                   //email = "andreittttta@hotmail.com";
+                SolicitudBien(email, mensajito, subj);
                 //Redirecciona al historial
                 return RedirectToAction("Historial");
             }
+            /*
             string subj = "Edición de Solicitud";
             string mensajito = "Ha editado la solicitud con numero de boleta " + p.NUMERO_BOLETA.ToString() + " exitosamente \n Gracias por preferirnos\n";
             USUARIO este = db.USUARIOS.Find(P.CED_SOLICITA);
             string email = este.CORREO;
             SolicitudBien(email, mensajito, subj);
+            */
+
 
             //SolicitudBien("andreittttta@hotmail.com", mensajito, subj);
             return View(P);
