@@ -17,7 +17,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Mail;
 using Newtonsoft.Json.Linq;
-
+//using System.Security.Claims;
 
 
 
@@ -36,6 +36,8 @@ using SendGrid;
 
 using System.Configuration;
 using System.Diagnostics;
+using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Core.Objects;
 namespace Activos_PrestamosOET.Controllers
 {
 
@@ -58,22 +60,25 @@ namespace Activos_PrestamosOET.Controllers
             + consecutivo.ToString("D3");
         }
 
-        protected List<String> equipoPorCategoria(int cat, String id)
+        protected List<List<String>> equipoPorCategoria(int cat, String id)
         {
-            List<String> equipo = new List<String>();
-            var activos = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
-           // int cat = int.Parse(categoria);
-            var act = from a in activos.ACTIVOes.Where(i => i.TIPO_ACTIVOID == cat)
-                      select new {FABRICANTE = a.FABRICANTE, MODELO = a.MODELO, PLACA = a.PLACA};
+            List<List<String>> equipos = new List<List<String>>();
 
-            foreach(var a in act)
+            var activos = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
+            // int cat = int.Parse(categoria);
+            var act = from a in activos.ACTIVOes.Where(i => i.TIPO_ACTIVOID == cat)
+                      select new { FABRICANTE = a.FABRICANTE, MODELO = a.MODELO, PLACA = a.PLACA };
+
+            foreach (var a in act)
             {
+                List<String> equipo = new List<String>();
                 equipo.Add(a.FABRICANTE);
                 equipo.Add(a.MODELO);
                 equipo.Add(a.PLACA);
+                equipos.Add(equipo);
             }
-            
-            return equipo;
+
+            return equipos;
         }
 
 
@@ -590,12 +595,14 @@ namespace Activos_PrestamosOET.Controllers
                     }
                 }
 
-
-                pRESTAMO.Estado = 2;
-                if (ModelState.IsValid)
+                if (pRESTAMO.Estado == 1)
                 {
-                    db.Entry(pRESTAMO).State = EntityState.Modified;
-                    db.SaveChanges();
+                    pRESTAMO.Estado = 2;
+                    if (ModelState.IsValid)
+                    {
+                        db.Entry(pRESTAMO).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
                 }
                 addActivosToPrestamo(activoSeleccionado, ID);
                 ViewBag.Mensaje = "El préstamo ha sido aprobado con éxito";
@@ -636,19 +643,20 @@ namespace Activos_PrestamosOET.Controllers
             var transportWeb = new SendGrid.Web(credentials);
 
             // Send the email.
-            try
-            {
-                transportWeb.DeliverAsync(message).Wait();
-                Console.WriteLine("Email sent to " + message.To.GetValue(0));
-                Console.WriteLine("\n\nPress any key to continue.");
-                Console.ReadKey();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine("\n\nPress any key to continue.");
-                Console.ReadKey();
-            }
+            //try
+            //{
+                //transportWeb.DeliverAsync(message).Wait();
+            transportWeb.DeliverAsync(message);
+                //Console.WriteLine("Email sent to " + message.To.GetValue(0));
+                //Console.WriteLine("\n\nPress any key to continue.");
+                //Console.ReadKey();
+            //}
+            //catch (Exception ex)
+            //{
+                //Console.WriteLine(ex.Message);
+                //Console.WriteLine("\n\nPress any key to continue.");
+                //Console.ReadKey();
+            //}
         }
 
         private static void SolicitudBien(string to, string mensaje,string subj)
@@ -723,7 +731,9 @@ namespace Activos_PrestamosOET.Controllers
             var allErrors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
-                prestamo.ID = generarID();
+                string id = generarID();
+                string cedSol = p.CED_SOLICITA;
+                prestamo.ID = id;
                 prestamo.MOTIVO = p.MOTIVO;
                 prestamo.NUMERO_BOLETA = 1;// calcularNumBoleta();
                 prestamo.OBSERVACIONES_APROBADO = "";
@@ -732,7 +742,7 @@ namespace Activos_PrestamosOET.Controllers
                 prestamo.PERIODO_USO = p.PERIODO_USO;
                 prestamo.SIGLA_CURSO = p.SIGLA_CURSO;
                 prestamo.CED_APRUEBA = p.CED_APRUEBA;
-                prestamo.CED_SOLICITA = p.CED_SOLICITA;
+                prestamo.CED_SOLICITA = cedSol;
                 prestamo.FECHA_RETIRO = p.FECHA_RETIRO;
                 prestamo.FECHA_SOLICITUD = System.DateTimeOffset.Now.Date;//SELECT SYSDATE FROM DUAL
                 prestamo.SOFTWARE_REQUERIDO = p.SOFTWARE_REQUERIDO;
@@ -757,13 +767,17 @@ namespace Activos_PrestamosOET.Controllers
                     db.EQUIPO_SOLICITADO.Add(equipo);
                     db.SaveChanges();
                 }
-                p = db.PRESTAMOS.Find(prestamo.ID);
+                PRESTAMO prest =  new PRESTAMO();
+                prest=db.PRESTAMOS.Find(id);
+                var ctx = ((IObjectContextAdapter)db).ObjectContext;
+                ctx.Refresh(RefreshMode.ClientWins, prest);
+                //User.Identity.Name;
                 string subj = "Solicitud de Prestamo";
-                string mensajito = "Su solicitud ha sido realizada con éxito! \n El numero de boleta es " + p.NUMERO_BOLETA.ToString() + "\n";
-                USUARIO este = db.USUARIOS.Find(p.CED_SOLICITA);
-                string email = este.CORREO;
+                string mensajito = "Su solicitud ha sido realizada con éxito! \nEl numero de boleta es " + prest.NUMERO_BOLETA.ToString() + "\n";
+                USUARIO este = db.USUARIOS.Find(cedSol);
+                string email = User.Identity.Name; //este.CORREO;
                 //SolicitudBien(email,mensajito,subj);
-                email = "andreittttta@hotmail.com";
+                //email = "andreittttta@hotmail.com";
                 SolicitudBien(email, mensajito, subj);
                 TempData["confirmacion"] = "La solicitud fue enviada con éxito";
                 TempData.Keep();
@@ -1194,17 +1208,17 @@ namespace Activos_PrestamosOET.Controllers
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
 
 
-           var equipo_cat = new List<List<String>>();
-           var categorias_sol = from p in db.PRESTAMOS
+            var equipo_cat = new Dictionary<String, List<List<String>>>();
+            var categorias_sol = from p in db.PRESTAMOS
                                  from e in db.EQUIPO_SOLICITADO
                                  where p.ID == id && e.ID_PRESTAMO == p.ID
-                                 select new { CAT = e.TIPOS_ACTIVOSID };
+                                 select new { CAT = e.TIPO_ACTIVO, TIPO = e.TIPOS_ACTIVOSID };
 
             foreach (var c in categorias_sol)
             {
-                var eq  = new List<String>();
-                eq = equipoPorCategoria(c.CAT, id);
-                equipo_cat.Add(eq);
+                var eq = new List<List<String>>();
+                eq = equipoPorCategoria(c.TIPO, id);
+                equipo_cat.Add(c.CAT.ToString(), eq);
             }
 
 
@@ -1225,7 +1239,8 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             ViewBag.Equipo_Solict = equipo;
-            ViewBag.EquipoPorCat  = equipo_cat;
+            ViewBag.EquipoPorCat = equipo_cat;
+
             return View(pRESTAMO);
         }
 
@@ -1400,13 +1415,18 @@ namespace Activos_PrestamosOET.Controllers
                     var activo = db.ACTIVOS.SingleOrDefault(i => i.PLACA == p);
                     activo.ESTADO_PRESTADO = 1;
 
-
+                    prestamo.Estado = 4;
                     activosPorAgregar.AddLast(activo);
                     prestamo.ACTIVOes.Add(activo);
                     if (ModelState.IsValid)
                     {
                         db.Entry(activo).State = EntityState.Modified;
+                        db.Entry(prestamo).State = EntityState.Modified;
                         db.SaveChanges();
+                    }
+                    else
+                    {
+                        var errors = ModelState.Values.SelectMany(v => v.Errors);
                     }
 
                 }
