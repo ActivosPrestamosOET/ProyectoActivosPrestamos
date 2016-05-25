@@ -668,6 +668,7 @@ namespace Activos_PrestamosOET.Controllers
                                 "andresbejar@gmail.com", "Admin");//new MailAddress(from, fromName);
             myMessage.Subject = subj; //"Solicitud de Prestamo";
             myMessage.Text = mensaje;//"Su solicitud ha sido realizada con éxito! \n "+mensaje;
+            myMessage.Html = mensaje;
             /*
             var subs = new List<String> { "%type%" };
             myMessage.AddSubstitution("%tag%", subs);
@@ -731,9 +732,9 @@ namespace Activos_PrestamosOET.Controllers
             var allErrors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
             {
-                string id = generarID();
+                string idd = generarID();
                 string cedSol = p.CED_SOLICITA;
-                prestamo.ID = id;
+                prestamo.ID = idd;
                 prestamo.MOTIVO = p.MOTIVO;
                 prestamo.NUMERO_BOLETA = 1;// calcularNumBoleta();
                 prestamo.OBSERVACIONES_APROBADO = "";
@@ -768,16 +769,16 @@ namespace Activos_PrestamosOET.Controllers
                     db.SaveChanges();
                 }
                 PRESTAMO prest =  new PRESTAMO();
-                prest=db.PRESTAMOS.Find(id);
+                prest=db.PRESTAMOS.Find(idd);
                 var ctx = ((IObjectContextAdapter)db).ObjectContext;
                 ctx.Refresh(RefreshMode.ClientWins, prest);
-                //User.Identity.Name;
                 string subj = "Solicitud de Prestamo: "+prest.NUMERO_BOLETA.ToString();
-                string mensajito = "Su solicitud ha sido realizada con éxito! \nEl numero de boleta es " + prest.NUMERO_BOLETA.ToString() + "\n";
+                
+                var consultaUrl = Url.Action("Detalles", "PRESTAMOes", new { id = idd }, protocol: Request.Url.Scheme);
+                string link = " " + consultaUrl + " ";
+                string mensajito = "Su solicitud ha sido realizada con éxito." +" \n "+ "El numero de boleta es " + prest.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:"+link;
                 USUARIO este = db.USUARIOS.Find(cedSol);
-                string email = User.Identity.Name; //este.CORREO;
-                //SolicitudBien(email,mensajito,subj);
-                //email = "andreittttta@hotmail.com";
+                string email = User.Identity.Name; 
                 SolicitudBien(email, mensajito, subj);
                 TempData["confirmacion"] = "La solicitud fue enviada con éxito";
                 TempData.Keep();
