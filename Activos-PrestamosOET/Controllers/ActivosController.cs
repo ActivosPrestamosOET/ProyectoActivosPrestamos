@@ -23,7 +23,8 @@ namespace Activos_PrestamosOET.Controllers
 
             ViewBag.OrdenActual = orden;
             ViewBag.NumPlacaParam = String.IsNullOrEmpty(orden) ? "num_placa_desc" : "";
-            ViewBag.EstadoParam = (orden == "Estado") ? "estado_desc" : "Estado" ;
+            ViewBag.Descripcion = (orden == "descrip_asc") ? "descrip_desc" : "descrip_asc";
+            ViewBag.EstadoParam = (orden == "estado_asc") ? "estado_desc" : "estado_asc" ;
 
             var aCTIVOS = from a in db.ACTIVOS select a;
 
@@ -55,6 +56,7 @@ namespace Activos_PrestamosOET.Controllers
             #region Busqueda avanzada
 
             // Para las opciones de busqueda avanzada
+            //TODO: Cambiar esta busqueda al modelo
             ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES, "ID", "NOMBRE");
             ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS, "ID", "NOMBRE");
             ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE");
@@ -114,18 +116,24 @@ namespace Activos_PrestamosOET.Controllers
                 case "num_placa_desc":
                     aCTIVOS = aCTIVOS.OrderByDescending(a => a.PLACA);
                     break;
-                case "Estado":
+                case "estado_asc":
                     aCTIVOS = aCTIVOS.OrderBy(a => a.ESTADOS_ACTIVOS.NOMBRE);
                     break;
                 case "estado_desc":
                     aCTIVOS = aCTIVOS.OrderByDescending(a => a.ESTADOS_ACTIVOS.NOMBRE);
+                    break;
+                case "descrip_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.DESCRIPCION);
+                    break;
+                case "descrip_asc":
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.DESCRIPCION);
                     break;
                 default:
                     aCTIVOS = aCTIVOS.OrderBy(a => a.PLACA);
                     break;
             }
 
-            int tamano_pagina = 6;
+            int tamano_pagina =10;
             int num_pagina = (pagina ?? 1);
 
             return View(aCTIVOS.ToPagedList(num_pagina, tamano_pagina));
