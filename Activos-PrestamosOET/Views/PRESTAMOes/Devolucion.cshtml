@@ -164,7 +164,6 @@
 
                                             @if (ViewBag.NoActivos != null)
                                             {
-
                                                 <div class="alert alert-dismissible alert-warning">
                                                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                                                     @ViewBag.NoActivos
@@ -188,7 +187,10 @@
                                                         foreach(List < String > c in datosActivos[ s[0] ])
                                                         {
                                                               <tr>
-                                                                <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado"></td>
+                                                                <td>
+                                                                  @Html.CheckBox("activoSeleccionado", false )
+                                                                </td>
+                                                                  @*<input type="checkbox" name="activoSeleccionado" value="Seleccionado"></td>*@
                                                                 <td>@c[0] &nbsp;</td>
                                                                 <td>@c[1] &nbsp;</td>
                                                                 <td>@c[2] &nbsp;</td>
@@ -201,7 +203,7 @@
                                             </table>
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" name="devolver" class="btn btn-primary">Devolver</button>
+                                            <button type="button" name="devolver" class="btn btn-primary"  data-dismiss="modal">Cerrar</button>
                                             <button type="button" name="a" class="btn btn-default" data-dismiss="modal">Cancelar</button>
 
                                         </div>
@@ -209,7 +211,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td>@Html.CheckBox("column5_checkbox", false, new { @onclick = "seleccionaCategoria( this)" })</td>
+                        <td>@Html.CheckBox("column5_checkbox", false)</td>
                         @{ modal++; }
                     </tr>
                 }
@@ -245,18 +247,6 @@
     }
 </script>
 
-<script>
-    function seleccionaCategoria(checkBox) {
-        if(checkBox.checked == true)
-        {
-            var checkboxes = document.getElementById("activoSeleccionado");
-            for (var i = 0; i < checkboxes.length; i++) {
-                checkboxes[i].checked = true;
-            }
-
-        }
-    }
-</script>
 
 <script>
     function seleccionaTodos(columnNo, checkBox) {

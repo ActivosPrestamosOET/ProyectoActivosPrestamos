@@ -159,7 +159,7 @@
 </div>
 
 
-@if ((Model.FECHA_RETIRO >= System.DateTimeOffset.Now.Date)&&(Model.Estado==1))
+@if ((Model.FECHA_RETIRO >= System.DateTimeOffset.Now.Date)&&((Model.Estado==1)|| (Model.Estado == 2) || (Model.Estado == 3)))
 {
     <div class="form-group">
         <div class="col-md-offset-9 col-md-12">
@@ -174,17 +174,31 @@ else if (Model.Estado == 6)
     <div class="form-group">
                   <div class="alert alert-dismissible alert-danger">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
-                Esta solicitud ya no puede ser editada debido a que esta cancelada
+                Esta solicitud ya no puede ser editada debido a que esta cancelada.
             </div>
     </div>
 }
-else if (Model.Estado != 1)
+else if (Model.Estado ==5)
 {
     <div class="form-group">
         <div class="alert alert-dismissible alert-danger">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
-            Esta solicitud ya no puede ser editada. (Solo las solicitudes pendientes pueden ser editadas).
+            Esta solicitud ya no puede ser editada debido a que ya se cerro.
         </div>
+    </div>
+}
+else if ((Model.FECHA_RETIRO.AddDays(Model.PERIODO_USO) >= System.DateTimeOffset.Now.Date) && (Model.Estado == 4))
+{
+    <div class="form-group">
+        <div class="col-md-offset-9 col-md-12">
+            @Html.ActionLink("Editar", "Edit", new { id = Model.ID }, new { @class = "btn btn-success" })
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="alert alert-dismissible alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        Esta solicitud ya no puede ser cancelada debido a que su estado es abierto.
     </div>
 }
 else
@@ -192,7 +206,7 @@ else
     <div class="form-group">
         <div class="alert alert-dismissible alert-danger">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
-            Esta solicitud ya no puede ser editada ni cancelada debido a que ya paso su fecha de retiro.
+            Esta solicitud ya no puede ser editada ni cancelada debido a que ya esta vencida.
         </div>
     </div>
 }
