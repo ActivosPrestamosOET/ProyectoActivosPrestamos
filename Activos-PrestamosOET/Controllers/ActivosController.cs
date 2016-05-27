@@ -24,7 +24,7 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.OrdenActual = orden;
             ViewBag.NumPlacaParam = String.IsNullOrEmpty(orden) ? "num_placa_desc" : "";
             ViewBag.Descripcion = (orden == "descrip_asc") ? "descrip_desc" : "descrip_asc";
-            ViewBag.EstadoParam = (orden == "estado_asc") ? "estado_desc" : "estado_asc" ;
+            ViewBag.EstadoParam = (orden == "estado_asc") ? "estado_desc" : "estado_asc";
 
             var aCTIVOS = from a in db.ACTIVOS select a;
 
@@ -56,7 +56,6 @@ namespace Activos_PrestamosOET.Controllers
             #region Busqueda avanzada
 
             // Para las opciones de busqueda avanzada
-            //TODO: Cambiar esta busqueda al modelo
             ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES, "ID", "NOMBRE");
             ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS, "ID", "NOMBRE");
             ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE");
@@ -64,51 +63,20 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.ESTADO_ACTIVOID = new SelectList(db.ESTADOS_ACTIVOS, "ID", "NOMBRE");
             ViewBag.V_ESTACIONID = new SelectList(db.V_ESTACION, "ID", "NOMBRE");
 
-            if (!String.IsNullOrEmpty(V_PROVEEDORIDPROVEEDOR))
-            {
-                aCTIVOS = aCTIVOS.Where(a => a.V_PROVEEDORIDPROVEEDOR.Equals(V_PROVEEDORIDPROVEEDOR));
-            }
-            if (!String.IsNullOrEmpty(TIPO_ACTIVOID))
-            {
-                Int32 id = Convert.ToInt32(TIPO_ACTIVOID);
-                aCTIVOS = aCTIVOS.Where(a => a.TIPO_ACTIVOID.Equals(id));
-            }
-            if (!String.IsNullOrEmpty(V_ANFITRIONAID))
-            {
-                aCTIVOS = aCTIVOS.Where(a => a.V_ANFITRIONAID.Equals(V_ANFITRIONAID));
-            }
-            if (!String.IsNullOrEmpty(TIPO_TRANSACCIONID))
-            {
-                Int32 id = Convert.ToInt32(TIPO_TRANSACCIONID);
-                aCTIVOS = aCTIVOS.Where(a => a.TIPO_TRANSACCIONID.Equals(id));
-            }
-            if (!String.IsNullOrEmpty(fecha_antes))
-            {
-                DateTime fecha = Convert.ToDateTime(fecha_antes);
-                aCTIVOS = aCTIVOS.Where(a => a.FECHA_COMPRA.CompareTo(fecha) < 0);
-            }
-            if (!String.IsNullOrEmpty(fecha_despues))
-            {
-                DateTime fecha = Convert.ToDateTime(fecha_despues);
-                aCTIVOS = aCTIVOS.Where(a => a.FECHA_COMPRA.CompareTo(fecha) > 0);
-            }
-            if (!String.IsNullOrEmpty(usuario))
-            {
-                aCTIVOS = aCTIVOS.Where(a => a.INGRESADO_POR.Contains(usuario));
-            }
-            if (!String.IsNullOrEmpty(ESTADO_ACTIVOID))
-            {
-                Int32 id = Convert.ToInt32(ESTADO_ACTIVOID);
-                aCTIVOS = aCTIVOS.Where(a => a.ESTADO_ACTIVOID.Equals(id));
-            }
-            if (!String.IsNullOrEmpty(V_ESTACIONID))
-            {
-                aCTIVOS = aCTIVOS.Where(a => a.V_ESTACIONID.Equals(V_ESTACIONID));
-            }
-            if (!String.IsNullOrEmpty(fabricante))
-            {
-                aCTIVOS = aCTIVOS.Where(a => a.FABRICANTE.Contains(fabricante));
-            }
+            Dictionary<string, string> params_busqueda = new Dictionary<string, string>();
+            
+            params_busqueda.Add("proveedor", V_PROVEEDORIDPROVEEDOR);
+            params_busqueda.Add("tipo_activo", TIPO_ACTIVOID);
+            params_busqueda.Add("anfitriona", V_ANFITRIONAID);
+            params_busqueda.Add("tipo_transaccion", TIPO_TRANSACCIONID);
+            params_busqueda.Add("fecha_antes", fecha_antes);
+            params_busqueda.Add("fecha_despues", fecha_despues);
+            params_busqueda.Add("usuario", usuario);
+            params_busqueda.Add("estado_activo", ESTADO_ACTIVOID);
+            params_busqueda.Add("estacion", V_ESTACIONID);
+            params_busqueda.Add("fabricante", fabricante);
+
+            aCTIVOS = ACTIVO.busquedaAvanzada(params_busqueda);
             #endregion
 
             switch (orden)
@@ -133,7 +101,7 @@ namespace Activos_PrestamosOET.Controllers
                     break;
             }
 
-            int tamano_pagina =10;
+            int tamano_pagina = 10;
             int num_pagina = (pagina ?? 1);
 
             return View(aCTIVOS.ToPagedList(num_pagina, tamano_pagina));
@@ -154,7 +122,7 @@ namespace Activos_PrestamosOET.Controllers
                 return HttpNotFound();
             }
 
-            tRANSACCION = tRANSACCION.Where(a => a.ACTIVOID.Equals(id)).OrderByDescending(a=>a.FECHA);
+            tRANSACCION = tRANSACCION.Where(a => a.ACTIVOID.Equals(id)).OrderByDescending(a => a.FECHA);
 
             aCTIVO.TRANSACCIONES = new HashSet<TRANSACCION>(tRANSACCION);
 
@@ -286,7 +254,7 @@ namespace Activos_PrestamosOET.Controllers
 
 
 
-                controladora_transaccion.Create(User.Identity.GetUserName(),original.ESTADOS_ACTIVOS.NOMBRE, original.descripcion(proveedor, transaccion, anfitriona), original.ID);
+                controladora_transaccion.Create(User.Identity.GetUserName(), original.ESTADOS_ACTIVOS.NOMBRE, original.descripcion(proveedor, transaccion, anfitriona), original.ID);
                 return RedirectToAction("Index");
             }
             ViewBag.V_USUARIOSIDUSUARIO = new SelectList(db.V_USUARIOS, "IDUSUARIO", "NOMBRE", aCTIVO.V_USUARIOSIDUSUARIO);
@@ -390,7 +358,7 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             ACTIVO aCTIVO = db.ACTIVOS.Find(id);
-            
+
             aCTIVO.DESECHADO = true;
             var estado = db.ESTADOS_ACTIVOS.ToList().Where(ea => ea.NOMBRE == "Desechado");
             aCTIVO.ESTADO_ACTIVOID = estado.ToList()[0].ID;
