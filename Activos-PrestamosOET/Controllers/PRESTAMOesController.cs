@@ -1299,7 +1299,6 @@ namespace Activos_PrestamosOET.Controllers
 
             Dictionary<String, List<List<String>>> dic = (Dictionary<String, List<List<String>>>) TempData["activos"];
 
-            List<bool> devolucionActivos = corregirVectorBool(activoSeleccionado);
             List<String> idPrestados = new List<String>();
 
             foreach (KeyValuePair<String, List<List<String>> > entrada in dic)
@@ -1342,25 +1341,37 @@ namespace Activos_PrestamosOET.Controllers
                 else if(hayFilaEntera(column5_checkbox))
                 {
                     int cont = 0;
+                    List<bool> devolverCheck = corregirVectorBool(column5_checkbox);
+
                     foreach (var y in equipo_sol)
                     {
-                        bool t = column5_checkbox[cont];
+                        bool t = devolverCheck[cont];
                         if (t)
                         { //si fueron todos seleccionados en esa fila, de ese tipo
-                            foreach (var x in activos_asignados)
+
+                            String cat = dic.Keys.ElementAt(cont);
+                            foreach(List<String> l in dic[cat])
                             {
-                                if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
-                                {
-                                    x.ESTADO_PRESTADO = 0;
-                                }
+                                String id = l[3];
+                                ACTIVO act = db.ACTIVOS.Find(id);
+                                act.ESTADO_PRESTADO = 0;
+                                db.Entry(act).State = EntityState.Modified;
+                                db.SaveChanges();
                             }
+                            //foreach (var x in activos_asignados)
+                            //{
+                            //    if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
+                            //    {
+                            //        x.ESTADO_PRESTADO = 0;
+                            //    }
+                            //}
                         }
                         cont++;
                     }
                 }
                 else //Si no se devolvieron todos ni una categoría entera, entonces se procesan las devoluciones individuales
-                {
-                   
+                {         
+                    List<bool> devolucionActivos = corregirVectorBool(activoSeleccionado);
                     bool todos = true;
                     for(int i = 0; i < idPrestados.Count(); i++)
                     {
