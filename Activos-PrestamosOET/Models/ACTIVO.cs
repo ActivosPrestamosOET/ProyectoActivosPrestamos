@@ -191,14 +191,20 @@ namespace Activos_PrestamosOET.Models
             if (params_busqueda.Count > 0)
             {
                 if (!String.IsNullOrEmpty(params_busqueda["proveedor"]))
-                    result = result.Where(a => a.V_PROVEEDORIDPROVEEDOR.Equals(params_busqueda["proveedor"]));
+                {
+                    string proveedor = params_busqueda["proveedor"];
+                    result = result.Where(a => a.V_PROVEEDORIDPROVEEDOR.Equals(proveedor));
+                }
                 if (!String.IsNullOrEmpty(params_busqueda["tipo_activo"]))
                 {
                     Int32 id = Convert.ToInt32(params_busqueda["tipo_activo"]);
                     result = result.Where(a => a.TIPO_ACTIVOID.Equals(id));
                 }
                 if (!String.IsNullOrEmpty(params_busqueda["anfitriona"]))
-                    result = result.Where(a => a.V_ANFITRIONAID.Equals(params_busqueda["anfritriona"]));
+                {
+                    string anfitriona = params_busqueda["anfitriona"];
+                    result = result.Where(a => a.V_ANFITRIONAID.Equals(anfitriona));
+                }
                 if (!String.IsNullOrEmpty(params_busqueda["tipo_transaccion"]))
                 {
                     Int32 id = Convert.ToInt32(params_busqueda["tipo_transaccion"]);
@@ -215,16 +221,25 @@ namespace Activos_PrestamosOET.Models
                     result = result.Where(a => a.FECHA_COMPRA.CompareTo(fecha) > 0);
                 }
                 if (!String.IsNullOrEmpty(params_busqueda["usuario"]))
-                    result = result.Where(a => a.INGRESADO_POR.Contains(params_busqueda["usuario"]));
+                {
+                    string usuario = params_busqueda["usuario"];
+                    result = result.Where(a => a.INGRESADO_POR.Contains(usuario));
+                }
                 if (!String.IsNullOrEmpty(params_busqueda["estado_activo"]))
                 {
                     Int32 id = Convert.ToInt32(params_busqueda["estado_activo"]);
                     result = result.Where(a => a.ESTADO_ACTIVOID.Equals(id));
                 }
                 if (!String.IsNullOrEmpty(params_busqueda["estacion"]))
-                    result = result.Where(a => a.V_ESTACIONID.Equals(params_busqueda["estacion"]));
+                {
+                    string estacion = params_busqueda["estacion"];
+                    result = result.Where(a => a.V_ESTACIONID.Equals(estacion));
+                }
                 if (!String.IsNullOrEmpty(params_busqueda["fabricante"]))
-                    result = result.Where(a => a.FABRICANTE.Equals(params_busqueda["fabricante"]));
+                {
+                    string fabricante = params_busqueda["fabricante"];
+                    result = result.Where(a => a.FABRICANTE.Equals(fabricante));
+                }
             }
             return result;
         }
