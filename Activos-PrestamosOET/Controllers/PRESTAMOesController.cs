@@ -17,23 +17,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Mail;
 using Newtonsoft.Json.Linq;
-//using System.Security.Claims;
-
-
-
-
-//using System.Security.Claims;
-//using System.Threading.Tasks;
-
-//using Microsoft.AspNet.Identity;
-//using Microsoft.AspNet.Identity.EntityFramework;
-//using Microsoft.AspNet.Identity.Owin;
-//using Microsoft.Owin;
-//using Microsoft.Owin.Security;
-
-
 using SendGrid;
-
 using System.Configuration;
 using System.Diagnostics;
 using System.Data.Entity.Infrastructure;
@@ -1471,13 +1455,16 @@ namespace Activos_PrestamosOET.Controllers
             }
             return activos_enCat;
     }
+        //Requiere: Recibe una categoria de activo especifica y un id de un prestamo.
+        //Modifica: Busca los activos de una categoria especifica, que estan asociados al prestamo con id igual a "id"
+        //Regresa: Retorna un conjunto de listas de string, la cua cada una contiene: fabricante, modelo y placa; de cada activo de una categoria especifica, que estan asociados a un prestamo.
         private List<List<String>> llenarTablaDetails(String Categoria, string id)
         {
 
 
             var activos_enCat = new List<List<String>>();
             var activos = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
-            foreach (ACTIVO x in activos.ACTIVOes)
+            foreach (ACTIVO x in activos.ACTIVOes)//Se itera sobre cada uno de los activos asociados a un prestamo.
             {
 
                 if (Categoria.Equals(x.TIPO_ACTIVOID.ToString()))
@@ -1494,20 +1481,23 @@ namespace Activos_PrestamosOET.Controllers
             return activos_enCat;
         }
 
+        //Requiere: Necesita las placas de los activos  que se van a agregar a un prestamo. Tambien ocupa el id del prestamo al que se agregaran los cativos.
+        //Modifica: Identifica los numeros de placas de los activos que seran asociados a un prestamo. Luedo los agrega y cambia el estado del prestamo.
+        //Regresa: N/A
         protected void addActivosToPrestamo(string[] placas, string id)
         {
             LinkedList<ACTIVO> activosPorAgregar = new LinkedList<ACTIVO>();
             var prestamo = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
             foreach (string p in placas)
             {
-                if (p != "false")
+                if (p != "false")//En caso de que no sea false, "p" sera igual a un numero de placa
                 {
-                    var activo = db.ACTIVOS.SingleOrDefault(i => i.PLACA == p);
-                    activo.ESTADO_PRESTADO = 1;
+                    var activo = db.ACTIVOS.SingleOrDefault(i => i.PLACA == p);//Se encuentra el activo que tiene la placa igual a "p"
+                    activo.ESTADO_PRESTADO = 1;//Se cambia el estado del activo para que se sepa que esta prestado.
 
-                    prestamo.Estado = 4;
-                    activosPorAgregar.AddLast(activo);
-                    prestamo.ACTIVOes.Add(activo);
+                    prestamo.Estado = 4;//Se cambia el estado del prestamo a "Abierto"
+                    activosPorAgregar.AddLast(activo);//Se agrega el prestamo a la lista de Activos
+                    prestamo.ACTIVOes.Add(activo);//Se agrega el activo a la lista para prestamo.
                     if (ModelState.IsValid)
                     {
                         db.Entry(activo).State = EntityState.Modified;
@@ -1568,21 +1558,7 @@ namespace Activos_PrestamosOET.Controllers
             Response.End();
         }
 
-        /*   public static string RenderViewToString(string controllerName, string viewName, object viewData)
-           {
-               using (var writer = new StringWriter())
-               {
-                   var routeData = new RouteData();
-                   routeData.Values.Add("controller", controllerName);
-                   var fakeControllerContext = new ControllerContext(new HttpContextWrapper(new HttpContext(new HttpRequest(null, "http://google.com", null), new HttpResponse(null))), routeData, new FakeController());
-                   var razorViewEngine = new RazorViewEngine();
-                   var razorViewResult = razorViewEngine.FindView(fakeControllerContext, viewName, "", false);
-
-                   var viewContext = new ViewContext(fakeControllerContext, razorViewResult.View, new ViewDataDictionary(viewData), new TempDataDictionary(), writer);
-                   razorViewResult.View.Render(viewContext, writer);
-                   return writer.ToString();
-               } */
-
+       
         public string RenderRazorViewToString(string viewName, object model)
         {
             // PRESTAMO pRESTAMO = db.PRESTAMOS.Find();
