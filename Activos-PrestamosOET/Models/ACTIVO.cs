@@ -153,7 +153,6 @@ namespace Activos_PrestamosOET.Models
 
         public string descripcion(string proveedor, string transaccion, string anfitriona)
         {
-
             string esta_exento, capital, prestable;
             esta_exento = this.EXENTO ? "Exento" : "Gravado";
             capital = this.TIPO_CAPITAL ? "Capital mayor" : "Capital menor";
