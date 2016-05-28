@@ -688,6 +688,38 @@ namespace Activos_PrestamosOET.Controllers
             SendAsync(myMessage);
         }
 
+        private void emailEncargado(string idd, int tipo)
+        {
+            PRESTAMO p = db.PRESTAMOS.Find(idd);
+            string HTMLContent = RenderRazorViewToString("DetallesPDF", p);
+
+            var consultaUrl = Url.Action("Detalles", "PRESTAMOes", new { id = idd }, protocol: Request.Url.Scheme);
+            string link = " " + consultaUrl + " ";
+            string subj;
+            string mensajito;
+            switch (tipo)
+            {
+                case 1:
+                   subj = "Solicitud de Prestamo: " + p.NUMERO_BOLETA.ToString();
+                    mensajito = "Se ha realizado una solicitud de prestamo." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
+                    mensajito = mensajito + HTMLContent;
+                    break;
+                case 2:
+                    subj = "Edición de Prestamo: " + p.NUMERO_BOLETA.ToString();
+                    mensajito = "Se ha editado una solicitud." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
+                    mensajito = mensajito + "\n" + HTMLContent;
+                    break;
+                case 3:
+                default:
+                    subj = "Cancelación de Prestamo: " + p.NUMERO_BOLETA.ToString();
+                    mensajito = "Se ha cancelado una solicitud." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
+                    mensajito = mensajito + HTMLContent;
+                    break;
+            }
+            string email = User.Identity.Name;
+            SolicitudBien(email, mensajito, subj);
+        }
+
         // GET: PRESTAMOes/Create
         //Requiere: N/A.
         // Modifica: Crea la vista del Create de prestamo.
@@ -797,6 +829,7 @@ namespace Activos_PrestamosOET.Controllers
                 USUARIO este = db.USUARIOS.Find(cedSol);
                 string email = User.Identity.Name;
                 SolicitudBien(email, mensajito, subj);
+                emailEncargado(idd, 1);
                 TempData["confirmacion"] = "La solicitud fue enviada con éxito";
                 TempData.Keep();
                 return RedirectToAction("Historial");
