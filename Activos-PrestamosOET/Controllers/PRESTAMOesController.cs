@@ -67,12 +67,12 @@ namespace Activos_PrestamosOET.Controllers
             return nuevoVec;
         }
 
-        protected bool hayFilaEntera(bool [] vec)
+        protected bool hayFilaEntera(bool[] vec)
         {
             bool ret = false;
-            foreach(bool b in vec)
+            foreach (bool b in vec)
             {
-                if(b)
+                if (b)
                 {
                     ret = true;
                     break;
@@ -424,7 +424,7 @@ namespace Activos_PrestamosOET.Controllers
                 ViewBag.Mensaje2 = TempData["Mensaje2"].ToString();
                 TempData.Remove("Mensaje2");
             }
-           
+
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
             // ViewBag.clear();
 
@@ -450,8 +450,8 @@ namespace Activos_PrestamosOET.Controllers
                 }
             }
             /*  -------------------------------------------------------------------------------------------  */
-            
-            
+
+
             var equipoSol = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(p => p.ID == id);
             var equipoSolicitado = equipoSol.EQUIPO_SOLICITADO;
 
@@ -461,11 +461,11 @@ namespace Activos_PrestamosOET.Controllers
             var activos = new List<List<List<String>>>();
             var activosPrevios = new List<List<List<String>>>();
             foreach (var x in equipoSolicitado)
-            {                
+            {
                 List<String> temp = new List<String>();
                 if (x.TIPO_ACTIVO != null)
-                {   
-                                             
+                {
+
                     temp.Add(x.TIPO_ACTIVO.ToString());
                     actPrevios = llenarTablaDetails(x.TIPOS_ACTIVOSID.ToString(), id);
                     act = llenarTablaDetails(x.TIPOS_ACTIVOSID.ToString());
@@ -496,8 +496,8 @@ namespace Activos_PrestamosOET.Controllers
             }
             ViewBag.Activos_enPrevio = activosPrevios;
             ViewBag.Activos_enCat = activos;
-        //Segmento de código para colocar colores a las cantidad de solicitudes por categoría.
-        var prestamosConEquipo = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).SingleOrDefault(p => p.ID == id);//Se hace joint entre prestamos y equipo solicitado por id del préstamo           
+            //Segmento de código para colocar colores a las cantidad de solicitudes por categoría.
+            var prestamosConEquipo = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).SingleOrDefault(p => p.ID == id);//Se hace joint entre prestamos y equipo solicitado por id del préstamo           
             var equipoMayorCero = prestamosConEquipo.EQUIPO_SOLICITADO.Where(q => q.CANTIDAD > 0);//Se verifica que se seleccionen los equipos seleccionados que tengan más 0 soliciudes
             var prestamosPorFechas = db.PRESTAMOS.Include(j => j.EQUIPO_SOLICITADO).Where(p => p.FECHA_RETIRO <= prestamosConEquipo.FECHA_RETIRO && p.ID != id);//Se selccionan las solicitudes de préstamo qe se encuentran "abiertos" para el momento de inicio del préstamo consultado.
             Dictionary<string, int> hashConValoresPorTipoActivo = new Dictionary<string, int>();//diccionario que almacena las cantidades de préstamos vigentes.
@@ -529,7 +529,7 @@ namespace Activos_PrestamosOET.Controllers
                                     }
                                 }
                             }
-                        }                       
+                        }
                     }
                 }
             }
@@ -537,7 +537,7 @@ namespace Activos_PrestamosOET.Controllers
             List<string> disp = new List<string>();
             foreach (var e in equipoMayorCero)
             {
-                
+
                 int tipo = e.TIPOS_ACTIVOSID;
                 //Se consulta la cantidad total de activos prestables de una categoría 
                 int contador = (from a in db.ACTIVOS
@@ -570,7 +570,7 @@ namespace Activos_PrestamosOET.Controllers
             }
             ViewBag.Equipo_Solict = equipo;
 
-            
+
             return View(pRESTAMO);
         }
 
@@ -674,14 +674,14 @@ namespace Activos_PrestamosOET.Controllers
         //Requiere: Recibe 3 strings, el primero es la direccion electronica a la que se quiere enviar el email, la segunda indica el mensaje a enviar y la tercera es el asunto.
         // Modifica: Envia un correo electronico.
         //Retorna: N/A
-        private static void SolicitudBien(string to, string mensaje,string subj)
+        private static void SolicitudBien(string to, string mensaje, string subj)
         {
             // Create the email object first, then add the properties.
             var myMessage = new SendGrid.SendGridMessage();
             myMessage.AddTo(to);
             myMessage.From = new System.Net.Mail.MailAddress(
                                 "andresbejar@gmail.com", "Admin");
-            myMessage.Subject = subj; 
+            myMessage.Subject = subj;
             myMessage.Text = mensaje;
             myMessage.Html = mensaje;
 
@@ -741,7 +741,7 @@ namespace Activos_PrestamosOET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,CED_SOLICITA,CED_APRUEBA")] PRESTAMO p, int[] Cantidad, String[] Categoria)
         {
-            
+
             //p.FECHA_RETIRO
             PRESTAMO prestamo = new PRESTAMO();
             var allErrors = ModelState.Values.SelectMany(v => v.Errors);
@@ -783,25 +783,25 @@ namespace Activos_PrestamosOET.Controllers
                     db.EQUIPO_SOLICITADO.Add(equipo);
                     db.SaveChanges();
                 }
-                PRESTAMO prest =  new PRESTAMO();
-                prest=db.PRESTAMOS.Find(idd);
+                PRESTAMO prest = new PRESTAMO();
+                prest = db.PRESTAMOS.Find(idd);
                 //Refresca el contexti del objeto PRESTAMO prest de la base de datos para obtener el numero de solicitud correcto.
                 var ctx = ((IObjectContextAdapter)db).ObjectContext;
                 ctx.Refresh(RefreshMode.ClientWins, prest);
 
                 //Envia el correo de notificacion
-                string subj = "Solicitud de Prestamo: "+prest.NUMERO_BOLETA.ToString();
+                string subj = "Solicitud de Prestamo: " + prest.NUMERO_BOLETA.ToString();
                 var consultaUrl = Url.Action("Detalles", "PRESTAMOes", new { id = idd }, protocol: Request.Url.Scheme);
                 string link = " " + consultaUrl + " ";
-                string mensajito = "Su solicitud ha sido realizada con éxito." +" \n "+ "El numero de boleta es " + prest.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:"+link;
+                string mensajito = "Su solicitud ha sido realizada con éxito." + " \n " + "El numero de boleta es " + prest.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
                 USUARIO este = db.USUARIOS.Find(cedSol);
-                string email = User.Identity.Name; 
+                string email = User.Identity.Name;
                 SolicitudBien(email, mensajito, subj);
                 TempData["confirmacion"] = "La solicitud fue enviada con éxito";
                 TempData.Keep();
                 return RedirectToAction("Historial");
             }
-            
+
             ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", p.CED_SOLICITA);
             ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", p.CED_APRUEBA);
             return View(prestamo);
@@ -1041,11 +1041,11 @@ namespace Activos_PrestamosOET.Controllers
                 db.Entry(P).State = EntityState.Modified;
                 db.SaveChanges();
                 //Envia el correo de notificacion
-                string subj = "Edición de Solicitud: "+numBol;
+                string subj = "Edición de Solicitud: " + numBol;
                 var consultaUrl = Url.Action("Detalles", "PRESTAMOes", new { id = P.ID }, protocol: Request.Url.Scheme);
                 string link = " " + consultaUrl + " ";
                 string email = User.Identity.Name;
-                string mensajito = "Se ha editado la solicitud con numero de boleta " + numBol + " exitosamente. Puede consultar esta solicitud en el siguiente link: "+link+" \n Gracias por preferirnos.\n";
+                string mensajito = "Se ha editado la solicitud con numero de boleta " + numBol + " exitosamente. Puede consultar esta solicitud en el siguiente link: " + link + " \n Gracias por preferirnos.\n";
                 SolicitudBien(email, mensajito, subj);
                 //Redirecciona al historial
                 return RedirectToAction("Historial");
@@ -1281,13 +1281,13 @@ namespace Activos_PrestamosOET.Controllers
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
             pRESTAMO.OBSERVACIONES_APROBADO = OBSERVACIONES_APROBADO;
 
-            Dictionary<String, List<List<String>>> dic = (Dictionary<String, List<List<String>>>) TempData["activos"];
+            Dictionary<String, List<List<String>>> dic = (Dictionary<String, List<List<String>>>)TempData["activos"];
 
             List<String> idPrestados = new List<String>();
 
-            foreach (KeyValuePair<String, List<List<String>> > entrada in dic)
+            foreach (KeyValuePair<String, List<List<String>>> entrada in dic)
             {
-                foreach(List<String> l in entrada.Value)
+                foreach (List<String> l in entrada.Value)
                 {
                     idPrestados.Add(l[3]);
                 }
@@ -1307,7 +1307,7 @@ namespace Activos_PrestamosOET.Controllers
             /*---------------------------------------------------------------------------*/
             if (b == "Actualizar devolución")
             {
-               
+
                 if (column5_checkAll)
                 {
                     foreach (var y in equipo_sol)
@@ -1322,7 +1322,7 @@ namespace Activos_PrestamosOET.Controllers
                     }
                     pRESTAMO.Estado = 5;
                 }
-                else if(hayFilaEntera(column5_checkbox))
+                else if (hayFilaEntera(column5_checkbox))
                 {
                     int cont = 0;
                     List<bool> devolverCheck = corregirVectorBool(column5_checkbox);
@@ -1334,7 +1334,7 @@ namespace Activos_PrestamosOET.Controllers
                         { //si fueron todos seleccionados en esa fila, de ese tipo
 
                             String cat = dic.Keys.ElementAt(cont);
-                            foreach(List<String> l in dic[cat])
+                            foreach (List<String> l in dic[cat])
                             {
                                 String id = l[3];
                                 ACTIVO act = db.ACTIVOS.Find(id);
@@ -1354,10 +1354,10 @@ namespace Activos_PrestamosOET.Controllers
                     }
                 }
                 else //Si no se devolvieron todos ni una categoría entera, entonces se procesan las devoluciones individuales
-                {         
+                {
                     List<bool> devolucionActivos = corregirVectorBool(activoSeleccionado);
                     bool todos = true;
-                    for(int i = 0; i < idPrestados.Count(); i++)
+                    for (int i = 0; i < idPrestados.Count(); i++)
                     {
                         String id = idPrestados[i];
                         ACTIVO act = db.ACTIVOS.Find(id);
@@ -1371,11 +1371,11 @@ namespace Activos_PrestamosOET.Controllers
                         db.Entry(act).State = EntityState.Modified;
                         db.SaveChanges();
                     }
- 
-                     if (todos) { pRESTAMO.Estado = 5; }
+
+                    if (todos) { pRESTAMO.Estado = 5; }
                 }
 
-               // if (column5_checkAll) { pRESTAMO.Estado = 5; }
+                // if (column5_checkAll) { pRESTAMO.Estado = 5; }
 
                 if (ModelState.IsValid)
                 {
@@ -1433,8 +1433,8 @@ namespace Activos_PrestamosOET.Controllers
             foreach (Activos_PrestamosOET.Models.ACTIVO x in activos)
             {
 
-                    if (Categoria.Equals(x.TIPO_ACTIVOID.ToString()) && x.PRESTABLE == true && x.ESTADO_PRESTADO== 0)
-                    {
+                if (Categoria.Equals(x.TIPO_ACTIVOID.ToString()) && x.PRESTABLE == true && x.ESTADO_PRESTADO == 0)
+                {
                     List<String> temp = new List<String>();
                     if (x.FABRICANTE != null) { temp.Add(x.FABRICANTE); } else { temp.Add(""); }
                     if (x.MODELO != null) { temp.Add(x.MODELO); } else { temp.Add(""); }
@@ -1443,7 +1443,7 @@ namespace Activos_PrestamosOET.Controllers
                     activos_enCat.Add(temp);
                 }
             }
-            
+
             if (activos_enCat.Count == 0)
             {
                 List<String> temp = new List<String>();
@@ -1454,7 +1454,7 @@ namespace Activos_PrestamosOET.Controllers
                 ViewBag.NoActivos = "No hay Activos Prestables con esta categoría.";
             }
             return activos_enCat;
-    }
+        }
         //Requiere: Recibe una categoria de activo especifica y un id de un prestamo.
         //Modifica: Busca los activos de una categoria especifica, que estan asociados al prestamo con id igual a "id"
         //Regresa: Retorna un conjunto de listas de string, la cua cada una contiene: fabricante, modelo y placa; de cada activo de una categoria especifica, que estan asociados a un prestamo.
@@ -1468,16 +1468,16 @@ namespace Activos_PrestamosOET.Controllers
             {
 
                 if (Categoria.Equals(x.TIPO_ACTIVOID.ToString()))
-                    {
+                {
                     List<String> temp = new List<String>();
                     if (x.FABRICANTE != null) { temp.Add(x.FABRICANTE); } else { temp.Add(""); }
                     if (x.MODELO != null) { temp.Add(x.MODELO); } else { temp.Add(""); }
                     if (x.PLACA != null) { temp.Add(x.PLACA); } else { temp.Add(""); }
 
                     activos_enCat.Add(temp);
-                }              
+                }
             }
-            
+
             return activos_enCat;
         }
 
@@ -1558,7 +1558,7 @@ namespace Activos_PrestamosOET.Controllers
             Response.End();
         }
 
-       
+
         public string RenderRazorViewToString(string viewName, object model)
         {
             // PRESTAMO pRESTAMO = db.PRESTAMOS.Find();
@@ -1586,5 +1586,18 @@ namespace Activos_PrestamosOET.Controllers
             return View(pRESTAMO);
         }
 
+
+
+
+        public ActionResult DetallesPDF(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
+
+            return View(pRESTAMO);
+        }
     }
 }
