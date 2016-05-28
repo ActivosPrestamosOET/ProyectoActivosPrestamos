@@ -32,6 +32,7 @@
                     </tr>
 
                     <tr>
+                        <td><label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.SIGLA_CURSO): </b></label>@Html.DisplayFor(model => model.SIGLA_CURSO)</td>
                         <td>
                             <label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.Estado): </b></label> @switch (Model.Estado)
                             {
@@ -39,23 +40,23 @@
                                     <text>Pendiente</text>
                                     break;
                                 case 2:
-                                <text>Aprobada</text>
+                                    <text>Aprobada</text>
                                     break;
                                 case 3:
-                                <text>Denegada</text>
+                                    <text>Denegada</text>
                                     break;
                                 case 4:
-                                <text>Abierta</text>
+                                    <text>Abierta</text>
                                     break;
                                 case 5:
-                                <text>Cerrada</text>
+                                    <text>Cerrada</text>
                                     break;
                                 case 6:
-                                <text>Cancelada</text>
+                                    <text>Cancelada</text>
                                     break;
                             }
                         </td>
-                        <td><label for="inputDefault"><b>@Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO): </b></label>  @Html.DisplayFor(model => model.SOFTWARE_REQUERIDO)</td>
+                        
                     </tr>
 
                 </table>
@@ -84,6 +85,11 @@
                     </tbody>
                 </table>
                 <div>
+                    <label class="col-lg-2 control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO): </b></label>  
+                    @Html.DisplayFor(model => model.SOFTWARE_REQUERIDO)
+                </div>
+                <br />
+                <div>
                     <label class="col-lg-2 control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.OBSERVACIONES_SOLICITANTE): </b></label>
                     @Html.DisplayFor(model => model.OBSERVACIONES_SOLICITANTE)
                 </div>
@@ -92,10 +98,9 @@
                     <label class="col-lg-2 control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.OBSERVACIONES_APROBADO): </b></label>
                     @Html.DisplayFor(model => model.OBSERVACIONES_APROBADO)
                 </div>
-                
-
-
                 <br />
                 <br />
             </div>
         </div>
+    </div>
+</div>
