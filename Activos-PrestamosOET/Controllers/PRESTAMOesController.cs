@@ -695,8 +695,8 @@ namespace Activos_PrestamosOET.Controllers
 
             var consultaUrl = Url.Action("Detalles", "PRESTAMOes", new { id = idd }, protocol: Request.Url.Scheme);
             string link = " " + consultaUrl + " ";
-            string subj;
-            string mensajito;
+            string subj = "";
+            string mensajito = "";
             switch (tipo)
             {
                 case 1:
@@ -710,9 +710,38 @@ namespace Activos_PrestamosOET.Controllers
                     mensajito = mensajito + "\n" + HTMLContent;
                     break;
                 case 3:
-                default:
                     subj = "Cancelación de Prestamo: " + p.NUMERO_BOLETA.ToString();
                     mensajito = "Se ha cancelado una solicitud." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
+                    mensajito = mensajito + HTMLContent;
+                    break;
+            }
+            string email = User.Identity.Name;
+            SolicitudBien(email, mensajito, subj);
+        }
+        private void emailCliente(string idd, int tipo)
+        {
+            PRESTAMO p = db.PRESTAMOS.Find(idd);
+            string HTMLContent = RenderRazorViewToString("DetallesPDF", p);
+
+            var consultaUrl = Url.Action("Detalles", "PRESTAMOes", new { id = idd }, protocol: Request.Url.Scheme);
+            string link = " " + consultaUrl + " ";
+            string subj = "";
+            string mensajito = "";
+            switch (tipo)
+            {
+                case 1:
+                    subj = "1Solicitud de Prestamo: " + p.NUMERO_BOLETA.ToString();
+                    mensajito = "Su solicitud ha sido realizada con éxito." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
+                    mensajito = mensajito + HTMLContent;
+                    break;
+                case 2:
+                    subj = "Edición de Prestamo: " + p.NUMERO_BOLETA.ToString();
+                    mensajito = "Su prestamo ha sido editado exitosamente." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
+                    mensajito = mensajito + "\n" + HTMLContent;
+                    break;
+                case 3:
+                    subj = "Cancelación de Prestamo: " + p.NUMERO_BOLETA.ToString();
+                    mensajito = "Su prestamo se ha cancelado exitosamente." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
                     mensajito = mensajito + HTMLContent;
                     break;
             }
@@ -822,13 +851,14 @@ namespace Activos_PrestamosOET.Controllers
                 ctx.Refresh(RefreshMode.ClientWins, prest);
 
                 //Envia el correo de notificacion
-                string subj = "Solicitud de Prestamo: " + prest.NUMERO_BOLETA.ToString();
+                /*string subj = "Solicitud de Prestamo: " + prest.NUMERO_BOLETA.ToString();
                 var consultaUrl = Url.Action("Detalles", "PRESTAMOes", new { id = idd }, protocol: Request.Url.Scheme);
                 string link = " " + consultaUrl + " ";
                 string mensajito = "Su solicitud ha sido realizada con éxito." + " \n " + "El numero de boleta es " + prest.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
                 USUARIO este = db.USUARIOS.Find(cedSol);
                 string email = User.Identity.Name;
-                SolicitudBien(email, mensajito, subj);
+                SolicitudBien(email, mensajito, subj);*/
+                emailCliente(idd, 1);
                 emailEncargado(idd, 1);
                 TempData["confirmacion"] = "La solicitud fue enviada con éxito";
                 TempData.Keep();
@@ -1074,12 +1104,16 @@ namespace Activos_PrestamosOET.Controllers
                 db.Entry(P).State = EntityState.Modified;
                 db.SaveChanges();
                 //Envia el correo de notificacion
+                /*
                 string subj = "Edición de Solicitud: " + numBol;
                 var consultaUrl = Url.Action("Detalles", "PRESTAMOes", new { id = P.ID }, protocol: Request.Url.Scheme);
                 string link = " " + consultaUrl + " ";
                 string email = User.Identity.Name;
                 string mensajito = "Se ha editado la solicitud con numero de boleta " + numBol + " exitosamente. Puede consultar esta solicitud en el siguiente link: " + link + " \n Gracias por preferirnos.\n";
                 SolicitudBien(email, mensajito, subj);
+                */
+                emailCliente(P.ID, 2);
+                emailEncargado(P.ID, 2);
                 //Redirecciona al historial
                 return RedirectToAction("Historial");
             }
@@ -1199,12 +1233,14 @@ namespace Activos_PrestamosOET.Controllers
                 //guarda los cambios en la base
                 db.SaveChanges();
                 //Enviar email notificando que se cancelo la solicitud
-                string subj = "Cancelación de Solicitud: " + pRESTAMO.NUMERO_BOLETA;
+                /*string subj = "Cancelación de Solicitud: " + pRESTAMO.NUMERO_BOLETA;
                 var consultaUrl = Url.Action("Detalles", "PRESTAMOes", new { id = pRESTAMO.ID }, protocol: Request.Url.Scheme);
                 string link = " " + consultaUrl + " ";
                 string email = User.Identity.Name;
                 string mensajito = "Se ha cancelado la solicitud con numero de boleta " + pRESTAMO.NUMERO_BOLETA + " exitosamente. Puede consultar esta solicitud en el siguiente link: " + link + " \n Gracias por preferirnos.\n";
-                SolicitudBien(email, mensajito, subj);
+                SolicitudBien(email, mensajito, subj);*/
+                emailCliente(pRESTAMO.ID, 3);
+                emailEncargado(pRESTAMO.ID, 3);
                 //Redirecciona la pagina al historial
                 return RedirectToAction("Historial");
             }
