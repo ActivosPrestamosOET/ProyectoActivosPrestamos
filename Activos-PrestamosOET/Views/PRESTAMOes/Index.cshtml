@@ -57,11 +57,11 @@ $(document).ready(function(){
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="form-group">
-                <label class="col-lg-2 col-sm-offset-1 control-label p" for="inputDefault">Fecha Solicitud</label>
+                <label class="col-lg-2 col-sm-offset-1 control-label p" for="inputDefault">Fecha de Solicitud</label>
                 <div class="col-lg-3">
                     @Html.TextBox("fechaSolicitud", ViewBag.CurrentFilter as string, new { @class = "form-control date-picker" })
                 </div>                              
-                    <label class="col-lg-2 control-label" for="inputDefault">Fecha Retiro</label>
+                    <label class="col-lg-2 control-label" for="inputDefault">Fecha de Retiro</label>
                     <div class="col-lg-3">
                         @Html.TextBox("fechaRetiro", ViewBag.CurrentFilter as string, new { @class = "form-control date-picker" })
                     </div>
@@ -83,16 +83,15 @@ $(document).ready(function(){
                   "text",
                    0), new { @class = "form-control" })
                     </div>
-                <label class="col-lg-2 control-label p" for="inputDefault">Numero Boleta </label>
+                <label class="col-lg-2 control-label p" for="inputDefault">Numero de Boleta </label>
                 <div class="col-lg-3">
                     @Html.TextBox("numeroBoleta", ViewBag.CurrentFilter as string, new { @class = "form-control" })
                 </div>
                
                 </div>    
             <br />
-            <br />
             <div>
-                <input type="submit" value="Buscar" class="btn btn-default" />
+                <input type="submit" value="Buscar" class="btn btn-default col-lg-1 col-sm-offset-1" />
                 </div>                                                            
 
         </div>
