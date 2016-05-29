@@ -410,6 +410,7 @@ namespace Activos_PrestamosOET.Controllers
         //Retorna: Devuelve un información necesaria para el despliegue de la vista como: nombre de solicitante, el estado, el equipo solicitado y sus cantidades
         public ActionResult Details(string id)
         {
+            //Mensajes de alerta, de exito, etc.
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -432,7 +433,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return HttpNotFound();
             }
-
+            //Se encuentra el nombre del solicitante
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
                         where o.ID == id
@@ -451,7 +452,7 @@ namespace Activos_PrestamosOET.Controllers
             }
             /*  -------------------------------------------------------------------------------------------  */
 
-
+            //Se maneja el llenar la tabla con las cantidades solicitadas
             var equipoSol = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(p => p.ID == id);
             var equipoSolicitado = equipoSol.EQUIPO_SOLICITADO;
 
@@ -467,6 +468,7 @@ namespace Activos_PrestamosOET.Controllers
                 {
 
                     temp.Add(x.TIPO_ACTIVO.ToString());
+                    //Se maneja llenar la tabla del modal
                     actPrevios = llenarTablaDetails(x.TIPOS_ACTIVOSID.ToString(), id);
                     act = llenarTablaDetails(x.TIPOS_ACTIVOSID.ToString());
                 }
@@ -582,6 +584,7 @@ namespace Activos_PrestamosOET.Controllers
         [HttpPost]
         public ActionResult Details(string ID, int[] cantidad_aprobada, string[] activoSeleccionado, string b, [Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p)
         {
+            //Se guarda las observaciones de aprobacion
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
             pRESTAMO.OBSERVACIONES_APROBADO = p.OBSERVACIONES_APROBADO;
             if (ModelState.IsValid)
@@ -593,10 +596,11 @@ namespace Activos_PrestamosOET.Controllers
             var prestamo = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
 
             var equipo_sol = prestamo.EQUIPO_SOLICITADO;
-
+            //Si el boton de aceptar fue precionado
             if (b == "Aceptar")
             {
                 int a = 0;
+                //Se almacena la cantidad aprobada por cada categoria
                 foreach (var x in equipo_sol)
                 {
                     if (prestamo.ID == x.ID_PRESTAMO)
@@ -617,7 +621,7 @@ namespace Activos_PrestamosOET.Controllers
                         a++;
                     }
                 }
-
+                //Se almacena los activos que han sido asignados al prestamo
                 if (pRESTAMO.Estado == 1)
                 {
                     pRESTAMO.Estado = 2;
@@ -633,8 +637,11 @@ namespace Activos_PrestamosOET.Controllers
 
             }
 
+
+            //Si se presiona el boton de denegar
             if (b == "Denegar")
             {
+                //Se cambia el estado
 
                 pRESTAMO.Estado = 3;
                 if (ModelState.IsValid)
@@ -647,6 +654,7 @@ namespace Activos_PrestamosOET.Controllers
                 TempData["Mensaje2"] = "El préstamo ha sido denegado con éxito";
             }
 
+            //Si se presiona el boton de descargar la boleta
             if (b == "Descargar Boleta")
             {
                 DownloadPDF("BoletaPDF", pRESTAMO, "BoletaSoliciud");
@@ -1491,17 +1499,18 @@ namespace Activos_PrestamosOET.Controllers
 
 
         // Requiere: valor seleccionado en el dropdown de Categoría, valor del botón seleccionado, valor de la fecha inicial y la fecha final
-        // Modifica: se encarga de llenar la tabla de Inventario, de la categoría que recibe cómo parámetro.
+        // Modifica: se encarga de llenar la tabla de Inventario, de la categoría que recibe cómo parámetro (en el modal).
         // Regresa: N/A.
         private List<List<String>> llenarTablaDetails(String Categoria)
         {
 
             int tipo = int.Parse(Categoria);
             var activos_enCat = new List<List<String>>();
+            //Se seleccionan los activos que sean de la misma categoria
             var activos = db.ACTIVOS.Where(c => c.TIPO_ACTIVOID == tipo);
             foreach (Activos_PrestamosOET.Models.ACTIVO x in activos)
             {
-
+                //Se verifica que el activo sea prestable y que no este en prestamo actualmente
                 if (Categoria.Equals(x.TIPO_ACTIVOID.ToString()) && x.PRESTABLE == true && x.ESTADO_PRESTADO == 0)
                 {
                     List<String> temp = new List<String>();
@@ -1513,6 +1522,7 @@ namespace Activos_PrestamosOET.Controllers
                 }
             }
 
+            //Se majereja el caso en que una categoria no tenga activos disponibles
             if (activos_enCat.Count == 0)
             {
                 List<String> temp = new List<String>();
@@ -1582,6 +1592,10 @@ namespace Activos_PrestamosOET.Controllers
             }
         }
 
+        //Requiere: una string parseada de la vista que se quiere convertir en PDF
+        //Modifica: se encarga de pasar la vista HTML a un documento de itextsharp
+        //Regresa: un byte con el documento 
+
         public byte[] GetPDF(string pHTML)
         {
             byte[] bPDF = null;
@@ -1589,23 +1603,21 @@ namespace Activos_PrestamosOET.Controllers
             MemoryStream ms = new MemoryStream();
             TextReader txtReader = new StringReader(pHTML);
 
-            // 1: create object of a itextsharp document class
+            // Se crea un documneto de itextsharp
             Document doc = new Document(PageSize.A4, 25, 25, 25, 25);
 
-            // 2: we create a itextsharp pdfwriter that listens to the document and directs a XML-stream to a file
             PdfWriter oPdfWriter = PdfWriter.GetInstance(doc, ms);
 
-            // 3: we create a worker parse the document
+            // el htmlworker parsea el documento
             HTMLWorker htmlWorker = new HTMLWorker(doc);
 
-            // 4: we open document and start the worker on the document
             doc.Open();
             htmlWorker.StartDocument();
 
-            // 5: parse the html into the document
+            // parsea el html en el doc
             htmlWorker.Parse(txtReader);
 
-            // 6: close the document and the worker
+
             htmlWorker.EndDocument();
             htmlWorker.Close();
             doc.Close();
@@ -1614,6 +1626,10 @@ namespace Activos_PrestamosOET.Controllers
 
             return bPDF;
         }
+
+        //Requiere: la vista, el modelo al que pertenece la vista, el nombre que se quiere que tenga el archivo
+        //Modifica: se encarga de organizar la entrada de una vista, llamar al metodo que lo convierte a un doc itextsharp y que se pueda descargar como PDF
+        //Regresa: N/A
 
         public void DownloadPDF(string viewName, object model, string nombreArchivo)
         {
@@ -1628,6 +1644,9 @@ namespace Activos_PrestamosOET.Controllers
         }
 
 
+        //Requiere: la vista, el modelo al que pertenece la vista
+        //Modifica: convierte la vista en un string para que pueda ser leido por itextsharp
+        //Regresa: un string con la informacion de la vista
         public string RenderRazorViewToString(string viewName, object model)
         {
             // PRESTAMO pRESTAMO = db.PRESTAMOS.Find();
@@ -1644,6 +1663,9 @@ namespace Activos_PrestamosOET.Controllers
             }
         }
 
+        //Requiere: el id del prestamo 
+        //Modifica: se encarga de llamar a la vista que luego se convertira en la boleta imprimible de un prestamo
+        //Regresa: la vista
         public ActionResult BoletaPDF(string id)
         {
             if (id == null)
