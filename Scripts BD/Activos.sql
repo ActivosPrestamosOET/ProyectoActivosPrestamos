@@ -85,7 +85,3 @@ CREATE OR REPLACE TRIGGER id_estado_activo
   /
 
   commit;
-
-  /* Para encontrar todas las tablas de la base
-  select * from dba_tables where TABLE_NAME = 'DEPARTAMENTO';
-  */
