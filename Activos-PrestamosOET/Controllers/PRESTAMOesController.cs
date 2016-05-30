@@ -799,18 +799,6 @@ namespace Activos_PrestamosOET.Controllers
 
             return View();
         }
-        /*
-        public long calcularNumBoleta()
-        {
-            var prestamos = from s in db.PRESTAMOS
-                            select s;
-            prestamos = prestamos.OrderBy(s => s.NUMERO_BOLETA);
-
-            List<PRESTAMO> u = prestamos.ToList();
-            PRESTAMO ultimo = u.First<PRESTAMO>();
-
-            return ultimo.NUMERO_BOLETA.GetValueOrDefault() + 1;
-        }*/
 
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -822,8 +810,6 @@ namespace Activos_PrestamosOET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,CED_SOLICITA,CED_APRUEBA")] PRESTAMO p, int[] Cantidad, String[] Categoria)
         {
-
-            //p.FECHA_RETIRO
             PRESTAMO prestamo = new PRESTAMO();
             var allErrors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
@@ -832,7 +818,7 @@ namespace Activos_PrestamosOET.Controllers
                 string cedSol = p.CED_SOLICITA;
                 prestamo.ID = idd;
                 prestamo.MOTIVO = p.MOTIVO;
-                prestamo.NUMERO_BOLETA = 1;// calcularNumBoleta();
+                prestamo.NUMERO_BOLETA = 1;
                 prestamo.OBSERVACIONES_APROBADO = "";
                 prestamo.OBSERVACIONES_RECIBIDO = "";
                 prestamo.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
@@ -866,18 +852,11 @@ namespace Activos_PrestamosOET.Controllers
                 }
                 PRESTAMO prest = new PRESTAMO();
                 prest = db.PRESTAMOS.Find(idd);
-                //Refresca el contexti del objeto PRESTAMO prest de la base de datos para obtener el numero de solicitud correcto.
+                //Refresca el contexto del objeto PRESTAMO prest de la base de datos para obtener el numero de solicitud correcto.
                 var ctx = ((IObjectContextAdapter)db).ObjectContext;
                 ctx.Refresh(RefreshMode.ClientWins, prest);
 
-                //Envia el correo de notificacion
-                /*string subj = "Solicitud de Prestamo: " + prest.NUMERO_BOLETA.ToString();
-                var consultaUrl = Url.Action("Detalles", "PRESTAMOes", new { id = idd }, protocol: Request.Url.Scheme);
-                string link = " " + consultaUrl + " ";
-                string mensajito = "Su solicitud ha sido realizada con éxito." + " \n " + "El numero de boleta es " + prest.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
-                USUARIO este = db.USUARIOS.Find(cedSol);
-                string email = User.Identity.Name;
-                SolicitudBien(email, mensajito, subj);*/
+                //Envia los correos de notificacion al cliente y al encargado
                 emailCliente(idd, 1);
                 emailEncargado(idd, 1);
                 TempData["confirmacion"] = "La solicitud fue enviada con éxito";
@@ -935,12 +914,15 @@ namespace Activos_PrestamosOET.Controllers
             {
                 ViewBag.Estadillo = "Cancelada";
             }
+
             ViewBag.fechSol = viewBagFechaSolicitada(pRESTAMO.FECHA_SOLICITUD.Date);
+
             //Consulta el usuario solicitante
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
                         where o.ID == id
                         select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
+
             //busca el nombre del usuario solicitante
             foreach (var m in lista)
             {
@@ -960,11 +942,13 @@ namespace Activos_PrestamosOET.Controllers
                        where ac.PRESTABLE.Equals(true) &&
                               t.ID.Equals(ac.TIPO_ACTIVOID)
                        select new { t.NOMBRE, t.ID }).Distinct();
+
             //busca al equipo previamente solicitado 
             var equipo_sol = from o in db.PRESTAMOS
                              from o2 in db.EQUIPO_SOLICITADO
                              where (o.ID == id && o2.ID_PRESTAMO == id)
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
+            
             //Acomoda la informacion de la tabla de equipo solicitado que se desplegara en la pantalla
             var equipo = new List<List<String>>();
             cat = cat.OrderBy(t => t.NOMBRE);
@@ -979,7 +963,6 @@ namespace Activos_PrestamosOET.Controllers
                     {
                         if (x.TIPO == y.NOMBRE)
                         {
-
                             temp.Add(y.NOMBRE);
                             existeCategoria = true;
                             if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add("0"); }
@@ -1019,11 +1002,13 @@ namespace Activos_PrestamosOET.Controllers
             //Busca el prestamo en la base de datos
             PRESTAMO P = db.PRESTAMOS.Find(id);
             string numBol = P.NUMERO_BOLETA.ToString();
+
             //Busca el equipo previamente solicitado
             var equipo_sol = from o in db.PRESTAMOS
                              from o2 in db.EQUIPO_SOLICITADO
                              where (o.ID == id && o2.ID_PRESTAMO == id)
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
+            
             //Determina las categorias de activos presentes en el sistema
             var cat = (from ac in db.ACTIVOS
                        from t in db.TIPOS_ACTIVOS
@@ -1031,6 +1016,7 @@ namespace Activos_PrestamosOET.Controllers
                        select new { t.NOMBRE, t.ID }).Distinct();
             cat = cat.OrderBy(t => t.NOMBRE);
             int a = 0;
+            
             //Para guardar cambios en la tabla de equipo solicitado
             foreach (var y in cat)
             {
@@ -1040,6 +1026,7 @@ namespace Activos_PrestamosOET.Controllers
                     if (y.NOMBRE == x.TIPO)
                     {
                         EQUIPO_SOLICITADO pr = db.EQUIPO_SOLICITADO.Find(id, y.NOMBRE, x.CANTIDAD);
+                        
                         //busca si el elemento de la tabla equipo solicitado existe
                         if (pr == null)
                         {
@@ -1048,6 +1035,7 @@ namespace Activos_PrestamosOET.Controllers
                             pr.ID_PRESTAMO = id;
                             pr.TIPO_ACTIVO = y.NOMBRE;
                             pr.CANTIDAD = cantidad[a];
+                            
                             //Lo agrega a la tabla
                             if (ModelState.IsValid)
                             {
@@ -1091,6 +1079,7 @@ namespace Activos_PrestamosOET.Controllers
                 }
                 a++;
             }
+            
             ViewBag.Mensaje = "El préstamo ha sido aprobado con éxito";
 
             var lista = from o in db.PRESTAMOS
@@ -1123,17 +1112,11 @@ namespace Activos_PrestamosOET.Controllers
             {
                 db.Entry(P).State = EntityState.Modified;
                 db.SaveChanges();
-                //Envia el correo de notificacion
-                /*
-                string subj = "Edición de Solicitud: " + numBol;
-                var consultaUrl = Url.Action("Detalles", "PRESTAMOes", new { id = P.ID }, protocol: Request.Url.Scheme);
-                string link = " " + consultaUrl + " ";
-                string email = User.Identity.Name;
-                string mensajito = "Se ha editado la solicitud con numero de boleta " + numBol + " exitosamente. Puede consultar esta solicitud en el siguiente link: " + link + " \n Gracias por preferirnos.\n";
-                SolicitudBien(email, mensajito, subj);
-                */
+
+                //Envia los correos de notificacion al encargado y al cliente que realizo la solicitud
                 emailCliente(P.ID, 2);
                 emailEncargado(P.ID, 2);
+
                 //Redirecciona al historial
                 return RedirectToAction("Historial");
             }
@@ -1153,15 +1136,20 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+            //Busca el prestamo que se quiere cancelar
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
+
             //Si entra a cancelar una solicitud que no existe, da error
             if (pRESTAMO == null)
             {
                 return HttpNotFound();
             }
+
             //Para determinar el estado en que se encuentra la solicitud en este momento
             ViewBag.Estadillo = "";
             ViewBag.Estadillo = "Cancelada";
+
             //Para determinar cual usuario fue el que hizo la solicitud
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
@@ -1185,11 +1173,13 @@ namespace Activos_PrestamosOET.Controllers
                        where ac.PRESTABLE.Equals(true) &&
                               t.ID.Equals(ac.TIPO_ACTIVOID)
                        select new { t.NOMBRE, t.ID }).Distinct();
+
             //Para desplegar las cantidades solicitadas de cada categoria por ese usuario en esa solicitud especifica
             var equipo_sol = from o in db.PRESTAMOS
                              from o2 in db.EQUIPO_SOLICITADO
                              where (o.ID == id && o2.ID_PRESTAMO == id)
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
+            
             //Para crear la lista de equipo con cantidades que se va a desplegar en la tabla de equipo solicitado que se 
             //podra observar en la pantalla de cancelar (llamada Delete)
             var equipo = new List<List<String>>();
@@ -1199,12 +1189,10 @@ namespace Activos_PrestamosOET.Controllers
                 List<String> temp = new List<String>();
                 foreach (var x in equipo_sol)
                 {
-
                     if (x.TIPO != null)
                     {
                         if (x.TIPO == y.NOMBRE)
                         {
-
                             temp.Add(y.NOMBRE);
                             existeCategoria = true;
                             if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add("0"); }
@@ -1224,10 +1212,10 @@ namespace Activos_PrestamosOET.Controllers
                     temp.Add(y.NOMBRE);
                     temp.Add("0");
                     temp.Add("0");
-
                 }
                 equipo.Add(temp);
             }
+
             //la variable en la que se guarda la informacion a desplegarse en la tabla de equipo solicitado de la pantalla de cancelacion
             ViewBag.Equipo_Solict = equipo;
             return View(pRESTAMO);
@@ -1253,17 +1241,14 @@ namespace Activos_PrestamosOET.Controllers
                 //guarda los cambios en la base
                 db.SaveChanges();
                 //Enviar email notificando que se cancelo la solicitud
-                /*string subj = "Cancelación de Solicitud: " + pRESTAMO.NUMERO_BOLETA;
-                var consultaUrl = Url.Action("Detalles", "PRESTAMOes", new { id = pRESTAMO.ID }, protocol: Request.Url.Scheme);
-                string link = " " + consultaUrl + " ";
-                string email = User.Identity.Name;
-                string mensajito = "Se ha cancelado la solicitud con numero de boleta " + pRESTAMO.NUMERO_BOLETA + " exitosamente. Puede consultar esta solicitud en el siguiente link: " + link + " \n Gracias por preferirnos.\n";
-                SolicitudBien(email, mensajito, subj);*/
+
                 emailCliente(pRESTAMO.ID, 3);
                 emailEncargado(pRESTAMO.ID, 3);
+
                 //Redirecciona la pagina al historial
                 return RedirectToAction("Historial");
             }
+
             //Redirecciona la pagina al historial
             return RedirectToAction("Historial");
         }
@@ -1546,6 +1531,7 @@ namespace Activos_PrestamosOET.Controllers
             }
             return activos_enCat;
         }
+
         //Requiere: Recibe una categoria de activo especifica y un id de un prestamo.
         //Modifica: Busca los activos de una categoria especifica, que estan asociados al prestamo con id igual a "id"
         //Regresa: Retorna un conjunto de listas de string, la cua cada una contiene: fabricante, modelo y placa; de cada activo de una categoria especifica, que estan asociados a un prestamo.
@@ -1607,7 +1593,6 @@ namespace Activos_PrestamosOET.Controllers
         //Requiere: una string parseada de la vista que se quiere convertir en PDF
         //Modifica: se encarga de pasar la vista HTML a un documento de itextsharp
         //Regresa: un byte con el documento 
-
         public byte[] GetPDF(string pHTML)
         {
             byte[] bPDF = null;
@@ -1628,7 +1613,6 @@ namespace Activos_PrestamosOET.Controllers
 
             // parsea el html en el doc
             htmlWorker.Parse(txtReader);
-
 
             htmlWorker.EndDocument();
             htmlWorker.Close();
@@ -1689,9 +1673,9 @@ namespace Activos_PrestamosOET.Controllers
             return View(pRESTAMO);
         }
 
-
-
-
+        //Requiere: el id del prestamo 
+        //Modifica: Crea la vista de DetallesPDF. El usuario no va a ver esta vista, si no que es para despues convertirla en un string y enviarla por correo electronico
+        //Regresa: la vista
         public ActionResult DetallesPDF(string id)
         {
             if (id == null)
@@ -1699,7 +1683,6 @@ namespace Activos_PrestamosOET.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
-
             return View(pRESTAMO);
         }
     }
