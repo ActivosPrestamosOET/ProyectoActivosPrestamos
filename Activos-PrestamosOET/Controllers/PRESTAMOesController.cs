@@ -722,17 +722,19 @@ namespace Activos_PrestamosOET.Controllers
             //Redaccion del email dependiendo de que tipo de notificacion sea
             switch (tipo)
             {
-                case 1:
-                   subj = "Nueva Solicitud de Prestamo: " + p.NUMERO_BOLETA.ToString();
+                case 1://Si es una solicitud nueva
+                    subj = "Nueva Solicitud de Prestamo: " + p.NUMERO_BOLETA.ToString();
                     mensajito = "Se ha realizado una solicitud de prestamo." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
                     mensajito = mensajito + HTMLContent;
                     break;
-                case 2:
+
+                case 2://Si se ha editado una solicitud
                     subj = "Edición de Prestamo: " + p.NUMERO_BOLETA.ToString();
                     mensajito = "Se ha editado una solicitud." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
                     mensajito = mensajito + "\n" + HTMLContent;
                     break;
-                case 3:
+
+                case 3://Si se cancela una solicitud
                     subj = "Cancelación de Prestamo: " + p.NUMERO_BOLETA.ToString();
                     mensajito = "Se ha cancelado una solicitud." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
                     mensajito = mensajito + HTMLContent;
@@ -767,17 +769,19 @@ namespace Activos_PrestamosOET.Controllers
             //Redaccion del email dependiendo de que tipo de notificacion sea
             switch (tipo)
             {
-                case 1:
+                case 1://Si es una solicitud nueva
                     subj = "Nueva Solicitud de Prestamo: " + p.NUMERO_BOLETA.ToString();
                     mensajito = "Su solicitud ha sido realizada con éxito." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
                     mensajito = mensajito + HTMLContent;
                     break;
-                case 2:
+
+                case 2://Si se ha editado una solicitud
                     subj = "Edición de Prestamo: " + p.NUMERO_BOLETA.ToString();
                     mensajito = "Su prestamo ha sido editado exitosamente." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
                     mensajito = mensajito + "\n" + HTMLContent;
                     break;
-                case 3:
+
+                case 3://Si se cancela una solicitud
                     subj = "Cancelación de Prestamo: " + p.NUMERO_BOLETA.ToString();
                     mensajito = "Su prestamo se ha cancelado exitosamente." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
                     mensajito = mensajito + HTMLContent;
