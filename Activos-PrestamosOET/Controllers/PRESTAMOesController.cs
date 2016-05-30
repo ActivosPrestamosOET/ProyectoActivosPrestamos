@@ -746,7 +746,7 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             //Email indicado al que hay que enviar los emails electronicos para notificaciones con respecto a prestamos
-            string email = "tiquetes.soporte@tropicalstudies.org";//User.Identity.Name;
+            string email = User.Identity.Name;//"tiquetes.soporte@tropicalstudies.org";//User.Identity.Name;
 
             //Envia la solicitud dependiendo del email, mensaje y asunto determinados en este metodo
             SolicitudBien(email, mensajito, subj);
@@ -933,7 +933,10 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             //Buscamos los cursos de en la base de datos
-            ViewBag.Cursos = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
+            //ViewBag.Cursos = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
+            ViewBag.SIGLA_CURSO = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
+
+            ViewBag.CursoSeleccionado = pRESTAMO.SIGLA_CURSO;
 
             //Determina el estado de la solicitud para desplegarlo en la pantalla mas adelante
             ViewBag.Estadillo = "";
