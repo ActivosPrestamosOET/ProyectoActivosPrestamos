@@ -706,17 +706,24 @@ namespace Activos_PrestamosOET.Controllers
         //Retorna: N/A
         private void emailEncargado(string idd, int tipo)
         {
+            //Busca el prestamo del que hay que enviar los detalles
             PRESTAMO p = db.PRESTAMOS.Find(idd);
+
+            //Para enviar los detalles de la solicitud por correo eletronico
+            //Obtiene la vista con los datos y la convierte en string
             string HTMLContent = RenderRazorViewToString("DetallesPDF", p);
 
-            var consultaUrl = Url.Action("Detalles", "PRESTAMOes", new { id = idd }, protocol: Request.Url.Scheme);
+            //Para enviar el link a los detalles de la solicitud
+            var consultaUrl = Url.Action("Details", "PRESTAMOes", new { id = idd }, protocol: Request.Url.Scheme);
             string link = " " + consultaUrl + " ";
             string subj = "";
             string mensajito = "";
+
+            //Redaccion del email dependiendo de que tipo de notificacion sea
             switch (tipo)
             {
                 case 1:
-                   subj = "Solicitud de Prestamo: " + p.NUMERO_BOLETA.ToString();
+                   subj = "Nueva Solicitud de Prestamo: " + p.NUMERO_BOLETA.ToString();
                     mensajito = "Se ha realizado una solicitud de prestamo." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
                     mensajito = mensajito + HTMLContent;
                     break;
@@ -731,7 +738,11 @@ namespace Activos_PrestamosOET.Controllers
                     mensajito = mensajito + HTMLContent;
                     break;
             }
+
+            //Email indicado al que hay que enviar los emails electronicos para notificaciones con respecto a prestamos
             string email = "tiquetes.soporte@tropicalstudies.org";//User.Identity.Name;
+
+            //Envia la solicitud dependiendo del email, mensaje y asunto determinados en este metodo
             SolicitudBien(email, mensajito, subj);
         }
 
@@ -740,17 +751,24 @@ namespace Activos_PrestamosOET.Controllers
         //Retorna: N/A
         private void emailCliente(string idd, int tipo)
         {
+            //Busca el prestamo del que hay que enviar los detalles
             PRESTAMO p = db.PRESTAMOS.Find(idd);
+
+            //Para enviar los detalles de la solicitud por correo eletronico
+            //Obtiene la vista con los datos y la convierte en string
             string HTMLContent = RenderRazorViewToString("DetallesPDF", p);
 
+            //Para enviar el link a los detalles de la solicitud
             var consultaUrl = Url.Action("Detalles", "PRESTAMOes", new { id = idd }, protocol: Request.Url.Scheme);
             string link = " " + consultaUrl + " ";
             string subj = "";
             string mensajito = "";
+
+            //Redaccion del email dependiendo de que tipo de notificacion sea
             switch (tipo)
             {
                 case 1:
-                    subj = "1Solicitud de Prestamo: " + p.NUMERO_BOLETA.ToString();
+                    subj = "Nueva Solicitud de Prestamo: " + p.NUMERO_BOLETA.ToString();
                     mensajito = "Su solicitud ha sido realizada con éxito." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
                     mensajito = mensajito + HTMLContent;
                     break;
@@ -765,7 +783,11 @@ namespace Activos_PrestamosOET.Controllers
                     mensajito = mensajito + HTMLContent;
                     break;
             }
+
+            //El email al que hay que enviar la solicitud, es al del cliente que la acaba de crear que debe estar loggeado en el sistema.
             string email = User.Identity.Name;
+
+            //Envia la solicitud dependiendo del email, mensaje y asunto determinados en este metodo
             SolicitudBien(email, mensajito, subj);
         }
 
