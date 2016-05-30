@@ -836,6 +836,7 @@ namespace Activos_PrestamosOET.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,CED_SOLICITA,CED_APRUEBA")] PRESTAMO p, int[] Cantidad, String[] Categoria)
         {
+            //Metemos los valores ingresados por el usuario en un nuevo prestamo
             PRESTAMO prestamo = new PRESTAMO();
             var allErrors = ModelState.Values.SelectMany(v => v.Errors);
             if (ModelState.IsValid)
@@ -857,8 +858,12 @@ namespace Activos_PrestamosOET.Controllers
                 prestamo.SOFTWARE_REQUERIDO = p.SOFTWARE_REQUERIDO;
                 prestamo.Estado = 1;
                 db.PRESTAMOS.Add(prestamo);
+                
+                //Guardamos el prestamo en la base
                 db.SaveChanges();
                 List<String> cat = (List<String>)TempData["categorias"];
+                
+                //Ingresamos el equipo solicitado y hacemos la insercion en la base de datos
                 for (int i = 0; i < Cantidad.Length; i++)
                 {
                     EQUIPO_SOLICITADO equipo = new EQUIPO_SOLICITADO();
@@ -876,6 +881,9 @@ namespace Activos_PrestamosOET.Controllers
                     db.EQUIPO_SOLICITADO.Add(equipo);
                     db.SaveChanges();
                 }
+
+                //Buscamos el prestamo recien insertado en la base de datos
+                //Esto es necesario porque el numero de boleta se ingresa hasta que se crea la solicitud en base 
                 PRESTAMO prest = new PRESTAMO();
                 prest = db.PRESTAMOS.Find(idd);
 
@@ -886,6 +894,8 @@ namespace Activos_PrestamosOET.Controllers
                 //Envia los correos de notificacion al cliente y al encargado
                 emailCliente(idd, 1);
                 emailEncargado(idd, 1);
+
+                //Mensaje de confirmacion
                 TempData["confirmacion"] = "La solicitud fue enviada con éxito";
                 TempData.Keep();
                 return RedirectToAction("Historial");
@@ -903,18 +913,24 @@ namespace Activos_PrestamosOET.Controllers
         //Retorna: vista con los campos para editar solicitud.
         public ActionResult Edit(string id)
         {
+            //Si el id es null da error
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             //Busca la solicitud que se quiere editar
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
+
             //si no esta devuelve error
             if (pRESTAMO == null)
             {
                 return HttpNotFound();
             }
+
+            //Buscamos los cursos de en la base de datos
             ViewBag.Cursos = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
+
             //Determina el estado de la solicitud para desplegarlo en la pantalla mas adelante
             ViewBag.Estadillo = "";
             if (pRESTAMO.Estado == 1)
@@ -985,7 +1001,6 @@ namespace Activos_PrestamosOET.Controllers
                 List<String> temp = new List<String>();
                 foreach (var x in equipo_sol)
                 {
-
                     if (x.TIPO != null)
                     {
                         if (x.TIPO == y.NOMBRE)
@@ -1028,7 +1043,6 @@ namespace Activos_PrestamosOET.Controllers
         {
             //Busca el prestamo en la base de datos
             PRESTAMO P = db.PRESTAMOS.Find(id);
-            string numBol = P.NUMERO_BOLETA.ToString();
 
             //Busca el equipo previamente solicitado
             var equipo_sol = from o in db.PRESTAMOS
