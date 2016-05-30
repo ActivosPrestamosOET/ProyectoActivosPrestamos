@@ -701,6 +701,9 @@ namespace Activos_PrestamosOET.Controllers
             SendAsync(myMessage);
         }
 
+        //Requiere: un int que corresponde al tipo de notificacion que se debe enviar y un string que corresponde al id del prestamo.
+        // Modifica: Envia un correo electronico al encargado dependiendo del tipo de notificacion que se quiera enviar.
+        //Retorna: N/A
         private void emailEncargado(string idd, int tipo)
         {
             PRESTAMO p = db.PRESTAMOS.Find(idd);
@@ -728,7 +731,7 @@ namespace Activos_PrestamosOET.Controllers
                     mensajito = mensajito + HTMLContent;
                     break;
             }
-            string email = User.Identity.Name;
+            string email = "tiquetes.soporte@tropicalstudies.org";//User.Identity.Name;
             SolicitudBien(email, mensajito, subj);
         }
         private void emailCliente(string idd, int tipo)
