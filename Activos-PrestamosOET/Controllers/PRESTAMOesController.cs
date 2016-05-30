@@ -852,6 +852,7 @@ namespace Activos_PrestamosOET.Controllers
                 }
                 PRESTAMO prest = new PRESTAMO();
                 prest = db.PRESTAMOS.Find(idd);
+
                 //Refresca el contexto del objeto PRESTAMO prest de la base de datos para obtener el numero de solicitud correcto.
                 var ctx = ((IObjectContextAdapter)db).ObjectContext;
                 ctx.Refresh(RefreshMode.ClientWins, prest);
