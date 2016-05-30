@@ -126,7 +126,7 @@ namespace Activos_PrestamosOET.Controllers
         //Requiere: Recibe 6 parámetros, el primero es la columna por la que se ordenan los datos en la tabla, el segundo, tercero, cuarto y quinto para hacer filtrado de búsqueda y el último para identificar la página en q se encuentra la tabla.
         // Modifica: Maneja el index view, la cual es la vista de consulta de revisión de solicitudes.
         //Retorna: Devuelve una tabla que se despliegará en el index de Revisión de solicitudes.
-        public ActionResult Index(string sortOrder, string currentFilter, string fechaSolicitud, string fechaRetiro, string estado, int? page)
+        public ActionResult Index(string sortOrder, string currentFilter, string fechaSolicitud, string fechaRetiro, string estado, string numeroBoleta, int? page)
         {
             //se identifica si alguna columna fue seleccionada como filtro para ordenar los datos despliegados
             ViewBag.currentSort = sortOrder;
@@ -195,6 +195,11 @@ namespace Activos_PrestamosOET.Controllers
                 int est = int.Parse(estado);
                 var int16 = Convert.ToInt16(est);
                 prestamos = prestamos.Where(model => model.Estado == int16);
+            }
+            if (!string.IsNullOrEmpty(numeroBoleta))
+            {
+                int num = int.Parse(numeroBoleta);
+                prestamos = prestamos.Where(model => model.NUMERO_BOLETA == num);
             }
             //Finaliza búsqueda por filtros//
 
