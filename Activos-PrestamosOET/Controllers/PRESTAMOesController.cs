@@ -681,6 +681,8 @@ namespace Activos_PrestamosOET.Controllers
                        ConfigurationManager.AppSettings["mailPassword"]
                        );
             var transportWeb = new SendGrid.Web(credentials);
+
+            //Enviar el email
             transportWeb.DeliverAsync(message);
         }
 
@@ -698,6 +700,8 @@ namespace Activos_PrestamosOET.Controllers
             myMessage.Text = mensaje;
             myMessage.Html = mensaje;
 
+
+            //Enviar el email
             SendAsync(myMessage);
         }
 
