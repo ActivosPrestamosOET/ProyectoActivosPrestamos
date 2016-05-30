@@ -177,6 +177,7 @@
                                                         <th>Fabricante</th>
                                                         <th>Modelo</th>
                                                         <th>Placa</th>
+                                                        <th>Estado</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -194,6 +195,14 @@
                                                                 <td>@c[0] &nbsp;</td>
                                                                 <td>@c[1] &nbsp;</td>
                                                                 <td>@c[2] &nbsp;</td>
+                                                                  @if(c[3] == "0")
+                                                                  {
+                                                                     <td>Devuelto</td>
+                                                                  }
+                                                                  else
+                                                                  {
+                                                                     <td>En préstamo</td>
+                                                                  }
                                                             </tr>
                                                         }
                                                         

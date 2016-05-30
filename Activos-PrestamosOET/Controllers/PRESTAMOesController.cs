@@ -88,8 +88,8 @@ namespace Activos_PrestamosOET.Controllers
             var activos = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
             // int cat = int.Parse(categoria);
             var act = from a in activos.ACTIVOes.Where(i => i.TIPO_ACTIVOID == cat)
-                      where a.ESTADO_PRESTADO == 1
-                      select new { FABRICANTE = a.FABRICANTE, MODELO = a.MODELO, PLACA = a.PLACA, ID = a.ID };
+                      //where a.ESTADO_PRESTADO == 1
+                      select new { FABRICANTE = a.FABRICANTE, MODELO = a.MODELO, PLACA = a.PLACA, ID = a.ID, PRESTADO = a.ESTADO_PRESTADO };
 
             foreach (var a in act)
             {
@@ -97,6 +97,7 @@ namespace Activos_PrestamosOET.Controllers
                 equipo.Add(a.FABRICANTE);
                 equipo.Add(a.MODELO);
                 equipo.Add(a.PLACA);
+                equipo.Add(a.PRESTADO.ToString());
                 equipo.Add(a.ID);
                 equipos.Add(equipo);
             }
@@ -1411,7 +1412,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 foreach (List<String> l in entrada.Value)
                 {
-                    idPrestados.Add(l[3]);
+                    idPrestados.Add(l[4]);
                 }
             }
 
@@ -1443,6 +1444,7 @@ namespace Activos_PrestamosOET.Controllers
                         }
                     }
                     pRESTAMO.Estado = 5;
+                   // return RedirectToAction("Details", new { id = ID });
                 }
                 else if (hayFilaEntera(column5_checkbox))
                 {
@@ -1539,9 +1541,9 @@ namespace Activos_PrestamosOET.Controllers
 
             /*  -------------------------------------------------------------------------------------------  */
 
-            return RedirectToAction("Devolucion", new { id = ID }); ;
+            return RedirectToAction("Devolucion", new { id = ID });
         }
-
+        
 
         // Requiere: valor seleccionado en el dropdown de Categoría, valor del botón seleccionado, valor de la fecha inicial y la fecha final
         // Modifica: se encarga de llenar la tabla de Inventario, de la categoría que recibe cómo parámetro (en el modal).
