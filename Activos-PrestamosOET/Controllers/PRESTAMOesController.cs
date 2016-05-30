@@ -734,6 +734,10 @@ namespace Activos_PrestamosOET.Controllers
             string email = "tiquetes.soporte@tropicalstudies.org";//User.Identity.Name;
             SolicitudBien(email, mensajito, subj);
         }
+
+        //Requiere: un int que corresponde al tipo de notificacion que se debe enviar y un string que corresponde al id del prestamo.
+        // Modifica: Envia un correo electronico al cliente que esta loggeado en este momento dependiendo del tipo de notificacion que se quiera enviar.
+        //Retorna: N/A
         private void emailCliente(string idd, int tipo)
         {
             PRESTAMO p = db.PRESTAMOS.Find(idd);
@@ -795,7 +799,7 @@ namespace Activos_PrestamosOET.Controllers
 
             return View();
         }
-
+        /*
         public long calcularNumBoleta()
         {
             var prestamos = from s in db.PRESTAMOS
@@ -806,7 +810,7 @@ namespace Activos_PrestamosOET.Controllers
             PRESTAMO ultimo = u.First<PRESTAMO>();
 
             return ultimo.NUMERO_BOLETA.GetValueOrDefault() + 1;
-        }
+        }*/
 
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
