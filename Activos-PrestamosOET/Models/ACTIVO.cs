@@ -21,12 +21,9 @@ namespace Activos_PrestamosOET.Models
         {
             this.PRESTAMOes = new HashSet<PRESTAMO>();
             this.TRANSACCIONES = new HashSet<TRANSACCION>();
-
-            //OJO: si se regenera el modelo esto muere. Tal vez seria mejor moverlo a otro archivo y aprovechar
-            //que la clase es partial.            
-
-
-            this.FECHA_INGRESO = DateTime.Now.Date; // Se le quema la fecha de ingreso
+            // El activo siempre va a tener la fecha de ingreso del momento en que se crea.
+            this.FECHA_INGRESO = DateTime.Now.Date;
+            // Se genera el ID a como lo pide la OET.
             this.ID = DateTime.Now.Day.ToString("D2") + DateTime.Now.Month.ToString("D2") + DateTime.Now.Year.ToString() + DateTime.Now.Hour.ToString("D2") + DateTime.Now.Minute.ToString("D2") + DateTime.Now.Second.ToString("D2") + DateTime.Now.Millisecond.ToString("D3"); /// Se genera el ID con el estandar de la OET.
 
         }
@@ -151,6 +148,13 @@ namespace Activos_PrestamosOET.Models
         public virtual ICollection<TRANSACCION> TRANSACCIONES { get; set; }
         public virtual V_ESTACION V_ESTACION { get; set; }
 
+        /**
+         * Metodo que se encarga de generar la descripción del activo para que se guarde en la bitácora.
+         * @params: "proveedor" del activo
+         * @params: "transaccion" el tipo de transaccion que se esta realizando
+         * @params: "anfirtriona" que es la organizacion a la que pertenece al activo
+         * @return: Un string con la descripción completa del activo en el formato que se quiere para guardar en la bitácora.
+         */
         public string descripcion(string proveedor, string transaccion, string anfitriona)
         {
             string esta_exento, capital, prestable;

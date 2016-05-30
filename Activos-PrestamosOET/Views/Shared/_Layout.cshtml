@@ -14,8 +14,6 @@
     @Scripts.Render("~/bundles/bootstrap")
 
     <!-- Datepicker cross-browser -->
-
-
     <script src="@Url.Content("~/Scripts/jquery-ui-1.11.4.js")" type="text/javascript"></script>
     <script src="@Url.Content("~/Scripts/fechas.js")" type="text/javascript"></script>
 </head>
@@ -64,15 +62,10 @@
                         @*@if (User.IsInRole("superadmin"))
                             {*@
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Usuarios <span class="caret"></span></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opciones avanzadas <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("Usuarios", "Index", "UsersAdmin")</li>
-                                <li>@Html.ActionLink("Roles", "Index", "RolesAdmin")</li>
-                            </ul>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administrador de tablas <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("Administración de usuarios", "Index", "UsersAdmin")</li>
+                                <li>@Html.ActionLink("Administración de roles", "Index", "RolesAdmin")</li>
                                 <li>@Html.ActionLink("Centros de costos", "Index", "CentrosDeCostos")</li>
                                 <li>@Html.ActionLink("Estados de los activos", "Index", "EstadosActivos")</li>
                                 <li>@Html.ActionLink("Tipos de activos", "Index", "TiposActivos")</li>
