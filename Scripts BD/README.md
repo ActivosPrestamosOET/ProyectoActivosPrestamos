@@ -1,87 +1,14 @@
--- --------------------------------------------------
--- Entity Designer DDL Script for Oracle database
--- --------------------------------------------------
--- Date Created: 24/5/2016 2:20:39 p. m.
--- Generated from EDMX file: C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\Models\PrestamosOET.edmx
--- --------------------------------------------------
+# Instrucciones para los scripts de la base de datos del esquema de Activos
 
--- --------------------------------------------------
--- Dropping existing FOREIGN KEY constraints
--- --------------------------------------------------
+El siguiente documento tiene como fin facilitar la correcta ejecución de los _scripts_ necesarios para la base de datos que utiliza el módulo de **activos y préstamos** de la Organización para Estudios Tropicales.
 
--- ALTER TABLE "ACTIVOS"."EQUIPO_SOLICITADO" DROP CONSTRAINT "FK_A_PRESTAMOS" CASCADE;
+Para que no se presente ningún inconveniente, lo ideal es seguir este instructivo a como se indica en las siguientes instrucciones y con el orden que aquí se establece:
 
--- ALTER TABLE "ACTIVOS"."ACTIVOPRESTAMO" DROP CONSTRAINT "FK_ACTIVOPRESTAMO_ACTIVO" CASCADE;
+### 1. Correr el script con el nombre _PrestamosOET.edmx.sql_
 
--- ALTER TABLE "ACTIVOS"."ACTIVOPRESTAMO" DROP CONSTRAINT "FK_ACTIVOPRESTAMO_PRESTAMO" CASCADE;
+Este script contiene todo lo necesario para establecer las tablas que se van a utilizar posteriormente en el sistema de los activos de la OET. El contenido del script se muestra a continuación, por si el usuario desea copiar y pegar los scripts aunque se adjunta el archivo correspondiente
 
--- ALTER TABLE "ACTIVOS"."PRESTAMOS" DROP CONSTRAINT "FK_Solicita" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."PRESTAMOS" DROP CONSTRAINT "FK_Aprueba" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."ACTIVOS" DROP CONSTRAINT "FK_TIPO_ACTIVOACTIVO" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."EQUIPO_SOLICITADO" DROP CONSTRAINT "FK_TIPOS_ACTIVOSEQUIPO_SOLICITADO" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."ACTIVOS" DROP CONSTRAINT "FK_ESTADO_ACTIVOACTIVO" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."ACTIVOS" DROP CONSTRAINT "FK_V_MONEDAACTIVO" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."ACTIVOS" DROP CONSTRAINT "FK_CENTRO_DE_COSTOACTIVO" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."ACTIVOS" DROP CONSTRAINT "FK_V_USUARIOSACTIVO" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."ACTIVOS" DROP CONSTRAINT "FK_V_PROVEEDORACTIVO" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."ACTIVOS" DROP CONSTRAINT "FK_V_ANFITRIONAACTIVO" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."ACTIVOS" DROP CONSTRAINT "FK_TIPO_TRANSACCIONACTIVO" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."TRANSACCIONES" DROP CONSTRAINT "FK_ACTIVOTRANSACCION" CASCADE;
-
--- ALTER TABLE "ACTIVOS"."ACTIVOS" DROP CONSTRAINT "FK_V_ESTACIONACTIVO" CASCADE;
--- --------------------------------------------------
--- Dropping existing tables
--- --------------------------------------------------
-
--- DROP TABLE "ACTIVOS"."EQUIPO_SOLICITADO";
-
--- DROP TABLE "ACTIVOS"."PRESTAMOS";
-
--- DROP TABLE "ACTIVOS"."ACTIVOS";
-
--- DROP TABLE "ACTIVOS"."USUARIOS";
-
--- DROP TABLE "ACTIVOS"."TIPOS_ACTIVOS";
-
--- DROP TABLE "ACTIVOS"."ESTADOS_ACTIVOS";
-
--- DROP TABLE "ACTIVOS"."V_ANFITRIONA";
-
--- DROP TABLE "ACTIVOS"."V_ESTACION";
-
--- DROP TABLE "ACTIVOS"."V_MONEDA";
-
--- DROP TABLE "ACTIVOS"."V_PROVEEDOR";
-
--- DROP TABLE "ACTIVOS"."V_TIPO_CAMBIO";
-
--- DROP TABLE "ACTIVOS"."V_USUARIOS";
-
--- DROP TABLE "ACTIVOS"."CENTROS_DE_COSTOS";
-
--- DROP TABLE "ACTIVOS"."TIPOS_TRANSACCIONES";
-
--- DROP TABLE "ACTIVOS"."TRANSACCIONES";
-
--- DROP TABLE "ACTIVOS"."V_COURSES";
-
--- DROP TABLE "ACTIVOS"."ACTIVOPRESTAMO";
-
--- --------------------------------------------------
--- Creating all tables
--- --------------------------------------------------
-
+```sql
 -- Creating table 'EQUIPO_SOLICITADO'
 CREATE TABLE "ACTIVOS"."EQUIPO_SOLICITADO" (
    "ID_PRESTAMO" VARCHAR2(25 CHAR) NOT NULL,
@@ -648,7 +575,233 @@ ADD CONSTRAINT "FK_V_ESTACIONACTIVO"
 CREATE INDEX "IX_FK_V_ESTACIONACTIVO"
 ON "ACTIVOS"."ACTIVOS"
    ("V_ESTACIONID");
+```
 
--- --------------------------------------------------
--- Script has ended
--- --------------------------------------------------
+### 2. Correr el script _setupUsuarios.sql_
+Este archivo sql contiene la declaración de las tablas que utiliza ASP.NET para trabajar con el _Identity framework_, encargado de manejar todo el sistema de seguridad y autenticación de los usuarios del sistema.
+
+Si al correr el _script_ se presenta algún problema de compilación, se recomienda volver a ejecutar el script y ya con eso debe de quedar bien establecidas las tablas y triggers en la base de datos. Se adjunta el archivo _setupUsuarios.sql_ y el contenido es el siguiente, por si desea "copiar y pegar" el contenido en SQLDeveloper.
+
+```sql
+CREATE TABLE "ActivosRoles" (
+  "Id" NVARCHAR2(128) NOT NULL,
+  "Name" NVARCHAR2(256) NOT NULL,
+  PRIMARY KEY ("Id")
+);
+
+
+CREATE TABLE "ActivosUserRoles" (
+  "UserId" NVARCHAR2(128) NOT NULL,
+  "RoleId" NVARCHAR2(128) NOT NULL,
+  PRIMARY KEY ("UserId", "RoleId")
+);
+
+-- creacion de usuarios----------------------------------------------------------------------
+
+  CREATE TABLE "ActivosUsers"
+   (	"Id" NVARCHAR2(128),
+	"Email" NVARCHAR2(256),
+	"EmailConfirmed" NUMBER(1,0),
+	"PasswordHash" NVARCHAR2(256),
+	"SecurityStamp" NVARCHAR2(256),
+	"PhoneNumber" NVARCHAR2(256),
+	"PhoneNumberConfirmed" NUMBER(1,0),
+	"TwoFactorEnabled" NUMBER(1,0),
+	"LockoutEndDateUtc" TIMESTAMP (7),
+	"LockoutEnabled" NUMBER(1,0),
+	"AccessFailedCount" NUMBER(10,0),
+	"UserName" NVARCHAR2(256),
+	"Nombre" NVARCHAR2(100),
+	"Apellidos" NVARCHAR2(100),
+	"Cedula" NVARCHAR2(20),
+	"EstacionID" VARCHAR2(26 BYTE)
+   ) ;
+   ALTER TABLE "ActivosUsers" ADD PRIMARY KEY ("Id") ENABLE;
+   ALTER TABLE "ActivosUsers" ADD CONSTRAINT "FK_Users_Estacion" FOREIGN KEY ("EstacionID")
+	  REFERENCES "ACTIVOS"."ESTACION" ("ID") ON DELETE CASCADE ENABLE
+
+---------------------------------------------------------------------------------------------
+
+CREATE TABLE "ActivosUserClaims" (
+  "Id" NUMBER(10) NOT NULL,
+  "UserId" NVARCHAR2(128) NOT NULL,
+  "ClaimType" NVARCHAR2(256) NULL,
+  "ClaimValue" NVARCHAR2(256) NULL,
+  PRIMARY KEY ("Id")
+);
+
+
+CREATE SEQUENCE "ActivosUserClaims_SEQ";
+
+CREATE TABLE "ActivosUserLogins" (
+  "LoginProvider" NVARCHAR2(128) NOT NULL,
+  "ProviderKey" NVARCHAR2(128) NOT NULL,
+  "UserId" NVARCHAR2(128) NOT NULL,
+  PRIMARY KEY ("LoginProvider", "ProviderKey", "UserId")
+);
+
+
+CREATE UNIQUE INDEX "RoleNameIndex" ON "ActivosRoles" ("Name");
+
+CREATE INDEX "IX_ActivosUserRoles_UserId" ON "ActivosUserRoles" ("UserId");
+
+
+CREATE INDEX "IX_ActivosUserRoles_RoleId" ON "ActivosUserRoles" ("RoleId");
+
+
+CREATE UNIQUE INDEX "UserNameIndex" ON "ActivosUsers" ("UserName");
+
+
+CREATE INDEX "IX_ActivosUserClaims_UserId" ON "ActivosUserClaims" ("UserId");
+
+
+CREATE INDEX "IX_ActivosUserLogins_UserId" ON "ActivosUserLogins" ("UserId");
+
+
+ALTER TABLE "ActivosUserRoles"
+  ADD CONSTRAINT "FK_UserRoles_Roles" FOREIGN KEY ("RoleId") REFERENCES "ActivosRoles" ("Id")
+  ON DELETE CASCADE;
+
+ALTER TABLE "ActivosUserRoles"
+  ADD CONSTRAINT "FK_UserRoles_Users" FOREIGN KEY ("UserId") REFERENCES "ActivosUsers" ("Id")
+  ON DELETE CASCADE;
+
+ALTER TABLE "ActivosUserClaims"
+  ADD CONSTRAINT "FK_UserClaims_Users" FOREIGN KEY ("UserId") REFERENCES "ActivosUsers" ("Id")
+  ON DELETE CASCADE;
+
+ALTER TABLE "ActivosUserLogins"
+  ADD CONSTRAINT "FK_UserLogins_Users" FOREIGN KEY ("UserId") REFERENCES "ActivosUsers" ("Id")
+  ON DELETE CASCADE;
+
+  CREATE OR REPLACE TRIGGER "ActivosUserClaims_INS_TRG"
+    BEFORE INSERT ON "ActivosUserClaims"
+    FOR EACH ROW
+  BEGIN
+    SELECT "ActivosUserClaims_SEQ".NEXTVAL INTO :NEW."Id" FROM DUAL;
+  END;
+```
+### 3. Correr el script _Activos.sql_
+
+El archivo _Activos.sql_ contiene la creación de los _triggers_ necesarios para ejecutar correctamente inserciones dentro de la base de datos. Este archivo es relativamente corto en comparación con los otros y se muestra acontinuación:
+
+```sql
+------------------------------------
+-- Vista de Usuarios desde activos
+------------------------------------
+ GRANT SELECT ANY TABLE TO "ACTIVOS" WITH ADMIN OPTION;
+ create or replace view activos.v_usuarios as
+ select * from RESERVAS.usuarios;
+-----------------------------------------------------------------------------------
+-- Vista del documento de tipo de cambio (para conversiones de dolares a colones)
+-----------------------------------------------------------------------------------
+-- GRANT SELECT ANY TABLE TO "ACTIVOS" WITH ADMIN OPTION;
+ create or replace view activos.v_tipo_cambio as
+ select * from FINANCIERO.DOCUMENTO_TIPOCAMBIO;
+
+CREATE SEQUENCE INSERT_TIPO_ACTIVO
+  START WITH 1
+  INCREMENT BY 1
+  NOCACHE
+  NOCYCLE;
+/
+
+CREATE OR REPLACE TRIGGER id_tipos_activos
+  BEFORE INSERT ON TIPOS_ACTIVOS
+  FOR EACH ROW
+BEGIN
+  SELECT INSERT_TIPO_ACTIVO.nextval INTO :new.Id from dual;
+END;
+/
+CREATE SEQUENCE INSERT_TIPO_TRANSACCION
+  START WITH 1
+  INCREMENT BY 1
+  NOCACHE
+  NOCYCLE;
+/
+CREATE OR REPLACE TRIGGER id_tipo_transaccion
+    BEFORE INSERT ON tipos_transacciones
+    FOR EACH ROW
+  BEGIN
+    SELECT INSERT_TIPO_TRANSACCION.nextval INTO :new.ID from dual;
+  END;
+  /
+
+  CREATE SEQUENCE INSERT_ESTADO_ACTIVO
+  START WITH 1
+  INCREMENT BY 1
+  NOCACHE
+  NOCYCLE;
+/
+
+CREATE OR REPLACE TRIGGER id_estado_activo
+    BEFORE INSERT ON estados_activos
+    FOR EACH ROW
+  BEGIN
+    SELECT INSERT_ESTADO_ACTIVO.nextval INTO :new.ID from dual;
+  END;
+  /
+
+  CREATE SEQUENCE INSERT_TRANSACCION
+  START WITH 1
+  INCREMENT BY 1
+  NOCACHE
+  NOCYCLE;
+  /
+
+  CREATE OR REPLACE TRIGGER id_transaccion
+    BEFORE INSERT ON transacciones
+    FOR EACH ROW
+  BEGIN
+    SELECT INSERT_TRANSACCION.nextval INTO :new.ID from dual;
+  END;
+  /
+
+  CREATE SEQUENCE INSERT_CENTRO_COSTOS
+  START WITH 1
+  INCREMENT BY 1
+  NOCACHE
+  NOCYCLE;
+  /
+
+  CREATE OR REPLACE TRIGGER ID_CENTRO_COSTOS
+    BEFORE INSERT ON centros_de_costos
+    FOR EACH ROW
+  BEGIN
+    SELECT INSERT_CENTRO_COSTOS.nextval INTO :new."Id" from dual;
+  END;
+  /
+
+  commit;
+```
+
+Adicionalmente, se encarga de crear unas vistas necesarias de otros esquemas para poder consultar la información presente en esas tablas.
+
+### 4. Correr el script _Prestamos trigger.sql_
+
+Este script contiene la creación de un _trigger_ que se necesita para la correcta creación de un préstamo en la base de datos. El archivo se adjunta y su contenido es el siguiente:
+
+```sql
+
+CREATE SEQUENCE
+INSERT_NUMERO_BOLETA
+START WITH 1
+INCREMENT BY 1
+NOCACHE
+NOCYCLE
+/
+
+CREATE OR REPLACE TRIGGER num_boleta
+BEFORE INSERT ON PRESTAMOS
+FOR EACH ROW
+BEGIN
+SELECT INSERT_NUMERO_BOLETA.nextval
+INTO : new.NUMERO_BOLETA from dual;
+END;
+```
+
+---
+
+### Último paso (extra)
+
+Una vez terminada la ejecución de estos scripts, es de **suma importancia** que agrege un _Estado de activo_ llamado "_Disponible_" y un rol que se llame "_superadmin_". Si no se realizan estos pasos, el sistema tendrá un comportamiento que no es el esperado y muchas funcionalidades no se ejecutaran correctamente.
