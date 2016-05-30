@@ -21,12 +21,9 @@ namespace Activos_PrestamosOET.Models
         {
             this.PRESTAMOes = new HashSet<PRESTAMO>();
             this.TRANSACCIONES = new HashSet<TRANSACCION>();
-
-            //OJO: si se regenera el modelo esto muere. Tal vez seria mejor moverlo a otro archivo y aprovechar
-            //que la clase es partial.            
-
-
-            this.FECHA_INGRESO = DateTime.Now.Date; // Se le quema la fecha de ingreso
+            // El activo siempre va a tener la fecha de ingreso del momento en que se crea.
+            this.FECHA_INGRESO = DateTime.Now.Date;
+            // Se genera el ID a como lo pide la OET.
             this.ID = DateTime.Now.Day.ToString("D2") + DateTime.Now.Month.ToString("D2") + DateTime.Now.Year.ToString() + DateTime.Now.Hour.ToString("D2") + DateTime.Now.Minute.ToString("D2") + DateTime.Now.Second.ToString("D2") + DateTime.Now.Millisecond.ToString("D3"); /// Se genera el ID con el estandar de la OET.
 
         }
@@ -151,6 +148,13 @@ namespace Activos_PrestamosOET.Models
         public virtual ICollection<TRANSACCION> TRANSACCIONES { get; set; }
         public virtual V_ESTACION V_ESTACION { get; set; }
 
+        /**
+         * Metodo que se encarga de generar la descripción del activo para que se guarde en la bitácora.
+         * @params: "proveedor" del activo
+         * @params: "transaccion" el tipo de transaccion que se esta realizando
+         * @params: "anfirtriona" que es la organizacion a la que pertenece al activo
+         * @return: Un string con la descripción completa del activo en el formato que se quiere para guardar en la bitácora.
+         */
         public string descripcion(string proveedor, string transaccion, string anfitriona)
         {
             string esta_exento, capital, prestable;
@@ -177,16 +181,40 @@ namespace Activos_PrestamosOET.Models
             return atributos;
         }
 
+        /**
+         * Metodo que realiza una busqueda en todos los activos.
+         * @params: busqueda que es un string con la consulta que realiza el usuario
+         * @resturn: IQueryable que contiene los activos que coinciden con la busqueda.
+         */
+        public static IQueryable<ACTIVO> busquedaSimple(string busqueda)
+        {
+            PrestamosEntities db = new PrestamosEntities();
+            var result = from a in db.ACTIVOS select a;
+            if (!String.IsNullOrEmpty(busqueda))
+            {
+
+                result = result.Where(a => a.ESTADOS_ACTIVOS.NOMBRE.Contains(busqueda)
+                                            || a.NUMERO_SERIE.Contains(busqueda)
+                                            || a.V_ANFITRIONA.NOMBRE.Contains(busqueda)
+                                            || a.V_ESTACION.NOMBRE.Contains(busqueda)
+                                            || a.TIPOS_ACTIVOS.NOMBRE.Contains(busqueda)
+                                            || a.FABRICANTE.Contains(busqueda)
+                                            || a.CENTROS_DE_COSTOS.Nombre.Contains(busqueda)
+                                            || a.PLACA.Contains(busqueda));
+            }
+            return result;
+        }
+
+
         /** 
          * Metodo que se encarga de realizar la busqueda avanzada en los activos
          * @params: params_busqueda que es un diccionario con los parametros de la busqueda avanzada.
+         * @params: activos_previos que es un IQueryable en donde vienen los activos que ya pasaron por una consulta previa
          * @return: IQueryable que contiene los activos que coincidieron con la busqueda que se realizo
          */
-        public static IQueryable<ACTIVO> busquedaAvanzada(Dictionary<string, string> params_busqueda)
+        public static IQueryable<ACTIVO> busquedaAvanzada(Dictionary<string, string> params_busqueda, IQueryable<ACTIVO> activos_previos)
         {
-
-            PrestamosEntities db = new PrestamosEntities();
-            var result = from a in db.ACTIVOS select a;
+            IQueryable<ACTIVO> result = activos_previos;
             if (params_busqueda.Count > 0)
             {
                 if (!String.IsNullOrEmpty(params_busqueda["proveedor"]))

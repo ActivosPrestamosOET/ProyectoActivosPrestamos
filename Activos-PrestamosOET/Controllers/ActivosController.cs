@@ -26,8 +26,6 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.Descripcion = (orden == "descrip_asc") ? "descrip_desc" : "descrip_asc";
             ViewBag.EstadoParam = (orden == "estado_asc") ? "estado_desc" : "estado_asc";
 
-            var aCTIVOS = from a in db.ACTIVOS select a;
-
             // Paginación
             if (busqueda != null)
             {
@@ -39,18 +37,10 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             ViewBag.FiltroActual = busqueda;
-
+            
             // Busqueda con base en los parametros que ingresa el usuario
             #region Busqueda simple
-            if (!String.IsNullOrEmpty(busqueda))
-            {
-                aCTIVOS = aCTIVOS.Where(a => a.ESTADOS_ACTIVOS.NOMBRE.Contains(busqueda)
-                                            || a.NUMERO_SERIE.Contains(busqueda)
-                                            || a.V_ANFITRIONA.NOMBRE.Contains(busqueda)
-                                            || a.V_ESTACION.NOMBRE.Contains(busqueda)
-                                            || a.TIPOS_ACTIVOS.NOMBRE.Contains(busqueda)
-                                            || a.FABRICANTE.Contains(busqueda));
-            }
+            IQueryable<ACTIVO> aCTIVOS = ACTIVO.busquedaSimple(busqueda);
             #endregion
 
             #region Busqueda avanzada
@@ -64,7 +54,7 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.V_ESTACIONID = new SelectList(db.V_ESTACION, "ID", "NOMBRE");
 
             Dictionary<string, string> params_busqueda = new Dictionary<string, string>();
-            
+
             params_busqueda.Add("proveedor", V_PROVEEDORIDPROVEEDOR);
             params_busqueda.Add("tipo_activo", TIPO_ACTIVOID);
             params_busqueda.Add("anfitriona", V_ANFITRIONAID);
@@ -76,7 +66,7 @@ namespace Activos_PrestamosOET.Controllers
             params_busqueda.Add("estacion", V_ESTACIONID);
             params_busqueda.Add("fabricante", fabricante);
 
-            aCTIVOS = ACTIVO.busquedaAvanzada(params_busqueda);
+            aCTIVOS = ACTIVO.busquedaAvanzada(params_busqueda, aCTIVOS);
             #endregion
 
             switch (orden)
