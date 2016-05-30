@@ -746,7 +746,7 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             //Email indicado al que hay que enviar los emails electronicos para notificaciones con respecto a prestamos
-            string email = User.Identity.Name;//"tiquetes.soporte@tropicalstudies.org";//User.Identity.Name;
+            string email = "tiquetes.soporte@tropicalstudies.org";//User.Identity.Name;
 
             //Envia la solicitud dependiendo del email, mensaje y asunto determinados en este metodo
             SolicitudBien(email, mensajito, subj);
