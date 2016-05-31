@@ -44,6 +44,9 @@ namespace Activos_PrestamosOET.Controllers
             + consecutivo.ToString("D3");
         }
 
+        //Requiere: vector de booleanos 
+        //Modifica: lo convierte en una lista de booleanos que elimina booleanos extra
+        //Retorna:  Lista de booleanos
         protected List<bool> corregirVectorBool(bool[] vec)
         {
             List<bool> nuevoVec = new List<bool>();
@@ -67,6 +70,10 @@ namespace Activos_PrestamosOET.Controllers
             return nuevoVec;
         }
 
+
+        //Requiere: vector de booleanos
+        //Modifica: Se fija si hay algún checkbox de categoría checkeado y determina un valor a partir
+        //Retorna: booleano 
         protected bool hayFilaEntera(bool[] vec)
         {
             bool ret = false;
@@ -81,6 +88,9 @@ namespace Activos_PrestamosOET.Controllers
             return ret;
         }
 
+        //Requiere: String con el id e int de tipo de categoría 
+        //Modifica: Hace consulta para recuperar los activos con la categoría y que pertenecen al id
+        //Retorna:Lista de listas con información de cada activo en cada lista
         protected List<List<String>> equipoPorCategoria(int cat, String id)
         {
             List<List<String>> equipos = new List<List<String>>();
@@ -106,6 +116,9 @@ namespace Activos_PrestamosOET.Controllers
         }
 
 
+        //Requiere: String con tipo de categoría. 
+        //Modifica: Hace consulta para traducir el tipo en un id
+        //Retorna:devuelve el id de la categoría como un entero
         protected int traerCategoria(String tipo)
         {
             var consultaCat = from t in db.TIPOS_ACTIVOS
@@ -303,6 +316,9 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: PRESTAMOes/Detalles
+        //Requiere: id del Préstamo
+        //Modifica: Recupera la información sobre la solicitud de Préstamo seleccionads y la muestra
+        //Retorna: Vista con la información de los detalles de un Préstamo específico.
         public ActionResult Detalles(string id)
         {
             if (id == null)
@@ -1174,7 +1190,7 @@ namespace Activos_PrestamosOET.Controllers
 
 
 
-        // GET: PRESTAMOes/Delete/5
+        //GET: PRESTAMOes/Delete/5
         //Requiere: id del Préstamo
         //Modifica: Se encarga de cambiar el estado de la solicitud en la base de datos para que en prestamo aparezca cancelado.
         //Retorna: Vista con el resultado de dicha modificación en la base de datos.
@@ -1322,23 +1338,32 @@ namespace Activos_PrestamosOET.Controllers
             Cancelada
         }
 
+        // GET: PRESTAMOes/Devolucion
+        //Requiere: id del Préstamo
+        //Modifica: Se encarga de mostrar la información del préstamo al que pertenece el id, junto con una tabla que muestra
+        //el número de activos solicitado y aprobado por categoría. La tabla también muestra botones para desplegar un modal
+        //que permite visualizar los activos individuales por categoría
+        //Retorna: Vista de Devolucion 
         public ActionResult Devolucion(string id)
         {
-            if (id == null)
+            if (id == null) //checkea que se reciba un id de préstamo válido
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
+            PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);//se recupera el préstamo
             if (pRESTAMO == null)
             {
                 return HttpNotFound();
             }
 
+            //consulta que ingresa a una lista la información general del préstamo, incluyendo nombre del usuario
+            //que lo solicitó y su cédula
             var lista = from o in db.PRESTAMOS
                         from o2 in db.USUARIOS
                         where o.ID == id
                         select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
 
+            //
             foreach (var m in lista)
             {
                 if (m.Prestamo.ID == id)
@@ -1351,18 +1376,22 @@ namespace Activos_PrestamosOET.Controllers
                 }
             }
             /*  -------------------------------------------------------------------------------------------  */
+            //consulta con la información de las categorías solicitadas por préstamo, el número de activos por categoría y el número de activos aprobado
             var equipo_sol = from o in db.PRESTAMOS
                              from o2 in db.EQUIPO_SOLICITADO
                              where o.ID == id && o2.CANTIDAD > 0
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
 
-
+            //diccionario de listas de listas
+            //guardará como clave la categoría del activo y como valor una lista de listas que trae en cada una la información individual de cada activo
             var equipo_cat = new Dictionary<String, List<List<String>>>();
+            //consulta con las categorías solicitadas
             var categorias_sol = from p in db.PRESTAMOS
                                  from e in db.EQUIPO_SOLICITADO
                                  where p.ID == id && e.ID_PRESTAMO == p.ID
                                  select new { CAT = e.TIPO_ACTIVO, TIPO = e.TIPOS_ACTIVOSID };
 
+            //se recorren las categorías para obtener los activos específicos de esa categoría con el id del préstamo, se llama al método equipoPorCategoria
             foreach (var c in categorias_sol)
             {
                 var eq = new List<List<String>>();
@@ -1372,6 +1401,7 @@ namespace Activos_PrestamosOET.Controllers
 
 
             var equipo = new List<List<String>>();
+            //a partir de equipo_sol arma la información para la tabla de categorías
             foreach (var x in equipo_sol)
             {
                 if (x.ID == id)
@@ -1387,8 +1417,10 @@ namespace Activos_PrestamosOET.Controllers
                 }
             }
 
+            //se pasan las variables a la controladora 
             ViewBag.Equipo_Solict = equipo;
             ViewBag.EquipoPorCat = equipo_cat;
+            //se desea mantener el diccionario aún después del post
             TempData["activos"] = equipo_cat;
             TempData.Keep();
 
@@ -1397,17 +1429,23 @@ namespace Activos_PrestamosOET.Controllers
 
 
 
-
+        //POST: PRESTAMOes/Devolucion
+        //Requiere: id del Préstamo, información de checkbox de los modales y de las tablas, string con observaciones 
+        //Modifica: Se encarga de enviar la información sobre la devolución a la base datos indicando que activos específicamente van a ser 
+        //aceptados como devueltos
+        //Retorna: Vista de Devolucion con la información de los modales actualizados.
         [HttpPost]
         public ActionResult Devolucion(string ID, bool[] column5_checkbox, bool column5_checkAll, string b, string OBSERVACIONES_APROBADO, bool[] activoSeleccionado)
         {
+            //Se recupera al préstamo y se le actualiza el campo de observaciones_aprobado
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
             pRESTAMO.OBSERVACIONES_APROBADO = OBSERVACIONES_APROBADO;
 
+            //Se recupera el diccionario después del post
             Dictionary<String, List<List<String>>> dic = (Dictionary<String, List<List<String>>>)TempData["activos"];
 
             List<String> idPrestados = new List<String>();
-
+            //se guardan los ids de los activos del préstamo
             foreach (KeyValuePair<String, List<List<String>>> entrada in dic)
             {
                 foreach (List<String> l in entrada.Value)
@@ -1416,6 +1454,7 @@ namespace Activos_PrestamosOET.Controllers
                 }
             }
 
+            //guarda cambios efectuados en base.
             if (ModelState.IsValid)
             {
                 db.Entry(pRESTAMO).State = EntityState.Modified;
@@ -1423,14 +1462,16 @@ namespace Activos_PrestamosOET.Controllers
             }
 
 
+            //se recupera el préstamo junto con sus activos 
             var prestamo = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
             var equipo_sol = prestamo.EQUIPO_SOLICITADO;
             var activos_asignados = prestamo.ACTIVOes;
 
             /*---------------------------------------------------------------------------*/
+            //checkea si se apretó el botón de "actualizar devolución"
             if (b == "Actualizar devolución")
             {
-
+                //Caso de que se seleccione el checkbox Devolver todos, entonces se marca cada activo del préstamo como devuelto
                 if (column5_checkAll)
                 {
                     foreach (var y in equipo_sol)
@@ -1443,19 +1484,21 @@ namespace Activos_PrestamosOET.Controllers
                             }
                         }
                     }
+                    //Al devolverse todos los activos, el estado del préstamo pasa a ser "Cerrado"
                     pRESTAMO.Estado = 5;
                    // return RedirectToAction("Details", new { id = ID });
                 }
-                else if (hayFilaEntera(column5_checkbox))
+                else if (hayFilaEntera(column5_checkbox))//Revisa si hay algún check para devolver todos los activos de una sola categoría
                 {
                     int cont = 0;
+                    //corrige el array de booleanos recuperado
                     List<bool> devolverCheck = corregirVectorBool(column5_checkbox);
 
                     foreach (var y in equipo_sol)
                     {
                         bool t = devolverCheck[cont];
                         if (t)
-                        { //si fueron todos seleccionados en esa fila, de ese tipo
+                        { //si fueron todos seleccionados en esa fila, de ese tipo entonces se marca como devuelto cada activo
 
                             String cat = dic.Keys.ElementAt(cont);
                             foreach (List<String> l in dic[cat])
@@ -1466,19 +1509,14 @@ namespace Activos_PrestamosOET.Controllers
                                 db.Entry(act).State = EntityState.Modified;
                                 db.SaveChanges();
                             }
-                            //foreach (var x in activos_asignados)
-                            //{
-                            //    if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
-                            //    {
-                            //        x.ESTADO_PRESTADO = 0;
-                            //    }
-                            //}
+                           
                         }
                         cont++;
                     }
                 }
                 else //Si no se devolvieron todos ni una categoría entera, entonces se procesan las devoluciones individuales
                 {
+                    //corrige el vector de booleanos recuperado
                     List<bool> devolucionActivos = corregirVectorBool(activoSeleccionado);
                     bool todos = true;
                     for (int i = 0; i < idPrestados.Count(); i++)
@@ -1541,6 +1579,7 @@ namespace Activos_PrestamosOET.Controllers
 
             /*  -------------------------------------------------------------------------------------------  */
 
+            //
             return RedirectToAction("Devolucion", new { id = ID });
         }
         
@@ -1569,7 +1608,7 @@ namespace Activos_PrestamosOET.Controllers
                 }
             }
 
-            //Se majereja el caso en que una categoria no tenga activos disponibles
+            //Se maneja el caso en que una categoria no tenga activos disponibles
             if (activos_enCat.Count == 0)
             {
                 List<String> temp = new List<String>();
