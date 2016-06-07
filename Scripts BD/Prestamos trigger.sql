@@ -14,3 +14,15 @@ BEGIN
 SELECT INSERT_NUMERO_BOLETA.nextval
 INTO :new.NUMERO_BOLETA from dual;
 END;
+
+
+CREATE OR REPLACE FUNCTION add_days (d date, n number)
+RETURN DATE
+IS
+v_date DATE;
+BEGIN
+v_date := d + n;
+
+DBMS_OUTPUT.put_line (v_date);
+RETURN v_date;
+END;
