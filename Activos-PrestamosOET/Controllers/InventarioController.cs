@@ -262,5 +262,11 @@ namespace Local.Controllers
                 ViewBag.Mensaje1 = "No hay Activos Prestables con esta categoría.";
             }
         }
+
+        public ActionResult Details(string id)
+        {
+            var pRESTAMO = db.ACTIVOS.Include(p => p.PRESTAMOes).SingleOrDefault(m => m.PLACA == id);
+            return View(pRESTAMO);
+        }
     }
 }

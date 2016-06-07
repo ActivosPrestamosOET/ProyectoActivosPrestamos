@@ -174,18 +174,27 @@
                             <th>Descripciones</th>
                             <th>Prestado A</th>
                             <th>Prestado Hasta</th>
+                            <th></th>
+
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (List<String> s in ViewBag.Courses)
+                                                @foreach (List<String> s in ViewBag.Courses)
                         {
                             <tr>
                                 @foreach (String hilera in s)
                                 {
                                     <td>@hilera</td>
                                 }
+                            <td>
+                               
+                               
+                                @Html.ActionLink("Detalles", "Details", new { id = @s[2] }, new { @class = "btn btn-default" })
+                            </td>
                             </tr>
+                           
                         }
+                       
                     </tbody>
                 </table>
             </div>
