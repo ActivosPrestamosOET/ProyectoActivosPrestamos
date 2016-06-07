@@ -12,25 +12,31 @@ namespace Activos_PrestamosOET.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class USUARIO
+    public partial class ActivosUser
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public USUARIO()
+        public ActivosUser()
         {
             this.PRESTAMOes = new HashSet<PRESTAMO>();
             this.PRESTAMOes1 = new HashSet<PRESTAMO>();
         }
     
-        public string USUARIO1 { get; set; }
-        public string CLAVE { get; set; }
-        public string ANFITRION { get; set; }
-        public string IDCONTACTO { get; set; }
-        public string IDUSUARIO { get; set; }
-        public string DESCRIPCION { get; set; }
-        public string NOMBRE { get; set; }
-        public string IDESTACION { get; set; }
-        public decimal ESTADO { get; set; }
-        public string CORREO { get; set; }
+        public string Id { get; set; }
+        public string Email { get; set; }
+        public Nullable<bool> EmailConfirmed { get; set; }
+        public string PasswordHash { get; set; }
+        public string SecurityStamp { get; set; }
+        public string PhoneNumber { get; set; }
+        public Nullable<bool> PhoneNumberConfirmed { get; set; }
+        public Nullable<bool> TwoFactorEnabled { get; set; }
+        public Nullable<System.DateTime> LockoutEndDateUtc { get; set; }
+        public Nullable<bool> LockoutEnabled { get; set; }
+        public Nullable<int> AccessFailedCount { get; set; }
+        public string UserName { get; set; }
+        public string Nombre { get; set; }
+        public string Apellidos { get; set; }
+        public string Cedula { get; set; }
+        public string EstacionID { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRESTAMO> PRESTAMOes { get; set; }
