@@ -59,15 +59,14 @@
 
     </table>
 
-    @if (ViewBag.Mensaje2 != null)
+    @if (ViewBag.ConCurso != null)
     {
 
     <div>
-        <label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.SIGLA_CURSO): </b></label>
+        <label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.SIGLA_CURSO): </b></label> @Html.DisplayFor(model => model.SIGLA_CURSO)
     </div>
 
     }
-
 
                 <div>
                     <label class="col-lg-2 control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.OBSERVACIONES_SOLICITANTE): </b></label>
