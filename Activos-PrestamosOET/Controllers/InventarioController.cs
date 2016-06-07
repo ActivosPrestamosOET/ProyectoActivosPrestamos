@@ -4,6 +4,8 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Activos_PrestamosOET.Models;
+using System.Data.Entity;
 
 namespace Local.Controllers
 {
@@ -265,8 +267,9 @@ namespace Local.Controllers
 
         public ActionResult Details(string id)
         {
-            var pRESTAMO = db.ACTIVOS.Include(p => p.PRESTAMOes).SingleOrDefault(m => m.PLACA == id);
-            return View(pRESTAMO);
+            var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).SingleOrDefault(m => m.PLACA == id);
+            var prestamos = activo.PRESTAMOes.OrderBy(p => p.FECHA_SOLICITUD);
+            return View(prestamos);
         }
     }
 }
