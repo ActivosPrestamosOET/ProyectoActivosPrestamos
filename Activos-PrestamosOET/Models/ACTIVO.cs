@@ -123,5 +123,128 @@ namespace Activos_PrestamosOET.Models
         public virtual ICollection<TRANSACCION> TRANSACCIONES { get; set; }
         public virtual V_ESTACION V_ESTACION { get; set; }
         public virtual V_EMPLEADOS V_EMPLEADOS { get; set; }
+
+        /**
+         * Metodo que se encarga de generar la descripción del activo para que se guarde en la bitácora.
+         * @params: "proveedor" del activo
+         * @params: "transaccion" el tipo de transaccion que se esta realizando
+         * @params: "anfirtriona" que es la organizacion a la que pertenece al activo
+         * @return: Un string con la descripción completa del activo en el formato que se quiere para guardar en la bitácora.
+         */
+        public string descripcion(string proveedor, string transaccion, string anfitriona)
+        {
+            string esta_exento, capital, prestable;
+            esta_exento = this.EXENTO ? "Exento" : "Gravado";
+            capital = this.TIPO_CAPITAL ? "Capital mayor" : "Capital menor";
+            prestable = this.PRESTABLE ? "Prestable" : "No prestable";
+
+            string atributos = this.DESCRIPCION + "-";
+            if (this.NUMERO_SERIE != null) atributos += this.NUMERO_SERIE + "-";
+            if (this.MODELO != null) atributos += this.MODELO + "-";
+            atributos += this.FABRICANTE + "-";
+            if (this.NUMERO_LOTE != null) atributos += this.NUMERO_LOTE + "-";
+            atributos += this.NUMERO_DOCUMENTO + "-" + this.PRECIO + "-" + esta_exento + "-" + capital + "-" +
+                         proveedor + "-" + this.FECHA_COMPRA.Date + "-";
+            if (this.INICIO_SERVICIO != null) atributos += this.INICIO_SERVICIO + "-";
+            atributos += prestable + "-";
+            if (this.V_ESTACION != null) atributos += this.V_ESTACION.NOMBRE + "-";
+            if (this.CENTROS_DE_COSTOS != null) atributos += this.CENTROS_DE_COSTOS.Nombre + "-";
+            if (this.V_EMPLEADOS != null) atributos += "Responsable: " + this.V_EMPLEADOS.NOMBRE + "-";
+            if (this.V_ESTACION != null) atributos += this.V_ESTACION.NOMBRE + "-";
+            atributos += transaccion + "-" + anfitriona + "-";
+            if (this.INGRESADO_POR != null) atributos += this.INGRESADO_POR + "-";
+            atributos += this.FECHA_INGRESO;
+            return atributos;
+        }
+
+        /**
+         * Metodo que realiza una busqueda en todos los activos.
+         * @params: busqueda que es un string con la consulta que realiza el usuario
+         * @resturn: IQueryable que contiene los activos que coinciden con la busqueda.
+         */
+        public static IQueryable<ACTIVO> busquedaSimple(string busqueda)
+        {
+            PrestamosEntities db = new PrestamosEntities();
+            var result = from a in db.ACTIVOS select a;
+            if (!String.IsNullOrEmpty(busqueda))
+            {
+
+                result = result.Where(a => a.ESTADOS_ACTIVOS.NOMBRE.Contains(busqueda)
+                                            || a.NUMERO_SERIE.Contains(busqueda)
+                                            || a.V_ANFITRIONA.NOMBRE.Contains(busqueda)
+                                            || a.V_ESTACION.NOMBRE.Contains(busqueda)
+                                            || a.TIPOS_ACTIVOS.NOMBRE.Contains(busqueda)
+                                            || a.FABRICANTE.Contains(busqueda)
+                                            || a.CENTROS_DE_COSTOS.Nombre.Contains(busqueda)
+                                            || a.PLACA.Contains(busqueda));
+            }
+            return result;
+        }
+
+
+        /** 
+         * Metodo que se encarga de realizar la busqueda avanzada en los activos
+         * @params: params_busqueda que es un diccionario con los parametros de la busqueda avanzada.
+         * @params: activos_previos que es un IQueryable en donde vienen los activos que ya pasaron por una consulta previa
+         * @return: IQueryable que contiene los activos que coincidieron con la busqueda que se realizo
+         */
+        public static IQueryable<ACTIVO> busquedaAvanzada(Dictionary<string, string> params_busqueda, IQueryable<ACTIVO> activos_previos)
+        {
+            IQueryable<ACTIVO> result = activos_previos;
+            if (params_busqueda.Count > 0)
+            {
+                if (!String.IsNullOrEmpty(params_busqueda["proveedor"]))
+                {
+                    string proveedor = params_busqueda["proveedor"];
+                    result = result.Where(a => a.V_PROVEEDORIDPROVEEDOR.Equals(proveedor));
+                }
+                if (!String.IsNullOrEmpty(params_busqueda["tipo_activo"]))
+                {
+                    Int32 id = Convert.ToInt32(params_busqueda["tipo_activo"]);
+                    result = result.Where(a => a.TIPO_ACTIVOID.Equals(id));
+                }
+                if (!String.IsNullOrEmpty(params_busqueda["anfitriona"]))
+                {
+                    string anfitriona = params_busqueda["anfitriona"];
+                    result = result.Where(a => a.V_ANFITRIONAID.Equals(anfitriona));
+                }
+                if (!String.IsNullOrEmpty(params_busqueda["tipo_transaccion"]))
+                {
+                    Int32 id = Convert.ToInt32(params_busqueda["tipo_transaccion"]);
+                    result = result.Where(a => a.TIPO_TRANSACCIONID.Equals(id));
+                }
+                if (!String.IsNullOrEmpty(params_busqueda["fecha_antes"]))
+                {
+                    DateTime fecha = Convert.ToDateTime(params_busqueda["fecha_antes"]);
+                    result = result.Where(a => a.FECHA_COMPRA.CompareTo(fecha) < 0);
+                }
+                if (!String.IsNullOrEmpty(params_busqueda["fecha_despues"]))
+                {
+                    DateTime fecha = Convert.ToDateTime(params_busqueda["fecha_despues"]);
+                    result = result.Where(a => a.FECHA_COMPRA.CompareTo(fecha) > 0);
+                }
+                if (!String.IsNullOrEmpty(params_busqueda["usuario"]))
+                {
+                    string usuario = params_busqueda["usuario"];
+                    result = result.Where(a => a.INGRESADO_POR.Contains(usuario));
+                }
+                if (!String.IsNullOrEmpty(params_busqueda["estado_activo"]))
+                {
+                    Int32 id = Convert.ToInt32(params_busqueda["estado_activo"]);
+                    result = result.Where(a => a.ESTADO_ACTIVOID.Equals(id));
+                }
+                if (!String.IsNullOrEmpty(params_busqueda["estacion"]))
+                {
+                    string estacion = params_busqueda["estacion"];
+                    result = result.Where(a => a.V_ESTACIONID.Equals(estacion));
+                }
+                if (!String.IsNullOrEmpty(params_busqueda["fabricante"]))
+                {
+                    string fabricante = params_busqueda["fabricante"];
+                    result = result.Where(a => a.FABRICANTE.Equals(fabricante));
+                }
+            }
+            return result;
+        }
     }
 }
