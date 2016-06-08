@@ -62,14 +62,14 @@ namespace Local.Controllers
             List<String> ceds = new List<String>();
             foreach (Activos_PrestamosOET.Models.PRESTAMO p in db.PRESTAMOS)
             {
-                foreach (Activos_PrestamosOET.Models.USUARIO u in db.USUARIOS)
+                foreach (Activos_PrestamosOET.Models.ActivosUser u in db.ActivosUsers)
                 {
-                    if (p.USUARIO != null)
+                    if (p.USUARIO_SOLICITA != null)
                     {
-                        if (p.USUARIO.Equals(u.IDUSUARIO))
+                        if (p.USUARIO_SOLICITA.Equals(u.Cedula))
                         {
-                            solicitantes.Add(u.NOMBRE);
-                            ceds.Add(u.IDUSUARIO);
+                            solicitantes.Add(u.Nombre);
+                            ceds.Add(u.Cedula);
                         }
                     }
                 }
@@ -107,9 +107,9 @@ namespace Local.Controllers
                     String prestado_hasta = "Sin fecha";
                     foreach (Activos_PrestamosOET.Models.PRESTAMO f in x.PRESTAMOes)
                     {
-                        if (ceds.Contains(f.CED_SOLICITA) && f.CED_SOLICITA != null)
+                        if (ceds.Contains(f.USUARIO_SOLICITA) && f.USUARIO_SOLICITA != null)
                         {
-                            prestado_a = solicitantes[ceds.IndexOf(f.CED_SOLICITA)];
+                            prestado_a = solicitantes[ceds.IndexOf(f.USUARIO_SOLICITA)];
                         }
                         prestado_hasta = f.FECHA_RETIRO.ToString();
                     }
@@ -195,9 +195,9 @@ namespace Local.Controllers
         // Regresa: N/A.
         private void llenarTabla(String dropdownCategoria, String datepicker, String datepicker1) {
             var viewModel = from o in db.PRESTAMOS.ToList()
-                            join o2 in db.USUARIOS.ToList()
-                                on o.CED_SOLICITA equals o2.CLAVE
-                            where o.CED_SOLICITA.Equals(o2.CLAVE)
+                            join o2 in db.ActivosUsers.ToList()
+                                on o.USUARIO_SOLICITA equals o2.Cedula
+                            where o.USUARIO_SOLICITA.Equals(o2.Cedula)
                             select new Inventario.Models.ModeloInventario { Prestamos = o, Usuarios = o2 };
 
 
@@ -243,10 +243,10 @@ namespace Local.Controllers
                     {
                         foreach (Inventario.Models.ModeloInventario mi in viewModel)
                         {
-                            if (f.CED_SOLICITA.Equals(mi.Usuarios.CLAVE)
-                                && f.CED_SOLICITA != null)
+                            if (f.USUARIO_SOLICITA.Equals(mi.Usuarios.Cedula)
+                                && f.USUARIO_SOLICITA != null)
                             {
-                                prestado_a = mi.Usuarios.NOMBRE;
+                                prestado_a = mi.Usuarios.Nombre;
                             }
                             prestado_hasta = f.FECHA_RETIRO.ToString();
                         }
