@@ -1759,6 +1759,11 @@ namespace Activos_PrestamosOET.Controllers
             }
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
 
+            if (pRESTAMO.SIGLA_CURSO != null)
+            {
+                ViewBag.ConCurso = pRESTAMO.SIGLA_CURSO;
+            }
+
             return View(pRESTAMO);
         }
 
