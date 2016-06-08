@@ -4,6 +4,8 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Activos_PrestamosOET.Models;
+
 
 namespace Local.Controllers
 {
@@ -261,6 +263,21 @@ namespace Local.Controllers
             {
                 ViewBag.Mensaje1 = "No hay Activos Prestables con esta categoría.";
             }
+        }
+
+
+        public ActionResult Details(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            EQUIPO_SOLICITADO eQUIPO_SOLICITADO = db.EQUIPO_SOLICITADO.Find(id);
+            if (eQUIPO_SOLICITADO == null)
+            {
+                return HttpNotFound();
+            }
+            return View(eQUIPO_SOLICITADO);
         }
     }
 }
