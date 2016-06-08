@@ -5,7 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Activos_PrestamosOET.Models;
-
+using System.Data.Entity;
+using System.Net;
 
 namespace Local.Controllers
 {
@@ -272,12 +273,14 @@ namespace Local.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            EQUIPO_SOLICITADO eQUIPO_SOLICITADO = db.EQUIPO_SOLICITADO.Find(id);
-            if (eQUIPO_SOLICITADO == null)
-            {
-                return HttpNotFound();
-            }
-            return View(eQUIPO_SOLICITADO);
+            var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).SingleOrDefault(m => m.PLACA == id);
+            var prestamos = activo.PRESTAMOes.OrderBy(p => p.FECHA_SOLICITUD);
+            return View(prestamos);
+            //if (eQUIPO_SOLICITADO == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return View(eQUIPO_SOLICITADO);
         }
     }
 }
