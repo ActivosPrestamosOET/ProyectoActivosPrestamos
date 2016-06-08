@@ -22,6 +22,8 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Core.Objects;
+using Microsoft.AspNet.Identity;
+
 namespace Activos_PrestamosOET.Controllers
 {
 
@@ -282,7 +284,7 @@ namespace Activos_PrestamosOET.Controllers
             //este if por mientras
             if (!string.IsNullOrEmpty(CED_SOLICITA))
             {
-                prestamos = prestamos.Where(model => model.CED_SOLICITA == CED_SOLICITA);
+                prestamos = prestamos.Where(model => model.USUARIO_SOLICITA == CED_SOLICITA);
             }
             //Verfica el filtro de estado. Si el usuario no selecciono ningun filtro, entonces no se filtra por estado
             //pero si si selecciono el estado por el que quiere filtrar entonces, filtra por eso
@@ -358,15 +360,15 @@ namespace Activos_PrestamosOET.Controllers
                 ViewBag.Estadillo = "Cancelada";
             }
             var lista = from o in db.PRESTAMOS
-                        from o2 in db.USUARIOS
+                        from o2 in db.ActivosUsers
                         where o.ID == id
-                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
+                        select new { Prestamo = o, CEDULA = o2.Cedula, USUARIO = o2.Nombre };
 
             foreach (var m in lista)
             {
                 if (m.Prestamo.ID == id)
                 {
-                    if (m.Prestamo.CED_SOLICITA == m.CEDULA)
+                    if (m.Prestamo.USUARIO_SOLICITA == m.CEDULA)
                     {
                         var t = new Tuple<string>(m.USUARIO);
                         ViewBag.Nombre = t.Item1;
@@ -457,15 +459,15 @@ namespace Activos_PrestamosOET.Controllers
             }
             //Se encuentra el nombre del solicitante
             var lista = from o in db.PRESTAMOS
-                        from o2 in db.USUARIOS
+                        from o2 in db.ActivosUsers
                         where o.ID == id
-                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
+                        select new { Prestamo = o, CEDULA = o2.Cedula, USUARIO = o2.Nombre };
 
             foreach (var m in lista)
             {
                 if (m.Prestamo.ID == id)
                 {
-                    if (m.Prestamo.CED_SOLICITA == m.CEDULA)
+                    if (m.Prestamo.USUARIO_SOLICITA == m.CEDULA)
                     {
                         var t = new Tuple<string>(m.USUARIO);
                         ViewBag.Nombre = t.Item1;
@@ -823,8 +825,6 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult Create()
         {
 
-            ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
-            ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
             ViewBag.SIGLA_CURSO = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
 
             List<String> categorias = new List<String>();
@@ -855,7 +855,7 @@ namespace Activos_PrestamosOET.Controllers
         //Retorna: una vista
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,CED_SOLICITA,CED_APRUEBA")] PRESTAMO p, int[] Cantidad, String[] Categoria)
+        public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,USUARIO_SOLICITA,USUARIO_APRUEBA")] PRESTAMO p, int[] Cantidad, String[] Categoria)
         {
             //Metemos los valores ingresados por el usuario en un nuevo prestamo
             PRESTAMO prestamo = new PRESTAMO();
@@ -863,7 +863,12 @@ namespace Activos_PrestamosOET.Controllers
             if (ModelState.IsValid)
             {
                 string idd = generarID();
-                string cedSol = p.CED_SOLICITA;
+                string username = User.Identity.GetUserName();
+
+                string cedSol = (from u in db.ActivosUsers
+                                where u.UserName == username
+                                select u.Cedula).ToString(); 
+
                 prestamo.ID = idd;
                 prestamo.MOTIVO = p.MOTIVO;
                 prestamo.NUMERO_BOLETA = 1;
@@ -872,8 +877,8 @@ namespace Activos_PrestamosOET.Controllers
                 prestamo.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
                 prestamo.PERIODO_USO = p.PERIODO_USO;
                 prestamo.SIGLA_CURSO = p.SIGLA_CURSO;
-                prestamo.CED_APRUEBA = p.CED_APRUEBA;
-                prestamo.CED_SOLICITA = cedSol;
+                prestamo.USUARIO_APRUEBA = p.USUARIO_APRUEBA;
+                prestamo.USUARIO_SOLICITA = cedSol;
                 prestamo.FECHA_RETIRO = p.FECHA_RETIRO;
                 prestamo.FECHA_SOLICITUD = System.DateTimeOffset.Now.Date;//SELECT SYSDATE FROM DUAL
                 prestamo.SOFTWARE_REQUERIDO = p.SOFTWARE_REQUERIDO;
@@ -922,8 +927,7 @@ namespace Activos_PrestamosOET.Controllers
                 return RedirectToAction("Historial");
             }
 
-            ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", p.CED_SOLICITA);
-            ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", p.CED_APRUEBA);
+            ViewBag.SIGLA_CURSO = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
             return View(prestamo);
         }
 
@@ -986,16 +990,16 @@ namespace Activos_PrestamosOET.Controllers
 
             //Consulta el usuario solicitante
             var lista = from o in db.PRESTAMOS
-                        from o2 in db.USUARIOS
+                        from o2 in db.ActivosUsers
                         where o.ID == id
-                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
+                        select new { Prestamo = o, CEDULA = o2.Cedula, USUARIO = o2.Nombre };
 
             //busca el nombre del usuario solicitante
             foreach (var m in lista)
             {
                 if (m.Prestamo.ID == id)
                 {
-                    if (m.Prestamo.CED_SOLICITA == m.CEDULA)
+                    if (m.Prestamo.USUARIO_SOLICITA == m.CEDULA)
                     {
                         var t = new Tuple<string>(m.USUARIO);
                         ViewBag.Nombre = t.Item1;
@@ -1148,15 +1152,15 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.Mensaje = "El préstamo ha sido aprobado con éxito";
 
             var lista = from o in db.PRESTAMOS
-                        from o2 in db.USUARIOS
+                        from o2 in db.ActivosUsers
                         where o.ID == id
-                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
+                        select new { Prestamo = o, CEDULA = o2.Cedula, USUARIO = o2.Nombre };
 
             foreach (var m in lista)
             {
                 if (m.Prestamo.ID == id)
                 {
-                    if (m.Prestamo.CED_SOLICITA == m.CEDULA)
+                    if (m.Prestamo.USUARIO_SOLICITA == m.CEDULA)
                     {
                         var t = new Tuple<string>(m.USUARIO);
                         ViewBag.Nombre = t.Item1;
@@ -1217,15 +1221,15 @@ namespace Activos_PrestamosOET.Controllers
 
             //Para determinar cual usuario fue el que hizo la solicitud
             var lista = from o in db.PRESTAMOS
-                        from o2 in db.USUARIOS
+                        from o2 in db.ActivosUsers
                         where o.ID == id
-                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
+                        select new { Prestamo = o, CEDULA = o2.Cedula, USUARIO = o2.Nombre };
 
             foreach (var m in lista)
             {
                 if (m.Prestamo.ID == id)
                 {
-                    if (m.Prestamo.CED_SOLICITA == m.CEDULA)
+                    if (m.Prestamo.USUARIO_SOLICITA == m.CEDULA)
                     {
                         var t = new Tuple<string>(m.USUARIO);
                         ViewBag.Nombre = t.Item1;
@@ -1359,16 +1363,16 @@ namespace Activos_PrestamosOET.Controllers
             //consulta que ingresa a una lista la información general del préstamo, incluyendo nombre del usuario
             //que lo solicitó y su cédula
             var lista = from o in db.PRESTAMOS
-                        from o2 in db.USUARIOS
+                        from o2 in db.ActivosUsers
                         where o.ID == id
-                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
+                        select new { Prestamo = o, CEDULA = o2.Cedula, USUARIO = o2.Nombre };
 
             //
             foreach (var m in lista)
             {
                 if (m.Prestamo.ID == id)
                 {
-                    if (m.Prestamo.CED_SOLICITA == m.CEDULA)
+                    if (m.Prestamo.USUARIO_SOLICITA == m.CEDULA)
                     {
                         var t = new Tuple<string>(m.USUARIO);
                         ViewBag.Nombre = t.Item1;
