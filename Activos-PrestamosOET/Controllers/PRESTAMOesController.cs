@@ -934,7 +934,7 @@ namespace Activos_PrestamosOET.Controllers
 
                 //Envia los correos de notificacion al cliente y al encargado
                 emailCliente(idd, 1);
-                //emailEncargado(idd, 1);
+                emailEncargado(idd, 1);
 
                 //Mensaje de confirmacion
                 TempData["confirmacion"] = "La solicitud fue enviada con éxito";
@@ -1206,7 +1206,7 @@ namespace Activos_PrestamosOET.Controllers
 
                 //Envia los correos de notificacion al encargado y al cliente que realizo la solicitud
                 emailCliente(P.ID, 2);
-                //emailEncargado(P.ID, 2);
+                emailEncargado(P.ID, 2);
 
                 //Redirecciona al historial
                 return RedirectToAction("Historial");
@@ -1340,7 +1340,7 @@ namespace Activos_PrestamosOET.Controllers
                 //Enviar email notificando que se cancelo la solicitud
 
                 emailCliente(pRESTAMO.ID, 3);
-                //emailEncargado(pRESTAMO.ID, 3);
+                emailEncargado(pRESTAMO.ID, 3);
 
                 //Redirecciona la pagina al historial
                 return RedirectToAction("Historial");
