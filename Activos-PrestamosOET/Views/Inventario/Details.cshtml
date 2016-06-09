@@ -1,0 +1,84 @@
+﻿@model Activos_PrestamosOET.Models.ACTIVO
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<legend><h2>Historial del Activo</h2></legend>
+
+<div class="panel panel-default">
+    <div class="panel-body">
+
+        <div class="container">
+            <div class="row">
+
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FABRICANTE):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DisplayFor(model => model.FABRICANTE)
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.MODELO):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DisplayNameFor(model => model.MODELO)
+                </div>
+
+                <br />
+                <br />
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.NUMERO_SERIE):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DisplayNameFor(model => model.NUMERO_SERIE)
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.PLACA):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DisplayFor(model => model.PLACA)
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<legend><h2>Detalle</h2></legend>
+
+<table class="table table-striped table-hover ">
+    <thead>
+        <tr>
+            <th># De Boleta</th>
+            <th>Fecha de Retiro</th>
+            <th>Fecha de Devolucion</th>
+            <th>Solicitante</th>
+            <th>Observaciones al devolver</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>Column content</td>
+            <td>Column content</td>
+            <td>Column content</td>
+            <td>Column content</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="btn-group">
+    <a href="#" class="btn btn-default">Descargar Reporte</a>
+    <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
+    <ul class="dropdown-menu">
+        <li><a href="#">PDF</a></li>
+        <li><a href="#">Excel</a></li>
+    </ul>
+</div>
+
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

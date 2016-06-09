@@ -135,7 +135,56 @@ namespace Activos_PrestamosOET.Controllers
                     return View(model);
             }
         }
-       
+
+        //
+        // GET: /Account/Register
+        [AllowAnonymous]
+        public ActionResult Register()
+        {
+            ViewBag.EstacionID = new SelectList(db.V_ESTACION, "ID", "NOMBRE");
+            return View();
+        }
+
+        //
+        // POST: /Account/Register
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                user.Nombre = model.Nombre;
+                user.Apellidos = model.Apellidos;
+                user.Cedula = model.Cedula;
+                user.EstacionID = model.EstacionID;
+
+                var result = await UserManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    
+                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                    // Send an email with this link
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    await UserManager.SendEmailAsync(user.Id, "Confirme su cuenta", "Por favor confirme su cuenta ingresando <a href=\"" + callbackUrl + "\">aquí</a>");
+
+                    ViewBag.Message = "Revise su correo y confirme su cuenta. Debe confirmar su dirección de correo" +
+                                        " para poder ingresar al sistema.";
+
+                    return View("Info");
+
+                    //return RedirectToAction("Index", "Home");
+                }
+                AddErrors(result);
+            }
+
+            // If we got this far, something failed, redisplay form
+            ViewBag.EstacionID = new SelectList(db.V_ESTACION, "ID", "NOMBRE");
+            return View(model);
+        }
 
         //
         // GET: /Account/ConfirmEmail
@@ -178,7 +227,7 @@ namespace Activos_PrestamosOET.Controllers
                 // Send an email with this link
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                await UserManager.SendEmailAsync(user.Id, "Restablecer contraseña", "Por favor reestablezca su contraseña ingresando <a href=\"" + callbackUrl + "\">aquí</a>");
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 
