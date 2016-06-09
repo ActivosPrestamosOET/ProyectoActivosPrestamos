@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Activos_PrestamosOET.Models;
 using PagedList;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace Activos_PrestamosOET.Controllers
 {
@@ -17,6 +18,27 @@ namespace Activos_PrestamosOET.Controllers
     {
         private PrestamosEntities db = new PrestamosEntities();
         private TransaccionesController controladora_transaccion = new TransaccionesController();
+
+        private ApplicationUserManager _userManager;
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
+        public ActivosController() { }
+
+        public ActivosController(ApplicationUserManager userManager)
+        {
+            this.UserManager = userManager;
+        }
+
         // GET: Activos
         public ActionResult Index(string orden, string filtro, string busqueda, string V_PROVEEDORIDPROVEEDOR, string TIPO_ACTIVOID, string V_ANFITRIONAID, string TIPO_TRANSACCIONID, string ESTADO_ACTIVOID, string V_ESTACIONID, string fecha_antes, string fecha_despues, string usuario, string fabricante, int? pagina)
         {
@@ -26,6 +48,9 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.Descripcion = (orden == "descrip_asc") ? "descrip_desc" : "descrip_asc";
             ViewBag.EstadoParam = (orden == "estado_asc") ? "estado_desc" : "estado_asc";
 
+            //se obtiene el usuario loggeado
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            Boolean isAdmin = User.IsInRole("superadmin") ? true : false;
             // Paginación
             if (busqueda != null)
             {
@@ -40,7 +65,7 @@ namespace Activos_PrestamosOET.Controllers
             
             // Busqueda con base en los parametros que ingresa el usuario
             #region Busqueda simple
-            IQueryable<ACTIVO> aCTIVOS = ACTIVO.busquedaSimple(busqueda);
+            IQueryable<ACTIVO> aCTIVOS = ACTIVO.busquedaSimple(busqueda, user.EstacionID, isAdmin);
             #endregion
 
             #region Busqueda avanzada
@@ -98,6 +123,7 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: Activos/Details/5
+        
         public ActionResult Details(string id)
         {
             if (id == null)
@@ -120,6 +146,7 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: Activos/Create
+        [Authorize(Roles = "Ingresar Activos, superadmin")]
         public ActionResult Create()
         {
             ViewBag.INGRESADO_POR = User.Identity.Name;
@@ -138,6 +165,7 @@ namespace Activos_PrestamosOET.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Ingresar Activos, superadmin")]
         public ActionResult Create([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_USUARIOSIDUSUARIO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId,PLACA,ESTADO_PRESTADO")] ACTIVO aCTIVO)
         {
 
@@ -194,6 +222,7 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: Activos/Asignar/7
+        [Authorize(Roles = "Ingresar Activos, superadmin")]
         public ActionResult Asignar(string id)
         {
             if (id == null)
@@ -219,6 +248,7 @@ namespace Activos_PrestamosOET.Controllers
         // POST: Activos/Asignar/7
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Ingresar Activos, superadmin")]
         public ActionResult Asignar([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_USUARIOSIDUSUARIO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId,PLACA,ESTADO_PRESTADO")] ACTIVO aCTIVO)
         {
 
@@ -255,6 +285,7 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: Activos/Edit/5
+        [Authorize(Roles = "Editar Activos, superadmin")]
         public ActionResult Edit(string id)
         {
             if (id == null)
@@ -280,6 +311,7 @@ namespace Activos_PrestamosOET.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Editar Activos, superadmin")]
         public ActionResult Edit([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_USUARIOSIDUSUARIO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId,PLACA,ESTADO_PRESTADO")] ACTIVO aCTIVO)
         {
             var original = db.ACTIVOS.Find(aCTIVO.ID);
@@ -328,6 +360,7 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: Activos/Delete/5
+        [Authorize(Roles = "Desechar activos, superadmin")]
         public ActionResult Delete(string id)
         {
             if (id == null)
@@ -345,6 +378,7 @@ namespace Activos_PrestamosOET.Controllers
         // POST: Activos/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Desechar activos, superadmin")]
         public ActionResult DeleteConfirmed(string id)
         {
             ACTIVO aCTIVO = db.ACTIVOS.Find(id);

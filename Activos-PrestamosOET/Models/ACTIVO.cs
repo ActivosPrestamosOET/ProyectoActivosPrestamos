@@ -152,7 +152,7 @@ namespace Activos_PrestamosOET.Models
          * Metodo que se encarga de generar la descripción del activo para que se guarde en la bitácora.
          * @params: "proveedor" del activo
          * @params: "transaccion" el tipo de transaccion que se esta realizando
-         * @params: "anfirtriona" que es la organizacion a la que pertenece al activo
+         * @params: "anfitriona" que es la organizacion a la que pertenece al activo
          * @return: Un string con la descripción completa del activo en el formato que se quiere para guardar en la bitácora.
          */
         public string descripcion(string proveedor, string transaccion, string anfitriona)
@@ -184,12 +184,21 @@ namespace Activos_PrestamosOET.Models
         /**
          * Metodo que realiza una busqueda en todos los activos.
          * @params: busqueda que es un string con la consulta que realiza el usuario
-         * @resturn: IQueryable que contiene los activos que coinciden con la busqueda.
+         * @return: IQueryable que contiene los activos que coinciden con la busqueda.
          */
-        public static IQueryable<ACTIVO> busquedaSimple(string busqueda)
+        public static IQueryable<ACTIVO> busquedaSimple(string busqueda, string estacionID, Boolean isAdmin)
         {
             PrestamosEntities db = new PrestamosEntities();
-            var result = from a in db.ACTIVOS select a;
+
+            var result = from a
+                         in db.ACTIVOS
+                         select a;
+            if (!isAdmin)
+            {
+                result = result.Where(a => a.V_ESTACIONID == estacionID);
+            }
+            
+            
             if (!String.IsNullOrEmpty(busqueda))
             {
 
