@@ -65,7 +65,7 @@ namespace Activos_PrestamosOET.Controllers
             
             // Busqueda con base en los parametros que ingresa el usuario
             #region Busqueda simple
-            IQueryable<ACTIVO> aCTIVOS = ACTIVO.busquedaSimple(busqueda, user.EstacionID, isAdmin);
+            IQueryable<ACTIVO> aCTIVOS = ACTIVO.busquedaSimple(busqueda, user.EstacionID, isAdmin); //OJO
             #endregion
 
             #region Busqueda avanzada
@@ -146,7 +146,7 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: Activos/Create
-        [Authorize(Roles = "Ingresar Activos, superadmin")]
+        [Authorize(Roles = "Ingresar Activos, superadmin")] //OJO
         public ActionResult Create()
         {
             ViewBag.INGRESADO_POR = User.Identity.Name;
@@ -166,7 +166,7 @@ namespace Activos_PrestamosOET.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Ingresar Activos, superadmin")]
-        public ActionResult Create([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_USUARIOSIDUSUARIO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId,PLACA,ESTADO_PRESTADO")] ACTIVO aCTIVO)
+        public ActionResult Create([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_EMPLEADOSIDEMPLEADO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId,PLACA,ESTADO_PRESTADO")] ACTIVO aCTIVO)
         {
 
             var estado = db.ESTADOS_ACTIVOS.ToList().Where(ea => ea.NOMBRE == "Disponible");
@@ -234,11 +234,13 @@ namespace Activos_PrestamosOET.Controllers
             // si quiero ver a quien esta asignado nada mas puedo ver los detalles del activo
             ACTIVO aCTIVO = db.ACTIVOS.Find(id);
             aCTIVO.COMENTARIO = "";
+
+
             if (aCTIVO == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.V_USUARIOSIDUSUARIO = new SelectList(db.V_USUARIOS, "IDUSUARIO", "NOMBRE", aCTIVO.V_USUARIOSIDUSUARIO);
+            ViewBag.V_EMPLEADOSIDEMPLEADO = new SelectList(db.V_EMPLEADOS, "IDEMPLEADO", "NOMBRE");
             ViewBag.ESTADO_ACTIVOID = new SelectList(db.ESTADOS_ACTIVOS, "ID", "NOMBRE", aCTIVO.ESTADO_ACTIVOID);
             ViewBag.V_ESTACIONID = new SelectList(db.V_ESTACION, "ID", "NOMBRE", aCTIVO.V_ESTACIONID);
             ViewBag.CENTRO_DE_COSTOId = new SelectList(db.CENTROS_DE_COSTOS, "ID", "NOMBRE", aCTIVO.CENTRO_DE_COSTOId);
@@ -249,7 +251,7 @@ namespace Activos_PrestamosOET.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Ingresar Activos, superadmin")]
-        public ActionResult Asignar([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_USUARIOSIDUSUARIO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId,PLACA,ESTADO_PRESTADO")] ACTIVO aCTIVO)
+        public ActionResult Asignar([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_EMPLEADOSIDEMPLEADO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId,PLACA,ESTADO_PRESTADO")] ACTIVO aCTIVO)
         {
 
             var original = db.ACTIVOS.Find(aCTIVO.ID);
@@ -259,8 +261,8 @@ namespace Activos_PrestamosOET.Controllers
                 original.INICIO_SERVICIO = aCTIVO.INICIO_SERVICIO;
                 original.ESTADO_ACTIVOID = aCTIVO.ESTADO_ACTIVOID;
                 // si no se cambio el comentario, dejar el original
-                original.COMENTARIO = aCTIVO.COMENTARIO.Equals("") ? original.COMENTARIO : aCTIVO.COMENTARIO;
-                original.V_USUARIOSIDUSUARIO = aCTIVO.V_USUARIOSIDUSUARIO;
+                original.COMENTARIO = aCTIVO.COMENTARIO == null ? original.COMENTARIO : aCTIVO.COMENTARIO;
+                original.V_EMPLEADOSIDEMPLEADO = aCTIVO.V_EMPLEADOSIDEMPLEADO;
                 original.V_ESTACIONID = aCTIVO.V_ESTACIONID;
                 original.CENTRO_DE_COSTOId = aCTIVO.CENTRO_DE_COSTOId;
                 db.SaveChanges();
@@ -277,7 +279,7 @@ namespace Activos_PrestamosOET.Controllers
                 controladora_transaccion.Create(User.Identity.GetUserName(), original.ESTADOS_ACTIVOS.NOMBRE, original.descripcion(proveedor, transaccion, anfitriona), original.ID);
                 return RedirectToAction("Index");
             }
-            ViewBag.V_USUARIOSIDUSUARIO = new SelectList(db.V_USUARIOS, "IDUSUARIO", "NOMBRE", aCTIVO.V_USUARIOSIDUSUARIO);
+            ViewBag.V_EMPLEADOSIDEMPLEADO = new SelectList(db.V_EMPLEADOS, "IDEMPLEADO", "NOMBRE", aCTIVO.V_EMPLEADOSIDEMPLEADO);
             ViewBag.ESTADO_ACTIVOID = new SelectList(db.ESTADOS_ACTIVOS, "ID", "NOMBRE", aCTIVO.ESTADO_ACTIVOID);
             ViewBag.V_ESTACIONID = new SelectList(db.V_ESTACION, "ID", "NOMBRE", aCTIVO.V_ESTACIONID);
             ViewBag.CENTRO_DE_COSTOId = new SelectList(db.CENTROS_DE_COSTOS, "ID", "NOMBRE", aCTIVO.CENTRO_DE_COSTOId);
@@ -312,7 +314,7 @@ namespace Activos_PrestamosOET.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Editar Activos, superadmin")]
-        public ActionResult Edit([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_USUARIOSIDUSUARIO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId,PLACA,ESTADO_PRESTADO")] ACTIVO aCTIVO)
+        public ActionResult Edit([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_EMPLEADOSIDEMPLEADO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId,PLACA,ESTADO_PRESTADO")] ACTIVO aCTIVO)
         {
             var original = db.ACTIVOS.Find(aCTIVO.ID);
             if (ModelState.IsValid)
