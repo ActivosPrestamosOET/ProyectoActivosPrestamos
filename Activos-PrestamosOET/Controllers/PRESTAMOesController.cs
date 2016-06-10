@@ -1770,6 +1770,10 @@ namespace Activos_PrestamosOET.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
+            if (pRESTAMO.SIGLA_CURSO != null)
+            {
+                ViewBag.ConCurso = pRESTAMO.SIGLA_CURSO;
+            }
 
             if (pRESTAMO.SIGLA_CURSO != null)
             {
@@ -1789,6 +1793,7 @@ namespace Activos_PrestamosOET.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
+ 
             return View(pRESTAMO);
         }
     }
