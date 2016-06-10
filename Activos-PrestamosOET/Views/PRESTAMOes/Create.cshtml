@@ -112,7 +112,7 @@
                     <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.PERIODO_USO):*</label>
                 </div>
                 <div class="col-md-4">
-                    @Html.EditorFor(model => model.PERIODO_USO, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.PERIODO_USO, new { htmlAttributes = new { @min = 0, @class = "form-control",  } })
                     @Html.ValidationMessageFor(model => model.PERIODO_USO, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -165,16 +165,6 @@
                         @Html.ValidationMessageFor(model => model.OBSERVACIONES_SOLICITANTE, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.CED_SOLICITA, "Cédula del solicitante*", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-5">
-                        @Html.DropDownList("CED_SOLICITA", null, "Seleccionar", htmlAttributes: new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.CED_SOLICITA, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
                 <div class="form-group">
                     <div class="col-md-offset-1 col-md-10">
                         <input type="submit" value="Crear" class="btn btn-default" />

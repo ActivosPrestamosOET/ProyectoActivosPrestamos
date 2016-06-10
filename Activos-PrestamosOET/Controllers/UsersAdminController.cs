@@ -13,8 +13,7 @@ using Activos_PrestamosOET.Models;
 
 namespace Activos_PrestamosOET.Controllers
 {
-    [Authorize]
-    //[Authorize(Roles = "superadmin")]
+    [Authorize(Roles = "superadmin")]
     public class UsersAdminController : Controller
     {
 
