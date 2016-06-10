@@ -170,27 +170,40 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.DESCRIPCION)
                             </td>
-                            <td class="text-center">
-                                <a href="@Url.Action("Asignar", new {id= item.ID})">
-                                    <span class="glyphicon glyphicon-share-alt" style="color:#7bc143" aria-hidden="true" title="Cambiar estado"></span>
-                                </a>
-                            </td>
 
-                            <td class="text-center">
-                                <a href="@Url.Action("Edit", new {id= item.ID})">
-                                    <span class="glyphicon glyphicon-edit text-warning" aria-hidden="true" title="Editar"></span>
-                                </a>
-                            </td>
+                            @if (User.IsInRole("superadmin") || User.IsInRole("Ingresar activos"))
+                            {
+                                <td class="text-center">
+                                    <a href="@Url.Action("Asignar", new {id= item.ID})">
+                                        <span class="glyphicon glyphicon-share-alt" style="color:#7bc143" aria-hidden="true" title="Cambiar estado"></span>
+                                    </a>
+                                </td>
+                            }
+                           
+                            @if (User.IsInRole("superadmin") || User.IsInRole("Editar activos"))
+                            {
+                                <td class="text-center">
+                                    <a href="@Url.Action("Edit", new {id= item.ID})">
+                                        <span class="glyphicon glyphicon-edit text-warning" aria-hidden="true" title="Editar"></span>
+                                    </a>
+                                </td>
+                            }
+
                             <td class="text-center">
                                 <a href="@Url.Action("Details", new { id = item.ID })">
                                     <span class="glyphicon glyphicon-eye-open text-info" aria-hidden="true" title="Detalles"></span>
                                 </a>
                             </td>
-                            <td class="text-center">
-                                <a href="@Url.Action("Delete", new { id = item.ID })">
-                                    <span class="glyphicon glyphicon-erase text-danger" aria-hidden="true" title="Eliminar"></span>
-                                </a>
-                            </td>
+
+                            @if (User.IsInRole("superadmin") || User.IsInRole("Desechar activos"))
+                            {
+                                <td class="text-center">
+                                    <a href="@Url.Action("Delete", new { id = item.ID })">
+                                        <span class="glyphicon glyphicon-erase text-danger" aria-hidden="true" title="Eliminar"></span>
+                                    </a>
+                                </td>
+                            }
+                            
                         </tr>
                     }
                 </tbody>

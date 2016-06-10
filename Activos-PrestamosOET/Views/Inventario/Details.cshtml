@@ -4,8 +4,7 @@
     ViewBag.Title = "Details";
 }
 
-<h3>Historial del Activo</h3>
-
+<legend><h2>Historial del Activo</h2></legend>
 
 <div class="panel panel-default">
     <div class="panel-body">
@@ -13,233 +12,73 @@
         <div class="container">
             <div class="row">
 
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FABRICANTE):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DisplayFor(model => model.FABRICANTE)
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.MODELO):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DisplayNameFor(model => model.MODELO)
+                </div>
+
+                <br />
+                <br />
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.NUMERO_SERIE):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DisplayNameFor(model => model.NUMERO_SERIE)
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.PLACA):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DisplayFor(model => model.PLACA)
+                </div>
+
             </div>
         </div>
+
     </div>
-        </div>
+</div>
 
-        <div>
+<legend><h2>Detalle</h2></legend>
 
-            <dl class="dl-horizontal">
-                <dt>
-                    @Html.DisplayNameFor(model => model.NUMERO_SERIE)
-                </dt>
+<table class="table table-striped table-hover ">
+    <thead>
+        <tr>
+            <th># De Boleta</th>
+            <th>Fecha de Retiro</th>
+            <th>Fecha de Devolucion</th>
+            <th>Solicitante</th>
+            <th>Observaciones al devolver</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>Column content</td>
+            <td>Column content</td>
+            <td>Column content</td>
+            <td>Column content</td>
+        </tr>
+    </tbody>
+</table>
 
-                <dd>
-                    @Html.DisplayFor(model => model.NUMERO_SERIE)
-                </dd>
+<div class="btn-group">
+    <a href="#" class="btn btn-default">Descargar Reporte</a>
+    <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
+    <ul class="dropdown-menu">
+        <li><a href="#">PDF</a></li>
+        <li><a href="#">Excel</a></li>
+    </ul>
+</div>
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.FECHA_COMPRA)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.FECHA_COMPRA)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.INICIO_SERVICIO)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.INICIO_SERVICIO)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.FECHA_INGRESO)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.FECHA_INGRESO)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.FABRICANTE)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.FABRICANTE)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.PRECIO)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.PRECIO)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.DESCRIPCION)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.DESCRIPCION)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.EXENTO)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.EXENTO)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.PRESTABLE)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.PRESTABLE)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.TIPO_CAPITAL)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.TIPO_CAPITAL)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.INGRESADO_POR)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.INGRESADO_POR)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.NUMERO_DOCUMENTO)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.NUMERO_DOCUMENTO)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.NUMERO_LOTE)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.NUMERO_LOTE)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.COMENTARIO)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.COMENTARIO)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.DESECHADO)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.DESECHADO)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.MODELO)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.MODELO)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.PLACA)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.PLACA)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.ESTADO_PRESTADO)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.ESTADO_PRESTADO)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.TIPOS_ACTIVOS.NOMBRE)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.TIPOS_ACTIVOS.NOMBRE)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.ESTADOS_ACTIVOS.NOMBRE)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.ESTADOS_ACTIVOS.NOMBRE)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.V_MONEDA.NOMBRE)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.V_MONEDA.NOMBRE)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.CENTROS_DE_COSTOS.Nombre)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.CENTROS_DE_COSTOS.Nombre)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.V_USUARIOS.USUARIO)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.V_USUARIOS.USUARIO)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.V_PROVEEDOR.NOMBRE)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.V_PROVEEDOR.NOMBRE)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.V_ANFITRIONA.NOMBRE)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.V_ANFITRIONA.NOMBRE)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.TIPOS_TRANSACCIONES.NOMBRE)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.TIPOS_TRANSACCIONES.NOMBRE)
-                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.V_ESTACION.NOMBRE)
-                </dt>
-
-                <dd>
-                    @Html.DisplayFor(model => model.V_ESTACION.NOMBRE)
-                </dd>
-
-            </dl>
-        </div>
-        <p>
-            @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-            @Html.ActionLink("Back to List", "Index")
-        </p>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

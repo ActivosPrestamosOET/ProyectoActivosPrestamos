@@ -169,7 +169,7 @@ namespace Activos_PrestamosOET.Controllers
                     // Send an email with this link
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    await UserManager.SendEmailAsync(user.Id, "Confirme su cuenta", "Por favor confirme su cuenta ingresando <a href=\"" + callbackUrl + "\">aquí</a>");
 
                     ViewBag.Message = "Revise su correo y confirme su cuenta. Debe confirmar su dirección de correo" +
                                         " para poder ingresar al sistema.";
@@ -227,7 +227,7 @@ namespace Activos_PrestamosOET.Controllers
                 // Send an email with this link
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                await UserManager.SendEmailAsync(user.Id, "Restablecer contraseña", "Por favor reestablezca su contraseña ingresando <a href=\"" + callbackUrl + "\">aquí</a>");
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 

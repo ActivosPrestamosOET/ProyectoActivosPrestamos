@@ -22,6 +22,8 @@ using System.Configuration;
 using System.Diagnostics;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Core.Objects;
+using Microsoft.AspNet.Identity;
+
 namespace Activos_PrestamosOET.Controllers
 {
 
@@ -98,7 +100,7 @@ namespace Activos_PrestamosOET.Controllers
             var activos = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
             // int cat = int.Parse(categoria);
             var act = from a in activos.ACTIVOes.Where(i => i.TIPO_ACTIVOID == cat)
-                      //where a.ESTADO_PRESTADO == 1
+                          //where a.ESTADO_PRESTADO == 1
                       select new { FABRICANTE = a.FABRICANTE, MODELO = a.MODELO, PLACA = a.PLACA, ID = a.ID, PRESTADO = a.ESTADO_PRESTADO };
 
             foreach (var a in act)
@@ -163,7 +165,8 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             ViewBag.CurrentFilter = fechaSolicitud;
-            var prestamos = db.PRESTAMOS.Include(i => i.USUARIO);
+            var prestamos = from p in db.PRESTAMOS select p;//.Include(i => i.ActivosUser);
+            prestamos = prestamos.Include(i => i.ActivosUser);
             //var prestamos = db.PRESTAMOS.Include(i => i.USUARIO);//Se agrega la tabla de usuarios a la de préstamos
 
             //Inician filtros de búsqueda
@@ -196,14 +199,14 @@ namespace Activos_PrestamosOET.Controllers
                     if (DateTime.TryParseExact(fechaSolicitud, "dd/MM/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaS))
                     {
                         prestamos = prestamos.Where(model => model.FECHA_SOLICITUD.Year == fechaS.Year
-                                                          && model.FECHA_SOLICITUD.Month == fechaS.Month
-                                                          && model.FECHA_SOLICITUD.Day == fechaS.Day);
+                                                         && model.FECHA_SOLICITUD.Month == fechaS.Month
+                                                         && model.FECHA_SOLICITUD.Day == fechaS.Day);
                     }
                     if (DateTime.TryParseExact(fechaRetiro, "dd/MM/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaR))
                     {
                         prestamos = prestamos.Where(model => model.FECHA_RETIRO.Year == fechaR.Year
-                                                          && model.FECHA_RETIRO.Month == fechaR.Month
-                                                          && model.FECHA_RETIRO.Day == fechaR.Day);
+                                                         && model.FECHA_RETIRO.Month == fechaR.Month
+                                                         && model.FECHA_RETIRO.Day == fechaR.Day);
                     }
                 }
             }
@@ -249,10 +252,10 @@ namespace Activos_PrestamosOET.Controllers
                     prestamos = prestamos.OrderByDescending(s => s.FECHA_RETIRO.Value.AddDays(s.PERIODO_USO));
                     break;*/
                 case "Name"://Ordenado ascendentemento por nombre del solicitante
-                    prestamos = prestamos.OrderBy(s => s.CED_SOLICITA);
+                    prestamos = prestamos.OrderBy(s => s.USUARIO_SOLICITA);
                     break;
                 case "Name_desc"://Ordenado descendentemento por nombre de solicitante
-                    prestamos = prestamos.OrderByDescending(s => s.CED_SOLICITA);
+                    prestamos = prestamos.OrderByDescending(s => s.USUARIO_SOLICITA);
                     break;
                 default:  // Para todo otro caso se ordena ascendentemente por número de boleta
                     prestamos = prestamos.OrderBy(s => s.NUMERO_BOLETA);
@@ -288,7 +291,7 @@ namespace Activos_PrestamosOET.Controllers
             //este if por mientras
             if (!string.IsNullOrEmpty(CED_SOLICITA))
             {
-                prestamos = prestamos.Where(model => model.CED_SOLICITA == CED_SOLICITA);
+                prestamos = prestamos.Where(model => model.USUARIO_SOLICITA == CED_SOLICITA);
             }
             //Verfica el filtro de estado. Si el usuario no selecciono ningun filtro, entonces no se filtra por estado
             //pero si si selecciono el estado por el que quiere filtrar entonces, filtra por eso
@@ -367,15 +370,15 @@ namespace Activos_PrestamosOET.Controllers
                 ViewBag.Estadillo = "Cancelada";
             }
             var lista = from o in db.PRESTAMOS
-                        from o2 in db.USUARIOS
+                        from o2 in db.ActivosUsers
                         where o.ID == id
-                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
+                        select new { Prestamo = o, CEDULA = o2.Cedula, USUARIO = o2.Nombre };
 
             foreach (var m in lista)
             {
                 if (m.Prestamo.ID == id)
                 {
-                    if (m.Prestamo.CED_SOLICITA == m.CEDULA)
+                    if (m.Prestamo.USUARIO_SOLICITA == m.CEDULA)
                     {
                         var t = new Tuple<string>(m.USUARIO);
                         ViewBag.Nombre = t.Item1;
@@ -469,15 +472,15 @@ namespace Activos_PrestamosOET.Controllers
             }
             //Se encuentra el nombre del solicitante
             var lista = from o in db.PRESTAMOS
-                        from o2 in db.USUARIOS
+                        from o2 in db.ActivosUsers
                         where o.ID == id
-                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
+                        select new { Prestamo = o, CEDULA = o2.Cedula, USUARIO = o2.Nombre };
 
             foreach (var m in lista)
             {
                 if (m.Prestamo.ID == id)
                 {
-                    if (m.Prestamo.CED_SOLICITA == m.CEDULA)
+                    if (m.Prestamo.USUARIO_SOLICITA == m.CEDULA)
                     {
                         var t = new Tuple<string>(m.USUARIO);
                         ViewBag.Nombre = t.Item1;
@@ -840,8 +843,6 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult Create()
         {
 
-            ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
-            ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1");
             ViewBag.SIGLA_CURSO = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
 
             List<String> categorias = new List<String>();
@@ -875,15 +876,26 @@ namespace Activos_PrestamosOET.Controllers
         [Authorize(Roles = "Solicitar préstamos")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,CED_SOLICITA,CED_APRUEBA")] PRESTAMO p, int[] Cantidad, String[] Categoria)
+        public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,USUARIO_SOLICITA,USUARIO_APRUEBA")] PRESTAMO p, int[] Cantidad, String[] Categoria)
         {
             //Metemos los valores ingresados por el usuario en un nuevo prestamo
             PRESTAMO prestamo = new PRESTAMO();
             var allErrors = ModelState.Values.SelectMany(v => v.Errors);
+            if (Cantidad == null)
+            {
+                return RedirectToAction("Create");
+            }
+
             if (ModelState.IsValid)
             {
                 string idd = generarID();
-                string cedSol = p.CED_SOLICITA;
+                string username = User.Identity.GetUserName();
+
+                var users = (from u in db.ActivosUsers select u);
+                //where u.UserName == username
+                //select u.Cedula); 
+                var user = users.SingleOrDefault(u => u.UserName == username);
+                var cedSol = user.Id;
                 prestamo.ID = idd;
                 prestamo.MOTIVO = p.MOTIVO;
                 prestamo.NUMERO_BOLETA = 1;
@@ -892,18 +904,18 @@ namespace Activos_PrestamosOET.Controllers
                 prestamo.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
                 prestamo.PERIODO_USO = p.PERIODO_USO;
                 prestamo.SIGLA_CURSO = p.SIGLA_CURSO;
-                prestamo.CED_APRUEBA = p.CED_APRUEBA;
-                prestamo.CED_SOLICITA = cedSol;
+                prestamo.USUARIO_APRUEBA = p.USUARIO_APRUEBA;
+                prestamo.USUARIO_SOLICITA = cedSol.ToString();
                 prestamo.FECHA_RETIRO = p.FECHA_RETIRO;
                 prestamo.FECHA_SOLICITUD = System.DateTimeOffset.Now.Date;//SELECT SYSDATE FROM DUAL
                 prestamo.SOFTWARE_REQUERIDO = p.SOFTWARE_REQUERIDO;
                 prestamo.Estado = 1;
                 db.PRESTAMOS.Add(prestamo);
-                
+
                 //Guardamos el prestamo en la base
                 db.SaveChanges();
                 List<String> cat = (List<String>)TempData["categorias"];
-                
+
                 //Ingresamos el equipo solicitado y hacemos la insercion en la base de datos
                 for (int i = 0; i < Cantidad.Length; i++)
                 {
@@ -942,9 +954,9 @@ namespace Activos_PrestamosOET.Controllers
                 return RedirectToAction("Historial");
             }
 
-            ViewBag.CED_SOLICITA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", p.CED_SOLICITA);
-            ViewBag.CED_APRUEBA = new SelectList(db.USUARIOS, "IDUSUARIO", "USUARIO1", p.CED_APRUEBA);
+            ViewBag.SIGLA_CURSO = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
             return View(prestamo);
+
         }
 
 
@@ -1009,16 +1021,16 @@ namespace Activos_PrestamosOET.Controllers
 
             //Consulta el usuario solicitante
             var lista = from o in db.PRESTAMOS
-                        from o2 in db.USUARIOS
+                        from o2 in db.ActivosUsers
                         where o.ID == id
-                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
+                        select new { Prestamo = o, CEDULA = o2.Cedula, USUARIO = o2.Nombre };
 
             //busca el nombre del usuario solicitante
             foreach (var m in lista)
             {
                 if (m.Prestamo.ID == id)
                 {
-                    if (m.Prestamo.CED_SOLICITA == m.CEDULA)
+                    if (m.Prestamo.USUARIO_SOLICITA == m.CEDULA)
                     {
                         var t = new Tuple<string>(m.USUARIO);
                         ViewBag.Nombre = t.Item1;
@@ -1038,7 +1050,7 @@ namespace Activos_PrestamosOET.Controllers
                              from o2 in db.EQUIPO_SOLICITADO
                              where (o.ID == id && o2.ID_PRESTAMO == id)
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
-            
+
             //Acomoda la informacion de la tabla de equipo solicitado que se desplegara en la pantalla
             var equipo = new List<List<String>>();
             cat = cat.OrderBy(t => t.NOMBRE);
@@ -1099,7 +1111,7 @@ namespace Activos_PrestamosOET.Controllers
                              from o2 in db.EQUIPO_SOLICITADO
                              where (o.ID == id && o2.ID_PRESTAMO == id)
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
-            
+
             //Determina las categorias de activos presentes en el sistema
             var cat = (from ac in db.ACTIVOS
                        from t in db.TIPOS_ACTIVOS
@@ -1107,7 +1119,7 @@ namespace Activos_PrestamosOET.Controllers
                        select new { t.NOMBRE, t.ID }).Distinct();
             cat = cat.OrderBy(t => t.NOMBRE);
             int a = 0;
-            
+
             //Para guardar cambios en la tabla de equipo solicitado
             foreach (var y in cat)
             {
@@ -1117,7 +1129,7 @@ namespace Activos_PrestamosOET.Controllers
                     if (y.NOMBRE == x.TIPO)
                     {
                         EQUIPO_SOLICITADO pr = db.EQUIPO_SOLICITADO.Find(id, y.NOMBRE, x.CANTIDAD);
-                        
+
                         //busca si el elemento de la tabla equipo solicitado existe
                         if (pr == null)
                         {
@@ -1126,7 +1138,7 @@ namespace Activos_PrestamosOET.Controllers
                             pr.ID_PRESTAMO = id;
                             pr.TIPO_ACTIVO = y.NOMBRE;
                             pr.CANTIDAD = cantidad[a];
-                            
+
                             //Lo agrega a la tabla
                             if (ModelState.IsValid)
                             {
@@ -1170,19 +1182,19 @@ namespace Activos_PrestamosOET.Controllers
                 }
                 a++;
             }
-            
+
             ViewBag.Mensaje = "El préstamo ha sido aprobado con éxito";
 
             var lista = from o in db.PRESTAMOS
-                        from o2 in db.USUARIOS
+                        from o2 in db.ActivosUsers
                         where o.ID == id
-                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
+                        select new { Prestamo = o, CEDULA = o2.Cedula, USUARIO = o2.Nombre };
 
             foreach (var m in lista)
             {
                 if (m.Prestamo.ID == id)
                 {
-                    if (m.Prestamo.CED_SOLICITA == m.CEDULA)
+                    if (m.Prestamo.USUARIO_SOLICITA == m.CEDULA)
                     {
                         var t = new Tuple<string>(m.USUARIO);
                         ViewBag.Nombre = t.Item1;
@@ -1246,15 +1258,15 @@ namespace Activos_PrestamosOET.Controllers
 
             //Para determinar cual usuario fue el que hizo la solicitud
             var lista = from o in db.PRESTAMOS
-                        from o2 in db.USUARIOS
+                        from o2 in db.ActivosUsers
                         where o.ID == id
-                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
+                        select new { Prestamo = o, CEDULA = o2.Cedula, USUARIO = o2.Nombre };
 
             foreach (var m in lista)
             {
                 if (m.Prestamo.ID == id)
                 {
-                    if (m.Prestamo.CED_SOLICITA == m.CEDULA)
+                    if (m.Prestamo.USUARIO_SOLICITA == m.CEDULA)
                     {
                         var t = new Tuple<string>(m.USUARIO);
                         ViewBag.Nombre = t.Item1;
@@ -1273,7 +1285,7 @@ namespace Activos_PrestamosOET.Controllers
                              from o2 in db.EQUIPO_SOLICITADO
                              where (o.ID == id && o2.ID_PRESTAMO == id)
                              select new { ID = o.ID, ID_EQUIPO = o2.ID_PRESTAMO, TIPO = o2.TIPO_ACTIVO, CANTIDAD = o2.CANTIDAD, CANTAP = o2.CANTIDADAPROBADA };
-            
+
             //Para crear la lista de equipo con cantidades que se va a desplegar en la tabla de equipo solicitado que se 
             //podra observar en la pantalla de cancelar (llamada Delete)
             var equipo = new List<List<String>>();
@@ -1394,16 +1406,16 @@ namespace Activos_PrestamosOET.Controllers
             //consulta que ingresa a una lista la información general del préstamo, incluyendo nombre del usuario
             //que lo solicitó y su cédula
             var lista = from o in db.PRESTAMOS
-                        from o2 in db.USUARIOS
+                        from o2 in db.ActivosUsers
                         where o.ID == id
-                        select new { Prestamo = o, CEDULA = o2.IDUSUARIO, USUARIO = o2.NOMBRE };
+                        select new { Prestamo = o, CEDULA = o2.Cedula, USUARIO = o2.Nombre };
 
             //
             foreach (var m in lista)
             {
                 if (m.Prestamo.ID == id)
                 {
-                    if (m.Prestamo.CED_SOLICITA == m.CEDULA)
+                    if (m.Prestamo.USUARIO_SOLICITA == m.CEDULA)
                     {
                         var t = new Tuple<string>(m.USUARIO);
                         ViewBag.Nombre = t.Item1;
@@ -1524,7 +1536,7 @@ namespace Activos_PrestamosOET.Controllers
                     }
                     //Al devolverse todos los activos, el estado del préstamo pasa a ser "Cerrado"
                     pRESTAMO.Estado = 5;
-                   // return RedirectToAction("Details", new { id = ID });
+                    // return RedirectToAction("Details", new { id = ID });
                 }
                 else if (hayFilaEntera(column5_checkbox))//Revisa si hay algún check para devolver todos los activos de una sola categoría
                 {
@@ -1547,7 +1559,7 @@ namespace Activos_PrestamosOET.Controllers
                                 db.Entry(act).State = EntityState.Modified;
                                 db.SaveChanges();
                             }
-                           
+
                         }
                         cont++;
                     }
@@ -1620,7 +1632,7 @@ namespace Activos_PrestamosOET.Controllers
             //
             return RedirectToAction("Devolucion", new { id = ID });
         }
-        
+
 
         // Requiere: valor seleccionado en el dropdown de Categoría, valor del botón seleccionado, valor de la fecha inicial y la fecha final
         // Modifica: se encarga de llenar la tabla de Inventario, de la categoría que recibe cómo parámetro (en el modal).
@@ -1796,6 +1808,11 @@ namespace Activos_PrestamosOET.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
+            if (pRESTAMO.SIGLA_CURSO != null)
+            {
+                ViewBag.ConCurso = pRESTAMO.SIGLA_CURSO;
+            }
+
             if (pRESTAMO.SIGLA_CURSO != null)
             {
                 ViewBag.ConCurso = pRESTAMO.SIGLA_CURSO;

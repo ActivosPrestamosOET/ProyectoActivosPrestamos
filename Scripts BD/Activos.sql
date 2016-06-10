@@ -7,9 +7,15 @@
 -----------------------------------------------------------------------------------
 -- Vista del documento de tipo de cambio (para conversiones de dolares a colones)
 -----------------------------------------------------------------------------------
--- GRANT SELECT ANY TABLE TO "ACTIVOS" WITH ADMIN OPTION;
+ GRANT SELECT ANY TABLE TO "ACTIVOS" WITH ADMIN OPTION;
  create or replace view activos.v_tipo_cambio as
  select * from FINANCIERO.DOCUMENTO_TIPOCAMBIO;
+------------------------------------------------------
+-- Vista de los empleados (Para asignarles activos)
+------------------------------------------------------
+GRANT SELECT ANY TABLE TO "ACTIVOS" WITH ADMIN OPTION;
+create or replace view activos.v_empleados as
+select * from FINANCIERO.empleados;
 
 CREATE SEQUENCE INSERT_TIPO_ACTIVO
   START WITH 1

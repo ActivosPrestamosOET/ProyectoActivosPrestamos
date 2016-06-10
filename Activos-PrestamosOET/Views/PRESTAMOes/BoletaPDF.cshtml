@@ -14,59 +14,58 @@
             <div>
 
 
-    <table style="width:100%">
-        <tr>
-            <td><label class="control-label" for="inputDefault"><b> @Html.DisplayNameFor(model => model.NUMERO_BOLETA): </b></label> @Html.DisplayFor(model => model.NUMERO_BOLETA)</td>
-            <td><label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.FECHA_SOLICITUD): </b></label>@Html.DisplayFor(model => model.FECHA_SOLICITUD)</td>
-        </tr>
-        <tr>
-            <td><label class="control-label" for="inputDefault"><b>Solicitante: </b></label> @Html.DisplayFor(modelItem => Model.USUARIO.NOMBRE)</td>
+                <table style="width:100%">
+                    <tr>
+                        <td><label class="control-label" for="inputDefault"><b> @Html.DisplayNameFor(model => model.NUMERO_BOLETA): </b></label> @Html.DisplayFor(model => model.NUMERO_BOLETA)</td>
+                        <td><label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.FECHA_SOLICITUD): </b></label>@Html.DisplayFor(model => model.FECHA_SOLICITUD)</td>
+                    </tr>
+                    <tr>
+                        <td><label class="control-label" for="inputDefault"><b>Solicitante: </b></label> @Html.DisplayFor(modelItem => Model.ActivosUser.Nombre)</td>
 
 
-            <td><label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.FECHA_RETIRO): </b></label> @Html.DisplayFor(model => model.FECHA_RETIRO)</td>
-        </tr>
-        <tr>
-            <td><label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.MOTIVO): </b></label> @Html.DisplayFor(model => model.MOTIVO)</td>
-            <td><label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.PERIODO_USO) (en días): </b></label>@Html.DisplayFor(model => model.PERIODO_USO)</td>
-        </tr>
+                    <td><label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.FECHA_RETIRO): </b></label> @Html.DisplayFor(model => model.FECHA_RETIRO)</td>
+                    </tr>
+                    <tr>
+                        <td><label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.MOTIVO): </b></label> @Html.DisplayFor(model => model.MOTIVO)</td>
+                        <td><label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.PERIODO_USO) (en días): </b></label>@Html.DisplayFor(model => model.PERIODO_USO)</td>
+                    </tr>
 
-        <tr>
-            <td>
-                <label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.Estado): </b></label> @switch (Model.Estado)
+                    <tr>
+                        <td>
+                            <label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.Estado): </b></label> @switch (Model.Estado)
+                            {
+                                case 1:
+                                    <text>Pendiente</text>
+                                    break;
+                                case 2:
+                                    <text>Aprobada</text>
+                                    break;
+                                case 3:
+                                    <text>Denegada</text>
+                                    break;
+                                case 4:
+                                    <text>Abierta</text>
+                                    break;
+                                case 5:
+                                    <text>Cerrada</text>
+                                    break;
+                                case 6:
+                                    <text>Cancelada</text>
+                                    break;
+                            }
+                        </td>
+                        <td><label for="inputDefault"><b>@Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO): </b></label>  @Html.DisplayFor(model => model.SOFTWARE_REQUERIDO)</td>
+                    </tr>
+
+                </table>
+
+                @if (ViewBag.ConCurso != null)
                 {
-                    case 1:
-                        <text>Pendiente</text>
-                        break;
-                    case 2:
-                        <text>Aprobada</text>
-                        break;
-                    case 3:
-                        <text>Denegada</text>
-                        break;
-                    case 4:
-                        <text>Abierta</text>
-                        break;
-                    case 5:
-                        <text>Cerrada</text>
-                        break;
-                    case 6:
-                        <text>Cancelada</text>
-                        break;
+                    <div>
+                        <label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.SIGLA_CURSO): </b></label> @Html.DisplayFor(model => model.SIGLA_CURSO)
+                    </div>
                 }
-            </td>
-            <td><label for="inputDefault"><b>@Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO): </b></label>  @Html.DisplayFor(model => model.SOFTWARE_REQUERIDO)</td>
-        </tr>
 
-    </table>
-
-    @if (ViewBag.ConCurso != null)
-    {
-
-    <div>
-        <label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.SIGLA_CURSO): </b></label> @Html.DisplayFor(model => model.SIGLA_CURSO)
-    </div>
-
-    }
 
                 <div>
                     <label class="col-lg-2 control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.OBSERVACIONES_SOLICITANTE): </b></label>

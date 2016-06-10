@@ -136,8 +136,8 @@
                 <div class="col-md-2">
                     <label class="control-label" for="inputDefault">Solicitante:</label>
                 </div>
-                <div class="col-md-4">
-                    @ViewBag.Nombre
+                <div class="col-md-4">                   
+                    @Html.DisplayFor(model => model.ActivosUser.Nombre) @Html.DisplayFor(model => model.ActivosUser.Apellidos)
                 </div>
                 <div class="col-md-2">
                     <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_RETIRO):</label>
@@ -196,17 +196,23 @@
                 <div class="form-group">
                     <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO):</label>
                     <div class="col-lg-4">
-                        @Html.DisplayFor(model => model.SOFTWARE_REQUERIDO)
+                        @Html.DisplayFor(model => model.SIGLA_CURSO)
+                    </div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label class="col-lg-2 control-label" for="inputDefault">Curso que solicita:</label>
+                    <div class="col-lg-4">
+                        @Html.DisplayFor(model => model.OBSERVACIONES_SOLICITANTE)
                     </div>
                 </div>
                 <br />
                 <div class="form-group">
                     <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.OBSERVACIONES_SOLICITANTE):</label>
                     <div class="col-lg-10">
-                        @Html.DisplayFor(model => model.OBSERVACIONES_SOLICITANTE)
+                            @Html.DisplayFor(model => model.OBSERVACIONES_SOLICITANTE)
                     </div>
-                </div>
-
+                </div>                                
             </div>
         </div>
     </div>
