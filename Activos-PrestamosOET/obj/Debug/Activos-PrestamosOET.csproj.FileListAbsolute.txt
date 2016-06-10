@@ -860,6 +860,62 @@ C:\Users\Carolina\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET
 C:\Users\Carolina\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache
 C:\Users\Carolina\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.dll
 C:\Users\Carolina\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.pdb
+C:\Users\andre_000\Documents\GitHub\New folder\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csc.exe.config
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csc.rsp
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csi.exe
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csi.rsp
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\System.AppContext.dll
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\System.Diagnostics.StackTrace.dll
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\System.IO.FileSystem.dll
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\System.IO.FileSystem.Primitives.dll
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\vbc.exe.config
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\vbc.rsp
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\itextsharp.dll
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\RazorPDF.dll
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGrid.dll
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGrid.SmtpApi.dll
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGridMail.dll
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Extensions.dll
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Formatting.dll
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Primitives.dll
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\itextsharp.xml
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Extensions.xml
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Formatting.xml
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Primitives.xml
+C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csproj.App.config
+=======
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csc.exe.config
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csc.rsp
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csi.exe
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csi.rsp
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\System.AppContext.dll
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\System.Diagnostics.StackTrace.dll
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\System.IO.FileSystem.dll
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\System.IO.FileSystem.Primitives.dll
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\vbc.exe.config
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\vbc.rsp
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\itextsharp.dll
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\RazorPDF.dll
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGrid.dll
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGrid.SmtpApi.dll
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGridMail.dll
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Extensions.dll
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Formatting.dll
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Primitives.dll
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\itextsharp.xml
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Extensions.xml
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Formatting.xml
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Primitives.xml
+C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csproj.App.config
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\ApplicationInsights.config
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csc.exe
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csc.exe.config
@@ -975,61 +1031,3 @@ C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Act
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.dll
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.pdb
-C:\Users\andre_000\Documents\GitHub\New folder\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache
-<<<<<<< HEAD
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csc.exe.config
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csc.rsp
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csi.exe
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csi.rsp
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\System.AppContext.dll
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\System.Diagnostics.StackTrace.dll
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\System.IO.FileSystem.dll
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\System.IO.FileSystem.Primitives.dll
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\vbc.exe.config
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\vbc.rsp
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\itextsharp.dll
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\RazorPDF.dll
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGrid.dll
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGrid.SmtpApi.dll
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGridMail.dll
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Extensions.dll
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Formatting.dll
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Primitives.dll
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\itextsharp.xml
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Extensions.xml
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Formatting.xml
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Primitives.xml
-C:\Users\b30721\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csproj.App.config
-=======
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csc.exe.config
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csc.rsp
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csi.exe
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csi.rsp
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\Microsoft.CodeAnalysis.CSharp.Scripting.dll
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\Microsoft.CodeAnalysis.Scripting.dll
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\Microsoft.DiaSymReader.Native.amd64.dll
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\Microsoft.DiaSymReader.Native.x86.dll
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\System.AppContext.dll
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\System.Diagnostics.StackTrace.dll
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\System.IO.FileSystem.dll
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\System.IO.FileSystem.Primitives.dll
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\vbc.exe.config
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\vbc.rsp
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\itextsharp.dll
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\RazorPDF.dll
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGrid.dll
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGrid.SmtpApi.dll
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\SendGridMail.dll
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Extensions.dll
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Formatting.dll
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Primitives.dll
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\itextsharp.xml
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Extensions.xml
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Formatting.xml
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\System.Net.Http.Primitives.xml
-C:\Users\b04740\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csproj.App.config
->>>>>>> origin/master
