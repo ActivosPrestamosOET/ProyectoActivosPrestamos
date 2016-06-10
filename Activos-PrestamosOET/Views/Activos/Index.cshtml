@@ -145,12 +145,10 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>
-                            @Html.ActionLink("Número de placa", "Index", new { orden = ViewBag.NumPlacaParam }, new { @title = "Ordenar por número de placa" })
-                        </th>
-                        <th>
-                            @Html.ActionLink("Estado", "Index", new { orden = ViewBag.EstadoParam }, new { @title = "Ordenar por el estado del activo" })
-                        </th>
+                        <th>@Html.ActionLink("Compañía", "Index", new { orden = ViewBag.Compania }, new { @title = "Ordenar por la compañía" })</th>
+                        <th>@Html.ActionLink("Estación", "Index", new { orden = ViewBag.Estacion }, new { @title = "Ordenar por la estación" })</th>
+                        <th>@Html.ActionLink("Tipo", "Index", new { orden = ViewBag.Tipo }, new { @title = "Ordenar por el tipo" })</th>
+                        <th>@Html.ActionLink("Responsable", "Index", new { orden = ViewBag.Responsable }, new { @title = "Ordenar por el responsable" })</th>
                         <th>
                             @Html.ActionLink("Descripción", "Index", new { orden = ViewBag.Descripcion }, new { @title = "Ordenar por la descripción del activo" })
                         </th>
@@ -162,10 +160,16 @@
             {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.PLACA)
+                                @Html.DisplayFor(modelItem => item.V_ANFITRIONA.SIGLAS)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.ESTADOS_ACTIVOS.NOMBRE)
+                                @Html.DisplayFor(modelItem => item.V_ESTACION.SIGLAS)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TIPOS_ACTIVOS.NOMBRE)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.V_EMPLEADOS.NOMBRE)
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.DESCRIPCION)
@@ -179,7 +183,7 @@
                                     </a>
                                 </td>
                             }
-                           
+
                             @if (User.IsInRole("superadmin") || User.IsInRole("Editar activos"))
                             {
                                 <td class="text-center">
@@ -203,7 +207,7 @@
                                     </a>
                                 </td>
                             }
-                            
+
                         </tr>
                     }
                 </tbody>

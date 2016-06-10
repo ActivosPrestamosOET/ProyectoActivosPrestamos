@@ -44,10 +44,11 @@ namespace Activos_PrestamosOET.Controllers
         {
 
             ViewBag.OrdenActual = orden;
-            ViewBag.NumPlacaParam = String.IsNullOrEmpty(orden) ? "num_placa_desc" : "";
+            ViewBag.Compania = String.IsNullOrEmpty(orden) ? "compania_desc" : "";
+            ViewBag.Estacion = (orden == "estacion_asc") ? "estacion_desc" : "estacion_asc";
+            ViewBag.Tipo = (orden == "tipo_asc") ? "tipo_desc" : "tipo_asc";
+            ViewBag.Responsable = (orden == "responsable_asc") ? "responsable_desc" : "responsable_asc";
             ViewBag.Descripcion = (orden == "descrip_asc") ? "descrip_desc" : "descrip_asc";
-            ViewBag.EstadoParam = (orden == "estado_asc") ? "estado_desc" : "estado_asc";
-
             //se obtiene el usuario loggeado
             var user = UserManager.FindById(User.Identity.GetUserId());
             Boolean isAdmin = User.IsInRole("superadmin") ? true : false;
@@ -96,14 +97,26 @@ namespace Activos_PrestamosOET.Controllers
 
             switch (orden)
             {
-                case "num_placa_desc":
-                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.PLACA);
+                case "compania_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.V_ANFITRIONA.SIGLAS);
                     break;
-                case "estado_asc":
-                    aCTIVOS = aCTIVOS.OrderBy(a => a.ESTADOS_ACTIVOS.NOMBRE);
+                case "estacion_asc":
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.V_ESTACION.SIGLAS);
                     break;
-                case "estado_desc":
-                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.ESTADOS_ACTIVOS.NOMBRE);
+                case "estacion_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.V_ESTACION.SIGLAS);
+                    break;
+                case "tipo_asc":
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.TIPOS_ACTIVOS.NOMBRE);
+                    break;
+                case "tipo_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.TIPOS_ACTIVOS.NOMBRE);
+                    break;
+                case "responsable_asc":
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.V_EMPLEADOS.NOMBRE);
+                    break;
+                case "responsable_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.V_EMPLEADOS.NOMBRE);
                     break;
                 case "descrip_desc":
                     aCTIVOS = aCTIVOS.OrderByDescending(a => a.DESCRIPCION);
@@ -112,7 +125,7 @@ namespace Activos_PrestamosOET.Controllers
                     aCTIVOS = aCTIVOS.OrderBy(a => a.DESCRIPCION);
                     break;
                 default:
-                    aCTIVOS = aCTIVOS.OrderBy(a => a.PLACA);
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.V_ANFITRIONA.SIGLAS);
                     break;
             }
 
