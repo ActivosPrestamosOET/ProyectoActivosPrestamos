@@ -140,9 +140,13 @@
             });
         }
         ViewBag.listItems = listItems;
+
+        
         <!--CATEGORÍA-->
         <div class="panel panel-default">
             <div class="panel-body">
+                <h3>Inventario de Activos por categoría</h3>
+                <br>
                 <div class="row">
                     <div class="form-horizontal">
 
@@ -157,6 +161,7 @@
                         </div>
                     </div>
                 </div>
+                <br>
             </div>
         </div>
         <!--TABLA-->
@@ -196,13 +201,17 @@
                 </table>
             </div>
         </div>
+        <input type="submit" name="b" value="Reporte Activos" class="btn btn-default" />
     }
     <br>
     <br>
+    
     @using (Html.BeginForm())
     {
         <div class="panel panel-default">
             <div class="panel-body">
+                <h3>Equipo Solicitado por fechas</h3>
+                <br>
                 <div class="row">
                     <div class="form-horizontal">
                         <div class="col-md-8">
@@ -229,6 +238,7 @@
                         </div>
                     </div>
                 </div>
+                <br>
             </div>
         </div>
         <!--TABLA-->
