@@ -53,7 +53,7 @@ namespace Activos_PrestamosOET.Controllers
             //se obtiene el usuario loggeado
             var user = UserManager.FindById(User.Identity.GetUserId());
             Boolean isAdmin = User.IsInRole("superadmin") ? true : false;
-            IQueryable < ACTIVO > aCTIVOS = ACTIVO.busquedaSimple("", user.EstacionID, isAdmin);
+            IQueryable<ACTIVO> aCTIVOS = ACTIVO.busquedaSimple("", user.EstacionID, isAdmin);
 
             switch (orden)
             {
@@ -118,7 +118,7 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             ViewBag.FiltroActual = busqueda;
-            
+
             // Busqueda con base en los parametros que ingresa el usuario
             #region Busqueda simple
             IQueryable<ACTIVO> aCTIVOS = ACTIVO.busquedaSimple(busqueda, user.EstacionID, isAdmin); //OJO
@@ -191,24 +191,24 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: Activos/Details/5
-        
-        public ActionResult Details(string id)
+
+        public ActionResult Details(string id, bool reparaciones = false)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ACTIVO aCTIVO = db.ACTIVOS.Find(id);
-            var tRANSACCION = from a in db.TRANSACCIONES select a;
 
             if (aCTIVO == null)
             {
                 return HttpNotFound();
             }
-
-            tRANSACCION = tRANSACCION.Where(a => a.ACTIVOID.Equals(id)).OrderByDescending(a => a.FECHA);
-
-            aCTIVO.TRANSACCIONES = new HashSet<TRANSACCION>(tRANSACCION);
+            
+            aCTIVO.TRANSACCIONES = aCTIVO.TRANSACCIONES.Where(a => a.ACTIVOID.Equals(id)).ToList();
+            if (reparaciones)
+                aCTIVO.TRANSACCIONES = aCTIVO.TRANSACCIONES.Where(a => a.ESTADO.Equals("Dañado sin reparación") || a.ESTADO.Equals("En reparación")).ToList();
+            aCTIVO.TRANSACCIONES = aCTIVO.TRANSACCIONES.OrderByDescending(a => a.FECHA).ToList();
 
             return View(aCTIVO);
         }

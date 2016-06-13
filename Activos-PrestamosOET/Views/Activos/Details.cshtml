@@ -259,7 +259,13 @@
 </div>
 <div class="row">
     <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-        <h3>Historial del activo</h3>
+        <h3>
+            Historial del activo
+            <span class="pull-right">
+                @Html.ActionLink("Todo el historial", "Details", new { id = Model.ID, reparaciones = false }, new { @class="btn btn-sm btn-primary", @title = "Consultar todo el historial del activo" })
+                @Html.ActionLink("Historial de reparaciones", "Details", new { id = Model.ID, reparaciones = true }, new { @class = "btn btn-default btn-sm", @title = "Consultar el historial de reparaciones del activo" })
+            </span>
+        </h3>
         <hr />
     </div>
 </div>
