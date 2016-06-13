@@ -7,8 +7,11 @@
 <div class="row">
     <br />
     <div class="col-xs-12">
-        @Html.ActionLink("Editar", "Edit", new { id = Model.ID }) |
-        @Html.ActionLink("Regresar", "Index")
+        @if (User.IsInRole("superadmin") || User.IsInRole("Editar activos"))
+        {
+            @Html.ActionLink("Editar", "Edit", new { id = Model.ID })
+        }
+        | @Html.ActionLink("Regresar", "Index")
     </div>
 </div>
 
@@ -43,7 +46,7 @@
         </div>
         <div class="row">
             <div class="col-xs-12 col-sm-5">
-                @Html.LabelFor(model => model.PLACA, htmlAttributes: new { @class="control-label" })
+                @Html.LabelFor(model => model.PLACA, htmlAttributes: new { @class = "control-label" })
             </div>
             <div class="col-xs-12 col-sm-7">
                 @Html.DisplayFor(model => model.PLACA)
@@ -257,7 +260,7 @@
 <div class="row">
     <div class="col-xs-12 col-sm-10 col-sm-offset-1">
         <h3>Historial del activo</h3>
-        <hr/>
+        <hr />
     </div>
 </div>
 <div class="row">

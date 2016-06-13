@@ -39,6 +39,61 @@ namespace Activos_PrestamosOET.Controllers
             this.UserManager = userManager;
         }
 
+        // GET: Inventario
+        public ActionResult Inventario(string orden, int? pagina)
+        {
+            ViewBag.OrdenActual = orden;
+            ViewBag.Compania = String.IsNullOrEmpty(orden) ? "compania_desc" : "";
+            ViewBag.Estacion = (orden == "estacion_asc") ? "estacion_desc" : "estacion_asc";
+            ViewBag.Tipo = (orden == "tipo_asc") ? "tipo_desc" : "tipo_asc";
+            ViewBag.Responsable = (orden == "responsable_asc") ? "responsable_desc" : "responsable_asc";
+            ViewBag.Descripcion = (orden == "descrip_asc") ? "descrip_desc" : "descrip_asc";
+
+
+            //se obtiene el usuario loggeado
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            Boolean isAdmin = User.IsInRole("superadmin") ? true : false;
+            IQueryable < ACTIVO > aCTIVOS = ACTIVO.busquedaSimple("", user.EstacionID, isAdmin);
+
+            switch (orden)
+            {
+                case "compania_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.V_ANFITRIONA.SIGLAS);
+                    break;
+                case "estacion_asc":
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.V_ESTACION.SIGLAS);
+                    break;
+                case "estacion_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.V_ESTACION.SIGLAS);
+                    break;
+                case "tipo_asc":
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.TIPOS_ACTIVOS.NOMBRE);
+                    break;
+                case "tipo_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.TIPOS_ACTIVOS.NOMBRE);
+                    break;
+                case "responsable_asc":
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.V_EMPLEADOS.NOMBRE);
+                    break;
+                case "responsable_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.V_EMPLEADOS.NOMBRE);
+                    break;
+                case "descrip_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.DESCRIPCION);
+                    break;
+                case "descrip_asc":
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.DESCRIPCION);
+                    break;
+                default:
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.V_ANFITRIONA.SIGLAS);
+                    break;
+            }
+
+            int tamano_pagina = 20;
+            int num_pagina = (pagina ?? 1);
+            return View(aCTIVOS.ToPagedList(num_pagina, tamano_pagina));
+        }
+
         // GET: Activos
         public ActionResult Index(string orden, string filtro, string busqueda, string V_PROVEEDORIDPROVEEDOR, string TIPO_ACTIVOID, string V_ANFITRIONAID, string TIPO_TRANSACCIONID, string ESTADO_ACTIVOID, string V_ESTACIONID, string fecha_antes, string fecha_despues, string usuario, string fabricante, int? pagina)
         {
