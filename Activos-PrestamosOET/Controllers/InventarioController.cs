@@ -7,6 +7,10 @@ using System.Web.Mvc;
 using Activos_PrestamosOET.Models;
 using System.Data.Entity;
 using System.Net;
+using System.IO;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using iTextSharp.text.html.simpleparser;
 
 namespace Local.Controllers
 {
@@ -30,8 +34,14 @@ namespace Local.Controllers
         // Modifica: muestra después de seleccionado algún botón, los resultados correspondientes, mostrando las tablas que corresponden.
         // Regresa: vista con las tablas cargadas que corresponden.
         [HttpPost]
-        public ActionResult Index(String dropdownCategoria, String submit, String datepicker, String datepicker1)
+        public ActionResult Index(String dropdownCategoria, String submit, String datepicker, String datepicker1, string b)
         {
+            //Si se presiona el boton de descargar la boleta
+            if (b == "Descargar Boleta")
+            {
+                ACTIVO act= new ACTIVO();
+                DownloadPDF("BoletaPDFAct", act, "BoletaSoliciud");
+            }
             if (!string.IsNullOrEmpty(submit) && submit.Equals("Buscar"))
             {
                 if (!dropdownCategoria.Equals("1"))
@@ -281,6 +291,97 @@ namespace Local.Controllers
             //    return HttpNotFound();
             //}
             //return View(eQUIPO_SOLICITADO);
+        }
+
+
+
+
+        //------------------------------------------------------------------------------------------------------
+        //Requiere: una string parseada de la vista que se quiere convertir en PDF
+        //Modifica: se encarga de pasar la vista HTML a un documento de itextsharp
+        //Regresa: un byte con el documento 
+        public byte[] GetPDF(string pHTML)
+        {
+            byte[] bPDF = null;
+
+            MemoryStream ms = new MemoryStream();
+            TextReader txtReader = new StringReader(pHTML);
+
+            // Se crea un documneto de itextsharp
+            Document doc = new Document(PageSize.A4, 25, 25, 25, 25);
+
+            PdfWriter oPdfWriter = PdfWriter.GetInstance(doc, ms);
+
+            // el htmlworker parsea el documento
+            HTMLWorker htmlWorker = new HTMLWorker(doc);
+
+            doc.Open();
+            htmlWorker.StartDocument();
+
+            // parsea el html en el doc
+            htmlWorker.Parse(txtReader);
+
+            htmlWorker.EndDocument();
+            htmlWorker.Close();
+            doc.Close();
+
+            bPDF = ms.ToArray();
+
+            return bPDF;
+        }
+        
+        //Modifica: se encarga de organizar la entrada de una vista, llamar al metodo que lo convierte a un doc itextsharp y que se pueda descargar como PDF
+        public void DownloadPDF(string viewName, object model, string nombreArchivo)
+        {
+            string HTMLContent = RenderRazorViewToString(viewName, model);
+
+            Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=" + nombreArchivo + ".pdf");
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.BinaryWrite(GetPDF(HTMLContent));
+            Response.End();
+        }
+
+
+        //Modifica: convierte la vista en un string para que pueda ser leido por itextsharp
+        public string RenderRazorViewToString(string viewName, object model)
+        {
+            // PRESTAMO pRESTAMO = db.PRESTAMOS.Find();
+            ViewData.Model = model;
+            using (var sw = new StringWriter())
+            {
+                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext,
+                                                                         viewName);
+                var viewContext = new ViewContext(ControllerContext, viewResult.View,
+                                             ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
+                return sw.GetStringBuilder().ToString();
+            }
+        }
+
+        //se encarga de llamar a la vista que luego se convertira en la boleta imprimible de un prestamo
+        public ActionResult BoletaPDF(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
+
+            return View(pRESTAMO);
+        }
+
+        //Crea la vista de DetallesPDF. El usuario no va a ver esta vista, si no que es para despues convertirla en un string y enviarla por correo electronico
+        public ActionResult DetallesPDF(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
+            return View(pRESTAMO);
         }
     }
 }
