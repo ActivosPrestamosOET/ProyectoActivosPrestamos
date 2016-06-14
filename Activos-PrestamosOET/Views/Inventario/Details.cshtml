@@ -39,7 +39,6 @@
                 <div class="col-md-4">
                     @Html.DisplayFor(model => model.PLACA)
                 </div>
-
             </div>
         </div>
 
@@ -59,13 +58,15 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>1</td>
-            <td>Column content</td>
-            <td>Column content</td>
-            <td>Column content</td>
-            <td>Column content</td>
-        </tr>
+
+    @foreach (var item in model => model.PRESTAMOes)
+    {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
+                </td>
+            </tr>
+    }
     </tbody>
 </table>
 
@@ -78,7 +79,4 @@
     </ul>
 </div>
 
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+

@@ -284,13 +284,9 @@ namespace Local.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).SingleOrDefault(m => m.PLACA == id);
-            var prestamos = activo.PRESTAMOes.OrderBy(p => p.FECHA_SOLICITUD);
-            return View(prestamos);
-            //if (eQUIPO_SOLICITADO == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //return View(eQUIPO_SOLICITADO);
+           // var prestamos = activo.PRESTAMOes.OrderBy(p => p.FECHA_SOLICITUD);
+            return View(activo);
+
         }
 
 
