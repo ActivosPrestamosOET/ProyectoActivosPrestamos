@@ -7,7 +7,7 @@
 <div class="row">
     <br />
     <div class="col-xs-12">
-        @if (User.IsInRole("superadmin") || User.IsInRole("Editar activos"))
+        @if ((User.IsInRole("superadmin") || User.IsInRole("Editar activos")) && Model.DESECHADO == false)
         {
             @Html.ActionLink("Editar", "Edit", new { id = Model.ID })
         }

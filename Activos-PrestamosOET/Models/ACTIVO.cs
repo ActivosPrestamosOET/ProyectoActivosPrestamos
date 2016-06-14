@@ -172,8 +172,8 @@ namespace Activos_PrestamosOET.Models
             if (!isAdmin)
             {
                 result = result.Where(a => a.V_ESTACIONID == estacionID || a.V_ESTACIONID == null);
+                result = result.Where(a => a.DESECHADO == false);
             }
-            
             
             if (!String.IsNullOrEmpty(busqueda))
             {

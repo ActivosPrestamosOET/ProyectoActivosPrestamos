@@ -294,13 +294,14 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult Asignar(string id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
 
             // no deberia cargar datos de la asignacion pasada, cada asignacion es nueva
             // si quiero ver a quien esta asignado nada mas puedo ver los detalles del activo
             ACTIVO aCTIVO = db.ACTIVOS.Find(id);
+            if (aCTIVO.DESECHADO)
+                return RedirectToAction("Index");
+
             aCTIVO.COMENTARIO = "";
 
 
@@ -323,6 +324,8 @@ namespace Activos_PrestamosOET.Controllers
         {
 
             var original = db.ACTIVOS.Find(aCTIVO.ID);
+            if (aCTIVO.DESECHADO)
+                return RedirectToAction("Index");
 
             if (original != null)
             {
@@ -359,14 +362,14 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult Edit(string id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+
             ACTIVO aCTIVO = db.ACTIVOS.Find(id);
+            if (aCTIVO.DESECHADO)
+                return RedirectToAction("Index");
             if (aCTIVO == null)
-            {
                 return HttpNotFound();
-            }
+
             ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES, "ID", "NOMBRE", aCTIVO.TIPO_TRANSACCIONID);
             ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS, "ID", "NOMBRE", aCTIVO.TIPO_ACTIVOID);
             ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
@@ -385,6 +388,8 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult Edit([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_EMPLEADOSIDEMPLEADO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId,PLACA,ESTADO_PRESTADO")] ACTIVO aCTIVO)
         {
             var original = db.ACTIVOS.Find(aCTIVO.ID);
+            if (aCTIVO.DESECHADO)
+                return RedirectToAction("Index");
             if (ModelState.IsValid)
             {
                 original.NUMERO_SERIE = aCTIVO.NUMERO_SERIE;
@@ -438,6 +443,8 @@ namespace Activos_PrestamosOET.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ACTIVO aCTIVO = db.ACTIVOS.Find(id);
+            if (aCTIVO.DESECHADO)
+                return RedirectToAction("Index");
             if (aCTIVO == null)
             {
                 return HttpNotFound();
@@ -452,12 +459,12 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             ACTIVO aCTIVO = db.ACTIVOS.Find(id);
+            if (aCTIVO.DESECHADO)
+                return RedirectToAction("Index");
 
             aCTIVO.DESECHADO = true;
             var estado = db.ESTADOS_ACTIVOS.ToList().Where(ea => ea.NOMBRE == "Desechado");
             aCTIVO.ESTADO_ACTIVOID = estado.ToList()[0].ID;
-
-            // db.ACTIVOS.Remove(aCTIVO); // Quitar esta linea cuando se cambie el estado por desechado
 
             var consulta_proveedor = db.V_PROVEEDOR.ToList().Where(ea => ea.IDPROVEEDOR == aCTIVO.V_PROVEEDORIDPROVEEDOR);
             var proveedor = consulta_proveedor.ToList()[0].NOMBRE;
