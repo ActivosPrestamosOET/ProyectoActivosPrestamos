@@ -283,13 +283,42 @@ namespace Local.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).SingleOrDefault(m => m.PLACA == id);
-           // var prestamos = activo.PRESTAMOes.OrderBy(p => p.FECHA_SOLICITUD);
+            var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
+
+            if (b == "Descargar Boleta")
+            {
+                DownloadPDF("DetailsPDF", activo, "HistorialActivo");
+            }
+            return View(activo);
+        }
+        [HttpPost]
+        public ActionResult Details(string id, string b)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
+
+            if (b == "Descargar Boleta")
+            {
+                DownloadPDF("DetailsPDF", activo, "HistorialActivo");
+            }
+            return View(activo);
+        }
+        public ActionResult DetailsPDF(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
+
+            //Si se presiona el boton de descargar la boleta
+
             return View(activo);
 
         }
-
-
 
 
         //------------------------------------------------------------------------------------------------------

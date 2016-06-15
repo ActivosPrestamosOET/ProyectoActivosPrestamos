@@ -59,8 +59,8 @@
     </thead>
     <tbody>
 
-    @foreach (var item in Model.PRESTAMOes)
-    {
+        @foreach (var item in Model.PRESTAMOes)
+        {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
@@ -75,26 +75,13 @@
                     @Html.DisplayFor(modelItem => item.ActivosUser.Nombre)
                 </td>
                 <td>
-            @foreach (var x in Model.TRANSACCIONES)
-            {
-                if (x.ACTIVOID == Model.ID && x.NUMERO_BOLETA == item.NUMERO_BOLETA)
-                {
-                    @Html.DisplayFor(modelItem => x.OBSERVACIONES_RECIBO)
-                }
-            }
-
+                    @Html.DisplayFor(modelItem => item.OBSERVACIONES_RECIBIDO)
                 </td>
             </tr>
-    }
+        }
     </tbody>
 </table>
 
-<div class="btn-group">
-    <a href="#" class="btn btn-default">Descargar Reporte</a>
-    <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
-    <ul class="dropdown-menu">
-        <li><input type="submit" name="b" value="PDF" class="btn btn-link"/></li>
-        <li><input type="submit" name="b" value="Excel" class="btn btn-link"/></li>
-    </ul>
-</div>
+
+
 
