@@ -75,13 +75,16 @@
                     @Html.DisplayFor(modelItem => item.ActivosUser.Nombre)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.OBSERVACIONES_RECIBIDO)
+                    @foreach (var x in Model.TRANSACCIONES)
+                    {
+                        if (x.ACTIVOID == Model.ID && x.NUMERO_BOLETA == item.NUMERO_BOLETA)
+                        {
+                            @Html.DisplayFor(modelItem => x.OBSERVACIONES_RECIBO)
+                        }
+                    }
+
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-
-
-

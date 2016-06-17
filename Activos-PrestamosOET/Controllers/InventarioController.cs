@@ -289,9 +289,9 @@ namespace Local.Controllers
         }
 
         public ActionResult DescargarHistorial(string id)
-        {        
-                var temp = db.ACTIVOS.ToList();
-                DownloadPDF("DetailsPDF", temp, "HistorialActivo");
+        {
+            var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
+            DownloadPDF("DetailsPDF", activo, "HistorialActivo");
                  return RedirectToAction("Details", new { id = id });
 
         }
