@@ -39,7 +39,7 @@ namespace Local.Controllers
             //Si se presiona el boton de descargar la boleta
             if (b == "Reporte Activos")
             {
-                var temp = db.ACTIVOS.ToList();
+                var temp = db.ACTIVOS.Where(x => x.PRESTABLE == true).ToList();
                 DownloadPDF("BoletaPDF", temp, "BoletaSoliciud");
             }
             if (!string.IsNullOrEmpty(submit) && submit.Equals("Buscar"))

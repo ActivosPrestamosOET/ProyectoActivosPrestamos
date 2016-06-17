@@ -28,15 +28,54 @@
 					@foreach (var item in Model)
 					{
 						<tr>
-							<td>@item.FABRICANTE</td>
-							<td>@item.MODELO</td>
-							<td>@item.PLACA</td>
-							<td>@item.TIPOS_ACTIVOS.NOMBRE</td>
-							<td>@item.DESCRIPCION</td>
+							@{if (item.FABRICANTE == null)
+								{
+									<td>No tiene Fabricante especificado</td>
+								}
+							} else {
+								<td>@item.FABRICANTE</td>
+							}
+							@{if (item.MODELO == null)
+								{
+									<td>No tiene Modelo especificado</td>
+								}
+							} else {
+								<td>@item.MODELO</td>
+							}
+							@{if (item.PLACA == null)
+								{
+									<td>No tiene Placa especificado</td>
+								}
+							} else {
+								<td>@item.PLACA</td>
+							}
+							@{if (item.TIPOS_ACTIVOS == null)
+								{
+									<td>No tiene TIpo de Activo especificado</td>
+								}
+							} else {
+								<td>@item.TIPOS_ACTIVOS.NOMBRE</td>
+							}
+							@{if (item.DESCRIPCION == null)
+								{
+									<td>No tiene Descripcion especificada</td>
+								}
+							} else {
+								<td>@item.DESCRIPCION</td>
+							}
+
 							@foreach (var x in item.PRESTAMOes)
 							{
-								<td>@x.ActivosUser.Nombre</td>
-								<td>@x.FECHA_RETIRO</td>
+								if (x == null)
+								{
+									<td>No ha sido prestado</td>
+									<td>No ha sido prestado</td>
+								}
+								else
+								{
+									<td>@x.ActivosUser.Nombre</td>
+									<td>@x.FECHA_RETIRO</td>
+								}
 							}
 						</tr>
 					}
