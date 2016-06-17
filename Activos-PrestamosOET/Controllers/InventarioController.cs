@@ -300,7 +300,7 @@ namespace Local.Controllers
             }
             var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
 
-            if (b == "Descargar Boleta")
+            if (b == "Descargar Reporte PDF")
             {
                 DownloadPDF("DetailsPDF", activo, "HistorialActivo");
             }
