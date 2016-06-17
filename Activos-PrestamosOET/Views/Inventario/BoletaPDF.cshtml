@@ -1,0 +1,48 @@
+﻿@model ICollection<Activos_PrestamosOET.Models.ACTIVO>
+
+@{
+    ViewBag.Title = "BoletaPDF";
+}
+
+<div>
+    <h3>Activos en Inventario</h3>
+    <br />
+    <div class="container">
+        <div class="row">
+            <div>
+
+                <table style="width:80%">
+					<thead>
+                        <tr>
+                            <th>Fabricante</th>
+                            <th>Modelo</th>
+                            <th>Placa</th>
+                            <th>Tipo</th>
+                            <th>Descripciones</th>
+                            <th>Prestado A</th>
+                            <th>Prestado Hasta</th>
+                        </tr>
+                    </thead>
+
+					<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>@item.FABRICANTE</td>
+							<td>@item.MODELO</td>
+							<td>@item.PLACA</td>
+							<td>@item.TIPOS_ACTIVOS.NOMBRE</td>
+							<td>@item.DESCRIPCION</td>
+							@foreach (var x in item.PRESTAMOes)
+							{
+								<td>@x.ActivosUser.Nombre</td>
+								<td>@x.FECHA_RETIRO</td>
+							}
+						</tr>
+					}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
