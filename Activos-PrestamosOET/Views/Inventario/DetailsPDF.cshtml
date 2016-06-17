@@ -4,7 +4,7 @@
     ViewBag.Title = "Details";
 }
 
-<legend><h2>Historial del Activo</h2></legend>
+<h3>Historial del Activo</h3>
 
 <div class="panel panel-default">
     <div class="panel-body">
@@ -12,49 +12,35 @@
         <div class="container">
             <div class="row">
 
-                <div class="col-md-2">
-                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FABRICANTE):</label>
-                </div>
-                <div class="col-md-4">
-                    @Html.DisplayFor(model => model.FABRICANTE)
-                </div>
-                <div class="col-md-2">
-                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.MODELO):</label>
-                </div>
-                <div class="col-md-4">
-                    @Html.DisplayNameFor(model => model.MODELO)
-                </div>
-
-                <br />
-                <br />
-                <div class="col-md-2">
-                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.NUMERO_SERIE):</label>
-                </div>
-                <div class="col-md-4">
-                    @Html.DisplayNameFor(model => model.NUMERO_SERIE)
-                </div>
-                <div class="col-md-2">
-                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.PLACA):</label>
-                </div>
-                <div class="col-md-4">
-                    @Html.DisplayFor(model => model.PLACA)
-                </div>
+                <table style="width:100%">
+                    <tr>
+                        <td><label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.FABRICANTE): </b></label>@Html.DisplayFor(model => model.FABRICANTE)</td>
+                        <td><label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.MODELO): </b></label>@Html.DisplayFor(model => model.MODELO)</td>
+                    </tr>
+                    <tr>
+                        <td><label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.NUMERO_SERIE): </b></label>@Html.DisplayFor(model => model.NUMERO_SERIE)</td>
+                        <td><label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.PLACA): </b></label>@Html.DisplayFor(model => model.PLACA)</td>
+                    </tr>
+                </table>
             </div>
         </div>
-
     </div>
 </div>
+<br/>
+<br />
 
-<legend><h2>Detalle</h2></legend>
+<h3>Detalle de Préstamos</h3>
 
-<table class="table table-striped table-hover ">
+<br />
+
+<table border="1" style="width:90%">
     <thead>
         <tr>
-            <th># de Boleta</th>
-            <th>Fecha de Retiro</th>
-            <th>Fecha de Devolucion</th>
-            <th>Solicitante</th>
-            <th>Observaciones al devolver</th>
+            <th><b># de Boleta</b></th>
+            <th><b>Fecha de Retiro</b></th>
+            <th><b>Fecha de Devolucion</b></th>
+            <th><b>Solicitante</b></th>
+            <th><b>Observaciones al devolver</b></th>
         </tr>
     </thead>
     <tbody>
