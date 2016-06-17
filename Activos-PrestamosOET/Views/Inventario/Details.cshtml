@@ -89,7 +89,9 @@
     </tbody>
 </table>
 
+@Html.ActionLink("Descargar PDF", "DescargarHistorial", new { id = Model.PLACA }, new { @class = "btn btn-default" })
+
+
 @using (Html.BeginForm("Details", "Inventario", FormMethod.Post))
 {
-    <input type="submit" name="b" value="Descargar Reporte PDF" class="btn btn-default" />
 }

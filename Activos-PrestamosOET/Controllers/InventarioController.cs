@@ -276,7 +276,7 @@ namespace Local.Controllers
             }
         }
 
-
+        [HttpGet]
         public ActionResult Details(string id)
         {
             if (id == null)
@@ -285,26 +285,15 @@ namespace Local.Controllers
             }
             var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
 
-            if (b == "Descargar Boleta")
-            {
-                DownloadPDF("DetailsPDF", activo, "HistorialActivo");
-            }
             return View(activo);
         }
-        [HttpPost]
-        public ActionResult Details(string id, string b)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
 
-            if (b == "Descargar Reporte PDF")
-            {
-                DownloadPDF("DetailsPDF", activo, "HistorialActivo");
-            }
-            return View(activo);
+        public ActionResult DescargarHistorial(string id)
+        {        
+                var temp = db.ACTIVOS.ToList();
+                DownloadPDF("DetailsPDF", temp, "HistorialActivo");
+                 return RedirectToAction("Details", new { id = id });
+
         }
         public ActionResult DetailsPDF(string id)
         {
