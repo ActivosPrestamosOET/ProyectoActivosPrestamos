@@ -5,83 +5,82 @@
 }
 
 <div>
-    <h3>Activos en Inventario</h3>
+    <h1>Activos en Inventario</h1>
     <br />
     <div class="container">
         <div class="row">
-            <div>
-
-                <table style="width:80%">
-					<thead>
-                        <tr>
-                            <th>Fabricante</th>
-                            <th>Modelo</th>
-                            <th>Placa</th>
-                            <th>Tipo</th>
-                            <th>Descripciones</th>
-                            <th>Prestado A</th>
-                            <th>Prestado Hasta</th>
-                        </tr>
-                    </thead>
-
-					<tbody>
-					@foreach (var item in Model)
+			@foreach (var item in Model)
+			{
+				<table style="width:80%">
+					<tr>
+						<td>Fabricante</td>
+						@{if (item.FABRICANTE == null){
+							<td>No tiene Fabricante especificado</td>
+						} else {
+							<td>@item.FABRICANTE</td>
+						}}
+					</tr>
+					<tr>
+						<td>Modelo</td>
+						@{if (item.MODELO == null) {
+							<td>No tiene Modelo especificado</td>
+						} else {
+							<td>@item.MODELO</td>
+						}}
+					</tr>
+					<tr>
+						<td>Placa</td>
+						@{if (item.MODELO == null) {
+							<td>No tiene Placa especificado</td>
+						} else {
+							<td>@item.PLACA</td>
+						}}
+					</tr>
+					<tr>
+						<td>Tipo</td>
+						@{if (item.TIPOS_ACTIVOS == null) {
+							<td>No tiene TIpo de Activo especificado</td>
+						} else {
+							<td>@item.TIPOS_ACTIVOS.NOMBRE</td>
+						}}
+					</tr>
+					<tr>
+						<td>Descripcion</td>
+						@{if (item.DESCRIPCION == null){
+							<td>No tiene Descripcion especificada</td>
+						} else {
+							<td>@item.DESCRIPCION</td>
+						}}
+					</tr>
+					@foreach (var x in item.PRESTAMOes)
 					{
-						<tr>
-							@{if (item.FABRICANTE == null)
-								{
-									<td>No tiene Fabricante especificado</td>
-								}
-							} else {
-								<td>@item.FABRICANTE</td>
-							}
-							@{if (item.MODELO == null)
-								{
-									<td>No tiene Modelo especificado</td>
-								}
-							} else {
-								<td>@item.MODELO</td>
-							}
-							@{if (item.PLACA == null)
-								{
-									<td>No tiene Placa especificado</td>
-								}
-							} else {
-								<td>@item.PLACA</td>
-							}
-							@{if (item.TIPOS_ACTIVOS == null)
-								{
-									<td>No tiene TIpo de Activo especificado</td>
-								}
-							} else {
-								<td>@item.TIPOS_ACTIVOS.NOMBRE</td>
-							}
-							@{if (item.DESCRIPCION == null)
-								{
-									<td>No tiene Descripcion especificada</td>
-								}
-							} else {
-								<td>@item.DESCRIPCION</td>
-							}
-
-							@foreach (var x in item.PRESTAMOes)
-							{
-								if (x == null)
-								{
-									<td>No ha sido prestado</td>
-									<td>No ha sido prestado</td>
-								}
-								else
-								{
-									<td>@x.ActivosUser.Nombre</td>
-									<td>@x.FECHA_RETIRO</td>
-								}
-							}
-						</tr>
+						if (x == null)
+						{
+							<tr>
+								<td>Prestado A</td>
+								<td>No ha sido prestado</td>
+							</tr>
+							<tr>
+								<td>Prestado Hasta</td>
+								<td>No ha sido prestado</td>
+							</tr>
+						}
+						else
+						{
+							<tr>
+								<td>Prestado A</td>
+								<td>@x.ActivosUser.Nombre</td>
+							</tr>
+							<tr>
+								<td>Prestado Hasta</td>
+								<td>@x.FECHA_RETIRO</td>
+							</tr>
+						}
 					}
-                    </tbody>
-                </table>
-            </div>
+				</table>
+				<br />
+				<br />
+			}
         </div>
     </div>
 </div>
