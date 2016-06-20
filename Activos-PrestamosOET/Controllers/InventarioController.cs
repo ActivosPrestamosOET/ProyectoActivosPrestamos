@@ -56,10 +56,13 @@ namespace Local.Controllers
                 }
             }//--------------------------------------------------------------------------------------------------------
             //---------------------------------------------------------------------------------------------------------
-            else
+            else if (!string.IsNullOrEmpty(datepicker))
             {
                 llenarTablaCategoria(datepicker, datepicker1, dropdownCategoria);
                 return View();
+            }
+            else {
+                return RedirectToAction("Inventario");
             }
 
         }

@@ -13,67 +13,72 @@
 			{
 				<table style="width:80%">
 					<tr>
-						<td>Fabricante</td>
+						<td><b>Fabricante: </b>
 						@{if (item.FABRICANTE == null){
-							<td>No tiene Fabricante especificado</td>
+							<text>No tiene Fabricante especificado</text>
 						} else {
-							<td>@item.FABRICANTE</td>
+							<text>@item.FABRICANTE</text>
 						}}
+						</td>
 					</tr>
 					<tr>
-						<td>Modelo</td>
+						<td><b>Modelo: </b>
 						@{if (item.MODELO == null) {
-							<td>No tiene Modelo especificado</td>
+							<text>No tiene Modelo especificado</text>
 						} else {
-							<td>@item.MODELO</td>
+							<text>@item.MODELO</text>
 						}}
+						</td>
 					</tr>
 					<tr>
-						<td>Placa</td>
+						<td><b>Placa: </b>
 						@{if (item.MODELO == null) {
-							<td>No tiene Placa especificado</td>
+							<text>No tiene Placa especificado</text>
 						} else {
-							<td>@item.PLACA</td>
+							<text>@item.PLACA</text>
 						}}
+						</td>
 					</tr>
 					<tr>
-						<td>Tipo</td>
+						<td><b>Tipo: </b>
 						@{if (item.TIPOS_ACTIVOS == null) {
-							<td>No tiene TIpo de Activo especificado</td>
+							<text>No tiene Tipo de Activo especificado</text>
 						} else {
-							<td>@item.TIPOS_ACTIVOS.NOMBRE</td>
+							<text>@item.TIPOS_ACTIVOS.NOMBRE</text>
 						}}
+						</td>
 					</tr>
 					<tr>
-						<td>Descripcion</td>
+						<td><b>Descripcion: </b>
 						@{if (item.DESCRIPCION == null){
-							<td>No tiene Descripcion especificada</td>
+							<text>No tiene Descripcion especificada</text>
 						} else {
-							<td>@item.DESCRIPCION</td>
+							<text>@item.DESCRIPCION</text>
 						}}
+						</td>
 					</tr>
 					@foreach (var x in item.PRESTAMOes)
 					{
 						if (x == null)
 						{
 							<tr>
-								<td>Prestado A</td>
-								<td>No ha sido prestado</td>
+								<td><b>Prestado A: </b>
+								<text>No ha sido prestado</text></td>
 							</tr>
 							<tr>
-								<td>Prestado Hasta</td>
-								<td>No ha sido prestado</td>
+								<td><b>Prestado Hasta: </b>
+								<text>No ha sido prestado</text></td>
 							</tr>
 						}
 						else
 						{
 							<tr>
-								<td>Prestado A</td>
-								<td>@x.ActivosUser.Nombre</td>
+								<td><b>Prestado A: </b>
+								@x.ActivosUser.Nombre</td>
 							</tr>
 							<tr>
-								<td>Prestado Hasta</td>
-								<td>@x.FECHA_RETIRO</td>
+								<td><b>Prestado Hasta: </b>
+								@x.FECHA_RETIRO</td>
 							</tr>
 						}
 					}
