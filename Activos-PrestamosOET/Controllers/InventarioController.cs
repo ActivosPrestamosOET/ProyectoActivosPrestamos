@@ -37,10 +37,10 @@ namespace Local.Controllers
         public ActionResult Index(String dropdownCategoria, String submit, String datepicker, String datepicker1, string b)
         {
             //Si se presiona el boton de descargar la boleta
-            if (b == "Descargar Boleta")
+            if (b == "Reporte Activos")
             {
-                ACTIVO act= new ACTIVO();
-                DownloadPDF("BoletaPDFAct", act, "BoletaSoliciud");
+                var temp = db.ACTIVOS.Where(x => x.PRESTABLE == true).ToList();
+                DownloadPDF("BoletaPDF", temp, "BoletaSoliciud");
             }
             if (!string.IsNullOrEmpty(submit) && submit.Equals("Buscar"))
             {
@@ -56,10 +56,13 @@ namespace Local.Controllers
                 }
             }//--------------------------------------------------------------------------------------------------------
             //---------------------------------------------------------------------------------------------------------
-            else
+            else if (!string.IsNullOrEmpty(datepicker))
             {
                 llenarTablaCategoria(datepicker, datepicker1, dropdownCategoria);
                 return View();
+            }
+            else {
+                return RedirectToAction("Inventario");
             }
 
         }
@@ -276,27 +279,75 @@ namespace Local.Controllers
             }
         }
 
-
+        [HttpGet]
         public ActionResult Details(string id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).SingleOrDefault(m => m.PLACA == id);
-            var prestamos = activo.PRESTAMOes.OrderBy(p => p.FECHA_SOLICITUD);
-            return View(prestamos);
-            //if (eQUIPO_SOLICITADO == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //return View(eQUIPO_SOLICITADO);
+            var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
+
+            return View(activo);
+        }
+
+        public ActionResult DescargarHistorial(string id)
+        {
+            var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
+            DownloadPDF("DetailsPDF", activo, "HistorialActivo");
+                 return RedirectToAction("Details", new { id = id });
+
+        }
+        public ActionResult DetailsPDF(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
+
+            //Si se presiona el boton de descargar la boleta
+
+            return View(activo);
+
         }
 
 
-
-
         //------------------------------------------------------------------------------------------------------
+
+        //Requiere: la vista, el modelo al que pertenece la vista, el nombre que se quiere que tenga el archivo
+        //Modifica: se encarga de organizar la entrada de una vista, llamar al metodo que lo convierte a un doc itextsharp y que se pueda descargar como PDF
+        //Regresa: N/A
+
+        public void DownloadPDF(string viewName, object model, string nombreArchivo)
+        {
+            string HTMLContent = RenderRazorViewToString(viewName, model);
+
+            Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=" + nombreArchivo + ".pdf");
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.BinaryWrite(GetPDF(HTMLContent));
+            Response.End();
+        }
+
+        //Requiere: la vista, el modelo al que pertenece la vista
+        //Modifica: convierte la vista en un string para que pueda ser leido por itextsharp
+        //Regresa: un string con la informacion de la vista
+        public string RenderRazorViewToString(string viewName, object model)
+        {
+            // PRESTAMO pRESTAMO = db.PRESTAMOS.Find();
+            ViewData.Model = model;
+            using (var sw = new StringWriter())
+            {
+                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext,viewName);
+                var viewContext = new ViewContext(ControllerContext, viewResult.View,ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
+                return sw.GetStringBuilder().ToString();
+            }
+        }
+
         //Requiere: una string parseada de la vista que se quiere convertir en PDF
         //Modifica: se encarga de pasar la vista HTML a un documento de itextsharp
         //Regresa: un byte con el documento 
@@ -329,39 +380,10 @@ namespace Local.Controllers
 
             return bPDF;
         }
-        
-        //Modifica: se encarga de organizar la entrada de una vista, llamar al metodo que lo convierte a un doc itextsharp y que se pueda descargar como PDF
-        public void DownloadPDF(string viewName, object model, string nombreArchivo)
-        {
-            string HTMLContent = RenderRazorViewToString(viewName, model);
 
-            Response.Clear();
-            Response.ContentType = "application/pdf";
-            Response.AddHeader("content-disposition", "attachment;filename=" + nombreArchivo + ".pdf");
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            Response.BinaryWrite(GetPDF(HTMLContent));
-            Response.End();
-        }
-
-
-        //Modifica: convierte la vista en un string para que pueda ser leido por itextsharp
-        public string RenderRazorViewToString(string viewName, object model)
-        {
-            // PRESTAMO pRESTAMO = db.PRESTAMOS.Find();
-            ViewData.Model = model;
-            using (var sw = new StringWriter())
-            {
-                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext,
-                                                                         viewName);
-                var viewContext = new ViewContext(ControllerContext, viewResult.View,
-                                             ViewData, TempData, sw);
-                viewResult.View.Render(viewContext, sw);
-                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
-                return sw.GetStringBuilder().ToString();
-            }
-        }
-
-        //se encarga de llamar a la vista que luego se convertira en la boleta imprimible de un prestamo
+        //Requiere: el id del prestamo 
+        //Modifica: se encarga de llamar a la vista que luego se convertira en la boleta imprimible de un prestamo
+        //Regresa: la vista
         public ActionResult BoletaPDF(string id)
         {
             if (id == null)
@@ -370,17 +392,6 @@ namespace Local.Controllers
             }
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
 
-            return View(pRESTAMO);
-        }
-
-        //Crea la vista de DetallesPDF. El usuario no va a ver esta vista, si no que es para despues convertirla en un string y enviarla por correo electronico
-        public ActionResult DetallesPDF(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
             return View(pRESTAMO);
         }
     }

@@ -22,7 +22,7 @@
                     <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.MODELO):</label>
                 </div>
                 <div class="col-md-4">
-                    @Html.DisplayNameFor(model => model.MODELO)
+                    @Html.DisplayFor(model => model.MODELO)
                 </div>
 
                 <br />
@@ -31,7 +31,7 @@
                     <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.NUMERO_SERIE):</label>
                 </div>
                 <div class="col-md-4">
-                    @Html.DisplayNameFor(model => model.NUMERO_SERIE)
+                    @Html.DisplayFor(model => model.NUMERO_SERIE)
                 </div>
                 <div class="col-md-2">
                     <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.PLACA):</label>
@@ -39,7 +39,6 @@
                 <div class="col-md-4">
                     @Html.DisplayFor(model => model.PLACA)
                 </div>
-
             </div>
         </div>
 
@@ -51,7 +50,7 @@
 <table class="table table-striped table-hover ">
     <thead>
         <tr>
-            <th># De Boleta</th>
+            <th># de Boleta</th>
             <th>Fecha de Retiro</th>
             <th>Fecha de Devolucion</th>
             <th>Solicitante</th>
@@ -59,26 +58,44 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>1</td>
-            <td>Column content</td>
-            <td>Column content</td>
-            <td>Column content</td>
-            <td>Column content</td>
-        </tr>
+
+    @foreach (var item in Model.PRESTAMOes)
+    {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                </td>
+                <td>
+                    @item.FECHA_RETIRO.AddDays(item.PERIODO_USO).ToShortDateString()
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ActivosUser.Nombre)
+                </td>
+                <td>
+            @foreach (var x in Model.TRANSACCIONES)
+            {
+                if (x.ACTIVOID == Model.ID && x.NUMERO_BOLETA == item.NUMERO_BOLETA)
+                {
+                    @Html.DisplayFor(modelItem => x.OBSERVACIONES_RECIBO)
+                }
+            }
+
+                </td>
+            </tr>
+    }
     </tbody>
 </table>
 
 <div class="btn-group">
-    <a href="#" class="btn btn-default">Descargar Reporte</a>
-    <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
+    <a href="#" class="btn btn-default">Descargar Historial</a>
+    <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
     <ul class="dropdown-menu">
-        <li><a href="#">PDF</a></li>
+        <li>@Html.ActionLink("PDF", "DescargarHistorial", new { id = Model.PLACA })</li>
         <li><a href="#">Excel</a></li>
     </ul>
 </div>
 
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
