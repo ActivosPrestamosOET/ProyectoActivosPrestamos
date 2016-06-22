@@ -11,16 +11,9 @@ using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.html.simpleparser;
-//using Microsoft.Office.Tools;
-//using Microsoft.Office.Interop.Excel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.Script.Serialization;
-using System.Configuration;
 using System.Data;
-using System.Data.Common;
-using System.Data.OleDb;
-using System.Data.SqlClient;
 
 
 namespace Local.Controllers
@@ -50,8 +43,9 @@ namespace Local.Controllers
             //Si se presiona el boton de descargar la boleta
             if (b == "Reporte Activos")
             {
-                var temp = db.ACTIVOS.Where(x => x.PRESTABLE == true).ToList();
-                DownloadPDF("BoletaPDF", temp, "BoletaSoliciud");
+                //var temp = db.ACTIVOS.Where(x => x.PRESTABLE == true).ToList();
+                //DownloadPDF("BoletaPDF", temp, "BoletaSoliciud");
+                ExportToExcel();
             }
             if (!string.IsNullOrEmpty(submit) && submit.Equals("Buscar"))
             {
@@ -426,6 +420,101 @@ namespace Local.Controllers
 
             return View(activo);
 
+        }
+
+        public ActionResult ExportToExcel()
+        {
+            var temp = db.ACTIVOS.Where(x => x.PRESTABLE == true).ToList();
+
+            var grid = new GridView();
+            DataTable dt = new DataTable();
+            dt.Columns.Add(new DataColumn("Fabricante", Type.GetType("System.String")));
+            dt.Columns.Add(new DataColumn("Modelo", Type.GetType("System.String")));
+            dt.Columns.Add(new DataColumn("Placa", Type.GetType("System.String")));
+            dt.Columns.Add(new DataColumn("Tipo", Type.GetType("System.String")));
+            dt.Columns.Add(new DataColumn("Descripcion", Type.GetType("System.String")));
+            dt.Columns.Add(new DataColumn("Prestado_a", Type.GetType("System.String")));
+            dt.Columns.Add(new DataColumn("Prestado_hasta", Type.GetType("System.String")));
+
+            foreach (var item in temp)
+            {
+                DataRow dr = dt.NewRow();
+                if (item.FABRICANTE == null)
+                {
+                    dr["Fabricante"] = "No tiene fabricante especificado";
+                }
+                else
+                {
+                    dr["Fabricante"] = item.FABRICANTE;
+                }
+                if (item.MODELO == null)
+                {
+                    dr["Modelo"] = "No tiene modelo especificado";
+                }
+                else
+                {
+                    dr["Modelo"] = item.MODELO;
+                }
+                if (item.PLACA == null)
+                {
+                    dr["Placa"] = "No tiene placa especificada";
+                }
+                else
+                {
+                    dr["Placa"] = item.PLACA;
+                }
+                if (item.TIPOS_ACTIVOS == null)
+                {
+                    dr["Tipo_activo"] = "No tiene Tipo de Activo especificado";
+                }
+                else
+                {
+                    dr["Tipo"] = item.TIPOS_ACTIVOS.NOMBRE;
+                }
+                if (item.DESCRIPCION == null)
+                {
+                    dr["Descripcion"] = "No tiene descripcion especificada";
+                }
+                else
+                {
+                    dr["Descripcion"] = item.DESCRIPCION;
+                }
+                foreach (var x in item.PRESTAMOes)
+                {
+                    if (x == null)
+                    {
+                        dr["Prestado_a"] = "No ha sido prestado";
+                        dr["Prestado_hasta"] = "No ha sido prestado";
+                    }
+                    else
+                    {
+                        dr["Prestado_a"] = x.ActivosUser.Nombre;
+                        dr["Prestado_hasta"] = x.FECHA_RETIRO;
+                    }
+                }
+                dt.Rows.Add(dr);
+            }
+            DataSet ds = new DataSet();
+            ds.Tables.Add(dt);
+            grid.DataSource = ds.Tables[0];
+            grid.DataBind();
+
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", "attachment; filename=MyExcelFile.xls");
+            Response.ContentType = "application/ms-excel";
+
+            Response.Charset = "";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter htw = new HtmlTextWriter(sw);
+
+            grid.RenderControl(htw);
+
+            Response.Output.Write(sw.ToString());
+            Response.Flush();
+            Response.End();
+
+            return View();
         }
     }
 }
