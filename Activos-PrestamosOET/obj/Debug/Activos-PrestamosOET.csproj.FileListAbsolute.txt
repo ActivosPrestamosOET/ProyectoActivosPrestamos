@@ -1030,3 +1030,4 @@ C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Act
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csproj.App.config
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.dll
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.pdb
+C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache
