@@ -11,6 +11,17 @@ using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.html.simpleparser;
+//using Microsoft.Office.Tools;
+//using Microsoft.Office.Interop.Excel;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.Script.Serialization;
+using System.Configuration;
+using System.Data;
+using System.Data.Common;
+using System.Data.OleDb;
+using System.Data.SqlClient;
+
 
 namespace Local.Controllers
 {
@@ -393,6 +404,28 @@ namespace Local.Controllers
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
 
             return View(pRESTAMO);
+        }
+
+        public ActionResult ExportarExcel(string id)
+        {
+            GridView gv = new GridView();
+            var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
+            gv.DataSource = activo.PRESTAMOes;
+            gv.DataBind();
+            Response.ClearContent();
+            Response.Buffer = true;
+            Response.AddHeader("content-disposition", "attachment; filename=HistorialActivo.xls");
+            Response.ContentType = "application/ms-excel";
+            Response.Charset = "";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter htw = new HtmlTextWriter(sw);
+            gv.RenderControl(htw);
+            Response.Output.Write(sw.ToString());
+            Response.Flush();
+            Response.End();
+
+            return View(activo);
+
         }
     }
 }
