@@ -414,7 +414,7 @@ namespace Local.Controllers
             gv.DataBind();
             Response.ClearContent();
             Response.Buffer = true;
-            Response.AddHeader("content-disposition", "attachment; filename=HistorialActivo.xls");
+            Response.AddHeader("content-disposition", "attachment; filename=HistorialActivo.xlsx");
             Response.ContentType = "application/ms-excel";
             Response.Charset = "";
             StringWriter sw = new StringWriter();
