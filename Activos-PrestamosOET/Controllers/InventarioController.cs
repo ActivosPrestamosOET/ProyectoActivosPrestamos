@@ -501,7 +501,7 @@ namespace Local.Controllers
 
             Response.ClearContent();
             Response.Buffer = true;
-            Response.AddHeader("content-disposition", "attachment; filename=MyExcelFile.xls");
+            Response.AddHeader("content-disposition", "attachment; filename=ReporteActivos.xls");
             Response.ContentType = "application/ms-excel";
 
             Response.Charset = "";
