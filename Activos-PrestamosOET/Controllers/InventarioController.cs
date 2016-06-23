@@ -408,7 +408,7 @@ namespace Local.Controllers
             gv.DataBind();
             Response.ClearContent();
             Response.Buffer = true;
-            Response.AddHeader("content-disposition", "attachment; filename=HistorialActivo.xlsx");
+            Response.AddHeader("content-disposition", "attachment; filename=HistorialActivo.xls");
             Response.ContentType = "application/ms-excel";
             Response.Charset = "";
             StringWriter sw = new StringWriter();
@@ -421,6 +421,97 @@ namespace Local.Controllers
             return View(activo);
 
         }
+
+        /*
+                 public ActionResult ExportToExcel()
+                {
+                    var temp = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
+
+
+                    var grid = new GridView();
+                    DataTable dt = new DataTable();
+                    dt.Columns.Add(new DataColumn("Número de Boleta", Type.GetType("System.String")));
+                    dt.Columns.Add(new DataColumn("Fecha de Retiro", Type.GetType("System.String")));
+                    dt.Columns.Add(new DataColumn("Fecha de Devolución", Type.GetType("System.String")));
+                    dt.Columns.Add(new DataColumn("Tipo", Type.GetType("System.String")));
+                    dt.Columns.Add(new DataColumn("Descripcion", Type.GetType("System.String")));
+                    dt.Columns.Add(new DataColumn("Prestado_a", Type.GetType("System.String")));
+                    dt.Columns.Add(new DataColumn("Prestado_hasta", Type.GetType("System.String")));
+
+                    foreach (var item in temp)
+                    {
+                        DataRow dr = dt.NewRow();
+                        if (item.NUMERO_BOLETA == null)
+                        {
+                            dr["Número de Boleta"] = "No tiene Número de Boleta especificado";
+                        }
+                        else
+                        {
+                            dr["Número de Boleta"] = item.NUMERO_BOLETA;
+                        }
+                        if (item.FECHA_RETIRO == null)
+                        {
+                            dr["Fecha de Retiro"] = "No tiene Fecha de Retiro especificado";
+                        }
+                        else
+                        {
+                            dr["Fecha de Retiro"] = item.FECHA_RETIRO;
+                        }
+                        if (item.FECHA_RETIRO == null)
+                        {
+                            dr["Fecha de Devolución"] = "No tiene Fecha de Devolución especificada";
+                        }
+                        else
+                        {
+                            dr["Fecha de Devolución"] = item.FECHA_RETIRO.AddDays(item.PERIODO_USO).ToShortDateString();
+                        }
+                        if (item.ActivosUser.Nombre == null)
+                        {
+                            dr["Solicitante"] = "No tiene Solicitante especificado";
+                        }
+                        else
+                        {
+                            dr["Solicitante"] = item.ActivosUser.Nombre;
+                        }
+                        foreach (var x in temp.TRANSACCIONES)
+                        {
+
+                        if (x.ACTIVOID == temp.ID && x.NUMERO_BOLETA == item.NUMERO_BOLETA)
+                        {
+                            dr["Observaciones al devolver"] = x.OBSERVACIONES_RECIBO;
+
+                        }					
+                        else (x == null)
+                        {
+                                dr["Observaciones al devolver"] = "No ha sido prestado";
+                        }
+
+                        }
+                        dt.Rows.Add(dr);
+                    }
+                    DataSet ds = new DataSet();
+                    ds.Tables.Add(dt);
+                    grid.DataSource = ds.Tables[0];
+                    grid.DataBind();
+
+                    Response.ClearContent();
+                    Response.Buffer = true;
+                    Response.AddHeader("content-disposition", "attachment; filename=HistorialActivo.xls");
+                    Response.ContentType = "application/ms-excel";
+
+                    Response.Charset = "";
+                    StringWriter sw = new StringWriter();
+                    HtmlTextWriter htw = new HtmlTextWriter(sw);
+
+                    grid.RenderControl(htw);
+
+                    Response.Output.Write(sw.ToString());
+                    Response.Flush();
+                    Response.End();
+
+                    return View(temp);
+                }
+        */
 
         public ActionResult ExportToExcel()
         {
