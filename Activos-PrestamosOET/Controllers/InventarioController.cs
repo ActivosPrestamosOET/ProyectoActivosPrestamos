@@ -427,16 +427,15 @@ namespace Local.Controllers
                 {
                     var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
                     var temp = activo.PRESTAMOes;
+                    var temp2 = activo.TRANSACCIONES;
 
             var grid = new GridView();
                     DataTable dt = new DataTable();
                     dt.Columns.Add(new DataColumn("Número de Boleta", Type.GetType("System.String")));
                     dt.Columns.Add(new DataColumn("Fecha de Retiro", Type.GetType("System.String")));
                     dt.Columns.Add(new DataColumn("Fecha de Devolución", Type.GetType("System.String")));
-                    dt.Columns.Add(new DataColumn("Tipo", Type.GetType("System.String")));
-                    dt.Columns.Add(new DataColumn("Descripcion", Type.GetType("System.String")));
-                    dt.Columns.Add(new DataColumn("Prestado_a", Type.GetType("System.String")));
-                    dt.Columns.Add(new DataColumn("Prestado_hasta", Type.GetType("System.String")));
+                    dt.Columns.Add(new DataColumn("Solicitante", Type.GetType("System.String")));
+                    dt.Columns.Add(new DataColumn("Observaciones al devolver", Type.GetType("System.String")));
 
                     foreach (var item in temp)
                     {
@@ -473,21 +472,21 @@ namespace Local.Controllers
                         {
                             dr["Solicitante"] = item.ActivosUser.Nombre;
                         }
-                        /* foreach (var x in temp.TRANSACCIONES)
+                         foreach (var x in activo.TRANSACCIONES)
                         {
 
-                        if (x.ACTIVOID == temp.ID && x.NUMERO_BOLETA == item.NUMERO_BOLETA)
+                        if (x.ACTIVOID == activo.ID  && x.NUMERO_BOLETA == item.NUMERO_BOLETA)
                         {
                             dr["Observaciones al devolver"] = x.OBSERVACIONES_RECIBO;
 
                         }					
-                        else (x == null)
+                        else if (x == null)
                         {
                                 dr["Observaciones al devolver"] = "No ha sido prestado";
                         }
 
                         }
-                        */
+                        
                         dt.Rows.Add(dr);
                     }
                     DataSet ds = new DataSet();
