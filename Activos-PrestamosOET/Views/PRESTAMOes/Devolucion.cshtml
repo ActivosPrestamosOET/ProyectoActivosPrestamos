@@ -102,13 +102,23 @@
                             break;
                     }
                 </div>
-
-                <div class="form-group">
-                    <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO):</label>
-                    <div class="col-lg-4">
-                        @Html.DisplayFor(model => model.SOFTWARE_REQUERIDO)
-                    </div>
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.SIGLA_CURSO):</label>
                 </div>
+                <div class="col-md-4">
+                    <!--Html.DisplayFor(model => model.V_COURSES.COURSE_NAME)-->
+                </div>
+                <br />
+                <br />
+
+                <div class="col-md-2">
+                    <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.SOFTWARE_REQUERIDO):</label>
+                </div>
+                <div class="col-md-4">
+                    @Html.DisplayFor(model => model.SOFTWARE_REQUERIDO)
+                </div>
+
+                <br />
                 <br />
                 <div class="form-group">
                     <label class="col-lg-2 control-label" for="inputDefault">@Html.DisplayNameFor(model => model.OBSERVACIONES_SOLICITANTE):</label>
@@ -116,7 +126,6 @@
                         @Html.DisplayFor(model => model.OBSERVACIONES_SOLICITANTE)
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
