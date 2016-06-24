@@ -1,13 +1,16 @@
-﻿
+﻿@model PagedList.IPagedList<Activos_PrestamosOET.Models.ACTIVO>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+
 <head>
     <meta charset="utf-8">
     <title>Inventario</title>
-    <!-- Js -->
+
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script type="text/javascript">
@@ -15,17 +18,6 @@
             $("[id$=A6]").addClass("active");
         });
     </script>
-
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-    <script type="text/javascript" src="~/Content/paging.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $('#tableData').paging({limit:5});
-        });
-    </script>
-
-    
     <script>
         $(function () {
             $("#datepicker").datepicker();
@@ -54,37 +46,6 @@
         });
     </script>
 
-
-    
-
-    <style type="text/css">
-        .paging-nav {
-            text-align: right;
-            padding-top: 2px;
-        }
-
-            .paging-nav a {
-                margin: auto 1px;
-                text-decoration: none;
-                display: inline-block;
-                padding: 1px 7px;
-                background: #ff9966;
-                color: white;
-                border-radius: 3px;
-            }
-
-            .paging-nav .selected-page {
-                background: #f26631;
-                font-weight: bold;
-            }
-
-        .paging-nav,
-        #tableData {
-            margin: 0 auto;
-            font-family: Arial, sans-serif;
-        }
-    </style>
-
 </head>
 <body>
     <!--TÍTULO-->
@@ -99,7 +60,6 @@
     </div>
     @if (ViewBag.Mensaje2 != null)
     {
-
         <div class="alert alert-dismissible alert-danger">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             @ViewBag.Mensaje2
@@ -107,7 +67,6 @@
     }
     @if (ViewBag.Mensaje1 != null)
     {
-
         <div class="alert alert-dismissible alert-warning">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             @ViewBag.Mensaje1
@@ -115,7 +74,6 @@
     }
     @if (ViewBag.Mensaje0 != null)
     {
-
         <div class="alert alert-dismissible alert-danger">
             <button type="button" class="close" data-dismiss="alert">&times;</button>
             @ViewBag.Mensaje0
@@ -169,7 +127,7 @@
             <div class="col-md-1">
             </div>
             <div class="col-md-12">
-                <table id="tableData" class="table" style="margin-top:20px">
+                <table class="table" style="margin-top:20px">
                     <thead>
                         <tr>
                             <th>Fabricante</th>
@@ -184,24 +142,96 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (List<String> s in ViewBag.Courses)
+                        @foreach (var item in Model)
                         {
-                            <tr>
-                                @foreach (String hilera in s)
+                        <tr>
+                            <td>
+                                @{if (item.FABRICANTE == null)
+                                    {
+                                        <text>No especificado</text>
+                                    }
+                                    else
+                                    {
+                                        <text>@item.FABRICANTE</text>
+                                    }}
+                            </td>
+                            <td>
+                                @{if (item.MODELO == null)
+                                    {
+                                        <text>No especificado</text>
+                                    }
+                                    else
+                                    {
+                                        <text>@item.MODELO</text>
+                                    }}
+                            </td>
+                            <td>
+                                @{if (item.PLACA == null)
+                                    {
+                                        <text>No especificada</text>
+                                    }
+                                    else
+                                    {
+                                        <text>@item.PLACA</text>
+                                    }}
+                            </td>
+                            <td>
+                                @{if (item.TIPOS_ACTIVOS == null)
+                                    {
+                                        <text>No especificado</text>
+                                    }
+                                    else
+                                    {
+                                        <text>@item.TIPOS_ACTIVOS.NOMBRE</text>
+                                    }}
+                            </td>
+                            <td>
+                                @{if (item.DESCRIPCION == null)
+                                    {
+                                        <text>No especificada</text>
+                                    }
+                                    else
+                                    {
+                                        <text>@item.DESCRIPCION</text>
+                                    }}
+                            </td>
+                            @{ if (item.PRESTAMOes.Count == 0)
                                 {
-                                    <td>@hilera</td>
+                                    <td><text>No prestado</text></td>
+                                    <td>No prestado</td>
                                 }
-
-                                <td>
-                                    @Html.ActionLink("Detalles", "Details", new { id = @s[2] }, new { @class = "btn btn-default" })
-                                </td>
-                            </tr>
+                                else
+                                {
+                                    foreach (var x in item.PRESTAMOes)
+                                    {
+                                        <td>@x.ActivosUser.Nombre</td>
+                                        <td>@x.FECHA_RETIRO</td>
+                                        break;
+                                    }
+                                }
+                            }
+                            <td>
+                                <!--item.DESCRIPCION.V_COURSES.COURSE_NAME-->
+                            </td>
+                            <td>
+                                @Html.ActionLink("Detalles", "Details", new { id = @item.PLACA }, new { @class = "btn btn-default" })
+                            </td>
+                        </tr>
                         }
                     </tbody>
                 </table>
             </div>
         </div>
-        <input type="submit" name="b" value="Reporte Activos" class="btn btn-default" />
+        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+
+        <div class="btn-group">
+            <a href="#" class="btn btn-default">Reporte Activos</a>
+            <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("PDF", "PDFReporte")</li>
+                <li>@Html.ActionLink("Excel", "ExportToExcel")</li>
+            </ul>
+        </div>
     }
     <br>
     <br>
@@ -270,5 +300,3 @@
         </div>
     }
 </body>
-
-

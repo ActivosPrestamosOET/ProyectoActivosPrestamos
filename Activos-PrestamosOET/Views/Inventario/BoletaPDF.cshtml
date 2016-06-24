@@ -15,7 +15,7 @@
 					<tr>
 						<td><b>Fabricante: </b>
 						@{if (item.FABRICANTE == null){
-							<text>No tiene Fabricante especificado</text>
+							<text>No especificado</text>
 						} else {
 							<text>@item.FABRICANTE</text>
 						}}
@@ -24,7 +24,7 @@
 					<tr>
 						<td><b>Modelo: </b>
 						@{if (item.MODELO == null) {
-							<text>No tiene Modelo especificado</text>
+							<text>No especificado</text>
 						} else {
 							<text>@item.MODELO</text>
 						}}
@@ -32,8 +32,8 @@
 					</tr>
 					<tr>
 						<td><b>Placa: </b>
-						@{if (item.MODELO == null) {
-							<text>No tiene Placa especificado</text>
+						@{if (item.PLACA == null) {
+							<text>No especificada</text>
 						} else {
 							<text>@item.PLACA</text>
 						}}
@@ -42,7 +42,7 @@
 					<tr>
 						<td><b>Tipo: </b>
 						@{if (item.TIPOS_ACTIVOS == null) {
-							<text>No tiene Tipo de Activo especificado</text>
+							<text>No especificado</text>
 						} else {
 							<text>@item.TIPOS_ACTIVOS.NOMBRE</text>
 						}}
@@ -51,37 +51,28 @@
 					<tr>
 						<td><b>Descripcion: </b>
 						@{if (item.DESCRIPCION == null){
-							<text>No tiene Descripcion especificada</text>
+							<text>No especificada</text>
 						} else {
 							<text>@item.DESCRIPCION</text>
 						}}
 						</td>
 					</tr>
-					@foreach (var x in item.PRESTAMOes)
+					<tr>
+					@{ if (item.PRESTAMOes.Count == 0)
 					{
-						if (x == null)
+						<td><b>Prestado a: </b>No prestado</td>
+						<td><b>Prestado hasta: </b>No prestado</td>
+					}
+					else
+					{
+						foreach (var x in item.PRESTAMOes)
 						{
-							<tr>
-								<td><b>Prestado A: </b>
-								<text>No ha sido prestado</text></td>
-							</tr>
-							<tr>
-								<td><b>Prestado Hasta: </b>
-								<text>No ha sido prestado</text></td>
-							</tr>
-						}
-						else
-						{
-							<tr>
-								<td><b>Prestado A: </b>
-								@x.ActivosUser.Nombre</td>
-							</tr>
-							<tr>
-								<td><b>Prestado Hasta: </b>
-								@x.FECHA_RETIRO</td>
-							</tr>
+							<td><b>Prestado a: </b><text>@x.ActivosUser.Nombre</text></td>
+							<td><b>Prestado hasta: </b><text>@x.FECHA_RETIRO</text></td>
 						}
 					}
+					}
+					</tr>
 				</table>
 				<br />
 				<br />
