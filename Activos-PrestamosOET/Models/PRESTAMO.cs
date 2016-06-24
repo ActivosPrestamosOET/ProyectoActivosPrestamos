@@ -44,15 +44,16 @@ namespace Activos_PrestamosOET.Models
         [DisplayName("Software requerido")]
         [StringLength(250)]
         public string SOFTWARE_REQUERIDO { get; set; }
-        [DisplayName("Software requerido")]
+        [DisplayName("Observaciones del solicitante")]
         [StringLength(250)]
         public string OBSERVACIONES_SOLICITANTE { get; set; }
-        [DisplayName("Software requerido")]
+        [DisplayName("Observaciones de quien aprueba")]
         [StringLength(250)]
         public string OBSERVACIONES_APROBADO { get; set; }
         [DisplayName("Observaciones al finalizar el préstamo")]
         [StringLength(250)]
         public string OBSERVACIONES_RECIBIDO { get; set; }
+        [DisplayName("Nombre del curso")]
         public string SIGLA_CURSO { get; set; }
         public short Estado { get; set; }
         [DisplayName("Solicitante")]
