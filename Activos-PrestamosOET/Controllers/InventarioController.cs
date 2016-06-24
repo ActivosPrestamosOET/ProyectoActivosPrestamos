@@ -400,7 +400,7 @@ namespace Local.Controllers
             return View(pRESTAMO);
         }
 
-        public ActionResult ExportarExcel(string id)
+    /*    public ActionResult ExportarExcel(string id)
         {
             GridView gv = new GridView();
             var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
@@ -422,13 +422,13 @@ namespace Local.Controllers
 
         }
 
-        /*
-                 public ActionResult ExportToExcel()
+        */
+                 public ActionResult ExportarExcel(string id)
                 {
-                    var temp = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
+                    var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
+                    var temp = activo.PRESTAMOes;
 
-
-                    var grid = new GridView();
+            var grid = new GridView();
                     DataTable dt = new DataTable();
                     dt.Columns.Add(new DataColumn("Número de Boleta", Type.GetType("System.String")));
                     dt.Columns.Add(new DataColumn("Fecha de Retiro", Type.GetType("System.String")));
@@ -473,7 +473,7 @@ namespace Local.Controllers
                         {
                             dr["Solicitante"] = item.ActivosUser.Nombre;
                         }
-                        foreach (var x in temp.TRANSACCIONES)
+                        /* foreach (var x in temp.TRANSACCIONES)
                         {
 
                         if (x.ACTIVOID == temp.ID && x.NUMERO_BOLETA == item.NUMERO_BOLETA)
@@ -487,6 +487,7 @@ namespace Local.Controllers
                         }
 
                         }
+                        */
                         dt.Rows.Add(dr);
                     }
                     DataSet ds = new DataSet();
@@ -511,7 +512,7 @@ namespace Local.Controllers
 
                     return View(temp);
                 }
-        */
+        
 
         public ActionResult ExportToExcel()
         {
