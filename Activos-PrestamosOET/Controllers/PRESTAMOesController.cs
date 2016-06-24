@@ -145,6 +145,18 @@ namespace Activos_PrestamosOET.Controllers
         //[Authorize(Roles = "Aceptar préstamos,superadmin")]
         public ActionResult Index(string sortOrder, string currentFilter, string fechaSolicitud, string fechaRetiro, string estado, string numeroBoleta, int? page)
         {
+
+            string username = User.Identity.GetUserName();
+
+            var users = (from u in db.ActivosUsers select u);
+            //where u.UserName == username
+            //select u.Cedula); 
+            var user = users.SingleOrDefault(u => u.UserName == username);
+            var cedSol = user.Id;
+
+            //prestamos = prestamos.Where(model => model.USUARIO_SOLICITA == cedSol);
+
+
             //se identifica si alguna columna fue seleccionada como filtro para ordenar los datos despliegados
             ViewBag.currentSort = sortOrder;
             ViewBag.NumeroSortParm = String.IsNullOrEmpty(sortOrder) ? "numero_dsc" : "";
@@ -164,6 +176,7 @@ namespace Activos_PrestamosOET.Controllers
 
             ViewBag.CurrentFilter = fechaSolicitud;
             var prestamos = from p in db.PRESTAMOS select p;//.Include(i => i.ActivosUser);
+            prestamos = prestamos.Where(model => model.USUARIO_SOLICITA != cedSol);
             prestamos = prestamos.Include(i => i.ActivosUser);
             //var prestamos = db.PRESTAMOS.Include(i => i.USUARIO);//Se agrega la tabla de usuarios a la de préstamos
 
@@ -180,7 +193,8 @@ namespace Activos_PrestamosOET.Controllers
                     {
                         prestamos = prestamos.Where(model => model.FECHA_RETIRO.Year == fechaR.Year
                                                           && model.FECHA_RETIRO.Month == fechaR.Month
-                                                          && model.FECHA_RETIRO.Day == fechaR.Day);
+                                                          && model.FECHA_RETIRO.Day == fechaR.Day
+                                                          && model.USUARIO_SOLICITA != cedSol);
                     }
                 }
                 else if (String.IsNullOrEmpty(fechaRetiro))//Se ingresó únicamente la fecha de solicitud del préstamo
@@ -189,7 +203,8 @@ namespace Activos_PrestamosOET.Controllers
                     {
                         prestamos = prestamos.Where(model => model.FECHA_SOLICITUD.Year == fechaS.Year
                                                           && model.FECHA_SOLICITUD.Month == fechaS.Month
-                                                          && model.FECHA_SOLICITUD.Day == fechaS.Day);
+                                                          && model.FECHA_SOLICITUD.Day == fechaS.Day
+                                                          && model.USUARIO_SOLICITA != cedSol);
                     }
                 }
                 else//Se ingresaron tanto la fecha de solicitud como de inicio del préstamo.
@@ -198,13 +213,15 @@ namespace Activos_PrestamosOET.Controllers
                     {
                         prestamos = prestamos.Where(model => model.FECHA_SOLICITUD.Year == fechaS.Year
                                                          && model.FECHA_SOLICITUD.Month == fechaS.Month
-                                                         && model.FECHA_SOLICITUD.Day == fechaS.Day);
+                                                         && model.FECHA_SOLICITUD.Day == fechaS.Day
+                                                         && model.USUARIO_SOLICITA != cedSol);
                     }
                     if (DateTime.TryParseExact(fechaRetiro, "dd/MM/yyyy", new CultureInfo("es"), DateTimeStyles.None, out fechaR))
                     {
                         prestamos = prestamos.Where(model => model.FECHA_RETIRO.Year == fechaR.Year
                                                          && model.FECHA_RETIRO.Month == fechaR.Month
-                                                         && model.FECHA_RETIRO.Day == fechaR.Day);
+                                                         && model.FECHA_RETIRO.Day == fechaR.Day
+                                                         && model.USUARIO_SOLICITA != cedSol);
                     }
                 }
             }
@@ -212,12 +229,14 @@ namespace Activos_PrestamosOET.Controllers
             {
                 int est = int.Parse(estado);
                 var int16 = Convert.ToInt16(est);
-                prestamos = prestamos.Where(model => model.Estado == int16);
+                prestamos = prestamos.Where(model => model.Estado == int16
+                    && model.USUARIO_SOLICITA != cedSol);
             }
             if (!string.IsNullOrEmpty(numeroBoleta))
             {
                 int num = int.Parse(numeroBoleta);
-                prestamos = prestamos.Where(model => model.NUMERO_BOLETA == num);
+                prestamos = prestamos.Where(model => model.NUMERO_BOLETA == num
+                    && model.USUARIO_SOLICITA != cedSol);
             }
             //Finaliza búsqueda por filtros//
 
@@ -289,6 +308,19 @@ namespace Activos_PrestamosOET.Controllers
             {
                 prestamos = prestamos.Where(model => model.USUARIO_SOLICITA == CED_SOLICITA);
             }
+
+
+            string username = User.Identity.GetUserName();
+
+            var users = (from u in db.ActivosUsers select u);
+            //where u.UserName == username
+            //select u.Cedula); 
+            var user = users.SingleOrDefault(u => u.UserName == username);
+            var cedSol = user.Id;
+
+            prestamos = prestamos.Where(model => model.USUARIO_SOLICITA == cedSol);
+
+
             //Verfica el filtro de estado. Si el usuario no selecciono ningun filtro, entonces no se filtra por estado
             //pero si si selecciono el estado por el que quiere filtrar entonces, filtra por eso
             int est;
