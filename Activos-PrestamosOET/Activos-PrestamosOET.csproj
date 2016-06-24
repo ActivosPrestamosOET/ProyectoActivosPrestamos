@@ -322,6 +322,9 @@
     <Compile Include="Models\V_ANFITRIONA.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\V_COURSES.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\V_EMPLEADOS.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -335,9 +338,6 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\V_TIPO_CAMBIO.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\V_COURSES.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

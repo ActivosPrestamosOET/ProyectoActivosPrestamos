@@ -14,8 +14,42 @@
 -- Vista de los empleados (Para asignarles activos)
 ------------------------------------------------------
 GRANT SELECT ANY TABLE TO "ACTIVOS" WITH ADMIN OPTION;
-create or replace view activos.v_empleados as
-select * from FINANCIERO.empleados;
+
+CREATE OR REPLACE FORCE VIEW "V_EMPLEADOS"  AS
+
+ SELECT DISTINCT
+
+   EP.IDSEDE AS ESTACION_ID,
+
+   ep.IDEMPLEADO,
+
+   emp.nombre || ' ' || emp.apellidos as Nombre,
+
+   emp.EMAIL,
+
+   emp.ESTADO
+
+
+
+ FROM
+
+   FINANCIERO.EMPLEADOS  Emp,
+
+   FINANCIERO.EMPLEADO_PUESTO   ep,
+
+   V_ANFITRIONA  an,
+
+   V_ESTACION  es
+
+ WHERE
+
+ emp.IDEMPLEADO = ep.IDEMPLEADO
+
+ AND EP.IDSEDE       = es.ID
+
+ AND EP.IDEMPRESA    = an.ID;
+
+// Fin de las vistas
 
 CREATE SEQUENCE INSERT_TIPO_ACTIVO
   START WITH 1

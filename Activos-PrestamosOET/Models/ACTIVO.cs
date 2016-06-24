@@ -27,6 +27,8 @@ namespace Activos_PrestamosOET.Models
             this.FECHA_INGRESO = DateTime.Now.Date;
             // Se genera el ID a como lo pide la OET.
             this.ID = DateTime.Now.Day.ToString("D2") + DateTime.Now.Month.ToString("D2") + DateTime.Now.Year.ToString() + DateTime.Now.Hour.ToString("D2") + DateTime.Now.Minute.ToString("D2") + DateTime.Now.Second.ToString("D2") + DateTime.Now.Millisecond.ToString("D3"); /// Se genera el ID con el estandar de la OET.
+            // A peticion del grupo de prestamos
+            this.ESTADO_PRESTADO = 0;
         }
 
         public string ID { get; set; }
@@ -109,7 +111,7 @@ namespace Activos_PrestamosOET.Models
         public Nullable<int> ESTADO_PRESTADO { get; set; }
         [Display(Name = "Responsable")]
         public string V_EMPLEADOSIDEMPLEADO { get; set; }
-    
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PRESTAMO> PRESTAMOes { get; set; }
         public virtual TIPOS_ACTIVOS TIPOS_ACTIVOS { get; set; }
@@ -174,7 +176,7 @@ namespace Activos_PrestamosOET.Models
                 result = result.Where(a => a.V_ESTACIONID == estacionID || a.V_ESTACIONID == null);
                 result = result.Where(a => a.DESECHADO == false);
             }
-            
+
             if (!String.IsNullOrEmpty(busqueda))
             {
 
