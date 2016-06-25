@@ -1,0 +1,141 @@
+﻿@model IEnumerable<Activos_PrestamosOET.Models.V_EMPLEADOS>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.APELLIDOS)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EMAIL)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ESTADO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ESTADOCIVIL)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IDENTIFICACION)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IDNACIONALIDAD)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IDTIPO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NOMBRE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NUMASEGURADO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NUMEMPLEADO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SEXO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ASOET)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CREA)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MODIFICA)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CREADO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MODIFICADO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FECHA_NACIMIENTO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NUM_ASOET)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PENSIONADO)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.APELLIDOS)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EMAIL)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ESTADO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ESTADOCIVIL)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IDENTIFICACION)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IDNACIONALIDAD)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IDTIPO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NOMBRE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NUMASEGURADO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NUMEMPLEADO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SEXO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ASOET)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CREA)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MODIFICA)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CREADO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MODIFICADO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FECHA_NACIMIENTO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NUM_ASOET)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PENSIONADO)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.IDEMPLEADO }) |
+            @Html.ActionLink("Details", "Details", new { id=item.IDEMPLEADO }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.IDEMPLEADO })
+        </td>
+    </tr>
+}
+
+</table>
