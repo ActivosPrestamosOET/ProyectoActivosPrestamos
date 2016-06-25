@@ -34,7 +34,7 @@
             <label class="control-label" for="inputDefault">Solicitante:</label>
         </div>
         <div class="col-md-4">
-            @ViewBag.Nombre
+            @Html.DisplayFor(model => model.ActivosUser.Nombre) @Html.DisplayFor(model => model.ActivosUser.Apellidos)
             <!--ViewBag.Nombre-->
         </div>
         <div class="col-md-2">
