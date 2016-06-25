@@ -223,7 +223,7 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS, "ID", "NOMBRE");
             ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE");
             ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA, "ID", "NOMBRE");
-            ViewBag.FECHA_INGRESO = DateTime.Now.ToString("dd/MM/yyyy");
+            ViewBag.FECHA_INGRESO = DateTime.Now.ToString("yyyy-MM-dd");
             ViewBag.V_MONEDAID = new SelectList(db.V_MONEDA, "ID", "SIMBOLO");
 
             return View();
@@ -274,7 +274,7 @@ namespace Activos_PrestamosOET.Controllers
                 var consulta_transaccion = db.TIPOS_TRANSACCIONES.ToList().Where(ea => ea.ID == aCTIVO.TIPO_TRANSACCIONID);
                 var transaccion = consulta_transaccion.ToList()[0].NOMBRE;
 
-
+                if(transaccion == "")
 
                 controladora_transaccion.Create(User.Identity.GetUserName(), "Creado", aCTIVO.descripcion(proveedor, transaccion, anfitriona), aCTIVO.ID);
                 return RedirectToAction("Index");
@@ -285,7 +285,7 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
             ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA, "ID", "NOMBRE", aCTIVO.V_ANFITRIONAID);
             ViewBag.V_MONEDAID = new SelectList(db.V_MONEDA, "ID", "SIMBOLO", aCTIVO.V_MONEDAID);
-            ViewBag.FECHA_INGRESO = DateTime.Now.ToString("dd/MM/yyyy");
+            ViewBag.FECHA_INGRESO = DateTime.Now.ToString("yyyy-MM-dd");
             ViewBag.INGRESADO_POR = User.Identity.Name;
             return View(aCTIVO);
         }
@@ -334,9 +334,14 @@ namespace Activos_PrestamosOET.Controllers
                 original.ESTADO_ACTIVOID = aCTIVO.ESTADO_ACTIVOID;
                 // si no se cambio el comentario, dejar el original
                 original.COMENTARIO = aCTIVO.COMENTARIO == null ? original.COMENTARIO : aCTIVO.COMENTARIO;
-                original.V_EMPLEADOSIDEMPLEADO = aCTIVO.V_EMPLEADOSIDEMPLEADO;
-                original.V_ESTACIONID = aCTIVO.V_ESTACIONID;
-                original.CENTRO_DE_COSTOId = aCTIVO.CENTRO_DE_COSTOId;
+                // Si el activo se pone como asignado (estado = 3), agregar id de empleado encargado, id de estacion de epleado y centro de costo
+                if (aCTIVO.ESTADO_ACTIVOID == 3)
+                {
+                    original.V_EMPLEADOSIDEMPLEADO = aCTIVO.V_EMPLEADOSIDEMPLEADO;
+                    // Al activo se le asigna la estacion del empleado encargado, para que siempre este correcta y no dependa de la correctitud del filtro de empleados por estacion.
+                    original.V_ESTACIONID = (db.V_EMPLEADOS.ToList().Where(ea => ea.IDEMPLEADO == aCTIVO.V_EMPLEADOSIDEMPLEADO)).ToList()[0].ESTACION_ID;
+                    original.CENTRO_DE_COSTOId = aCTIVO.CENTRO_DE_COSTOId;
+                }
                 db.SaveChanges();
 
                 var consulta_proveedor = db.V_PROVEEDOR.ToList().Where(ea => ea.IDPROVEEDOR == original.V_PROVEEDORIDPROVEEDOR);
@@ -346,9 +351,16 @@ namespace Activos_PrestamosOET.Controllers
                 var consulta_transaccion = db.TIPOS_TRANSACCIONES.ToList().Where(ea => ea.ID == original.TIPO_TRANSACCIONID);
                 var transaccion = consulta_transaccion.ToList()[0].NOMBRE;
 
-
-
-                controladora_transaccion.Create(User.Identity.GetUserName(), original.ESTADOS_ACTIVOS.NOMBRE, original.descripcion(proveedor, transaccion, anfitriona), original.ID);
+                // Si el activo se pone como asignado (estado = 3), se agrega id del responsable a la bitacora.
+                if(aCTIVO.ESTADO_ACTIVOID == 3)
+                {
+                    controladora_transaccion.CreateWithResponsible(User.Identity.GetUserName(), original.ESTADOS_ACTIVOS.NOMBRE, original.descripcion(proveedor, transaccion, anfitriona), original.ID, aCTIVO.V_EMPLEADOSIDEMPLEADO);
+                }
+                else
+                {
+                    controladora_transaccion.Create(User.Identity.GetUserName(), original.ESTADOS_ACTIVOS.NOMBRE, original.descripcion(proveedor, transaccion, anfitriona), original.ID);
+                }
+                                
                 return RedirectToAction("Index");
             }
             ViewBag.V_EMPLEADOSIDEMPLEADO = new SelectList(db.V_EMPLEADOS.OrderBy(emp => emp.NOMBRE), "IDEMPLEADO", "NOMBRE", aCTIVO.V_EMPLEADOSIDEMPLEADO);

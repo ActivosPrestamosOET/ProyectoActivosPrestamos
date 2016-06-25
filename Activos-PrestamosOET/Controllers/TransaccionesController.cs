@@ -32,5 +32,25 @@ namespace Activos_PrestamosOET.Controllers
             return false;
         }
 
+        public bool CreateWithResponsible(string responsable, string estado, string descripcion, string activo_id, string responsable_de_activo)
+        {
+            TRANSACCION nueva_transaccion = new TRANSACCION();
+            nueva_transaccion.FECHA = DateTime.Now;
+            nueva_transaccion.ESTADO = estado;
+            nueva_transaccion.DESCRIPCION = descripcion;
+            nueva_transaccion.ACTIVOID = activo_id;
+            nueva_transaccion.RESPONSABLE = responsable;
+            nueva_transaccion.V_EMPLEADOSIDEMPLEADO = responsable_de_activo;
+
+            if (ModelState.IsValid)
+            {
+                db.TRANSACCIONES.Add(nueva_transaccion);
+                db.SaveChanges();
+                return true;
+            }
+
+            return false;
+        }
+
     }
 }
