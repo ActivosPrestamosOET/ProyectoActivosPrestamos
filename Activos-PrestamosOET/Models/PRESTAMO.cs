@@ -53,7 +53,7 @@ namespace Activos_PrestamosOET.Models
         [DisplayName("Observaciones al finalizar el préstamo")]
         [StringLength(250)]
         public string OBSERVACIONES_RECIBIDO { get; set; }
-        [DisplayName("Nombre del curso")]
+        [DisplayName("Curso")]
         public string SIGLA_CURSO { get; set; }
         public short Estado { get; set; }
         [DisplayName("Solicitante")]
