@@ -5,7 +5,7 @@
 }
 <div class="row">
     <div class="col-xs-12">
-        <br/>
+        <br />
         @Html.ActionLink("Regresar", "Index")
     </div>
 </div>
@@ -24,7 +24,7 @@
             <div class="form-horizontal">
                 <div class="form-group">
                     <div class="col-xs-12 col-sm-4">
-                        @Html.LabelFor(model => model.PLACA, htmlAttributes: new { @class="control-label"})
+                        @Html.LabelFor(model => model.PLACA, htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-xs-12 col-sm-8">
                         @Html.EditorFor(model => model.PLACA, new { htmlAttributes = new { @readonly = "readonly", @class = "form-control", @rows = "3" } })
@@ -52,7 +52,7 @@
                         @Html.LabelFor(model => model.ESTADO_ACTIVOID, "Estado", htmlAttributes: new { @class = "control-label" })
                     </div>
                     <div class="col-sm-8 col-xs-12">
-                        @Html.DropDownList("ESTADO_ACTIVOID", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.DropDownList("ESTADO_ACTIVOID", null, "-- Seleccione el estado del activo --", htmlAttributes: new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.ESTADO_ACTIVOID, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                             @Html.LabelFor(model => model.V_ESTACIONID, "Estación", htmlAttributes: new { @class = "control-label" })
                         </div>
                         <div class="col-xs-12 col-sm-8">
-                            @Html.DropDownList("V_ESTACIONID", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.DropDownList("V_ESTACIONID", null,"-- Seleccione una estación --", htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.V_ESTACIONID, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                             @Html.LabelFor(model => model.V_EMPLEADOSIDEMPLEADO, "Responsable", htmlAttributes: new { @class = "control-label" })
                         </div>
                         <div class="col-sm-8 col-xs-12">
-                            @Html.DropDownList("V_EMPLEADOSIDEMPLEADO", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.DropDownList("V_EMPLEADOSIDEMPLEADO", null,"-- Seleccione un responsable --", htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.V_EMPLEADOSIDEMPLEADO, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -80,7 +80,7 @@
                             @Html.LabelFor(model => model.CENTRO_DE_COSTOId, "Centro de costo", htmlAttributes: new { @class = "control-label" })
                         </div>
                         <div class="col-sm-8 col-xs-12">
-                            @Html.DropDownList("CENTRO_DE_COSTOId", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.DropDownList("CENTRO_DE_COSTOId", null, "-- Seleccione un centro de costo --", htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.CENTRO_DE_COSTOId, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -110,6 +110,7 @@
     </div>
 }
 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
@@ -117,7 +118,25 @@
             $('#info-asignacion').css('display', ($('#ESTADO_ACTIVOID option:selected').text() == 'Asignado') ? 'block' : 'none');
             $('#ESTADO_ACTIVOID').on('change', function () {
                 $('#info-asignacion').css('display', ($('#ESTADO_ACTIVOID option:selected').text() == 'Asignado') ? 'block' : 'none');
-            })
+            });
+            $('#V_ESTACIONID').on('change', function () {
+                var estacion_id = $('#V_ESTACIONID').val();
+                var lista_empleados = $('#V_EMPLEADOSIDEMPLEADO');
+                lista_empleados.empty();
+                lista_empleados.append("<option value=''>-- Seleccione un responsable --</option>");
+                $.ajax({
+                    url: "@Url.Content("~/Activos/RefrescarUsuarios")",
+                    data: {id_estacion: estacion_id },
+                    dataType: "json",
+                    success: function (data) {
+                        lista_empleados.empty();
+                        lista_empleados.append("<option value=''>-- Seleccione un responsable --</option>");
+                        $.each(data, function (index, option_data) {
+                            lista_empleados.append("<option value='" + option_data.IDEMPLEADO + "'>" + option_data.NOMBRE + "</option>");
+                        });
+                    }
+                });
+            });
         });
     </script>
 }
