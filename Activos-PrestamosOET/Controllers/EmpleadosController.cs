@@ -43,7 +43,7 @@ namespace Activos_PrestamosOET.Controllers
         public static IQueryable<V_EMPLEADOS> EmpleadosFiltrados(string id_estacion)
         {
             PrestamosEntities bd = new PrestamosEntities();
-            var empleados = bd.V_EMPLEADOS.Where(emp => emp.ESTACION_ID.Equals(id_estacion) && emp.ESTADO.Equals(1) && emp.EMAIL.Contains("@")).ToList().Select(empleado => new V_EMPLEADOS
+            var empleados = bd.V_EMPLEADOS.Where(emp => emp.ESTACION_ID.Equals(id_estacion) && emp.ESTADO.Equals(1) && emp.EMAIL.Contains("@")).OrderBy(emp => emp.NOMBRE).ToList().Select(empleado => new V_EMPLEADOS
             {
                 IDEMPLEADO = empleado.IDEMPLEADO,
                 NOMBRE = empleado.NOMBRE
