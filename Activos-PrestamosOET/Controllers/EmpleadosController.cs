@@ -11,6 +11,7 @@ using PagedList;
 
 namespace Activos_PrestamosOET.Controllers
 {
+    [Authorize]
     public class EmpleadosController : Controller
     {
         private PrestamosEntities db = new PrestamosEntities();
@@ -50,6 +51,7 @@ namespace Activos_PrestamosOET.Controllers
         // GET: Empleados/Details/5
         public ActionResult Details(string id)
         {
+            // TODO: mostrar los activos que ha tenido asignado el usuario consultado
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

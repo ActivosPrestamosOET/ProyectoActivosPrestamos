@@ -1,50 +1,24 @@
 ﻿@model Activos_PrestamosOET.Models.V_EMPLEADOS
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Historial del empleado";
 }
-
-<h2>Details</h2>
-
-<div>
-    <h4>V_EMPLEADOS</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.ESTACION_ID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ESTACION_ID)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.NOMBRE)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.NOMBRE)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EMAIL)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EMAIL)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ESTADO)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ESTADO)
-        </dd>
-
-    </dl>
+<div class="row">
+    <div class="col-xs-12">
+        <br />
+        @Html.ActionLink("Regresar", "Index")
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.IDEMPLEADO }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<div class="row">
+    <div class="col-xs-12">
+        <h2>Historial del empleado&nbsp;<small>@Html.DisplayFor(model => model.NOMBRE)</small></h2>
+        <h5><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;&nbsp;<a href="mailto:@Html.DisplayFor(model => model.EMAIL)">@Html.DisplayFor(model => model.EMAIL)</a></h5>
+        <hr />
+    </div>
+</div>
+@*TODO: Agregar la tabla que muestre todos los activos que ha tenido asignados ese usuario en el sistema.*@
+<div class="row">
+    <div class="col-xs-12">
+        <h1 class="text-muted text-center">TODO: Agregar la tabla con el historial de activos que le han sido asignados</h1>
+    </div>
+</div>
