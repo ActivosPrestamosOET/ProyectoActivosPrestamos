@@ -306,7 +306,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.V_EMPLEADOSIDEMPLEADO = new SelectList(db.V_EMPLEADOS.OrderBy(emp => emp.NOMBRE), "IDEMPLEADO", "NOMBRE");
+            ViewBag.V_EMPLEADOSIDEMPLEADO = new SelectList(db.V_EMPLEADOS.Where(emp => emp.ESTADO.Equals(1) && emp.EMAIL.Contains("@")).OrderBy(emp => emp.NOMBRE), "IDEMPLEADO", "NOMBRE");
             ViewBag.ESTADO_ACTIVOID = new SelectList(db.ESTADOS_ACTIVOS.OrderBy(ea => ea.NOMBRE), "ID", "NOMBRE", aCTIVO.ESTADO_ACTIVOID);
             ViewBag.V_ESTACIONID = new SelectList(db.V_ESTACION.OrderBy(e => e.NOMBRE), "ID", "NOMBRE", aCTIVO.V_ESTACIONID);
             ViewBag.CENTRO_DE_COSTOId = new SelectList(db.CENTROS_DE_COSTOS.OrderBy(cc => cc.Nombre), "ID", "NOMBRE", aCTIVO.CENTRO_DE_COSTOId);
@@ -359,7 +359,7 @@ namespace Activos_PrestamosOET.Controllers
                                 
                 return RedirectToAction("Index");
             }
-            ViewBag.V_EMPLEADOSIDEMPLEADO = new SelectList(db.V_EMPLEADOS.OrderBy(emp => emp.NOMBRE), "IDEMPLEADO", "NOMBRE", aCTIVO.V_EMPLEADOSIDEMPLEADO);
+            ViewBag.V_EMPLEADOSIDEMPLEADO = new SelectList(db.V_EMPLEADOS.Where(emp => emp.ESTADO.Equals(1) && emp.EMAIL.Contains("@")).OrderBy(emp => emp.NOMBRE), "IDEMPLEADO", "NOMBRE", aCTIVO.V_EMPLEADOSIDEMPLEADO);
             ViewBag.ESTADO_ACTIVOID = new SelectList(db.ESTADOS_ACTIVOS.OrderBy(ea => ea.NOMBRE), "ID", "NOMBRE", aCTIVO.ESTADO_ACTIVOID);
             ViewBag.V_ESTACIONID = new SelectList(db.V_ESTACION.OrderBy(e => e.NOMBRE), "ID", "NOMBRE", aCTIVO.V_ESTACIONID);
             ViewBag.CENTRO_DE_COSTOId = new SelectList(db.CENTROS_DE_COSTOS.OrderBy(cc => cc.Nombre), "ID", "NOMBRE", aCTIVO.CENTRO_DE_COSTOId);

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Activos_PrestamosOET.Models;
+using PagedList;
 
 namespace Activos_PrestamosOET.Controllers
 {
@@ -15,9 +16,35 @@ namespace Activos_PrestamosOET.Controllers
         private PrestamosEntities db = new PrestamosEntities();
 
         // GET: Empleados
-        public ActionResult Index()
+        public ActionResult Index(string orden, int? pagina, string busqueda)
         {
-            return View(db.V_EMPLEADOS.ToList());
+            ViewBag.OrdenActual = orden;
+            ViewBag.Nombre = String.IsNullOrEmpty(orden) ? "nombre_desc" : "";
+            ViewBag.Correo = (orden == "correo_asc") ? "correo_desc" : "correo_asc";
+            var empleados = db.V_EMPLEADOS.Where(emp => emp.ESTADO.Equals(1) && emp.EMAIL.Contains("@"));
+
+            #region Busqueda de empleados
+            if(!String.IsNullOrEmpty(busqueda))
+                empleados = empleados.Where(emp => emp.NOMBRE.Contains(busqueda) || emp.EMAIL.Contains(busqueda));
+            #endregion
+            switch (orden)
+            {
+                case "nombre_desc":
+                    empleados = empleados.OrderByDescending(emp => emp.NOMBRE);
+                    break;
+                case "correo_asc":
+                    empleados = empleados.OrderBy(emp => emp.EMAIL);
+                    break;
+                case "correo_desc":
+                    empleados = empleados.OrderByDescending(emp => emp.EMAIL);
+                    break;
+                default:
+                    empleados = empleados.OrderBy(emp => emp.NOMBRE);
+                    break;
+            }
+            int tamano_pagina = 20;
+            int num_pagina = (pagina ?? 1);
+            return View(empleados.ToPagedList(num_pagina, tamano_pagina));
         }
 
         // GET: Empleados/Details/5

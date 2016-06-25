@@ -247,7 +247,7 @@
 </div>
 <div class="row">
     <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-        <small><span class="text-muted">Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</span></small>
+        <small><span class="text-muted">Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount</span></small>
         @Html.PagedListPager(Model, pagina => Url.Action("Index", new { pagina, orden = ViewBag.OrdenActual, filtro = ViewBag.FiltroActual }))
     </div>
 </div>
