@@ -222,7 +222,7 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS, "ID", "NOMBRE");
             ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE");
             ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA, "ID", "NOMBRE");
-            ViewBag.FECHA_INGRESO = DateTime.Now.ToString("dd/MM/yyyy");
+            ViewBag.FECHA_INGRESO = DateTime.Now.ToString("yyyy-MM-dd");
             ViewBag.V_MONEDAID = new SelectList(db.V_MONEDA, "ID", "SIMBOLO");
 
             return View();
@@ -284,7 +284,7 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
             ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA, "ID", "NOMBRE", aCTIVO.V_ANFITRIONAID);
             ViewBag.V_MONEDAID = new SelectList(db.V_MONEDA, "ID", "SIMBOLO", aCTIVO.V_MONEDAID);
-            ViewBag.FECHA_INGRESO = DateTime.Now.ToString("dd/MM/yyyy");
+            ViewBag.FECHA_INGRESO = DateTime.Now.ToString("yyyy-MM-dd");
             ViewBag.INGRESADO_POR = User.Identity.Name;
             return View(aCTIVO);
         }
