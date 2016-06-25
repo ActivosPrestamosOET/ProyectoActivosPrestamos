@@ -94,7 +94,7 @@
     <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></a>
     <ul class="dropdown-menu">
         <li>@Html.ActionLink("PDF", "DescargarHistorial", new { id = Model.PLACA })</li>
-        <li><a href="#">Excel</a></li>
+        <li>@Html.ActionLink("Excel", "ExportarExcel", new { id = Model.PLACA })</li>
     </ul>
 </div>
 
