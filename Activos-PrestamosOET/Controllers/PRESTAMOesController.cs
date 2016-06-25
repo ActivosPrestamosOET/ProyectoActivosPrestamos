@@ -395,6 +395,14 @@ namespace Activos_PrestamosOET.Controllers
             {
                 ViewBag.Estadillo = "Cancelada";
             }
+            /*string idd = generarID();
+                string username = User.Identity.GetUserName();
+
+                var users = (from u in db.ActivosUsers select u);
+                var user = users.SingleOrDefault(u => u.UserName == username);*/
+            var cursos = (from u in db.V_COURSES select u);
+            V_COURSES curso = cursos.SingleOrDefault(u => u.COURSES_CODE == pRESTAMO.SIGLA_CURSO);
+            ViewBag.MiCurso = curso.COURSE_NAME;
             var lista = from o in db.PRESTAMOS
                         from o2 in db.ActivosUsers
                         where o.ID == id
