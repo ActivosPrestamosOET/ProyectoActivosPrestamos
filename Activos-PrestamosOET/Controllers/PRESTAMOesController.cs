@@ -142,7 +142,7 @@ namespace Activos_PrestamosOET.Controllers
         //Requiere: Recibe 6 parámetros, el primero es la columna por la que se ordenan los datos en la tabla, el segundo, tercero, cuarto y quinto para hacer filtrado de búsqueda y el último para identificar la página en q se encuentra la tabla.
         // Modifica: Maneja el index view, la cual es la vista de consulta de revisión de solicitudes.
         //Retorna: Devuelve una tabla que se despliegará en el index de Revisión de solicitudes.
-        //[Authorize(Roles = "Aceptar préstamos,superadmin")]
+        [Authorize(Roles = "Aceptar préstamos,superadmin")]
         public ActionResult Index(string sortOrder, string currentFilter, string fechaSolicitud, string fechaRetiro, string estado, string numeroBoleta, int? page)
         {
 
@@ -291,7 +291,7 @@ namespace Activos_PrestamosOET.Controllers
         //Requiere: cédula del solicitante, filtro actual de categorías, hilera del estado de la revisión y el identificador de la página en la que se encuentra actualmente.
         //Modifica: Carga la información de la tabla con el historial de solicitudes.
         //Retorna: vista con la tabla en la que se despliega el historial de solicitudes.
-        //[Authorize(Roles = "Solicitar préstamos,superadmin")]
+        [Authorize(Roles = "Solicitar préstamos,Aceptar préstamos,superadmin")]
         public ActionResult Historial(string CED_SOLICITA, string currentFilter, string estado, int? page)
         {
             //CED_SOLICITA = "PITAN0126052014.085230671";
@@ -356,7 +356,7 @@ namespace Activos_PrestamosOET.Controllers
         //Requiere: id del Préstamo
         //Modifica: Recupera la información sobre la solicitud de Préstamo seleccionads y la muestra
         //Retorna: Vista con la información de los detalles de un Préstamo específico.
-        //[Authorize(Roles = "Solicitar préstamos,superadmin")]
+        [Authorize(Roles = "Solicitar préstamos,Aceptar préstamos,superadmin")]
         public ActionResult Detalles(string id)
         {
             if (id == null)
@@ -394,6 +394,27 @@ namespace Activos_PrestamosOET.Controllers
             else if (pRESTAMO.Estado == 6)
             {
                 ViewBag.Estadillo = "Cancelada";
+            }
+            /*string idd = generarID();
+                string username = User.Identity.GetUserName();
+
+                var users = (from u in db.ActivosUsers select u);
+                var user = users.SingleOrDefault(u => u.UserName == username);*/
+            var cursos = (from u in db.V_COURSES select u);
+            V_COURSES curso = cursos.SingleOrDefault(u => u.COURSES_CODE == pRESTAMO.SIGLA_CURSO);
+            try
+            {
+                ViewBag.MiCurso = curso.COURSE_NAME;
+            } catch
+            {
+                if (pRESTAMO.SIGLA_CURSO == null)
+                {
+                    ViewBag.MiCurso = "";
+                }
+                else
+                {
+                    ViewBag.MiCurso = pRESTAMO.SIGLA_CURSO;
+                }
             }
             var lista = from o in db.PRESTAMOS
                         from o2 in db.ActivosUsers
@@ -468,7 +489,7 @@ namespace Activos_PrestamosOET.Controllers
         //Requiere: Recibe el id del prestamo que se está consultando.
         // Modifica: Maneja el details view, la cual es la vista de consulta de revisión de una solicitud en particular.
         //Retorna: Devuelve un información necesaria para el despliegue de la vista como: nombre de solicitante, el estado, el equipo solicitado y sus cantidades
-        //[Authorize(Roles = "Aceptar préstamos,superadmin")]
+        [Authorize(Roles = "Aceptar préstamos,superadmin")]
         public ActionResult Details(string id)
         {
             //Mensajes de alerta, de exito, etc.
@@ -643,7 +664,7 @@ namespace Activos_PrestamosOET.Controllers
         //Retorna: Devuelve un información necesaria para el despliegue de la vista como: nombre de solicitante, el estado, el equipo solicitado y sus cantidades, además, despliega un mensaje de confirmacion diferente de acuerdo a si el boton fue aceptar o denegar
 
         [HttpPost]
-        //[Authorize(Roles = "Aceptar préstamos,superadmin")]
+        [Authorize(Roles = "Aceptar préstamos,superadmin")]
         public ActionResult Details(string ID, int[] cantidad_aprobada, string[] activoSeleccionado, string b, [Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p)
         {
             //Se guarda las observaciones de aprobacion
@@ -860,7 +881,7 @@ namespace Activos_PrestamosOET.Controllers
         //Requiere: N/A.
         // Modifica: Crea la vista del Create de prestamo.
         //Retorna: una vista
-        //[Authorize(Roles = "Solicitar préstamos,superadmin")]
+        [Authorize(Roles = "Solicitar préstamos,Aceptar préstamos,superadmin")]
         public ActionResult Create()
         {
 
@@ -894,7 +915,7 @@ namespace Activos_PrestamosOET.Controllers
         //Retorna: una vista
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //[Authorize(Roles = "Solicitar préstamos,superadmin")]
+        [Authorize(Roles = "Solicitar préstamos,Aceptar préstamos,superadmin")]
         public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,USUARIO_SOLICITA,USUARIO_APRUEBA")] PRESTAMO p, int[] Cantidad, String[] Categoria)
         {
             //Metemos los valores ingresados por el usuario en un nuevo prestamo
@@ -983,7 +1004,7 @@ namespace Activos_PrestamosOET.Controllers
         //Requiere: identificador del Préstamo.
         //Modifica: Carga los campos en los que se pueden cambiar datos para editar información relacionada a un préstamo específico.
         //Retorna: vista con los campos para editar solicitud.
-        //[Authorize(Roles = "Solicitar préstamos,superadmin")]
+        [Authorize(Roles = "Solicitar préstamos,Aceptar préstamos,superadmin")]
         public ActionResult Edit(string id)
         {
             //Si el id es null da error
@@ -1115,7 +1136,7 @@ namespace Activos_PrestamosOET.Controllers
         //Retorna: vista con los campos para editar solicitud.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        //[Authorize(Roles = "Solicitar préstamos,superadmin")]
+        [Authorize(Roles = "Solicitar préstamos,Aceptar préstamos,superadmin")]
         public ActionResult Edit([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p, string id, int[] cantidad, string b)
         {
             //Busca el prestamo en la base de datos
@@ -1247,7 +1268,7 @@ namespace Activos_PrestamosOET.Controllers
         //Requiere: id del Préstamo
         //Modifica: Se encarga de cambiar el estado de la solicitud en la base de datos para que en prestamo aparezca cancelado.
         //Retorna: Vista con el resultado de dicha modificación en la base de datos.
-        //[Authorize(Roles = "Solicitar préstamos,superadmin")]
+        [Authorize(Roles = "Solicitar préstamos,Aceptar préstamos,superadmin")]
         public ActionResult Delete(string id)
         {
             //Si no entra al cancelar de una solicitud en especifico da error
@@ -1346,7 +1367,7 @@ namespace Activos_PrestamosOET.Controllers
         //Retorna: Vista con el resultado de dicha modificación en la base de datos.
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        //[Authorize(Roles = "Solicitar préstamos,superadmin")]
+        [Authorize(Roles = "Solicitar préstamos,Aceptar préstamos,superadmin")]
         public ActionResult DeleteConfirmed(string id)
         {
             //busca el objeto PRESTAMO que tenga el id correspondiente
@@ -1399,7 +1420,7 @@ namespace Activos_PrestamosOET.Controllers
         //el número de activos solicitado y aprobado por categoría. La tabla también muestra botones para desplegar un modal
         //que permite visualizar los activos individuales por categoría
         //Retorna: Vista de Devolucion 
-        //[Authorize(Roles = "Aceptar préstamos,superadmin")]
+        [Authorize(Roles = "Aceptar préstamos,superadmin")]
         public ActionResult Devolucion(string id)
         {
             if (id == null) //checkea que se reciba un id de préstamo válido
@@ -1491,7 +1512,7 @@ namespace Activos_PrestamosOET.Controllers
         //aceptados como devueltos
         //Retorna: Vista de Devolucion con la información de los modales actualizados.
         [HttpPost]
-        //[Authorize(Roles = "Aceptar préstamos,superadmin")]
+        [Authorize(Roles = "Aceptar préstamos,superadmin")]
         public ActionResult Devolucion(string ID, bool[] column5_checkbox, bool column5_checkAll, string b, string OBSERVACIONES_APROBADO, bool[] activoSeleccionado)
         {
             //Se recupera al préstamo y se le actualiza el campo de observaciones_aprobado
