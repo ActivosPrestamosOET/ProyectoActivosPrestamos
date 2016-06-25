@@ -32,17 +32,19 @@ namespace Activos_PrestamosOET.Models
         }
 
         public string ID { get; set; }
+
         [Display(Name = "Número de serie")]
         public string NUMERO_SERIE { get; set; }
+
         [Display(Name = "Fecha de compra")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "Fecha de compra es requerido")]
         public System.DateTime FECHA_COMPRA { get; set; }
+
         [Display(Name = "Inicio de servicio")]
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-
         public Nullable<System.DateTime> INICIO_SERVICIO { get; set; }
         [Display(Name = "Fecha de ingreso")]
         [DataType(DataType.Date)]
