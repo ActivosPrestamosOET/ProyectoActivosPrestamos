@@ -11,7 +11,7 @@ namespace Activos_PrestamosOET.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
     public partial class V_PROVEEDOR
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,6 +22,7 @@ namespace Activos_PrestamosOET.Models
     
         public string IDPROVEEDOR { get; set; }
         public System.DateTime FECHAINGRESO { get; set; }
+        [Display(Name="Proveedor")]
         public string NOMBRE { get; set; }
         public string RAZONSOCIAL { get; set; }
         public bool ESTADO { get; set; }

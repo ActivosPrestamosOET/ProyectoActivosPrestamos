@@ -23,7 +23,7 @@ namespace Activos_PrestamosOET.Models
     
         public string ESTACION_ID { get; set; }
         public string IDEMPLEADO { get; set; }
-        [Display(Name = "Compañía")]
+        [Display(Name = "Nombre")]
         public string NOMBRE { get; set; }
         [Display(Name="Correo electrónico")]
         public string EMAIL { get; set; }

@@ -10,6 +10,7 @@ using Activos_PrestamosOET.Models;
 using PagedList;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Web.Services;
 
 namespace Activos_PrestamosOET.Controllers
 {
@@ -204,7 +205,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return HttpNotFound();
             }
-            
+
             aCTIVO.TRANSACCIONES = aCTIVO.TRANSACCIONES.Where(a => a.ACTIVOID.Equals(id)).ToList();
             if (reparaciones)
                 aCTIVO.TRANSACCIONES = aCTIVO.TRANSACCIONES.Where(a => a.ESTADO.Equals("Dañado sin reparación") || a.ESTADO.Equals("En reparación")).ToList();
@@ -309,7 +310,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.V_EMPLEADOSIDEMPLEADO = new SelectList(db.V_EMPLEADOS, "IDEMPLEADO", "NOMBRE");
+            ViewBag.V_EMPLEADOSIDEMPLEADO = new SelectList(db.V_EMPLEADOS.OrderBy(emp => emp.NOMBRE), "IDEMPLEADO", "NOMBRE");
             ViewBag.ESTADO_ACTIVOID = new SelectList(db.ESTADOS_ACTIVOS, "ID", "NOMBRE", aCTIVO.ESTADO_ACTIVOID);
             ViewBag.V_ESTACIONID = new SelectList(db.V_ESTACION, "ID", "NOMBRE", aCTIVO.V_ESTACIONID);
             ViewBag.CENTRO_DE_COSTOId = new SelectList(db.CENTROS_DE_COSTOS, "ID", "NOMBRE", aCTIVO.CENTRO_DE_COSTOId);
@@ -350,7 +351,7 @@ namespace Activos_PrestamosOET.Controllers
                 controladora_transaccion.Create(User.Identity.GetUserName(), original.ESTADOS_ACTIVOS.NOMBRE, original.descripcion(proveedor, transaccion, anfitriona), original.ID);
                 return RedirectToAction("Index");
             }
-            ViewBag.V_EMPLEADOSIDEMPLEADO = new SelectList(db.V_EMPLEADOS, "IDEMPLEADO", "NOMBRE", aCTIVO.V_EMPLEADOSIDEMPLEADO);
+            ViewBag.V_EMPLEADOSIDEMPLEADO = new SelectList(db.V_EMPLEADOS.OrderBy(emp => emp.NOMBRE), "IDEMPLEADO", "NOMBRE", aCTIVO.V_EMPLEADOSIDEMPLEADO);
             ViewBag.ESTADO_ACTIVOID = new SelectList(db.ESTADOS_ACTIVOS, "ID", "NOMBRE", aCTIVO.ESTADO_ACTIVOID);
             ViewBag.V_ESTACIONID = new SelectList(db.V_ESTACION, "ID", "NOMBRE", aCTIVO.V_ESTACIONID);
             ViewBag.CENTRO_DE_COSTOId = new SelectList(db.CENTROS_DE_COSTOS, "ID", "NOMBRE", aCTIVO.CENTRO_DE_COSTOId);
@@ -485,6 +486,19 @@ namespace Activos_PrestamosOET.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        /**
+         * Metodo que se encarga de actualizar el dropdown de los empleados con base en la estacion seleccionada. Esta hecho para ser llamado
+         * por medio de Ajax.
+         * @param: El identificador de la estacion
+         * @return: Los usuarios que pertenecen a la estacion seleccionada.
+         **/
+        // Instrucciones de como llenar el List para retornarlo con ajax  --> http://stackoverflow.com/questions/14339089/populating-dropdown-with-json-result-cascading-dropdown-using-mvc3-jquery-aj
+        public JsonResult RefrescarUsuarios(string id_estacion)
+        {
+            var empleados = EmpleadosController.EmpleadosFiltrados(id_estacion);
+            return Json(empleados, JsonRequestBehavior.AllowGet);
         }
     }
 }
