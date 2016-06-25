@@ -23,8 +23,7 @@ namespace Activos_PrestamosOET.Models
 
             this.PRESTAMOes = new HashSet<PRESTAMO>();
             this.TRANSACCIONES = new HashSet<TRANSACCION>();
-            // El activo siempre va a tener la fecha de ingreso del momento en que se crea.
-            this.FECHA_INGRESO = DateTime.Now.Date;
+            
             // Se genera el ID a como lo pide la OET.
             this.ID = DateTime.Now.Day.ToString("D2") + DateTime.Now.Month.ToString("D2") + DateTime.Now.Year.ToString() + DateTime.Now.Hour.ToString("D2") + DateTime.Now.Minute.ToString("D2") + DateTime.Now.Second.ToString("D2") + DateTime.Now.Millisecond.ToString("D3"); /// Se genera el ID con el estandar de la OET.
             // A peticion del grupo de prestamos
@@ -32,17 +31,19 @@ namespace Activos_PrestamosOET.Models
         }
 
         public string ID { get; set; }
+
         [Display(Name = "Número de serie")]
         public string NUMERO_SERIE { get; set; }
+
         [Display(Name = "Fecha de compra")]
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "Fecha de compra es requerido")]
         public System.DateTime FECHA_COMPRA { get; set; }
+
         [Display(Name = "Inicio de servicio")]
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
-
         public Nullable<System.DateTime> INICIO_SERVICIO { get; set; }
         [Display(Name = "Fecha de ingreso")]
         [DataType(DataType.Date)]

@@ -23,6 +23,7 @@ namespace Activos_PrestamosOET.Models
         public string ID { get; set; }
         [Display(Name = "Compañía")]
         public string NOMBRE { get; set; }
+        [Display(Name = "Compañía")]
         public string SIGLAS { get; set; }
         public string MONEDA { get; set; }
         public string TIPOCAMBIO { get; set; }

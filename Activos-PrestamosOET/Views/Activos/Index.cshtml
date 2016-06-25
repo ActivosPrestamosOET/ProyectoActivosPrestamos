@@ -247,15 +247,11 @@
 </div>
 <div class="row">
     <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-        <small><span class="text-muted">Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</span></small>
-        @Html.PagedListPager(Model, pagina => Url.Action("Index", new { pagina, orden = ViewBag.OrdenActual, filtro = ViewBag.FiltroActual }))
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+        <div class="pull-left">
+            <small><span class="text-muted">Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount</span></small>
+            @Html.PagedListPager(Model, pagina => Url.Action("Index", new { pagina, orden = ViewBag.OrdenActual, filtro = ViewBag.FiltroActual }))
+        </div>
         <div class="pull-right">
-            @Html.ActionLink("Consultar inventario", "Inventario", new object { }, new { @class = "btn btn-primary" })
             @Html.ActionLink("Crear un nuevo activo", "Create", new object { }, new { @class = "btn btn-default" })
         </div>
     </div>

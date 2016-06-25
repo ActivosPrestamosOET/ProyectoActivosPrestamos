@@ -2,22 +2,35 @@
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "Inventario";
+    ViewBag.Title = "Inventario y códigos de barras";
 }
 <div class="row">
-    <br />
     <div class="col-xs-12">
-        @Html.ActionLink("Regresar", "Index")
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12">
-        <h2>Control de inventario</h2>
+        <h2>Control de inventario y códigos de barras</h2>
         <hr />
     </div>
 </div>
-
-
+<div class="row">
+    <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+        @using (Html.BeginForm("Inventario", "Activos", FormMethod.Get))
+        {
+            <div class="input-group">
+                @Html.Editor("busqueda", ViewBag.FiltroActual as string, new { htmlAttributes = new { @class = "form-control", @placeholder = "Ingrese su búsqueda de activos" } })
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-default" title="Buscar"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                </span>
+            </div>
+        }
+        <div class="pull-left">
+            <p>
+                <small>
+                    @Html.ActionLink("Limpiar búsqueda", "Index", "UsersAdmin", new { @title = "Eliminar los filtros de la búsqueda" })
+                </small>
+            </p>
+        </div>
+        <br />
+    </div>
+</div>
 <div class="row">
     <div class="col-xs-12 col-sm-10 col-sm-offset-1">
         <div class="table-responsive">
@@ -103,12 +116,10 @@
 </div>
 <div class="row">
     <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-        <small><span class="text-muted">Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</span></small>
-        @Html.PagedListPager(Model, pagina => Url.Action("Inventario", new { pagina, orden = ViewBag.OrdenActual }))
-    </div>
-</div>
-<div class="row">
-    <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+        <div class="pull-left">
+            <small><span class="text-muted">Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount</span></small>
+            @Html.PagedListPager(Model, pagina => Url.Action("Inventario", new { pagina, orden = ViewBag.OrdenActual }))
+        </div>
         <div class="pull-right">
             @* TODO: habilitar este botón cuando este lista la funcionalidad de generar el código de barras *@
             @Html.ActionLink("Generar códigos de barras", "Inventario", new object { }, new { @class = "btn btn-default", @disabled = "disabled", @title = "Generar el código de los activos seleccionados" })

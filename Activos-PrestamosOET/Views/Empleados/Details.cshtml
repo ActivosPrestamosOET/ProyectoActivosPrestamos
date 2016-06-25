@@ -1,0 +1,24 @@
+﻿@model Activos_PrestamosOET.Models.V_EMPLEADOS
+
+@{
+    ViewBag.Title = "Historial del empleado";
+}
+<div class="row">
+    <div class="col-xs-12">
+        <br />
+        @Html.ActionLink("Regresar", "Index")
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <h2>Historial del empleado&nbsp;<small>@Html.DisplayFor(model => model.NOMBRE)</small></h2>
+        <h5><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;&nbsp;<a href="mailto:@Html.DisplayFor(model => model.EMAIL)">@Html.DisplayFor(model => model.EMAIL)</a></h5>
+        <hr />
+    </div>
+</div>
+@*TODO: Agregar la tabla que muestre todos los activos que ha tenido asignados ese usuario en el sistema.*@
+<div class="row">
+    <div class="col-xs-12">
+        <h1 class="text-muted text-center">TODO: Agregar la tabla con el historial de activos que le han sido asignados</h1>
+    </div>
+</div>

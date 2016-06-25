@@ -10,6 +10,7 @@ using Activos_PrestamosOET.Models;
 using PagedList;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Web.Services;
 
 namespace Activos_PrestamosOET.Controllers
 {
@@ -40,7 +41,7 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: Inventario
-        public ActionResult Inventario(string orden, int? pagina)
+        public ActionResult Inventario(string orden, int? pagina, string busqueda)
         {
             ViewBag.OrdenActual = orden;
             ViewBag.Compania = String.IsNullOrEmpty(orden) ? "compania_desc" : "";
@@ -53,7 +54,7 @@ namespace Activos_PrestamosOET.Controllers
             //se obtiene el usuario loggeado
             var user = UserManager.FindById(User.Identity.GetUserId());
             Boolean isAdmin = User.IsInRole("superadmin") ? true : false;
-            IQueryable<ACTIVO> aCTIVOS = ACTIVO.busquedaSimple("", user.EstacionID, isAdmin);
+            IQueryable<ACTIVO> aCTIVOS = ACTIVO.busquedaSimple(busqueda, user.EstacionID, isAdmin);
 
             switch (orden)
             {
@@ -204,7 +205,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return HttpNotFound();
             }
-            
+
             aCTIVO.TRANSACCIONES = aCTIVO.TRANSACCIONES.Where(a => a.ACTIVOID.Equals(id)).ToList();
             if (reparaciones)
                 aCTIVO.TRANSACCIONES = aCTIVO.TRANSACCIONES.Where(a => a.ESTADO.Equals("Dañado sin reparación") || a.ESTADO.Equals("En reparación")).ToList();
@@ -218,11 +219,11 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult Create()
         {
             ViewBag.INGRESADO_POR = User.Identity.Name;
-            ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES, "ID", "NOMBRE");
-            ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS, "ID", "NOMBRE");
-            ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE");
-            ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA, "ID", "NOMBRE");
-            ViewBag.FECHA_INGRESO = DateTime.Now.ToString("dd/MM/yyyy");
+            ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES.OrderBy(tt => tt.NOMBRE), "ID", "NOMBRE");
+            ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS.OrderBy(ta => ta.NOMBRE), "ID", "NOMBRE");
+            ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR.OrderBy(p => p.NOMBRE), "IDPROVEEDOR", "NOMBRE");
+            ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA.OrderBy(a => a.NOMBRE), "ID", "NOMBRE");
+            ViewBag.FECHA_INGRESO = DateTime.Now.ToString("yyyy-MM-dd");
             ViewBag.V_MONEDAID = new SelectList(db.V_MONEDA, "ID", "SIMBOLO");
 
             return View();
@@ -239,10 +240,7 @@ namespace Activos_PrestamosOET.Controllers
 
             var estado = db.ESTADOS_ACTIVOS.ToList().Where(ea => ea.NOMBRE == "Disponible");
             aCTIVO.ESTADO_ACTIVOID = estado.ToList()[0].ID;
-            aCTIVO.INGRESADO_POR = User.Identity.Name; //Esto deberia de ir en el modelo 
-            /* TODO: La manera correcta de hacer esto es en el modelo (en el constructor). Para al siguiente sprint se debe pasar esto 
-             * al modelo para respetar el MVC.
-             */
+            aCTIVO.INGRESADO_POR = User.Identity.Name;
             decimal precio;
             if (Convert.ToBoolean(Request["MONEDA"]))
             {
@@ -258,7 +256,6 @@ namespace Activos_PrestamosOET.Controllers
 
             }
             aCTIVO.TIPO_CAPITAL = (precio >= 1000) ? true : false;
-            // Hasta acá debe de ir en el modelo.
 
             if (ModelState.IsValid)
             {
@@ -273,18 +270,18 @@ namespace Activos_PrestamosOET.Controllers
                 var consulta_transaccion = db.TIPOS_TRANSACCIONES.ToList().Where(ea => ea.ID == aCTIVO.TIPO_TRANSACCIONID);
                 var transaccion = consulta_transaccion.ToList()[0].NOMBRE;
 
-
+                if(transaccion == "")
 
                 controladora_transaccion.Create(User.Identity.GetUserName(), "Creado", aCTIVO.descripcion(proveedor, transaccion, anfitriona), aCTIVO.ID);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES, "ID", "NOMBRE", aCTIVO.TIPO_TRANSACCIONID);
-            ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS, "ID", "NOMBRE", aCTIVO.TIPO_ACTIVOID);
-            ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
-            ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA, "ID", "NOMBRE", aCTIVO.V_ANFITRIONAID);
+            ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES.OrderBy(tt => tt.NOMBRE), "ID", "NOMBRE", aCTIVO.TIPO_TRANSACCIONID);
+            ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS.OrderBy(ta => ta.NOMBRE), "ID", "NOMBRE", aCTIVO.TIPO_ACTIVOID);
+            ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR.OrderBy(p => p.NOMBRE), "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
+            ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA.OrderBy(a => a.NOMBRE), "ID", "NOMBRE", aCTIVO.V_ANFITRIONAID);
             ViewBag.V_MONEDAID = new SelectList(db.V_MONEDA, "ID", "SIMBOLO", aCTIVO.V_MONEDAID);
-            ViewBag.FECHA_INGRESO = DateTime.Now.ToString("dd/MM/yyyy");
+            ViewBag.FECHA_INGRESO = DateTime.Now.ToString("yyyy-MM-dd");
             ViewBag.INGRESADO_POR = User.Identity.Name;
             return View(aCTIVO);
         }
@@ -309,10 +306,10 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.V_EMPLEADOSIDEMPLEADO = new SelectList(db.V_EMPLEADOS, "IDEMPLEADO", "NOMBRE");
-            ViewBag.ESTADO_ACTIVOID = new SelectList(db.ESTADOS_ACTIVOS, "ID", "NOMBRE", aCTIVO.ESTADO_ACTIVOID);
-            ViewBag.V_ESTACIONID = new SelectList(db.V_ESTACION, "ID", "NOMBRE", aCTIVO.V_ESTACIONID);
-            ViewBag.CENTRO_DE_COSTOId = new SelectList(db.CENTROS_DE_COSTOS, "ID", "NOMBRE", aCTIVO.CENTRO_DE_COSTOId);
+            ViewBag.V_EMPLEADOSIDEMPLEADO = new SelectList(db.V_EMPLEADOS.Where(emp => emp.ESTADO.Equals(1) && emp.EMAIL.Contains("@")).OrderBy(emp => emp.NOMBRE), "IDEMPLEADO", "NOMBRE");
+            ViewBag.ESTADO_ACTIVOID = new SelectList(db.ESTADOS_ACTIVOS.OrderBy(ea => ea.NOMBRE), "ID", "NOMBRE", aCTIVO.ESTADO_ACTIVOID);
+            ViewBag.V_ESTACIONID = new SelectList(db.V_ESTACION.OrderBy(e => e.NOMBRE), "ID", "NOMBRE", aCTIVO.V_ESTACIONID);
+            ViewBag.CENTRO_DE_COSTOId = new SelectList(db.CENTROS_DE_COSTOS.OrderBy(cc => cc.Nombre), "ID", "NOMBRE", aCTIVO.CENTRO_DE_COSTOId);
             return View(aCTIVO);
         }
 
@@ -333,9 +330,14 @@ namespace Activos_PrestamosOET.Controllers
                 original.ESTADO_ACTIVOID = aCTIVO.ESTADO_ACTIVOID;
                 // si no se cambio el comentario, dejar el original
                 original.COMENTARIO = aCTIVO.COMENTARIO == null ? original.COMENTARIO : aCTIVO.COMENTARIO;
-                original.V_EMPLEADOSIDEMPLEADO = aCTIVO.V_EMPLEADOSIDEMPLEADO;
-                original.V_ESTACIONID = aCTIVO.V_ESTACIONID;
-                original.CENTRO_DE_COSTOId = aCTIVO.CENTRO_DE_COSTOId;
+                // Si el activo se pone como asignado (estado = 3), agregar id de empleado encargado, id de estacion de epleado y centro de costo
+                if (aCTIVO.ESTADO_ACTIVOID == 3)
+                {
+                    original.V_EMPLEADOSIDEMPLEADO = aCTIVO.V_EMPLEADOSIDEMPLEADO;
+                    // Al activo se le asigna la estacion del empleado encargado, para que siempre este correcta y no dependa de la correctitud del filtro de empleados por estacion.
+                    original.V_ESTACIONID = (db.V_EMPLEADOS.ToList().Where(ea => ea.IDEMPLEADO == aCTIVO.V_EMPLEADOSIDEMPLEADO)).ToList()[0].ESTACION_ID;
+                    original.CENTRO_DE_COSTOId = aCTIVO.CENTRO_DE_COSTOId;
+                }
                 db.SaveChanges();
 
                 var consulta_proveedor = db.V_PROVEEDOR.ToList().Where(ea => ea.IDPROVEEDOR == original.V_PROVEEDORIDPROVEEDOR);
@@ -345,15 +347,22 @@ namespace Activos_PrestamosOET.Controllers
                 var consulta_transaccion = db.TIPOS_TRANSACCIONES.ToList().Where(ea => ea.ID == original.TIPO_TRANSACCIONID);
                 var transaccion = consulta_transaccion.ToList()[0].NOMBRE;
 
-
-
-                controladora_transaccion.Create(User.Identity.GetUserName(), original.ESTADOS_ACTIVOS.NOMBRE, original.descripcion(proveedor, transaccion, anfitriona), original.ID);
+                // Si el activo se pone como asignado (estado = 3), se agrega id del responsable a la bitacora.
+                if(aCTIVO.ESTADO_ACTIVOID == 3)
+                {
+                    controladora_transaccion.CreateWithResponsible(User.Identity.GetUserName(), original.ESTADOS_ACTIVOS.NOMBRE, original.descripcion(proveedor, transaccion, anfitriona), original.ID, aCTIVO.V_EMPLEADOSIDEMPLEADO);
+                }
+                else
+                {
+                    controladora_transaccion.Create(User.Identity.GetUserName(), original.ESTADOS_ACTIVOS.NOMBRE, original.descripcion(proveedor, transaccion, anfitriona), original.ID);
+                }
+                                
                 return RedirectToAction("Index");
             }
-            ViewBag.V_EMPLEADOSIDEMPLEADO = new SelectList(db.V_EMPLEADOS, "IDEMPLEADO", "NOMBRE", aCTIVO.V_EMPLEADOSIDEMPLEADO);
-            ViewBag.ESTADO_ACTIVOID = new SelectList(db.ESTADOS_ACTIVOS, "ID", "NOMBRE", aCTIVO.ESTADO_ACTIVOID);
-            ViewBag.V_ESTACIONID = new SelectList(db.V_ESTACION, "ID", "NOMBRE", aCTIVO.V_ESTACIONID);
-            ViewBag.CENTRO_DE_COSTOId = new SelectList(db.CENTROS_DE_COSTOS, "ID", "NOMBRE", aCTIVO.CENTRO_DE_COSTOId);
+            ViewBag.V_EMPLEADOSIDEMPLEADO = new SelectList(db.V_EMPLEADOS.Where(emp => emp.ESTADO.Equals(1) && emp.EMAIL.Contains("@")).OrderBy(emp => emp.NOMBRE), "IDEMPLEADO", "NOMBRE", aCTIVO.V_EMPLEADOSIDEMPLEADO);
+            ViewBag.ESTADO_ACTIVOID = new SelectList(db.ESTADOS_ACTIVOS.OrderBy(ea => ea.NOMBRE), "ID", "NOMBRE", aCTIVO.ESTADO_ACTIVOID);
+            ViewBag.V_ESTACIONID = new SelectList(db.V_ESTACION.OrderBy(e => e.NOMBRE), "ID", "NOMBRE", aCTIVO.V_ESTACIONID);
+            ViewBag.CENTRO_DE_COSTOId = new SelectList(db.CENTROS_DE_COSTOS.OrderBy(cc => cc.Nombre), "ID", "NOMBRE", aCTIVO.CENTRO_DE_COSTOId);
             return View(aCTIVO);
         }
 
@@ -370,10 +379,10 @@ namespace Activos_PrestamosOET.Controllers
             if (aCTIVO == null)
                 return HttpNotFound();
 
-            ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES, "ID", "NOMBRE", aCTIVO.TIPO_TRANSACCIONID);
-            ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS, "ID", "NOMBRE", aCTIVO.TIPO_ACTIVOID);
-            ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
-            ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA, "ID", "NOMBRE", aCTIVO.V_ANFITRIONAID);
+            ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES.OrderBy(tt => tt.NOMBRE), "ID", "NOMBRE", aCTIVO.TIPO_TRANSACCIONID);
+            ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS.OrderBy(ta => ta.NOMBRE), "ID", "NOMBRE", aCTIVO.TIPO_ACTIVOID);
+            ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR.OrderBy(p => p.NOMBRE), "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
+            ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA.OrderBy(a => a.NOMBRE), "ID", "NOMBRE", aCTIVO.V_ANFITRIONAID);
             ViewBag.V_MONEDAID = new SelectList(db.V_MONEDA, "ID", "SIMBOLO", aCTIVO.V_MONEDAID);
             ViewBag.FECHA_INGRESO = aCTIVO.FECHA_INGRESO.Date;
             return View(aCTIVO);
@@ -425,10 +434,10 @@ namespace Activos_PrestamosOET.Controllers
 
                 return RedirectToAction("Index");
             }
-            ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES, "ID", "NOMBRE", aCTIVO.TIPO_TRANSACCIONID);
-            ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS, "ID", "NOMBRE", aCTIVO.TIPO_ACTIVOID);
-            ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
-            ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA, "ID", "NOMBRE", aCTIVO.V_ANFITRIONAID);
+            ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES.OrderBy(tt => tt.NOMBRE), "ID", "NOMBRE", aCTIVO.TIPO_TRANSACCIONID);
+            ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS.OrderBy(ta => ta.NOMBRE), "ID", "NOMBRE", aCTIVO.TIPO_ACTIVOID);
+            ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR.OrderBy(p => p.NOMBRE), "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
+            ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA.OrderBy(a => a.NOMBRE), "ID", "NOMBRE", aCTIVO.V_ANFITRIONAID);
             ViewBag.V_MONEDAID = new SelectList(db.V_MONEDA, "ID", "SIMBOLO", aCTIVO.V_MONEDAID);
             ViewBag.FECHA_INGRESO = aCTIVO.FECHA_INGRESO.Date;
             return View(aCTIVO);
@@ -485,6 +494,19 @@ namespace Activos_PrestamosOET.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        /**
+         * Metodo que se encarga de actualizar el dropdown de los empleados con base en la estacion seleccionada. Esta hecho para ser llamado
+         * por medio de Ajax.
+         * @param: El identificador de la estacion
+         * @return: Los usuarios que pertenecen a la estacion seleccionada.
+         **/
+        // Instrucciones de como llenar el List para retornarlo con ajax  --> http://stackoverflow.com/questions/14339089/populating-dropdown-with-json-result-cascading-dropdown-using-mvc3-jquery-aj
+        public JsonResult RefrescarUsuarios(string id_estacion)
+        {
+            var empleados = EmpleadosController.EmpleadosFiltrados(id_estacion);
+            return Json(empleados, JsonRequestBehavior.AllowGet);
         }
     }
 }
