@@ -333,9 +333,14 @@ namespace Activos_PrestamosOET.Controllers
                 original.ESTADO_ACTIVOID = aCTIVO.ESTADO_ACTIVOID;
                 // si no se cambio el comentario, dejar el original
                 original.COMENTARIO = aCTIVO.COMENTARIO == null ? original.COMENTARIO : aCTIVO.COMENTARIO;
-                original.V_EMPLEADOSIDEMPLEADO = aCTIVO.V_EMPLEADOSIDEMPLEADO;
-                original.V_ESTACIONID = aCTIVO.V_ESTACIONID;
-                original.CENTRO_DE_COSTOId = aCTIVO.CENTRO_DE_COSTOId;
+                // Si el activo se pone como asignado (estado = 3), agregar id de empleado encargado, id de estacion de epleado y centro de costo
+                if (aCTIVO.ESTADO_ACTIVOID == 3)
+                {
+                    original.V_EMPLEADOSIDEMPLEADO = aCTIVO.V_EMPLEADOSIDEMPLEADO;
+                    // Al activo se le asigna la estacion del empleado encargado, para que siempre este correcta y no dependa de la correctitud del filtro de empleados por estacion.
+                    original.V_ESTACIONID = (db.V_EMPLEADOS.ToList().Where(ea => ea.IDEMPLEADO == aCTIVO.V_EMPLEADOSIDEMPLEADO)).ToList()[0].ESTACION_ID;
+                    original.CENTRO_DE_COSTOId = aCTIVO.CENTRO_DE_COSTOId;
+                }
                 db.SaveChanges();
 
                 var consulta_proveedor = db.V_PROVEEDOR.ToList().Where(ea => ea.IDPROVEEDOR == original.V_PROVEEDORIDPROVEEDOR);
