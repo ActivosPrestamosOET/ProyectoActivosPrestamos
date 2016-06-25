@@ -273,7 +273,7 @@ namespace Activos_PrestamosOET.Controllers
                 var consulta_transaccion = db.TIPOS_TRANSACCIONES.ToList().Where(ea => ea.ID == aCTIVO.TIPO_TRANSACCIONID);
                 var transaccion = consulta_transaccion.ToList()[0].NOMBRE;
 
-
+                if(transaccion == "")
 
                 controladora_transaccion.Create(User.Identity.GetUserName(), "Creado", aCTIVO.descripcion(proveedor, transaccion, anfitriona), aCTIVO.ID);
                 return RedirectToAction("Index");
@@ -345,9 +345,16 @@ namespace Activos_PrestamosOET.Controllers
                 var consulta_transaccion = db.TIPOS_TRANSACCIONES.ToList().Where(ea => ea.ID == original.TIPO_TRANSACCIONID);
                 var transaccion = consulta_transaccion.ToList()[0].NOMBRE;
 
-
-
-                controladora_transaccion.Create(User.Identity.GetUserName(), original.ESTADOS_ACTIVOS.NOMBRE, original.descripcion(proveedor, transaccion, anfitriona), original.ID);
+                // Si el activo se pone como asignado (estado = 3), se agrega id del responsable a la bitacora.
+                if(aCTIVO.ESTADO_ACTIVOID == 3)
+                {
+                    controladora_transaccion.CreateWithResponsible(User.Identity.GetUserName(), original.ESTADOS_ACTIVOS.NOMBRE, original.descripcion(proveedor, transaccion, anfitriona), original.ID, aCTIVO.V_EMPLEADOSIDEMPLEADO);
+                }
+                else
+                {
+                    controladora_transaccion.Create(User.Identity.GetUserName(), original.ESTADOS_ACTIVOS.NOMBRE, original.descripcion(proveedor, transaccion, anfitriona), original.ID);
+                }
+                                
                 return RedirectToAction("Index");
             }
             ViewBag.V_EMPLEADOSIDEMPLEADO = new SelectList(db.V_EMPLEADOS, "IDEMPLEADO", "NOMBRE", aCTIVO.V_EMPLEADOSIDEMPLEADO);
