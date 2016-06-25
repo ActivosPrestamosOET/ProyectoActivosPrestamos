@@ -41,7 +41,7 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: Inventario
-        public ActionResult Inventario(string orden, int? pagina)
+        public ActionResult Inventario(string orden, int? pagina, string busqueda)
         {
             ViewBag.OrdenActual = orden;
             ViewBag.Compania = String.IsNullOrEmpty(orden) ? "compania_desc" : "";
@@ -54,7 +54,7 @@ namespace Activos_PrestamosOET.Controllers
             //se obtiene el usuario loggeado
             var user = UserManager.FindById(User.Identity.GetUserId());
             Boolean isAdmin = User.IsInRole("superadmin") ? true : false;
-            IQueryable<ACTIVO> aCTIVOS = ACTIVO.busquedaSimple("", user.EstacionID, isAdmin);
+            IQueryable<ACTIVO> aCTIVOS = ACTIVO.busquedaSimple(busqueda, user.EstacionID, isAdmin);
 
             switch (orden)
             {
