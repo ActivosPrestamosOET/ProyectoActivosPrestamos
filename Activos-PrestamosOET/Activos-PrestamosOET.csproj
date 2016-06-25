@@ -320,6 +320,9 @@
     <Compile Include="Models\V_ANFITRIONA.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\V_COURSES.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\V_EMPLEADOS.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -333,9 +336,6 @@
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\V_TIPO_CAMBIO.cs">
-      <DependentUpon>Model1.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\V_COURSES.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -605,10 +605,7 @@
     <Content Include="Views\Activos\Edit.cshtml" />
     <Content Include="Views\Activos\Index.cshtml" />
     <Content Include="Views\Activos\Asignar.cshtml" />
-    <Content Include="Views\RolesAdmin\Create.cshtml" />
-    <Content Include="Views\RolesAdmin\Delete.cshtml" />
     <Content Include="Views\RolesAdmin\Details.cshtml" />
-    <Content Include="Views\RolesAdmin\Edit.cshtml" />
     <Content Include="Views\RolesAdmin\Index.cshtml" />
     <Content Include="Views\UsersAdmin\Create.cshtml" />
     <Content Include="Views\UsersAdmin\Delete.cshtml" />
@@ -618,7 +615,7 @@
     <Content Include="Views\Shared\Info.cshtml" />
     <Content Include="Views\PRESTAMOes\DetallesPDF.cshtml" />
     <Content Include="Views\Inventario\Details.cshtml" />
-    <Content Include="Views\Inventario\DetailsPDF.cshtml" />
+    <Content Include="Views\Activos\Inventario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -40,6 +40,8 @@
     <Property Name="USUARIO_SOLICITA" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="ActivosUser1" Relationship="PrestamosModel.ActivosUserPRESTAMO1" FromRole="PRESTAMO" ToRole="ActivosUser" />
     <Property Name="USUARIO_APRUEBA" Type="String" Nullable="true" MaxLength="128" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="V_COURSES" Relationship="PrestamosModel.PRESTAMOV_COURSES" FromRole="PRESTAMO" ToRole="V_COURSES" />
+    <Property Name="V_COURSESCOURSES" Type="Int32" Nullable="false" />
   </EntityType>
   <Association Name="FK_A_PRESTAMOS">
     <End Role="PRESTAMOS" Type="Self.PRESTAMO" Multiplicity="1" />
@@ -115,7 +117,6 @@
       <End Role="V_ESTACION" EntitySet="V_ESTACION" />
       <End Role="ACTIVO" EntitySet="ACTIVOS" />
     </AssociationSet>
-    <EntitySet Name="V_COURSES" EntityType="PrestamosModel.V_COURSES" />
     <EntitySet Name="ActivosUsers" EntityType="PrestamosModel.ActivosUser" />
     <AssociationSet Name="ActivosUserPRESTAMO" Association="PrestamosModel.ActivosUserPRESTAMO">
       <End Role="ActivosUser" EntitySet="ActivosUsers" />
@@ -125,10 +126,19 @@
       <End Role="ActivosUser" EntitySet="ActivosUsers" />
       <End Role="PRESTAMO" EntitySet="PRESTAMOS" />
     </AssociationSet>
+    <EntitySet Name="V_COURSES" EntityType="PrestamosModel.V_COURSES" />
     <EntitySet Name="V_EMPLEADOS" EntityType="PrestamosModel.V_EMPLEADOS" />
     <AssociationSet Name="V_EMPLEADOSACTIVO" Association="PrestamosModel.V_EMPLEADOSACTIVO">
       <End Role="V_EMPLEADOS" EntitySet="V_EMPLEADOS" />
       <End Role="ACTIVO" EntitySet="ACTIVOS" />
+    </AssociationSet>
+    <AssociationSet Name="V_EMPLEADOSTRANSACCION" Association="PrestamosModel.V_EMPLEADOSTRANSACCION">
+      <End Role="V_EMPLEADOS" EntitySet="V_EMPLEADOS" />
+      <End Role="TRANSACCION" EntitySet="TRANSACCIONES" />
+    </AssociationSet>
+    <AssociationSet Name="PRESTAMOV_COURSES" Association="PrestamosModel.PRESTAMOV_COURSES">
+      <End Role="PRESTAMO" EntitySet="PRESTAMOS" />
+      <End Role="V_COURSES" EntitySet="V_COURSES" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="ACTIVO">
@@ -397,6 +407,8 @@
     <Property Name="FECHA_DEVOLUCION" Type="DateTime" Nullable="true" />
     <Property Name="OBSERVACIONES_RECIBO" Type="String" Nullable="true" MaxLength="250" />
     <Property Name="NOMBRE_SOLICITANTE" Type="String" Nullable="true" MaxLength="100" />
+    <NavigationProperty Name="V_EMPLEADOS" Relationship="PrestamosModel.V_EMPLEADOSTRANSACCION" FromRole="TRANSACCION" ToRole="V_EMPLEADOS" />
+    <Property Name="V_EMPLEADOSIDEMPLEADO" Type="String" Nullable="true" MaxLength="30" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="FK_ACTIVOTRANSACCION">
     <End Type="PrestamosModel.ACTIVO" Role="ACTIVO" Multiplicity="1" />
@@ -422,14 +434,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityType Name="V_COURSES">
-    <Key>
-      <PropertyRef Name="COURSES" />
-    </Key>
-    <Property Name="COURSES" Type="Int32" Nullable="false" />
-    <Property Name="COURSES_CODE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-    <Property Name="COURSE_NAME" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
-  </EntityType>
   <EntityType Name="ActivosUser">
     <Key>
       <PropertyRef Name="Id" />
@@ -477,31 +481,28 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="V_COURSES">
+    <Key>
+      <PropertyRef Name="COURSES" />
+    </Key>
+    <Property Name="COURSES" Type="Int32" Nullable="false" />
+    <Property Name="COURSES_CODE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="COURSE_NAME" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="START_DATE" Type="DateTime" />
+    <Property Name="END_DATE" Type="DateTime" />
+    <NavigationProperty Name="PRESTAMOes" Relationship="PrestamosModel.PRESTAMOV_COURSES" FromRole="V_COURSES" ToRole="PRESTAMO" />
+  </EntityType>
   <EntityType Name="V_EMPLEADOS">
     <Key>
       <PropertyRef Name="IDEMPLEADO" />
     </Key>
-    <Property Name="APELLIDOS" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ESTACION_ID" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="IDEMPLEADO" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="NOMBRE" Type="String" MaxLength="101" FixedLength="false" Unicode="false" />
     <Property Name="EMAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="ESTADO" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
-    <Property Name="ESTADOCIVIL" Type="Decimal" Precision="8" Scale="2" />
-    <Property Name="IDEMPLEADO" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
-    <Property Name="IDENTIFICACION" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="IDNACIONALIDAD" Type="String" Nullable="false" MaxLength="26" FixedLength="false" Unicode="false" />
-    <Property Name="IDTIPO" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
-    <Property Name="NOMBRE" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="NUMASEGURADO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="NUMEMPLEADO" Type="Decimal" Nullable="false" Precision="8" Scale="2" />
-    <Property Name="SEXO" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
-    <Property Name="ASOET" Type="Boolean" />
-    <Property Name="CREA" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-    <Property Name="MODIFICA" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-    <Property Name="CREADO" Type="DateTime" />
-    <Property Name="MODIFICADO" Type="DateTime" />
-    <Property Name="FECHA_NACIMIENTO" Type="DateTime" />
-    <Property Name="NUM_ASOET" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="PENSIONADO" Type="Byte" />
     <NavigationProperty Name="ACTIVOes" Relationship="PrestamosModel.V_EMPLEADOSACTIVO" FromRole="V_EMPLEADOS" ToRole="ACTIVO" />
+    <NavigationProperty Name="TRANSACCIONs" Relationship="PrestamosModel.V_EMPLEADOSTRANSACCION" FromRole="V_EMPLEADOS" ToRole="TRANSACCION" />
   </EntityType>
   <Association Name="V_EMPLEADOSACTIVO">
     <End Type="PrestamosModel.V_EMPLEADOS" Role="V_EMPLEADOS" Multiplicity="0..1" />
@@ -512,6 +513,30 @@
       </Principal>
       <Dependent Role="ACTIVO">
         <PropertyRef Name="V_EMPLEADOSIDEMPLEADO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="V_EMPLEADOSTRANSACCION">
+    <End Type="PrestamosModel.V_EMPLEADOS" Role="V_EMPLEADOS" Multiplicity="0..1" />
+    <End Type="PrestamosModel.TRANSACCION" Role="TRANSACCION" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="V_EMPLEADOS">
+        <PropertyRef Name="IDEMPLEADO" />
+      </Principal>
+      <Dependent Role="TRANSACCION">
+        <PropertyRef Name="V_EMPLEADOSIDEMPLEADO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="PRESTAMOV_COURSES">
+    <End Type="PrestamosModel.PRESTAMO" Role="PRESTAMO" Multiplicity="*" />
+    <End Type="PrestamosModel.V_COURSES" Role="V_COURSES" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="V_COURSES">
+        <PropertyRef Name="COURSES" />
+      </Principal>
+      <Dependent Role="PRESTAMO">
+        <PropertyRef Name="V_COURSESCOURSES" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

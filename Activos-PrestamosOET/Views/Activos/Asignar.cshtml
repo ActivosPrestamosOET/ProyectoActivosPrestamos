@@ -114,6 +114,7 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
         $(function () {
+            $('#info-asignacion').css('display', ($('#ESTADO_ACTIVOID option:selected').text() == 'Asignado') ? 'block' : 'none');
             $('#ESTADO_ACTIVOID').on('change', function () {
                 $('#info-asignacion').css('display', ($('#ESTADO_ACTIVOID option:selected').text() == 'Asignado') ? 'block' : 'none');
             })

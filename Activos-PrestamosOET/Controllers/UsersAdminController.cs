@@ -99,7 +99,7 @@ namespace Activos_PrestamosOET.Controllers
                 var user = new ApplicationUser
                 {
                     UserName = userViewModel.Email,
-                    Email =  userViewModel.Email,
+                    Email = userViewModel.Email,
                     // Add the Address Info:
                     Nombre = userViewModel.Nombre,
                     Apellidos = userViewModel.Apellidos,
@@ -112,7 +112,7 @@ namespace Activos_PrestamosOET.Controllers
                 // Then create:
                 var adminresult = await UserManager.CreateAsync(user, userViewModel.Password);
 
-                //Add User to the selected Roles 
+                //Add User to the selected Roles
                 if (adminresult.Succeeded)
                 {
                     if (selectedRoles != null)
@@ -126,10 +126,17 @@ namespace Activos_PrestamosOET.Controllers
                             return View();
                         }
                     }
+
+
                     //enviar correo de confirmacion al nuevo usuario
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Confirme su correo", "Por favor confirme su correo ingresando a este <a href=\"" + callbackUrl + "\">enlace</a>");
+                    string cuerpo_del_mensaje = "Bienvenido al sistema de Activos de la Organizacicón de Estudios Tropicales. " +
+                                                "Se creó una cuenta asociada a este correo con los siguientes roles: " + string.Join(" - ", selectedRoles)+". " +
+                                                "Por favor confirme su correo ingresando a este <a href=\"" + callbackUrl + "\">enlace</a>. " +
+                                                "Si no solicitó una cuenta por favor ignore este correo.";
+
+                    await UserManager.SendEmailAsync(user.Id, "Confirme su inscripción", cuerpo_del_mensaje);
 
                     ViewBag.Message = "Se ha enviado un correo de confirmacion a la direccion del nuevo usuario. El nuevo usuario debe confirmar su dirección de correo" +
                                         " para poder ingresar al sistema.";
@@ -150,6 +157,7 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
             return View();
         }
+
 
         //
         // GET: /Users/Edit/1
@@ -222,6 +230,18 @@ namespace Activos_PrestamosOET.Controllers
                     ModelState.AddModelError("", result.Errors.First());
                     return View();
                 }
+
+                //Si los roles asignados cambiaron
+                if (selectedRole.Length != userRoles.Count)
+                {
+                    //enviar correo con cambios al usuario
+                    string cuerpo_del_mensaje = "Este correo es para informarle que sus roles dentro del sistema de Administración de Activos fueron cambiados. " +
+                                                "Sus roles actuales son los siguientes: " + string.Join(" - ", userRoles) + ". " +
+                                                "Si usted no posee una cuenta en el sistema por favor ignore este correo.";
+
+                    await UserManager.SendEmailAsync(user.Id, "Sus roles en el sistema han sido cambiados.", cuerpo_del_mensaje);
+                }
+
                 return RedirectToAction("Index");
             }
             ModelState.AddModelError("", "Something failed.");

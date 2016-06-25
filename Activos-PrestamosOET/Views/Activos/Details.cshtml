@@ -7,8 +7,11 @@
 <div class="row">
     <br />
     <div class="col-xs-12">
-        @Html.ActionLink("Editar", "Edit", new { id = Model.ID }) |
-        @Html.ActionLink("Regresar", "Index")
+        @if ((User.IsInRole("superadmin") || User.IsInRole("Editar activos")) && Model.DESECHADO == false)
+        {
+            @Html.ActionLink("Editar", "Edit", new { id = Model.ID })
+        }
+        | @Html.ActionLink("Regresar", "Index")
     </div>
 </div>
 
@@ -43,7 +46,7 @@
         </div>
         <div class="row">
             <div class="col-xs-12 col-sm-5">
-                @Html.LabelFor(model => model.PLACA, htmlAttributes: new { @class="control-label" })
+                @Html.LabelFor(model => model.PLACA, htmlAttributes: new { @class = "control-label" })
             </div>
             <div class="col-xs-12 col-sm-7">
                 @Html.DisplayFor(model => model.PLACA)
@@ -256,8 +259,14 @@
 </div>
 <div class="row">
     <div class="col-xs-12 col-sm-10 col-sm-offset-1">
-        <h3>Historial del activo</h3>
-        <hr/>
+        <h3>
+            Historial del activo
+            <span class="pull-right">
+                @Html.ActionLink("Todo el historial", "Details", new { id = Model.ID, reparaciones = false }, new { @class="btn btn-sm btn-primary", @title = "Consultar todo el historial del activo" })
+                @Html.ActionLink("Historial de reparaciones", "Details", new { id = Model.ID, reparaciones = true }, new { @class = "btn btn-default btn-sm", @title = "Consultar el historial de reparaciones del activo" })
+            </span>
+        </h3>
+        <hr />
     </div>
 </div>
 <div class="row">

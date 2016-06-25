@@ -29,6 +29,7 @@
           <ScalarProperty Name="Estado" ColumnName="Estado" />
           <ScalarProperty Name="USUARIO_SOLICITA" ColumnName="USUARIO_SOLICITA" />
           <ScalarProperty Name="USUARIO_APRUEBA" ColumnName="USUARIO_APRUEBA" />
+          <ScalarProperty Name="V_COURSESCOURSES" ColumnName="V_COURSESCOURSES" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -186,15 +187,7 @@
           <ScalarProperty Name="FECHA_DEVOLUCION" ColumnName="FECHA_DEVOLUCION" />
           <ScalarProperty Name="OBSERVACIONES_RECIBO" ColumnName="OBSERVACIONES_RECIBO" />
           <ScalarProperty Name="NOMBRE_SOLICITANTE" ColumnName="NOMBRE_SOLICITANTE" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="V_COURSES">
-      <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.V_COURSES)">
-        <MappingFragment StoreEntitySet="V_COURSES">
-          <ScalarProperty Name="COURSES" ColumnName="COURSES" />
-          <ScalarProperty Name="COURSES_CODE" ColumnName="COURSES_CODE" />
-          <ScalarProperty Name="COURSE_NAME" ColumnName="COURSE_NAME" />
+          <ScalarProperty Name="V_EMPLEADOSIDEMPLEADO" ColumnName="V_EMPLEADOSIDEMPLEADO" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -220,29 +213,25 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="V_COURSES">
+      <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.V_COURSES)">
+        <MappingFragment StoreEntitySet="V_COURSES">
+          <ScalarProperty Name="COURSES" ColumnName="COURSES" />
+          <ScalarProperty Name="COURSES_CODE" ColumnName="COURSES_CODE" />
+          <ScalarProperty Name="COURSE_NAME" ColumnName="COURSE_NAME" />
+          <ScalarProperty Name="START_DATE" ColumnName="START_DATE" />
+          <ScalarProperty Name="END_DATE" ColumnName="END_DATE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="V_EMPLEADOS">
       <EntityTypeMapping TypeName="IsTypeOf(PrestamosModel.V_EMPLEADOS)">
         <MappingFragment StoreEntitySet="V_EMPLEADOS">
           <ScalarProperty Name="IDEMPLEADO" ColumnName="IDEMPLEADO" />
-          <ScalarProperty Name="APELLIDOS" ColumnName="APELLIDOS" />
+          <ScalarProperty Name="ESTACION_ID" ColumnName="ESTACION_ID" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
           <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
           <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
-          <ScalarProperty Name="ESTADOCIVIL" ColumnName="ESTADOCIVIL" />
-          <ScalarProperty Name="IDENTIFICACION" ColumnName="IDENTIFICACION" />
-          <ScalarProperty Name="IDNACIONALIDAD" ColumnName="IDNACIONALIDAD" />
-          <ScalarProperty Name="IDTIPO" ColumnName="IDTIPO" />
-          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
-          <ScalarProperty Name="NUMASEGURADO" ColumnName="NUMASEGURADO" />
-          <ScalarProperty Name="NUMEMPLEADO" ColumnName="NUMEMPLEADO" />
-          <ScalarProperty Name="SEXO" ColumnName="SEXO" />
-          <ScalarProperty Name="ASOET" ColumnName="ASOET" />
-          <ScalarProperty Name="CREA" ColumnName="CREA" />
-          <ScalarProperty Name="MODIFICA" ColumnName="MODIFICA" />
-          <ScalarProperty Name="CREADO" ColumnName="CREADO" />
-          <ScalarProperty Name="MODIFICADO" ColumnName="MODIFICADO" />
-          <ScalarProperty Name="FECHA_NACIMIENTO" ColumnName="FECHA_NACIMIENTO" />
-          <ScalarProperty Name="NUM_ASOET" ColumnName="NUM_ASOET" />
-          <ScalarProperty Name="PENSIONADO" ColumnName="PENSIONADO" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

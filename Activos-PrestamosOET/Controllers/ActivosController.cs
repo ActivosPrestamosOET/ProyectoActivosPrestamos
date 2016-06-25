@@ -39,15 +39,71 @@ namespace Activos_PrestamosOET.Controllers
             this.UserManager = userManager;
         }
 
+        // GET: Inventario
+        public ActionResult Inventario(string orden, int? pagina)
+        {
+            ViewBag.OrdenActual = orden;
+            ViewBag.Compania = String.IsNullOrEmpty(orden) ? "compania_desc" : "";
+            ViewBag.Estacion = (orden == "estacion_asc") ? "estacion_desc" : "estacion_asc";
+            ViewBag.Tipo = (orden == "tipo_asc") ? "tipo_desc" : "tipo_asc";
+            ViewBag.Responsable = (orden == "responsable_asc") ? "responsable_desc" : "responsable_asc";
+            ViewBag.Descripcion = (orden == "descrip_asc") ? "descrip_desc" : "descrip_asc";
+
+
+            //se obtiene el usuario loggeado
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            Boolean isAdmin = User.IsInRole("superadmin") ? true : false;
+            IQueryable<ACTIVO> aCTIVOS = ACTIVO.busquedaSimple("", user.EstacionID, isAdmin);
+
+            switch (orden)
+            {
+                case "compania_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.V_ANFITRIONA.SIGLAS);
+                    break;
+                case "estacion_asc":
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.V_ESTACION.SIGLAS);
+                    break;
+                case "estacion_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.V_ESTACION.SIGLAS);
+                    break;
+                case "tipo_asc":
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.TIPOS_ACTIVOS.NOMBRE);
+                    break;
+                case "tipo_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.TIPOS_ACTIVOS.NOMBRE);
+                    break;
+                case "responsable_asc":
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.V_EMPLEADOS.NOMBRE);
+                    break;
+                case "responsable_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.V_EMPLEADOS.NOMBRE);
+                    break;
+                case "descrip_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.DESCRIPCION);
+                    break;
+                case "descrip_asc":
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.DESCRIPCION);
+                    break;
+                default:
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.V_ANFITRIONA.SIGLAS);
+                    break;
+            }
+
+            int tamano_pagina = 20;
+            int num_pagina = (pagina ?? 1);
+            return View(aCTIVOS.ToPagedList(num_pagina, tamano_pagina));
+        }
+
         // GET: Activos
         public ActionResult Index(string orden, string filtro, string busqueda, string V_PROVEEDORIDPROVEEDOR, string TIPO_ACTIVOID, string V_ANFITRIONAID, string TIPO_TRANSACCIONID, string ESTADO_ACTIVOID, string V_ESTACIONID, string fecha_antes, string fecha_despues, string usuario, string fabricante, int? pagina)
         {
 
             ViewBag.OrdenActual = orden;
-            ViewBag.NumPlacaParam = String.IsNullOrEmpty(orden) ? "num_placa_desc" : "";
+            ViewBag.Compania = String.IsNullOrEmpty(orden) ? "compania_desc" : "";
+            ViewBag.Estacion = (orden == "estacion_asc") ? "estacion_desc" : "estacion_asc";
+            ViewBag.Tipo = (orden == "tipo_asc") ? "tipo_desc" : "tipo_asc";
+            ViewBag.Responsable = (orden == "responsable_asc") ? "responsable_desc" : "responsable_asc";
             ViewBag.Descripcion = (orden == "descrip_asc") ? "descrip_desc" : "descrip_asc";
-            ViewBag.EstadoParam = (orden == "estado_asc") ? "estado_desc" : "estado_asc";
-
             //se obtiene el usuario loggeado
             var user = UserManager.FindById(User.Identity.GetUserId());
             Boolean isAdmin = User.IsInRole("superadmin") ? true : false;
@@ -62,7 +118,7 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             ViewBag.FiltroActual = busqueda;
-            
+
             // Busqueda con base en los parametros que ingresa el usuario
             #region Busqueda simple
             IQueryable<ACTIVO> aCTIVOS = ACTIVO.busquedaSimple(busqueda, user.EstacionID, isAdmin); //OJO
@@ -96,14 +152,26 @@ namespace Activos_PrestamosOET.Controllers
 
             switch (orden)
             {
-                case "num_placa_desc":
-                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.PLACA);
+                case "compania_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.V_ANFITRIONA.SIGLAS);
                     break;
-                case "estado_asc":
-                    aCTIVOS = aCTIVOS.OrderBy(a => a.ESTADOS_ACTIVOS.NOMBRE);
+                case "estacion_asc":
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.V_ESTACION.SIGLAS);
                     break;
-                case "estado_desc":
-                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.ESTADOS_ACTIVOS.NOMBRE);
+                case "estacion_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.V_ESTACION.SIGLAS);
+                    break;
+                case "tipo_asc":
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.TIPOS_ACTIVOS.NOMBRE);
+                    break;
+                case "tipo_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.TIPOS_ACTIVOS.NOMBRE);
+                    break;
+                case "responsable_asc":
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.V_EMPLEADOS.NOMBRE);
+                    break;
+                case "responsable_desc":
+                    aCTIVOS = aCTIVOS.OrderByDescending(a => a.V_EMPLEADOS.NOMBRE);
                     break;
                 case "descrip_desc":
                     aCTIVOS = aCTIVOS.OrderByDescending(a => a.DESCRIPCION);
@@ -112,7 +180,7 @@ namespace Activos_PrestamosOET.Controllers
                     aCTIVOS = aCTIVOS.OrderBy(a => a.DESCRIPCION);
                     break;
                 default:
-                    aCTIVOS = aCTIVOS.OrderBy(a => a.PLACA);
+                    aCTIVOS = aCTIVOS.OrderBy(a => a.V_ANFITRIONA.SIGLAS);
                     break;
             }
 
@@ -123,24 +191,24 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: Activos/Details/5
-        
-        public ActionResult Details(string id)
+
+        public ActionResult Details(string id, bool reparaciones = false)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ACTIVO aCTIVO = db.ACTIVOS.Find(id);
-            var tRANSACCION = from a in db.TRANSACCIONES select a;
 
             if (aCTIVO == null)
             {
                 return HttpNotFound();
             }
-
-            tRANSACCION = tRANSACCION.Where(a => a.ACTIVOID.Equals(id)).OrderByDescending(a => a.FECHA);
-
-            aCTIVO.TRANSACCIONES = new HashSet<TRANSACCION>(tRANSACCION);
+            
+            aCTIVO.TRANSACCIONES = aCTIVO.TRANSACCIONES.Where(a => a.ACTIVOID.Equals(id)).ToList();
+            if (reparaciones)
+                aCTIVO.TRANSACCIONES = aCTIVO.TRANSACCIONES.Where(a => a.ESTADO.Equals("Dañado sin reparación") || a.ESTADO.Equals("En reparación")).ToList();
+            aCTIVO.TRANSACCIONES = aCTIVO.TRANSACCIONES.OrderByDescending(a => a.FECHA).ToList();
 
             return View(aCTIVO);
         }
@@ -226,13 +294,14 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult Asignar(string id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
 
             // no deberia cargar datos de la asignacion pasada, cada asignacion es nueva
             // si quiero ver a quien esta asignado nada mas puedo ver los detalles del activo
             ACTIVO aCTIVO = db.ACTIVOS.Find(id);
+            if (aCTIVO.DESECHADO)
+                return RedirectToAction("Index");
+
             aCTIVO.COMENTARIO = "";
 
 
@@ -255,6 +324,8 @@ namespace Activos_PrestamosOET.Controllers
         {
 
             var original = db.ACTIVOS.Find(aCTIVO.ID);
+            if (aCTIVO.DESECHADO)
+                return RedirectToAction("Index");
 
             if (original != null)
             {
@@ -291,14 +362,14 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult Edit(string id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+
             ACTIVO aCTIVO = db.ACTIVOS.Find(id);
+            if (aCTIVO.DESECHADO)
+                return RedirectToAction("Index");
             if (aCTIVO == null)
-            {
                 return HttpNotFound();
-            }
+
             ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES, "ID", "NOMBRE", aCTIVO.TIPO_TRANSACCIONID);
             ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS, "ID", "NOMBRE", aCTIVO.TIPO_ACTIVOID);
             ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
@@ -317,6 +388,8 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult Edit([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_EMPLEADOSIDEMPLEADO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId,PLACA,ESTADO_PRESTADO")] ACTIVO aCTIVO)
         {
             var original = db.ACTIVOS.Find(aCTIVO.ID);
+            if (aCTIVO.DESECHADO)
+                return RedirectToAction("Index");
             if (ModelState.IsValid)
             {
                 original.NUMERO_SERIE = aCTIVO.NUMERO_SERIE;
@@ -370,6 +443,8 @@ namespace Activos_PrestamosOET.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             ACTIVO aCTIVO = db.ACTIVOS.Find(id);
+            if (aCTIVO.DESECHADO)
+                return RedirectToAction("Index");
             if (aCTIVO == null)
             {
                 return HttpNotFound();
@@ -384,12 +459,12 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult DeleteConfirmed(string id)
         {
             ACTIVO aCTIVO = db.ACTIVOS.Find(id);
+            if (aCTIVO.DESECHADO)
+                return RedirectToAction("Index");
 
             aCTIVO.DESECHADO = true;
             var estado = db.ESTADOS_ACTIVOS.ToList().Where(ea => ea.NOMBRE == "Desechado");
             aCTIVO.ESTADO_ACTIVOID = estado.ToList()[0].ID;
-
-            // db.ACTIVOS.Remove(aCTIVO); // Quitar esta linea cuando se cambie el estado por desechado
 
             var consulta_proveedor = db.V_PROVEEDOR.ToList().Where(ea => ea.IDPROVEEDOR == aCTIVO.V_PROVEEDORIDPROVEEDOR);
             var proveedor = consulta_proveedor.ToList()[0].NOMBRE;
