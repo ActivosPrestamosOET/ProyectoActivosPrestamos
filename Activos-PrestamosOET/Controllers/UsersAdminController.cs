@@ -10,6 +10,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Activos_PrestamosOET.Models;
+using PagedList;
 
 namespace Activos_PrestamosOET.Controllers
 {
@@ -57,9 +58,37 @@ namespace Activos_PrestamosOET.Controllers
 
         //
         // GET: /Users/
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(string orden, int? pagina, string busqueda)
         {
-            return View(await UserManager.Users.ToListAsync());
+            ViewBag.OrdenActual = orden;
+            ViewBag.Nombre = String.IsNullOrEmpty(orden) ? "nombre_desc" : "";
+            ViewBag.Correo = (orden == "correo_asc") ? "correo_desc" : "correo_asc";
+
+            var usuarios = await UserManager.Users.ToListAsync();
+
+            #region Busqueda de usuarios
+            if (!String.IsNullOrEmpty(busqueda))
+                usuarios = usuarios.Where(usr => usr.FullName.Contains(busqueda) || usr.Email.Contains(busqueda)).ToList();
+            #endregion
+
+            switch (orden)
+            {
+                case "nombre_desc":
+                    usuarios = usuarios.OrderByDescending(emp => emp.FullName).ToList();
+                    break;
+                case "correo_asc":
+                    usuarios = usuarios.OrderBy(emp => emp.Email).ToList();
+                    break;
+                case "correo_desc":
+                    usuarios = usuarios.OrderByDescending(emp => emp.Email).ToList();
+                    break;
+                default:
+                    usuarios = usuarios.OrderBy(emp => emp.FullName).ToList();
+                    break;
+            }
+            int tamano_pagina = 20;
+            int num_pagina = (pagina ?? 1);
+            return View(usuarios.ToPagedList(num_pagina, tamano_pagina));
         }
 
         //

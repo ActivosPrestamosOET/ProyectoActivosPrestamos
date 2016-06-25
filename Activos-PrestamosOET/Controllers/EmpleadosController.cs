@@ -28,6 +28,7 @@ namespace Activos_PrestamosOET.Controllers
             if(!String.IsNullOrEmpty(busqueda))
                 empleados = empleados.Where(emp => emp.NOMBRE.Contains(busqueda) || emp.EMAIL.Contains(busqueda));
             #endregion
+
             switch (orden)
             {
                 case "nombre_desc":
