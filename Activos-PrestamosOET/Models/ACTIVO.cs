@@ -23,6 +23,7 @@ namespace Activos_PrestamosOET.Models
 
             this.PRESTAMOes = new HashSet<PRESTAMO>();
             this.TRANSACCIONES = new HashSet<TRANSACCION>();
+            
             // Se genera el ID a como lo pide la OET.
             this.ID = DateTime.Now.Day.ToString("D2") + DateTime.Now.Month.ToString("D2") + DateTime.Now.Year.ToString() + DateTime.Now.Hour.ToString("D2") + DateTime.Now.Minute.ToString("D2") + DateTime.Now.Second.ToString("D2") + DateTime.Now.Millisecond.ToString("D3"); /// Se genera el ID con el estandar de la OET.
             // A peticion del grupo de prestamos

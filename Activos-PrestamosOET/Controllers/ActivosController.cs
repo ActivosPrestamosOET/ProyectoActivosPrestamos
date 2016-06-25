@@ -219,10 +219,10 @@ namespace Activos_PrestamosOET.Controllers
         public ActionResult Create()
         {
             ViewBag.INGRESADO_POR = User.Identity.Name;
-            ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES, "ID", "NOMBRE");
-            ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS, "ID", "NOMBRE");
-            ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE");
-            ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA, "ID", "NOMBRE");
+            ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES.OrderBy(tt => tt.NOMBRE), "ID", "NOMBRE");
+            ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS.OrderBy(ta => ta.NOMBRE), "ID", "NOMBRE");
+            ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR.OrderBy(p => p.NOMBRE), "IDPROVEEDOR", "NOMBRE");
+            ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA.OrderBy(a => a.NOMBRE), "ID", "NOMBRE");
             ViewBag.FECHA_INGRESO = DateTime.Now.ToString("yyyy-MM-dd");
             ViewBag.V_MONEDAID = new SelectList(db.V_MONEDA, "ID", "SIMBOLO");
 
@@ -240,10 +240,7 @@ namespace Activos_PrestamosOET.Controllers
 
             var estado = db.ESTADOS_ACTIVOS.ToList().Where(ea => ea.NOMBRE == "Disponible");
             aCTIVO.ESTADO_ACTIVOID = estado.ToList()[0].ID;
-            aCTIVO.INGRESADO_POR = User.Identity.Name; //Esto deberia de ir en el modelo 
-            /* TODO: La manera correcta de hacer esto es en el modelo (en el constructor). Para al siguiente sprint se debe pasar esto 
-             * al modelo para respetar el MVC.
-             */
+            aCTIVO.INGRESADO_POR = User.Identity.Name;
             decimal precio;
             if (Convert.ToBoolean(Request["MONEDA"]))
             {
@@ -259,7 +256,6 @@ namespace Activos_PrestamosOET.Controllers
 
             }
             aCTIVO.TIPO_CAPITAL = (precio >= 1000) ? true : false;
-            // Hasta acá debe de ir en el modelo.
 
             if (ModelState.IsValid)
             {
@@ -280,10 +276,10 @@ namespace Activos_PrestamosOET.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES, "ID", "NOMBRE", aCTIVO.TIPO_TRANSACCIONID);
-            ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS, "ID", "NOMBRE", aCTIVO.TIPO_ACTIVOID);
-            ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
-            ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA, "ID", "NOMBRE", aCTIVO.V_ANFITRIONAID);
+            ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES.OrderBy(tt => tt.NOMBRE), "ID", "NOMBRE", aCTIVO.TIPO_TRANSACCIONID);
+            ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS.OrderBy(ta => ta.NOMBRE), "ID", "NOMBRE", aCTIVO.TIPO_ACTIVOID);
+            ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR.OrderBy(p => p.NOMBRE), "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
+            ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA.OrderBy(a => a.NOMBRE), "ID", "NOMBRE", aCTIVO.V_ANFITRIONAID);
             ViewBag.V_MONEDAID = new SelectList(db.V_MONEDA, "ID", "SIMBOLO", aCTIVO.V_MONEDAID);
             ViewBag.FECHA_INGRESO = DateTime.Now.ToString("yyyy-MM-dd");
             ViewBag.INGRESADO_POR = User.Identity.Name;
@@ -311,9 +307,9 @@ namespace Activos_PrestamosOET.Controllers
                 return HttpNotFound();
             }
             ViewBag.V_EMPLEADOSIDEMPLEADO = new SelectList(db.V_EMPLEADOS.OrderBy(emp => emp.NOMBRE), "IDEMPLEADO", "NOMBRE");
-            ViewBag.ESTADO_ACTIVOID = new SelectList(db.ESTADOS_ACTIVOS, "ID", "NOMBRE", aCTIVO.ESTADO_ACTIVOID);
-            ViewBag.V_ESTACIONID = new SelectList(db.V_ESTACION, "ID", "NOMBRE", aCTIVO.V_ESTACIONID);
-            ViewBag.CENTRO_DE_COSTOId = new SelectList(db.CENTROS_DE_COSTOS, "ID", "NOMBRE", aCTIVO.CENTRO_DE_COSTOId);
+            ViewBag.ESTADO_ACTIVOID = new SelectList(db.ESTADOS_ACTIVOS.OrderBy(ea => ea.NOMBRE), "ID", "NOMBRE", aCTIVO.ESTADO_ACTIVOID);
+            ViewBag.V_ESTACIONID = new SelectList(db.V_ESTACION.OrderBy(e => e.NOMBRE), "ID", "NOMBRE", aCTIVO.V_ESTACIONID);
+            ViewBag.CENTRO_DE_COSTOId = new SelectList(db.CENTROS_DE_COSTOS.OrderBy(cc => cc.Nombre), "ID", "NOMBRE", aCTIVO.CENTRO_DE_COSTOId);
             return View(aCTIVO);
         }
 
@@ -364,9 +360,9 @@ namespace Activos_PrestamosOET.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.V_EMPLEADOSIDEMPLEADO = new SelectList(db.V_EMPLEADOS.OrderBy(emp => emp.NOMBRE), "IDEMPLEADO", "NOMBRE", aCTIVO.V_EMPLEADOSIDEMPLEADO);
-            ViewBag.ESTADO_ACTIVOID = new SelectList(db.ESTADOS_ACTIVOS, "ID", "NOMBRE", aCTIVO.ESTADO_ACTIVOID);
-            ViewBag.V_ESTACIONID = new SelectList(db.V_ESTACION, "ID", "NOMBRE", aCTIVO.V_ESTACIONID);
-            ViewBag.CENTRO_DE_COSTOId = new SelectList(db.CENTROS_DE_COSTOS, "ID", "NOMBRE", aCTIVO.CENTRO_DE_COSTOId);
+            ViewBag.ESTADO_ACTIVOID = new SelectList(db.ESTADOS_ACTIVOS.OrderBy(ea => ea.NOMBRE), "ID", "NOMBRE", aCTIVO.ESTADO_ACTIVOID);
+            ViewBag.V_ESTACIONID = new SelectList(db.V_ESTACION.OrderBy(e => e.NOMBRE), "ID", "NOMBRE", aCTIVO.V_ESTACIONID);
+            ViewBag.CENTRO_DE_COSTOId = new SelectList(db.CENTROS_DE_COSTOS.OrderBy(cc => cc.Nombre), "ID", "NOMBRE", aCTIVO.CENTRO_DE_COSTOId);
             return View(aCTIVO);
         }
 
@@ -383,10 +379,10 @@ namespace Activos_PrestamosOET.Controllers
             if (aCTIVO == null)
                 return HttpNotFound();
 
-            ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES, "ID", "NOMBRE", aCTIVO.TIPO_TRANSACCIONID);
-            ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS, "ID", "NOMBRE", aCTIVO.TIPO_ACTIVOID);
-            ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
-            ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA, "ID", "NOMBRE", aCTIVO.V_ANFITRIONAID);
+            ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES.OrderBy(tt => tt.NOMBRE), "ID", "NOMBRE", aCTIVO.TIPO_TRANSACCIONID);
+            ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS.OrderBy(ta => ta.NOMBRE), "ID", "NOMBRE", aCTIVO.TIPO_ACTIVOID);
+            ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR.OrderBy(p => p.NOMBRE), "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
+            ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA.OrderBy(a => a.NOMBRE), "ID", "NOMBRE", aCTIVO.V_ANFITRIONAID);
             ViewBag.V_MONEDAID = new SelectList(db.V_MONEDA, "ID", "SIMBOLO", aCTIVO.V_MONEDAID);
             ViewBag.FECHA_INGRESO = aCTIVO.FECHA_INGRESO.Date;
             return View(aCTIVO);
@@ -438,10 +434,10 @@ namespace Activos_PrestamosOET.Controllers
 
                 return RedirectToAction("Index");
             }
-            ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES, "ID", "NOMBRE", aCTIVO.TIPO_TRANSACCIONID);
-            ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS, "ID", "NOMBRE", aCTIVO.TIPO_ACTIVOID);
-            ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR, "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
-            ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA, "ID", "NOMBRE", aCTIVO.V_ANFITRIONAID);
+            ViewBag.TIPO_TRANSACCIONID = new SelectList(db.TIPOS_TRANSACCIONES.OrderBy(tt => tt.NOMBRE), "ID", "NOMBRE", aCTIVO.TIPO_TRANSACCIONID);
+            ViewBag.TIPO_ACTIVOID = new SelectList(db.TIPOS_ACTIVOS.OrderBy(ta => ta.NOMBRE), "ID", "NOMBRE", aCTIVO.TIPO_ACTIVOID);
+            ViewBag.V_PROVEEDORIDPROVEEDOR = new SelectList(db.V_PROVEEDOR.OrderBy(p => p.NOMBRE), "IDPROVEEDOR", "NOMBRE", aCTIVO.V_PROVEEDORIDPROVEEDOR);
+            ViewBag.V_ANFITRIONAID = new SelectList(db.V_ANFITRIONA.OrderBy(a => a.NOMBRE), "ID", "NOMBRE", aCTIVO.V_ANFITRIONAID);
             ViewBag.V_MONEDAID = new SelectList(db.V_MONEDA, "ID", "SIMBOLO", aCTIVO.V_MONEDAID);
             ViewBag.FECHA_INGRESO = aCTIVO.FECHA_INGRESO.Date;
             return View(aCTIVO);
