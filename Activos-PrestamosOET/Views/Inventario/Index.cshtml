@@ -199,6 +199,7 @@
                                 {
                                     <td><text>No prestado</text></td>
                                     <td>No prestado</td>
+                                    <td>No prestado</td>
                                 }
                                 else
                                 {
@@ -206,13 +207,19 @@
                                     {
                                         <td>@x.ActivosUser.Nombre</td>
                                         <td>@x.FECHA_RETIRO</td>
-                                        break;
+                                        if (@x.V_COURSES.COURSE_NAME == null)
+                                        {
+                                            <td>No prestado</td>
+                                        }
+                                        else
+                                        {
+                                            <td>@x.V_COURSES.COURSE_NAME</td>
+                                            }
+                                            break;
+                                        }
+
                                     }
                                 }
-                            }
-                            <td>
-                                <!--item.DESCRIPCION.V_COURSES.COURSE_NAME-->
-                            </td>
                             <td>
                                 @Html.ActionLink("Detalles", "Details", new { id = @item.PLACA }, new { @class = "btn btn-default" })
                             </td>
