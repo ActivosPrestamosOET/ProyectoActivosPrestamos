@@ -59,10 +59,10 @@
 
                 </table>
 
-                @if (ViewBag.ConCurso != null)
+                @if (Model.V_COURSESCOURSES != 0)
                 {
                     <div>
-                        <label class="control-label" for="inputDefault"><b>@Html.DisplayNameFor(model => model.SIGLA_CURSO): </b></label> @Html.DisplayFor(model => model.SIGLA_CURSO)
+                        <label class="control-label" for="inputDefault"><b>Curso: </b></label> @Model.V_COURSES.COURSE_NAME
                     </div>
                 }
 
