@@ -30,7 +30,8 @@ namespace Local.Controllers
         public ActionResult Index(int? page)
         {
             llenarTablaInventario();
-            var temp = db.ACTIVOS.Where(x => x.PRESTABLE == true);
+            var temp = db.ACTIVOS.Where(x => x.PRESTABLE == true).Include(p => p.PRESTAMOes);            
+            //prestamos = prestamos.Include(c => c.)
             temp = temp.OrderBy(s => s.FABRICANTE);
             int pageSize = 4;
             int pageNumber = (page ?? 1);

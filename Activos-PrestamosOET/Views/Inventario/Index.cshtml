@@ -193,9 +193,10 @@
                                     else
                                     {
                                         <text>@item.DESCRIPCION</text>
-                                    }}
+                                    }
+                                  }
                             </td>
-                            @{ if (item.PRESTAMOes.Count == 0)
+                            @{ if (item.ESTADO_PRESTADO == 0)
                                 {
                                     <td><text>No prestado</text></td>
                                     <td>No prestado</td>
@@ -203,22 +204,20 @@
                                 }
                                 else
                                 {
-                                    foreach (var x in item.PRESTAMOes)
+                                    
+                                        <td>@item.PRESTAMOes.Last().ActivosUser.Nombre</td>
+                                        <td>@item.PRESTAMOes.Last().FECHA_RETIRO</td>
+                                    if (@item.PRESTAMOes.Last().V_COURSESCOURSES != 0)
                                     {
-                                        <td>@x.ActivosUser.Nombre</td>
-                                        <td>@x.FECHA_RETIRO</td>
-                                        if (@x.V_COURSES.COURSE_NAME == null)
-                                        {
-                                            <td>No prestado</td>
-                                        }
-                                        else
-                                        {
-                                            <td>@x.V_COURSES.COURSE_NAME</td>
-                                            }
-                                            break;
-                                        }
-
+                                        <td>@item.PRESTAMOes.Last().V_COURSES.COURSE_NAME</td>
                                     }
+                                    else
+                                    {
+                                        <td>No se prestó a un curso</td>
+                                    }
+
+                                }
+
                                 }
                             <td>
                                 @Html.ActionLink("Detalles", "Details", new { id = @item.PLACA }, new { @class = "btn btn-default" })

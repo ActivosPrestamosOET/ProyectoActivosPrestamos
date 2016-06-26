@@ -950,6 +950,12 @@ namespace Activos_PrestamosOET.Controllers
                 prestamo.FECHA_SOLICITUD = System.DateTimeOffset.Now.Date;//SELECT SYSDATE FROM DUAL
                 prestamo.SOFTWARE_REQUERIDO = p.SOFTWARE_REQUERIDO;
                 prestamo.Estado = 1;
+                if (p.SIGLA_CURSO != null)
+                {
+                    var course = db.V_COURSES.SingleOrDefault(c => c.COURSES_CODE == p.SIGLA_CURSO);
+                    var idCourse = course.COURSES;
+                    prestamo.V_COURSESCOURSES = idCourse;
+                }
                 db.PRESTAMOS.Add(prestamo);
 
                 //Guardamos el prestamo en la base
