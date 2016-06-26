@@ -1764,6 +1764,8 @@ namespace Activos_PrestamosOET.Controllers
                         db.Entry(activo).State = EntityState.Modified;
                         db.Entry(prestamo).State = EntityState.Modified;
                         db.SaveChanges();
+
+                        new TransaccionesController().CreatePrestamo(User.Identity.GetUserName(), "Asignado en Préstamo", "Sale asignado a un préstamo", activo.ID, unchecked((int)prestamo.NUMERO_BOLETA), prestamo.FECHA_RETIRO, prestamo.FECHA_RETIRO.AddDays(prestamo.PERIODO_USO), "", prestamo.USUARIO_SOLICITA);
                     }
                     else
                     {
