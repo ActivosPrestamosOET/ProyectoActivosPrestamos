@@ -670,6 +670,15 @@ namespace Activos_PrestamosOET.Controllers
             //Se guarda las observaciones de aprobacion
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
             pRESTAMO.OBSERVACIONES_APROBADO = p.OBSERVACIONES_APROBADO;
+
+            //agregar quien aprueba el prestamo
+
+            string username = User.Identity.GetUserName();
+            var users = (from u in db.ActivosUsers select u);
+            var user = users.SingleOrDefault(u => u.UserName == username);
+            var cedSol = user.Id;
+            pRESTAMO.USUARIO_APRUEBA = cedSol.ToString();
+
             if (ModelState.IsValid)
             {
                 db.Entry(pRESTAMO).State = EntityState.Modified;
@@ -677,6 +686,8 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             var prestamo = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
+
+
 
             var equipo_sol = prestamo.EQUIPO_SOLICITADO;
             //Si el boton de aceptar fue precionado

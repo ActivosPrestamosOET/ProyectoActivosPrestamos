@@ -420,9 +420,26 @@
 
                 <div id="Botones_aceptar_cancelar" class="col-md-offset-9 col-md-12">
 
+                @if ((Model.Estado) == 1 || (Model.Estado) == 2 || (Model.Estado) == 4)
+                {
                     <input type="submit" name="b" value="Aceptar" class="btn btn-success" />
 
-                    <input type="submit" name="b" value="Denegar" class="btn btn-danger" />
+                    <input type="submit" name="b" value="Denegar" class="btn btn-danger" disabled="disabled" readonly="readonly"/>
+                }
+                @if ((Model.Estado) == 3)
+                {
+
+                    <input type="submit" name="b" value="Aceptar" class="btn btn-success" disabled="disabled" readonly="readonly"/>
+
+                    <input type="submit" name="b" value="Denegar" class="btn btn-danger" />}
+
+                    @if ((Model.Estado) == 5 || (Model.Estado) == 6)
+                {
+
+                        <input type="submit" name="b" value="Aceptar" class="btn btn-success" disabled="disabled" readonly="readonly" />
+
+                        <input type="submit" name="b" value="Denegar" class="btn btn-danger" disabled="disabled" readonly="readonly" />}
+
 
                 </div>
 
