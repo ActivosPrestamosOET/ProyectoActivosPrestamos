@@ -4,6 +4,8 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
+using SendGrid;
 using System.Web;
 using System.Web.Mvc;
 using Activos_PrestamosOET.Models;
@@ -11,6 +13,7 @@ using PagedList;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Web.Services;
+using System.Configuration;
 
 namespace Activos_PrestamosOET.Controllers
 {
@@ -337,6 +340,36 @@ namespace Activos_PrestamosOET.Controllers
                     // Al activo se le asigna la estacion del empleado encargado, para que siempre este correcta y no dependa de la correctitud del filtro de empleados por estacion.
                     original.V_ESTACIONID = (db.V_EMPLEADOS.ToList().Where(ea => ea.IDEMPLEADO == aCTIVO.V_EMPLEADOSIDEMPLEADO)).ToList()[0].ESTACION_ID;
                     original.CENTRO_DE_COSTOId = aCTIVO.CENTRO_DE_COSTOId;
+
+                    var empleado = db.V_EMPLEADOS.Find(aCTIVO.V_EMPLEADOSIDEMPLEADO);                    
+
+                    if (empleado.EMAIL.Contains("@"))
+                    {
+                        var mensaje_correo = new SendGridMessage();
+                        mensaje_correo.From = new System.Net.Mail.MailAddress("andresbejar@gmail.com", "Admin");
+                        List<String> destinatarios = new List<string>
+                        {
+                            //@""+empleado.NOMBRE+" <"+empleado.EMAIL+">",
+                            @"Jose Urena <jpurena14@hotmail.com>"
+                        };
+
+                        mensaje_correo.AddTo(destinatarios);
+                        mensaje_correo.Subject = "Activo asignado a su cuenta de OET.";                                                
+                        mensaje_correo.Html += "<h2>La OET le informa</h2><br />";
+                        mensaje_correo.Html += "A través de este correo la OET desea informarle que un nuevo activo ha sido asignado a su nombre."+"<br />" + "<br />";
+                        mensaje_correo.Html += "A continuación se enlistan las características del activo: "+"<br />" + "<br />" + "<br />";
+                        mensaje_correo.Html += "Descripción: " + original.DESCRIPCION+"<br />" + "<br />";
+                        mensaje_correo.Html += "Número de placa: " + original.PLACA + "<br />" + "<br />";
+                        mensaje_correo.Html += "Inicio del servicio: " + original.INICIO_SERVICIO + "<br />" + "<br />";
+                        mensaje_correo.Html += "Comentarios: " + original.COMENTARIO + "<br />";
+                        
+                        var credentials = new NetworkCredential(ConfigurationManager.AppSettings["mailAccount"], ConfigurationManager.AppSettings["mailPassword"]);
+                        var transportWeb = new SendGrid.Web(credentials);                        
+                        transportWeb.DeliverAsync(mensaje_correo);
+                    }
+
+
+
                 }
                 db.SaveChanges();
 
