@@ -27,6 +27,7 @@ namespace Local.Controllers
         // Requiere: N/A.
         // Modifica: muestra la información al ingresar a la página de Inventario inicialmente.
         // Regresa: vista con la tabla de los datos acerca del Inventario.
+        [Authorize(Roles = "Aceptar préstamos,superadmin")]
         public ActionResult Index(int? page)
         {
             llenarTablaInventario();
@@ -43,6 +44,7 @@ namespace Local.Controllers
         // Modifica: muestra después de seleccionado algún botón, los resultados correspondientes, mostrando las tablas que corresponden.
         // Regresa: vista con las tablas cargadas que corresponden.
         [HttpPost]
+        [Authorize(Roles = "Aceptar préstamos,superadmin")]
         public ActionResult Index(String dropdownCategoria, String submit, String datepicker, String datepicker1, string b, int? page)
         {
             if (!string.IsNullOrEmpty(submit) && submit.Equals("Buscar"))
@@ -179,6 +181,7 @@ namespace Local.Controllers
 
         //-----------------------------------------------------------------------------------------------------------
         [HttpGet]
+        [Authorize(Roles = "Aceptar préstamos,superadmin")]
         public ActionResult Details(string id)
         {
             if (id == null)
@@ -189,7 +192,7 @@ namespace Local.Controllers
 
             return View(activo);
         }
-
+        [Authorize(Roles = "Aceptar préstamos,superadmin")]
         public ActionResult DescargarHistorial(string id)
         {
             var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
@@ -197,7 +200,7 @@ namespace Local.Controllers
                  return RedirectToAction("Details", new { id = id });
 
         }
-
+        [Authorize(Roles = "Aceptar préstamos,superadmin")]
         public ActionResult DetailsPDF(string id)
         {
             if (id == null)
