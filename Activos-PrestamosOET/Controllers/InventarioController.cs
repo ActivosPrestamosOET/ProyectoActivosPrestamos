@@ -267,14 +267,14 @@ namespace Local.Controllers
                 foreach (var x in activo.TRANSACCIONES)
                 {
 
-                    if (x.ACTIVOID == activo.ID && x.NUMERO_BOLETA == item.NUMERO_BOLETA)
+                    if (x.ACTIVOID == activo.ID && x.NUMERO_BOLETA == item.NUMERO_BOLETA && x.ESTADO == "Devuelto de préstamo")
                     {
                         dr["Observaciones al devolver"] = x.OBSERVACIONES_RECIBO;
 
                     }
                     else if (x == null)
                     {
-                        dr["Observaciones al devolver"] = "No ha sido prestado";
+                        dr["Observaciones al devolver"] = "N/A";
                     }
 
                 }
