@@ -1218,7 +1218,7 @@ namespace Activos_PrestamosOET.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Solicitar préstamos,Aceptar préstamos,superadmin")]
-        public ActionResult Edit([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p, string id, int[] cantidad, string b)
+        public ActionResult Edit([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p, string id, int[] cantidad, string b, String Fecha_Inicio_Curso)
         {
             //Busca el prestamo en la base de datos
             PRESTAMO P = db.PRESTAMOS.Find(id);
@@ -1324,8 +1324,15 @@ namespace Activos_PrestamosOET.Controllers
             P.MOTIVO = p.MOTIVO;
             P.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
             P.PERIODO_USO = p.PERIODO_USO;
+            
             P.SIGLA_CURSO = p.SIGLA_CURSO;
-            P.FECHA_RETIRO = p.FECHA_RETIRO;
+            if (p.SIGLA_CURSO == null)
+            {
+                P.FECHA_RETIRO = p.FECHA_RETIRO;
+            }else
+            {
+                P.FECHA_RETIRO = DateTime.ParseExact(Fecha_Inicio_Curso, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
             P.SOFTWARE_REQUERIDO = p.SOFTWARE_REQUERIDO;
             P.Estado = 1;
             if (ModelState.IsValid)
