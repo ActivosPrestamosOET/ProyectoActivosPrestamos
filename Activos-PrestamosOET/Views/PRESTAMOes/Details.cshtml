@@ -286,8 +286,8 @@
                             </td>
                         }
                         <td>
-                            @if (asignarEquipos == true)
-                                            {
+                        @if ((asignarEquipos == true)&&(!ViewBag.mismo))
+                        {
                             <!-- Button trigger modal -->
                             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal@(modal)">
                                 
@@ -428,26 +428,26 @@
 
                 <div id="Botones_aceptar_cancelar" class="col-md-offset-9 col-md-12">
 
-                @if ((Model.Estado) == 1 || (Model.Estado) == 2 || (Model.Estado) == 4)
+                @if (((Model.Estado) == 1 || (Model.Estado) == 2 || (Model.Estado) == 4)&& (!ViewBag.mismo))
                 {
                     <input type="submit" name="b" value="Aceptar" class="btn btn-success" />
 
                     <input type="submit" name="b" value="Denegar" class="btn btn-danger" disabled="disabled" readonly="readonly"/>
                 }
-                @if ((Model.Estado) == 3)
+                @if (((Model.Estado) == 3)&& (!ViewBag.mismo))
                 {
 
                     <input type="submit" name="b" value="Aceptar" class="btn btn-success" disabled="disabled" readonly="readonly"/>
 
                     <input type="submit" name="b" value="Denegar" class="btn btn-danger" />}
 
-                    @if ((Model.Estado) == 5 || (Model.Estado) == 6)
+                @if (((Model.Estado) == 5 || (Model.Estado) == 6)|| (ViewBag.mismo))
                 {
 
-                        <input type="submit" name="b" value="Aceptar" class="btn btn-success" disabled="disabled" readonly="readonly" />
+                    <input type="submit" name="b" value="Aceptar" class="btn btn-success" disabled="disabled" readonly="readonly" />
 
-                        <input type="submit" name="b" value="Denegar" class="btn btn-danger" disabled="disabled" readonly="readonly" />}
-
+                    <input type="submit" name="b" value="Denegar" class="btn btn-danger" disabled="disabled" readonly="readonly" />
+                 }
 
                 </div>
 

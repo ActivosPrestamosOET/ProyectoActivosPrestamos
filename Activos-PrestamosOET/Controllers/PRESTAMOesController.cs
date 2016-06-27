@@ -578,6 +578,7 @@ namespace Activos_PrestamosOET.Controllers
                 activosPrevios.Add(actPrevios);
                 activos.Add(act);
             }
+            
             ViewBag.Activos_enPrevio = activosPrevios;
             ViewBag.Activos_enCat = activos;
             //Segmento de código para colocar colores a las cantidad de solicitudes por categoría.
@@ -652,8 +653,30 @@ namespace Activos_PrestamosOET.Controllers
                 l.Add(disp[k]);
                 k++;
             }
+            string username = "";
             ViewBag.Equipo_Solict = equipo;
+            var users = from u in db.ActivosUsers
+                        where u.UserName == username
+                        select u;
 
+            //select u.Cedula); 
+            var user = users.SingleOrDefault(u => u.UserName == username);
+            //User cedSol = user.Id;
+            //;
+            try
+            {
+                if (user.Id == pRESTAMO.USUARIO_SOLICITA)
+                {
+                    ViewBag.mismo = true;
+                }
+                else
+                {
+                    ViewBag.mismo = false;
+                }
+            }catch
+            {
+                ViewBag.mismo = false;
+            }
 
             return View(pRESTAMO);
         }
