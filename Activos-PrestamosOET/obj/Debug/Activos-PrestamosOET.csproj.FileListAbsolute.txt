@@ -401,7 +401,6 @@ C:\Users\andre_000\Documents\GitHub\New folder\ProyectoActivosPrestamos\Activos-
 C:\Users\andre_000\Documents\GitHub\New folder\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\Microsoft.Owin.Security.Google.xml
 C:\Users\andre_000\Documents\GitHub\New folder\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\andre_000\Documents\GitHub\New folder\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
-C:\Users\Daniel\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache
 C:\Users\b32896\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\ApplicationInsights.config
 C:\Users\b32896\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csc.exe
 C:\Users\b32896\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\roslyn\csc.exe.config
