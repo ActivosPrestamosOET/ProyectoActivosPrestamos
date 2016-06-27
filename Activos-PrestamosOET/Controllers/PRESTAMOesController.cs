@@ -653,7 +653,7 @@ namespace Activos_PrestamosOET.Controllers
                 l.Add(disp[k]);
                 k++;
             }
-            string username = "";
+            string username = User.Identity.GetUserName();
             ViewBag.Equipo_Solict = equipo;
             var users = from u in db.ActivosUsers
                         where u.UserName == username
@@ -1079,6 +1079,35 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.SIGLA_CURSO = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
 
             ViewBag.CursoSeleccionado = pRESTAMO.SIGLA_CURSO;
+
+            SelectList cursosDDL = new SelectList(db.V_COURSES);
+
+            /*
+            string username = User.Identity.GetUserName();
+
+            var users = from u in db.ActivosUsers
+                        where u.UserName == username
+                        select u;
+
+            //select u.Cedula); 
+            var user = users.SingleOrDefault(u => u.UserName == username);
+            var cedSol = user.Id;
+            */
+            /*
+            string miCurso = pRESTAMO.SIGLA_CURSO;
+            
+            if (miCurso != null)
+            {
+                var cursitos = from u in db.V_COURSES
+                               where u.COURSES_CODE == miCurso
+                               select u;
+                var miCurso2 = cursitos.SingleOrDefault(u => u.COURSES_CODE == miCurso);
+                SelectListItem i = new SelectListItem(db);
+            }*/
+
+
+
+
 
             //Determina el estado de la solicitud para desplegarlo en la pantalla mas adelante
             ViewBag.Estadillo = "";
