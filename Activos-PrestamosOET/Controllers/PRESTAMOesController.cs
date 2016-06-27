@@ -926,8 +926,8 @@ namespace Activos_PrestamosOET.Controllers
         //Retorna: una vista
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Solicitar préstamos,Aceptar préstamos,superadmin")]
-        public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,USUARIO_SOLICITA,USUARIO_APRUEBA")] PRESTAMO p, int[] Cantidad, String[] Categoria)
+        //[Authorize(Roles = "Solicitar préstamos,superadmin")]
+        public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,USUARIO_SOLICITA,USUARIO_APRUEBA")] PRESTAMO p, int[] Cantidad, String[] Categoria, bool asignadoACurso, String Fecha_Inicio_Curso)
         {
             //Metemos los valores ingresados por el usuario en un nuevo prestamo
             PRESTAMO prestamo = new PRESTAMO();
@@ -936,14 +936,26 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return RedirectToAction("Create");
             }
+            DateTime fecha;
+            if (asignadoACurso)
+            {
+                ModelState["FECHA_RETIRO"].Errors.Clear();
+                fecha = DateTime.ParseExact(Fecha_Inicio_Curso, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                fecha = p.FECHA_RETIRO;
+            }
 
             if (ModelState.IsValid)
             {
                 string idd = generarID();
                 string username = User.Identity.GetUserName();
 
-                var users = (from u in db.ActivosUsers select u);
-                //where u.UserName == username
+                var users = from u in db.ActivosUsers
+                            where u.UserName == username
+                            select u;
+
                 //select u.Cedula); 
                 var user = users.SingleOrDefault(u => u.UserName == username);
                 var cedSol = user.Id;
@@ -957,7 +969,7 @@ namespace Activos_PrestamosOET.Controllers
                 prestamo.SIGLA_CURSO = p.SIGLA_CURSO;
                 prestamo.USUARIO_APRUEBA = p.USUARIO_APRUEBA;
                 prestamo.USUARIO_SOLICITA = cedSol.ToString();
-                prestamo.FECHA_RETIRO = p.FECHA_RETIRO;
+                prestamo.FECHA_RETIRO = fecha;
                 prestamo.FECHA_SOLICITUD = System.DateTimeOffset.Now.Date;//SELECT SYSDATE FROM DUAL
                 prestamo.SOFTWARE_REQUERIDO = p.SOFTWARE_REQUERIDO;
                 prestamo.Estado = 1;
@@ -1880,6 +1892,28 @@ namespace Activos_PrestamosOET.Controllers
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
  
             return View(pRESTAMO);
+        }
+
+        public ActionResult obtenerFechasCurso(string idCurso)
+        {
+            var fechas = from c in db.V_COURSES
+                         where idCurso == c.COURSES_CODE
+                         select new { Fecha_Inicio = c.START_DATE, Fecha_Fin = c.END_DATE };
+            //hay que cambiar obviamente a las fechas, cuando se actualice el modelo
+            List<String> listaDatos = new List<string>();
+
+            foreach (var v in fechas)
+            {
+                //String inicio = v.Fecha_Inicio.ToString("MM/dd/yyyy"); ;
+                String inicio = ((DateTime)v.Fecha_Inicio).ToString("dd/MM/yyyy");
+                String fin = ((DateTime)v.Fecha_Fin).ToString("dd/MM/yyyy");
+
+                double dias = (((DateTime)v.Fecha_Fin) - ((DateTime)v.Fecha_Inicio)).TotalDays;
+                listaDatos.Add(inicio);
+                listaDatos.Add(fin);
+                listaDatos.Add(dias.ToString());
+            }
+            return Json(listaDatos);
         }
     }
 }
