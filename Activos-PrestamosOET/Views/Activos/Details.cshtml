@@ -11,6 +11,10 @@
         {
             @Html.ActionLink("Editar", "Edit", new { id = Model.ID })
         }
+        @if ((User.IsInRole("superadmin") || User.IsInRole("Eliminar activos")) && Model.DESECHADO == false)
+        {
+            @Html.ActionLink("| Eliminar", "Delete", new { id = Model.ID })
+        }
         | @Html.ActionLink("Regresar", "Index")
     </div>
 </div>

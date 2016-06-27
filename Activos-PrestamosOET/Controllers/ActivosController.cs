@@ -273,8 +273,6 @@ namespace Activos_PrestamosOET.Controllers
                 var consulta_transaccion = db.TIPOS_TRANSACCIONES.ToList().Where(ea => ea.ID == aCTIVO.TIPO_TRANSACCIONID);
                 var transaccion = consulta_transaccion.ToList()[0].NOMBRE;
 
-                if(transaccion == "")
-
                 controladora_transaccion.Create(User.Identity.GetUserName(), "Creado", aCTIVO.descripcion(proveedor, transaccion, anfitriona), aCTIVO.ID);
                 return RedirectToAction("Index");
             }

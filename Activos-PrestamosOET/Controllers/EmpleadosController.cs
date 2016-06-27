@@ -48,16 +48,45 @@ namespace Activos_PrestamosOET.Controllers
             int num_pagina = (pagina ?? 1);
             return View(empleados.ToPagedList(num_pagina, tamano_pagina));
         }
-
+        public struct ActivosAsignados
+        {
+            public string activo_id;
+            public DateTime transaccion_fecha;
+            public string activo_descripcion;
+            public string activo_modelo;
+            public string numero_de_placa;
+            public bool activo_desechado;
+            public ActivosAsignados(string id, DateTime fecha, string descripcion, string modelo, string placa, bool desechado)
+            {
+                activo_id = id;
+                transaccion_fecha = fecha;
+                activo_descripcion = descripcion;
+                activo_modelo = modelo;
+                numero_de_placa = placa;
+                activo_desechado = desechado;
+            }
+        }
         // GET: Empleados/Details/5
         public ActionResult Details(string id)
         {
+
             // TODO: mostrar los activos que ha tenido asignado el usuario consultado
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             V_EMPLEADOS v_EMPLEADOS = db.V_EMPLEADOS.Find(id);
+            List<ActivosAsignados> activos_asignados = new List<ActivosAsignados>();
+            List<TRANSACCION> transacciones = db.TRANSACCIONES.Where(em => em.V_EMPLEADOSIDEMPLEADO.Equals(id)).ToList();
+           
+            foreach (var item in transacciones)
+            {
+                ACTIVO activo = db.ACTIVOS.Find(item.ACTIVOID);
+                activos_asignados.Add(new ActivosAsignados(activo.ID, item.FECHA, activo.DESCRIPCION, activo.MODELO, activo.PLACA, activo.DESECHADO));
+            }
+            activos_asignados.OrderBy(f => f.transaccion_fecha);
+            ViewBag.activos_asignados = activos_asignados;
+
             if (v_EMPLEADOS == null)
             {
                 return HttpNotFound();
