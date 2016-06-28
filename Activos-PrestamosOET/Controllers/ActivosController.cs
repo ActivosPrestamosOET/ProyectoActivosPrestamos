@@ -430,6 +430,24 @@ namespace Activos_PrestamosOET.Controllers
             var original = db.ACTIVOS.Find(aCTIVO.ID);
             if (aCTIVO.DESECHADO)
                 return RedirectToAction("Index");
+
+
+            decimal precio;
+            if (Convert.ToBoolean(Request["MONEDA"]))
+            {
+                // Colones
+                decimal tipo_cambio = db.V_TIPO_CAMBIO.ToList()[0].TIPOCAMBIO;
+                precio = aCTIVO.PRECIO / tipo_cambio;
+
+            }
+            else
+            {
+                //Dolares
+                precio = aCTIVO.PRECIO;
+
+            }
+            aCTIVO.TIPO_CAPITAL = (precio >= 1000) ? true : false;
+
             if (ModelState.IsValid)
             {
                 original.NUMERO_SERIE = aCTIVO.NUMERO_SERIE;
