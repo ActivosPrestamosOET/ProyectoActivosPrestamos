@@ -3,7 +3,9 @@
 @{
     ViewBag.Title = "Edit";
 }
-
+<div>
+    @Html.ActionLink("Regresar al Historial", "Historial", null, null, new { @class = "btn btn-default" })
+</div>
 <h2>Editar Solicitud</h2>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/jquery-1.10.2.js"></script>
@@ -191,7 +193,7 @@
     }
 
     <div>
-        @Html.ActionLink("Volver al Historial de Solicitudes", "Historial")  |
+       @* @Html.ActionLink("Volver al Historial de Solicitudes", "Historial")  |*@
         @Html.ActionLink("Cancelar solicitud", "Delete", new { id = Model.ID }, new { @class = "btn btn-default" })
     </div>
 
