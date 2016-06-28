@@ -1064,11 +1064,24 @@ namespace Activos_PrestamosOET.Controllers
 
             //Buscamos los cursos de en la base de datos
             //ViewBag.Cursos = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
-            ViewBag.SIGLA_CURSO = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
+            String SelectCurso = "<select class=\"form-control\" id=\"SIGLA_CURSO\" name=\"SIGLA_CURSO\">";
+            foreach (V_COURSES curso in db.V_COURSES.ToList())
+            {
+                if (pRESTAMO.SIGLA_CURSO == curso.COURSES_CODE)
+                {
+                    SelectCurso += "<option value=\""+curso.COURSES_CODE+"\" selected=\"selected\">"+curso.COURSE_NAME+"</option>";
+                }
+                else
+                {
+                    SelectCurso += "<option value=\""+curso.COURSES_CODE+"\">"+curso.COURSE_NAME+"</option>";
+                }
+            }
+            SelectCurso += "</select>";
 
-            ViewBag.CursoSeleccionado = pRESTAMO.SIGLA_CURSO;
+            ViewBag.SelectCurso = SelectCurso;
 
-            SelectList cursosDDL = new SelectList(db.V_COURSES);
+
+            //SelectList cursosDDL = new SelectList(db.V_COURSES);
 
             //Determina el estado de la solicitud para desplegarlo en la pantalla mas adelante
             ViewBag.Estadillo = "";
