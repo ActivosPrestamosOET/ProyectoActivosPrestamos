@@ -245,7 +245,7 @@ namespace Activos_PrestamosOET.Controllers
             aCTIVO.ESTADO_ACTIVOID = estado.ToList()[0].ID;
             aCTIVO.INGRESADO_POR = User.Identity.Name;
             decimal precio;
-            if (Convert.ToBoolean(Request["MONEDA"]))
+            if (db.V_MONEDA.Find(Request["V_MONEDAID"]).NOMBRE.Equals("Colones"))
             {
                 // Colones
                 decimal tipo_cambio = db.V_TIPO_CAMBIO.ToList()[0].TIPOCAMBIO;
@@ -433,7 +433,7 @@ namespace Activos_PrestamosOET.Controllers
 
 
             decimal precio;
-            if (Convert.ToBoolean(Request["MONEDA"]))
+            if (db.V_MONEDA.Find(Request["V_MONEDAID"]).NOMBRE.Equals("Colones"))
             {
                 // Colones
                 decimal tipo_cambio = db.V_TIPO_CAMBIO.ToList()[0].TIPOCAMBIO;
