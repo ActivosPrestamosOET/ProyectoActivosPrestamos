@@ -204,9 +204,19 @@
                                                                 }
                                                                 else
                                                                 {
-                                                                    <td>
-                                                                        @Html.CheckBox("activoSeleccionado", false)
-                                                                    </td>
+                                                                    if (c[3] == "0")
+                                                                    {
+                                                                        <td>
+                                                                            @Html.CheckBox("activoSeleccionado", false, new { @disabled = "disabled" })
+                                                                        </td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td>
+                                                                            @Html.CheckBox("activoSeleccionado", false)
+                                                                        </td>
+                                                                    }
+
                                                                 }
 
                                                                 @*<input type="checkbox" name="activoSeleccionado" value="Seleccionado"></td>*@
@@ -221,7 +231,14 @@
                                                                 {
                                                                     <td>En préstamo</td>
                                                                 }
-                                                                <td>@Html.TextBox("Notas", null, new { @class = "form-control" })</td>
+                                                                @if (c[3] == "0")
+                                                                {
+                                                                    <td>@Html.TextBox("Notas", null, new { @class = "form-control", @disabled = "disabled" })</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>@Html.TextBox("Notas", null, new { @class = "form-control" })</td>
+                                                                }
                                                             </tr>
                                                         }
 
