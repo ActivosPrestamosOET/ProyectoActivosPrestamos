@@ -149,13 +149,11 @@ namespace Activos_PrestamosOET.Controllers
             string username = User.Identity.GetUserName();
 
             var users = (from u in db.ActivosUsers select u);
-            //where u.UserName == username
-            //select u.Cedula); 
+
             var user = users.SingleOrDefault(u => u.UserName == username);
             var cedSol = user.Id;
 
             //prestamos = prestamos.Where(model => model.USUARIO_SOLICITA == cedSol);
-
 
             //se identifica si alguna columna fue seleccionada como filtro para ordenar los datos despliegados
             ViewBag.currentSort = sortOrder;
@@ -294,7 +292,6 @@ namespace Activos_PrestamosOET.Controllers
         [Authorize(Roles = "Solicitar préstamos,Aceptar préstamos,superadmin")]
         public ActionResult Historial(string CED_SOLICITA, string currentFilter, string estado, int? page)
         {
-            //CED_SOLICITA = "PITAN0126052014.085230671";
             //Para que al refrescar la pagina no se quite el filtro por estado
             ViewBag.estado = estado;
 
@@ -306,20 +303,18 @@ namespace Activos_PrestamosOET.Controllers
             //este if por mientras
             if (!string.IsNullOrEmpty(CED_SOLICITA))
             {
+                //En el historial solo deben aparecer los prestamos de la persona que esta loggeada
                 prestamos = prestamos.Where(model => model.USUARIO_SOLICITA == CED_SOLICITA);
             }
-
 
             string username = User.Identity.GetUserName();
 
             var users = (from u in db.ActivosUsers select u);
-            //where u.UserName == username
-            //select u.Cedula); 
+
             var user = users.SingleOrDefault(u => u.UserName == username);
             var cedSol = user.Id;
 
             prestamos = prestamos.Where(model => model.USUARIO_SOLICITA == cedSol);
-
 
             //Verfica el filtro de estado. Si el usuario no selecciono ningun filtro, entonces no se filtra por estado
             //pero si si selecciono el estado por el que quiere filtrar entonces, filtra por eso
@@ -395,11 +390,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 ViewBag.Estadillo = "Cancelada";
             }
-            /*string idd = generarID();
-                string username = User.Identity.GetUserName();
 
-                var users = (from u in db.ActivosUsers select u);
-                var user = users.SingleOrDefault(u => u.UserName == username);*/
             var cursos = (from u in db.V_COURSES select u);
             V_COURSES curso = cursos.SingleOrDefault(u => u.COURSES_CODE == pRESTAMO.SIGLA_CURSO);
             try
@@ -509,7 +500,6 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
-            // ViewBag.clear();
 
             if (pRESTAMO == null)
             {
@@ -548,7 +538,6 @@ namespace Activos_PrestamosOET.Controllers
                 List<String> temp = new List<String>();
                 if (x.TIPO_ACTIVO != null)
                 {
-
                     temp.Add(x.TIPO_ACTIVO.ToString());
                     //Se maneja llenar la tabla del modal
                     actPrevios = llenarTablaDetails(x.TIPOS_ACTIVOSID.ToString(), id);
@@ -979,7 +968,6 @@ namespace Activos_PrestamosOET.Controllers
                             where u.UserName == username
                             select u;
 
-                //select u.Cedula); 
                 var user = users.SingleOrDefault(u => u.UserName == username);
                 var cedSol = user.Id;
                 prestamo.ID = idd;
@@ -993,7 +981,7 @@ namespace Activos_PrestamosOET.Controllers
                 prestamo.USUARIO_APRUEBA = p.USUARIO_APRUEBA;
                 prestamo.USUARIO_SOLICITA = cedSol.ToString();
                 prestamo.FECHA_RETIRO = fecha;
-                prestamo.FECHA_SOLICITUD = System.DateTimeOffset.Now.Date;//SELECT SYSDATE FROM DUAL
+                prestamo.FECHA_SOLICITUD = System.DateTimeOffset.Now.Date;
                 prestamo.SOFTWARE_REQUERIDO = p.SOFTWARE_REQUERIDO;
                 prestamo.Estado = 1;
                 if (p.SIGLA_CURSO != null)
@@ -1081,33 +1069,6 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.CursoSeleccionado = pRESTAMO.SIGLA_CURSO;
 
             SelectList cursosDDL = new SelectList(db.V_COURSES);
-
-            /*
-            string username = User.Identity.GetUserName();
-
-            var users = from u in db.ActivosUsers
-                        where u.UserName == username
-                        select u;
-
-            //select u.Cedula); 
-            var user = users.SingleOrDefault(u => u.UserName == username);
-            var cedSol = user.Id;
-            */
-            /*
-            string miCurso = pRESTAMO.SIGLA_CURSO;
-            
-            if (miCurso != null)
-            {
-                var cursitos = from u in db.V_COURSES
-                               where u.COURSES_CODE == miCurso
-                               select u;
-                var miCurso2 = cursitos.SingleOrDefault(u => u.COURSES_CODE == miCurso);
-                SelectListItem i = new SelectListItem(db);
-            }*/
-
-
-
-
 
             //Determina el estado de la solicitud para desplegarlo en la pantalla mas adelante
             ViewBag.Estadillo = "";
