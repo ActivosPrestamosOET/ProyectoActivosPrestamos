@@ -1080,11 +1080,11 @@ namespace Activos_PrestamosOET.Controllers
                     }
                     
                 }
-                SelectCurso += "<option value=\"" + null + "\">" + "Seleccionar" + "</option>";
+                SelectCurso += "<option value=\"" + "\">" + "Seleccionar" + "</option>";
             }
             else
             {
-                SelectCurso += "<option value=\"" + null + "\" selected=\"selected\">" + "Seleccionar" + "</option>";
+                SelectCurso += "<option value=\"" + "\" selected=\"selected\">" + "Seleccionar" + "</option>";
                 foreach (V_COURSES curso in db.V_COURSES.ToList())
                 {
                         SelectCurso += "<option value=\"" + curso.COURSES_CODE + "\">" + curso.COURSE_NAME + "</option>";
