@@ -196,7 +196,14 @@
                     <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.SIGLA_CURSO):</label>
                 </div>
                 <div class="col-md-4">
-                    <!--Html.DisplayFor(model => model.V_COURSES.COURSE_NAME)-->
+                    @if (Model.V_COURSESCOURSES != 0)
+                    {
+                       <text>@Model.V_COURSES.COURSE_NAME</text>
+                    }
+                    else
+                    {
+                       <text>No hay curso asociado</text>
+                    }
                 </div>
                 <br />
                 <br />
@@ -208,8 +215,7 @@
                     @Html.DisplayFor(model => model.SOFTWARE_REQUERIDO)
                 </div>
                 
-                <div class="form-group">
-                    <label class="col-lg-2 control-label" for="inputDefault">Curso que solicita:</label>
+                <div class="form-group">                    
                     <div class="col-lg-4">
                         @Html.DisplayFor(model => model.OBSERVACIONES_SOLICITANTE)
                     </div>
@@ -252,14 +258,14 @@
         </thead>
         <tbody>
             @if (ViewBag.Equipo_Solict != null)
-            {
-                int modal = 0;
-                foreach (List<String> s in ViewBag.Equipo_Solict)
-                {
+                            {
+                                int modal = 0;
+                                foreach (List<String> s in ViewBag.Equipo_Solict)
+                                {
                     <tr>
                         <td>@s[0] &nbsp;</td>
                         @if (s[3] == "d")
-                        {
+                                        {
                             <td style="color:green">@s[1] &nbsp;</td>
                         }
                         else
@@ -267,8 +273,8 @@
                             <td style="color: orangered">@s[1] &nbsp;</td>
                         }
 
-                        @if (ViewBag.Mensaje2 != null)
-                        {
+                                    @if (ViewBag.Mensaje2 != null)
+                                        {
                             <td>
                                 @Html.TextBox("cantidad_aprobada", @s[2], null, new { @class = "form-control col-md-2", @type = "number", @min = "0", @readonly = "readonly" })
                             </td>
@@ -280,14 +286,14 @@
                             </td>
                         }
                         <td>
-                            @if (asignarEquipos == true)
-                            {
+                        @if ((asignarEquipos == true)&&(!ViewBag.mismo))
+                        {
                             <!-- Button trigger modal -->
                             <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal@(modal)">
                                 
                                 Seleccionar
                             </button>
-                            }
+                        }
                             else
                             {
                                                             <!-- Button trigger modal -->
@@ -295,7 +301,7 @@
 
                                     Seleccionar
                                 </button>
-                            }
+                    }
                             <!-- Modal -->
                             <div class="modal" id="myModal@(modal)">
                                 <div class="modal-dialog">
@@ -316,16 +322,18 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                              
-                                                    @if (ViewBag.Activos_enPrevio != null)
-                                                    {
-                                                        List<List<String>> a = ViewBag.Activos_enPrevio[modal];
 
-                                                        foreach (List<String> b in a)
-                                                        {
+
+                                                    @if (ViewBag.Activos_enPrevio != null)
+                    {
+                        List<List<String>> a = ViewBag.Activos_enPrevio[modal];
+
+                        foreach (List<String> b in a)
+                        {
                                                             <tr>
-                                                               
-                                                                   
+
+
+
                                                                     <td><input type="checkbox", readonly="readonly", disabled="disabled", checked="checked"></td>
                                                                @*     <td>@Html.CheckBox("activoSeleccionado", true, new { @readonly = "readonly", @value = @b[2] })</td>
                                                                     @* <td><input type="checkbox" name="activoSeleccionado" value="Seleccionado" disabled="disabled" readonly="readonly"></td>*@
@@ -420,9 +428,26 @@
 
                 <div id="Botones_aceptar_cancelar" class="col-md-offset-9 col-md-12">
 
+                @if (((Model.Estado) == 1 || (Model.Estado) == 2 || (Model.Estado) == 4)&& (!ViewBag.mismo))
+                {
                     <input type="submit" name="b" value="Aceptar" class="btn btn-success" />
 
-                    <input type="submit" name="b" value="Denegar" class="btn btn-danger" />
+                    <input type="submit" name="b" value="Denegar" class="btn btn-danger" disabled="disabled" readonly="readonly"/>
+                }
+                @if (((Model.Estado) == 3)&& (!ViewBag.mismo))
+                {
+
+                    <input type="submit" name="b" value="Aceptar" class="btn btn-success" disabled="disabled" readonly="readonly"/>
+
+                    <input type="submit" name="b" value="Denegar" class="btn btn-danger" />}
+
+                @if (((Model.Estado) == 5 || (Model.Estado) == 6)|| (ViewBag.mismo))
+                {
+
+                    <input type="submit" name="b" value="Aceptar" class="btn btn-success" disabled="disabled" readonly="readonly" />
+
+                    <input type="submit" name="b" value="Denegar" class="btn btn-danger" disabled="disabled" readonly="readonly" />
+                 }
 
                 </div>
 

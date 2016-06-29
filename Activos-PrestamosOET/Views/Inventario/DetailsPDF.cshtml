@@ -63,7 +63,7 @@
                 <td>
                     @foreach (var x in Model.TRANSACCIONES)
                     {
-                        if (x.ACTIVOID == Model.ID && x.NUMERO_BOLETA == item.NUMERO_BOLETA)
+                        if (x.ACTIVOID == Model.ID && x.NUMERO_BOLETA == item.NUMERO_BOLETA && x.ESTADO == "Devuelto de préstamo")
                         {
                             @Html.DisplayFor(modelItem => x.OBSERVACIONES_RECIBO)
                         }

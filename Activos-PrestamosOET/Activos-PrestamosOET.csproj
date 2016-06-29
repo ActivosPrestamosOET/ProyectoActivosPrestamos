@@ -533,7 +533,6 @@
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Views\PRESTAMOes\Details viejo.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
