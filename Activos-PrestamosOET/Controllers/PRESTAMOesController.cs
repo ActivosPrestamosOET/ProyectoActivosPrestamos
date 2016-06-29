@@ -1064,37 +1064,59 @@ namespace Activos_PrestamosOET.Controllers
 
             //Buscamos los cursos de en la base de datos
             //ViewBag.Cursos = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
+            //String SelectCurso = "<select class=\"form-control\" id=\"SIGLA_CURSO\" name=\"SIGLA_CURSO\">";
+            /* if (pRESTAMO.SIGLA_CURSO != null)
+             {*/
+            /*
+           SelectList Cursos = new SelectList(db.V_COURSES.ToList());//new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
+           bool seleccionadoNull = false;
+
+           foreach (V_COURSES curso in db.V_COURSES.ToList())
+           {
+               if (pRESTAMO.SIGLA_CURSO == curso.COURSES_CODE)
+               {
+                   SelectCurso += "<option value=\"" + curso.COURSES_CODE + "\" selected=\"selected\">" + curso.COURSE_NAME + "</option>";
+                   seleccionadoNull = true;
+               }
+               else
+               {
+                   SelectCurso += "<option value=\"" + curso.COURSES_CODE + "\">" + curso.COURSE_NAME + "</option>";
+               }
+           }
+           if (!seleccionadoNull)
+           {
+               SelectCurso += "<option value=\"\">Seleccione</option>";
+           }
+           else
+           {
+               SelectCurso += "<option value=\"" + "\" selected=\"selected\">Seleccione</option>";
+           }
+           SelectCurso += "</select>";
+           ViewBag.SelectCurso = SelectCurso;
+           */
             String SelectCurso = "<select class=\"form-control\" id=\"SIGLA_CURSO\" name=\"SIGLA_CURSO\">";
-            if (pRESTAMO.SIGLA_CURSO != "")
+            foreach (V_COURSES curso in db.V_COURSES.ToList())
             {
-                SelectCurso += "<option value=\"\">" + "Seleccione" + "</option>";
-                foreach (V_COURSES curso in db.V_COURSES.ToList())
+                if (pRESTAMO.SIGLA_CURSO == curso.COURSES_CODE)
                 {
-
-                    if (pRESTAMO.SIGLA_CURSO == curso.COURSES_CODE)
-                    {
-                        SelectCurso += "<option value=\"" + curso.COURSES_CODE + "\" selected=\"selected\">" + curso.COURSE_NAME + "</option>";
-                    }
-                    else
-                    {
-                        SelectCurso += "<option value=\"" + curso.COURSES_CODE + "\">" + curso.COURSE_NAME + "</option>";
-                    }
-                    
+                    SelectCurso += "<option value=\"" + curso.COURSES_CODE + "\" selected=\"selected\">" + curso.COURSE_NAME + "</option>";
+                }
+                else
+                {
+                    SelectCurso += "<option value=\"" + curso.COURSES_CODE + "\">" + curso.COURSE_NAME + "</option>";
                 }
             }
-            else
+            if(pRESTAMO.SIGLA_CURSO != null)
             {
-                SelectCurso += "<option value=\"\" selected=\"selected\">" + "Seleccione" + "</option>";
-                foreach (V_COURSES curso in db.V_COURSES.ToList())
-                {
-                        SelectCurso += "<option value=\"" + curso.COURSES_CODE + "\">" + curso.COURSE_NAME + "</option>";
-                }
+                SelectCurso= SelectCurso + "<option value=\"\">Seleccione</option>";
+            }else
+            {
+                SelectCurso += "<option value=null selected=\"selected\">Seleccione</option>";
+                //SelectCurso += "<option value=\"" + "\" selected=\"selected\">Seleccione</option>";
             }
-        
             SelectCurso += "</select>";
+
             ViewBag.SelectCurso = SelectCurso;
-
-
             //SelectList cursosDDL = new SelectList(db.V_COURSES);
 
             //Determina el estado de la solicitud para desplegarlo en la pantalla mas adelante
