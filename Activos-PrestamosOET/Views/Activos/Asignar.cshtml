@@ -104,7 +104,21 @@
     <div class="row">
         <div class="col-xs-12">
             <span class="pull-right">
-                <input type="submit" value="Guardar" class="btn btn-default" />
+                <input id='boton_prueba'type="submit" value="Guardar" class="btn btn-default" />
+
+                <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+                <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/css/toastr.css" rel="stylesheet" />
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.0.1/js/toastr.js"></script>
+                <script type="text/javascript">
+                $(document).ready(function() {
+                    toastr.options.timeOut = 10000; // 10s                    
+                    $('#boton_prueba').click(function () {      
+                        toastr.success('Se enviará un correo electrónico al usuario correspondiente si se le asigna un activo.', 'INFORMACIÓN');                       
+                    });
+                });
+                </script>
+
+
             </span>
         </div>
     </div>

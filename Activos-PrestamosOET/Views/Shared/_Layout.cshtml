@@ -12,6 +12,7 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/toastr")
 
     <!-- Datepicker cross-browser -->
     <script src="@Url.Content("~/Scripts/jquery-ui-1.11.4.js")" type="text/javascript"></script>
@@ -53,7 +54,11 @@
                             <ul class="dropdown-menu">
                                 <li>@Html.ActionLink("Administración de activos", "Index", "Activos")</li>
                                 <li>@Html.ActionLink("Inventario y códigos de barras", "Inventario", "Activos")</li>
-                                <li>@Html.ActionLink("Consulta por empleados", "Index", "Empleados")</li>
+
+                                @if (User.IsInRole("superadmin"))
+                                {
+                                    <li>@Html.ActionLink("Consulta por empleados", "Index", "Empleados")</li>
+                                }
                             </ul>
                         </li>
                         <li class="dropdown">

@@ -4,6 +4,8 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
+using SendGrid;
 using System.Web;
 using System.Web.Mvc;
 using Activos_PrestamosOET.Models;
@@ -11,6 +13,10 @@ using PagedList;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Web.Services;
+using System.Configuration;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
+using System.IO;
 
 namespace Activos_PrestamosOET.Controllers
 {
@@ -43,6 +49,14 @@ namespace Activos_PrestamosOET.Controllers
         // GET: Inventario
         public ActionResult Inventario(string orden, int? pagina, string busqueda)
         {
+            /*Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=oo.pdf");
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            string[] datos = { "1653284", "16532845", "1653287", "1953284" };
+            Response.BinaryWrite(CrearPDF(datos));
+            Response.End();*/
+
             ViewBag.OrdenActual = orden;
             ViewBag.Compania = String.IsNullOrEmpty(orden) ? "compania_desc" : "";
             ViewBag.Estacion = (orden == "estacion_asc") ? "estacion_desc" : "estacion_asc";
@@ -93,6 +107,53 @@ namespace Activos_PrestamosOET.Controllers
             int tamano_pagina = 20;
             int num_pagina = (pagina ?? 1);
             return View(aCTIVOS.ToPagedList(num_pagina, tamano_pagina));
+        }
+
+        [HttpPost]
+        public ActionResult GenerarPDFCodigoBarras(string [] marcados) {
+            string nombre_archivo = "Códigos " + DateTime.Now.ToString(@"MM\/dd\/yyyy h\:mm tt");
+            marcados = marcados.Where(val => val != "false").ToArray();
+            Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=" + nombre_archivo + ".pdf");
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.BinaryWrite(CrearPDF(marcados));
+            Response.End();
+            return RedirectToAction("Inventario");
+        }
+
+        private byte[] CrearPDF(string [] datos)
+        {
+            byte[] bPDF = null;
+
+            MemoryStream ms = new MemoryStream();
+            Document doc = new Document(PageSize.A4, 25, 25, 25, 25);
+
+            PdfWriter writer = PdfWriter.GetInstance(doc, ms);
+            doc.Open();
+            PdfContentByte cb = writer.DirectContent;
+            PdfPTable table = new PdfPTable(2);
+            table.WidthPercentage = 100;
+
+            //****Se agregan elementos 
+            for (int i = 0; i < datos.Length; i++)
+            {
+                Barcode39 bc = new Barcode39();
+                bc.Code = datos[i];
+                bc.StartStopText = false;
+                bc.TextAlignment = Element.ALIGN_CENTER; 
+                bc.Extended = true;
+                bc.N = 3;
+                PdfPCell cell = new PdfPCell(table.DefaultCell);
+                cell.AddElement(bc.CreateImageWithBarcode(cb, null, null));
+                table.AddCell(cell);
+            }
+            table.CompleteRow();
+            doc.Add(table);
+            //*************************
+            doc.Close();
+            bPDF = ms.ToArray();
+            return bPDF;
         }
 
         // GET: Activos
@@ -242,7 +303,7 @@ namespace Activos_PrestamosOET.Controllers
             aCTIVO.ESTADO_ACTIVOID = estado.ToList()[0].ID;
             aCTIVO.INGRESADO_POR = User.Identity.Name;
             decimal precio;
-            if (Convert.ToBoolean(Request["MONEDA"]))
+            if (db.V_MONEDA.Find(Request["V_MONEDAID"]).NOMBRE.Equals("Colones"))
             {
                 // Colones
                 decimal tipo_cambio = db.V_TIPO_CAMBIO.ToList()[0].TIPOCAMBIO;
@@ -269,8 +330,6 @@ namespace Activos_PrestamosOET.Controllers
                 var anfitriona = consulta_anfitriona.ToList()[0].NOMBRE;
                 var consulta_transaccion = db.TIPOS_TRANSACCIONES.ToList().Where(ea => ea.ID == aCTIVO.TIPO_TRANSACCIONID);
                 var transaccion = consulta_transaccion.ToList()[0].NOMBRE;
-
-                if(transaccion == "")
 
                 controladora_transaccion.Create(User.Identity.GetUserName(), "Creado", aCTIVO.descripcion(proveedor, transaccion, anfitriona), aCTIVO.ID);
                 return RedirectToAction("Index");
@@ -337,6 +396,36 @@ namespace Activos_PrestamosOET.Controllers
                     // Al activo se le asigna la estacion del empleado encargado, para que siempre este correcta y no dependa de la correctitud del filtro de empleados por estacion.
                     original.V_ESTACIONID = (db.V_EMPLEADOS.ToList().Where(ea => ea.IDEMPLEADO == aCTIVO.V_EMPLEADOSIDEMPLEADO)).ToList()[0].ESTACION_ID;
                     original.CENTRO_DE_COSTOId = aCTIVO.CENTRO_DE_COSTOId;
+
+                    var empleado = db.V_EMPLEADOS.Find(aCTIVO.V_EMPLEADOSIDEMPLEADO);                    
+
+                    if (empleado.EMAIL.Contains("@"))
+                    {
+                        var mensaje_correo = new SendGridMessage();
+                        mensaje_correo.From = new System.Net.Mail.MailAddress("andresbejar@gmail.com", "Admin");
+                        List<String> destinatarios = new List<string>
+                        {
+                            //@""+empleado.NOMBRE+" <"+empleado.EMAIL+">",
+                            @"Jose Urena <jpurena14@hotmail.com>"
+                        };
+
+                        mensaje_correo.AddTo(destinatarios);
+                        mensaje_correo.Subject = "Activo asignado a su cuenta de OET.";                                                
+                        mensaje_correo.Html += "<h2>La OET le informa</h2><br />";
+                        mensaje_correo.Html += "A través de este correo la OET desea informarle que un nuevo activo ha sido asignado a su nombre."+"<br />" + "<br />";
+                        mensaje_correo.Html += "A continuación se enlistan las características del activo: "+"<br />" + "<br />" + "<br />";
+                        mensaje_correo.Html += "Descripción: " + original.DESCRIPCION+"<br />" + "<br />";
+                        mensaje_correo.Html += "Número de placa: " + original.PLACA + "<br />" + "<br />";
+                        mensaje_correo.Html += "Inicio del servicio: " + original.INICIO_SERVICIO + "<br />" + "<br />";
+                        mensaje_correo.Html += "Comentarios: " + original.COMENTARIO + "<br />";
+                        
+                        var credentials = new NetworkCredential(ConfigurationManager.AppSettings["mailAccount"], ConfigurationManager.AppSettings["mailPassword"]);
+                        var transportWeb = new SendGrid.Web(credentials);                        
+                        transportWeb.DeliverAsync(mensaje_correo);
+                    }
+
+
+
                 }
                 db.SaveChanges();
 
@@ -399,6 +488,24 @@ namespace Activos_PrestamosOET.Controllers
             var original = db.ACTIVOS.Find(aCTIVO.ID);
             if (aCTIVO.DESECHADO)
                 return RedirectToAction("Index");
+
+
+            decimal precio;
+            if (db.V_MONEDA.Find(Request["V_MONEDAID"]).NOMBRE.Equals("Colones"))
+            {
+                // Colones
+                decimal tipo_cambio = db.V_TIPO_CAMBIO.ToList()[0].TIPOCAMBIO;
+                precio = aCTIVO.PRECIO / tipo_cambio;
+
+            }
+            else
+            {
+                //Dolares
+                precio = aCTIVO.PRECIO;
+
+            }
+            aCTIVO.TIPO_CAPITAL = (precio >= 1000) ? true : false;
+
             if (ModelState.IsValid)
             {
                 original.NUMERO_SERIE = aCTIVO.NUMERO_SERIE;
