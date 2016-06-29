@@ -11,7 +11,7 @@ using PagedList;
 
 namespace Activos_PrestamosOET.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "superadmin")]
     public class EmpleadosController : Controller
     {
         private PrestamosEntities db = new PrestamosEntities();
@@ -22,10 +22,11 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.OrdenActual = orden;
             ViewBag.Nombre = String.IsNullOrEmpty(orden) ? "nombre_desc" : "";
             ViewBag.Correo = (orden == "correo_asc") ? "correo_desc" : "correo_asc";
+
             var empleados = db.V_EMPLEADOS.Where(emp => emp.ESTADO.Equals(1) && emp.EMAIL.Contains("@"));
 
             #region Busqueda de empleados
-            if(!String.IsNullOrEmpty(busqueda))
+            if (!String.IsNullOrEmpty(busqueda))
                 empleados = empleados.Where(emp => emp.NOMBRE.Contains(busqueda) || emp.EMAIL.Contains(busqueda));
             #endregion
 
@@ -78,7 +79,7 @@ namespace Activos_PrestamosOET.Controllers
             V_EMPLEADOS v_EMPLEADOS = db.V_EMPLEADOS.Find(id);
             List<ActivosAsignados> activos_asignados = new List<ActivosAsignados>();
             List<TRANSACCION> transacciones = db.TRANSACCIONES.Where(em => em.V_EMPLEADOSIDEMPLEADO.Equals(id)).ToList();
-           
+
             foreach (var item in transacciones)
             {
                 ACTIVO activo = db.ACTIVOS.Find(item.ACTIVOID);
