@@ -109,14 +109,40 @@ namespace Activos_PrestamosOET.Controllers
                 equipo.Add(a.FABRICANTE);
                 equipo.Add(a.MODELO);
                 equipo.Add(a.PLACA);
-                equipo.Add(a.PRESTADO.ToString());
                 equipo.Add(a.ID);
+                equipo.Add(a.PRESTADO.ToString());
                 equipos.Add(equipo);
             }
 
             return equipos;
         }
 
+
+        protected List<String> listaActivos(Dictionary<String, List<List<String>>> dic)
+        {
+            List<String> listaActivos = new List<String>();
+            foreach (KeyValuePair<String, List<List<String>>> entrada in dic)
+            {
+                foreach (List<String> l in entrada.Value)
+                {
+                    listaActivos.Add(l[2]);
+                }
+            }
+            return listaActivos;
+        }
+
+        protected int indiceActivo(List<String> lista, String placa)
+        {
+            int indice = -1;
+            for (int i = 0; i < lista.Count; i++)
+            {
+                if (placa == lista[i])
+                {
+                    indice = i;
+                }
+            }
+            return indice;
+        }
 
         //Requiere: String con tipo de categoría. 
         //Modifica: Hace consulta para traducir el tipo en un id
@@ -1611,7 +1637,7 @@ namespace Activos_PrestamosOET.Controllers
         //Retorna: Vista de Devolucion con la información de los modales actualizados.
         [HttpPost]
         [Authorize(Roles = "Aceptar préstamos,superadmin")]
-        public ActionResult Devolucion(string ID, bool[] column5_checkbox, bool column5_checkAll, string b, string OBSERVACIONES_APROBADO, bool[] activoSeleccionado)
+        public ActionResult Devolucion(string ID, bool[] column5_checkbox, bool column5_checkAll, string b, string OBSERVACIONES_APROBADO, bool[] activoSeleccionado, String[] Notas)
         {
             //Se recupera al préstamo y se le actualiza el campo de observaciones_aprobado
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
@@ -1621,12 +1647,14 @@ namespace Activos_PrestamosOET.Controllers
             Dictionary<String, List<List<String>>> dic = (Dictionary<String, List<List<String>>>)TempData["activos"];
 
             List<String> idPrestados = new List<String>();
+            List<String> lista = listaActivos(dic);
+
             //se guardan los ids de los activos del préstamo
             foreach (KeyValuePair<String, List<List<String>>> entrada in dic)
             {
                 foreach (List<String> l in entrada.Value)
                 {
-                    idPrestados.Add(l[4]);
+                    idPrestados.Add(l[3]);
                 }
             }
 
@@ -1657,6 +1685,8 @@ namespace Activos_PrestamosOET.Controllers
                             if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
                             {
                                 x.ESTADO_PRESTADO = 0;
+                                int indice = indiceActivo(lista, x.PLACA);
+                                new TransaccionesController().CreatePrestamo(User.Identity.GetUserName(), "Devuelto de préstamo", "Se devuelve activo en prestamo", x.ID, unchecked((int)prestamo.NUMERO_BOLETA), pRESTAMO.FECHA_RETIRO, DateTime.Now.Date, Notas[indice], pRESTAMO.USUARIO_SOLICITA);
                             }
                         }
                     }
@@ -1681,9 +1711,11 @@ namespace Activos_PrestamosOET.Controllers
                             {
                                 String id = l[3];
                                 ACTIVO act = db.ACTIVOS.Find(id);
+                                int indice = indiceActivo(lista, act.PLACA);
                                 act.ESTADO_PRESTADO = 0;
                                 db.Entry(act).State = EntityState.Modified;
                                 db.SaveChanges();
+                                new TransaccionesController().CreatePrestamo(User.Identity.GetUserName(), "Devuelto de préstamo", "Se devuelve activo en prestamo", act.ID, unchecked((int)prestamo.NUMERO_BOLETA), pRESTAMO.FECHA_RETIRO, DateTime.Now.Date, Notas[indice], pRESTAMO.USUARIO_SOLICITA);
                             }
 
                         }
@@ -1700,7 +1732,11 @@ namespace Activos_PrestamosOET.Controllers
                         String id = idPrestados[i];
                         ACTIVO act = db.ACTIVOS.Find(id);
                         if (devolucionActivos[i])
+                        {
                             act.ESTADO_PRESTADO = 0;
+                            int indice = indiceActivo(lista, act.PLACA);
+                            new TransaccionesController().CreatePrestamo(User.Identity.GetUserName(), "Devuelto de préstamo", "Se devuelve activo en prestamo", act.ID, unchecked((int)prestamo.NUMERO_BOLETA), pRESTAMO.FECHA_RETIRO, DateTime.Now.Date, Notas[indice], pRESTAMO.USUARIO_SOLICITA);
+                        }
                         else
                         {
                             //act.ESTADO_PRESTADO = ;
