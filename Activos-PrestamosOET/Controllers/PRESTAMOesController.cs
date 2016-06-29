@@ -712,8 +712,16 @@ namespace Activos_PrestamosOET.Controllers
             int k = 0;
             foreach (var l in equipo)//Se agrega el resultado del cálculo para cada categoría al final del vector a retornar.
             {
-                l.Add(disp[k]);
-                k++;
+                try
+                {
+                    l.Add(disp[k]);
+                    k++;
+                }
+                catch (ArgumentOutOfRangeException e)
+                {
+                    l.Add("d");
+
+                }
             }
             string username = User.Identity.GetUserName();
             ViewBag.Equipo_Solict = equipo;
