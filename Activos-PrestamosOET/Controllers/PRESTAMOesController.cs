@@ -1067,6 +1067,7 @@ namespace Activos_PrestamosOET.Controllers
             String SelectCurso = "<select class=\"form-control\" id=\"SIGLA_CURSO\" name=\"SIGLA_CURSO\">";
             if (pRESTAMO.SIGLA_CURSO != "")
             {
+                SelectCurso += "<option value=\"\">" + "Seleccione" + "</option>";
                 foreach (V_COURSES curso in db.V_COURSES.ToList())
                 {
 
@@ -1080,11 +1081,10 @@ namespace Activos_PrestamosOET.Controllers
                     }
                     
                 }
-                SelectCurso += "<option value=\"" + "\">" + "Seleccionar" + "</option>";
             }
             else
             {
-                SelectCurso += "<option value=\"" + "\" selected=\"selected\">" + "Seleccionar" + "</option>";
+                SelectCurso += "<option value=\"\" selected=\"selected\">" + "Seleccione" + "</option>";
                 foreach (V_COURSES curso in db.V_COURSES.ToList())
                 {
                         SelectCurso += "<option value=\"" + curso.COURSES_CODE + "\">" + curso.COURSE_NAME + "</option>";
