@@ -14,6 +14,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System.Web.Services;
 using System.Configuration;
+using iTextSharp.text.pdf;
+using iTextSharp.text;
+using System.IO;
 
 namespace Activos_PrestamosOET.Controllers
 {
@@ -46,6 +49,14 @@ namespace Activos_PrestamosOET.Controllers
         // GET: Inventario
         public ActionResult Inventario(string orden, int? pagina, string busqueda)
         {
+            /*Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=oo.pdf");
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            string[] datos = { "1653284", "16532845", "1653287", "1953284" };
+            Response.BinaryWrite(CrearPDF(datos));
+            Response.End();*/
+
             ViewBag.OrdenActual = orden;
             ViewBag.Compania = String.IsNullOrEmpty(orden) ? "compania_desc" : "";
             ViewBag.Estacion = (orden == "estacion_asc") ? "estacion_desc" : "estacion_asc";
@@ -96,6 +107,53 @@ namespace Activos_PrestamosOET.Controllers
             int tamano_pagina = 20;
             int num_pagina = (pagina ?? 1);
             return View(aCTIVOS.ToPagedList(num_pagina, tamano_pagina));
+        }
+
+        [HttpPost]
+        public ActionResult GenerarPDFCodigoBarras(string [] marcados) {
+            string nombre_archivo = "Códigos " + DateTime.Now.ToString(@"MM\/dd\/yyyy h\:mm tt");
+            marcados = marcados.Where(val => val != "false").ToArray();
+            Response.Clear();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("content-disposition", "attachment;filename=" + nombre_archivo + ".pdf");
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.BinaryWrite(CrearPDF(marcados));
+            Response.End();
+            return RedirectToAction("Inventario");
+        }
+
+        private byte[] CrearPDF(string [] datos)
+        {
+            byte[] bPDF = null;
+
+            MemoryStream ms = new MemoryStream();
+            Document doc = new Document(PageSize.A4, 25, 25, 25, 25);
+
+            PdfWriter writer = PdfWriter.GetInstance(doc, ms);
+            doc.Open();
+            PdfContentByte cb = writer.DirectContent;
+            PdfPTable table = new PdfPTable(2);
+            table.WidthPercentage = 100;
+
+            //****Se agregan elementos 
+            for (int i = 0; i < datos.Length; i++)
+            {
+                Barcode39 bc = new Barcode39();
+                bc.Code = datos[i];
+                bc.StartStopText = false;
+                bc.TextAlignment = Element.ALIGN_CENTER; 
+                bc.Extended = true;
+                bc.N = 3;
+                PdfPCell cell = new PdfPCell(table.DefaultCell);
+                cell.AddElement(bc.CreateImageWithBarcode(cb, null, null));
+                table.AddCell(cell);
+            }
+            table.CompleteRow();
+            doc.Add(table);
+            //*************************
+            doc.Close();
+            bPDF = ms.ToArray();
+            return bPDF;
         }
 
         // GET: Activos
