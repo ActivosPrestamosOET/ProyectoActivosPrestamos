@@ -303,7 +303,7 @@ namespace Activos_PrestamosOET.Controllers
             aCTIVO.ESTADO_ACTIVOID = estado.ToList()[0].ID;
             aCTIVO.INGRESADO_POR = User.Identity.Name;
             decimal precio;
-            if (Convert.ToBoolean(Request["MONEDA"]))
+            if (db.V_MONEDA.Find(Request["V_MONEDAID"]).NOMBRE.Equals("Colones"))
             {
                 // Colones
                 decimal tipo_cambio = db.V_TIPO_CAMBIO.ToList()[0].TIPOCAMBIO;
@@ -330,8 +330,6 @@ namespace Activos_PrestamosOET.Controllers
                 var anfitriona = consulta_anfitriona.ToList()[0].NOMBRE;
                 var consulta_transaccion = db.TIPOS_TRANSACCIONES.ToList().Where(ea => ea.ID == aCTIVO.TIPO_TRANSACCIONID);
                 var transaccion = consulta_transaccion.ToList()[0].NOMBRE;
-
-                if(transaccion == "")
 
                 controladora_transaccion.Create(User.Identity.GetUserName(), "Creado", aCTIVO.descripcion(proveedor, transaccion, anfitriona), aCTIVO.ID);
                 return RedirectToAction("Index");
@@ -490,6 +488,24 @@ namespace Activos_PrestamosOET.Controllers
             var original = db.ACTIVOS.Find(aCTIVO.ID);
             if (aCTIVO.DESECHADO)
                 return RedirectToAction("Index");
+
+
+            decimal precio;
+            if (db.V_MONEDA.Find(Request["V_MONEDAID"]).NOMBRE.Equals("Colones"))
+            {
+                // Colones
+                decimal tipo_cambio = db.V_TIPO_CAMBIO.ToList()[0].TIPOCAMBIO;
+                precio = aCTIVO.PRECIO / tipo_cambio;
+
+            }
+            else
+            {
+                //Dolares
+                precio = aCTIVO.PRECIO;
+
+            }
+            aCTIVO.TIPO_CAPITAL = (precio >= 1000) ? true : false;
+
             if (ModelState.IsValid)
             {
                 original.NUMERO_SERIE = aCTIVO.NUMERO_SERIE;

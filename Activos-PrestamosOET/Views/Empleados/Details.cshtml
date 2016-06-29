@@ -16,9 +16,80 @@
         <hr />
     </div>
 </div>
-@*TODO: Agregar la tabla que muestre todos los activos que ha tenido asignados ese usuario en el sistema.*@
+@*TODO: Modificar tablas para que aparezcan datos utiles (resolver referencia a activo).*@
 <div class="row">
-    <div class="col-xs-12">
-        <h1 class="text-muted text-center">TODO: Agregar la tabla con el historial de activos que le han sido asignados</h1>
+    <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            Fecha de asignación
+                        </th>
+                        <th>
+                            Modelo de activo
+                        </th>
+                        <th>
+                            Número de placa
+                        </th>
+                        <th>
+                            Descripción
+                        </th>
+                        <th class="text-center">
+                            Ver activo
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.activos_asignados)
+                    {
+                        if (item.activo_desechado)
+                        {
+                            <tr class="danger">
+                                <td>
+                                    @item.transaccion_fecha
+                                </td>
+                                <td>
+                                    @item.activo_modelo
+                                </td>
+                                <td>
+                                    @item.numero_de_placa
+                                </td>
+                                <td>
+                                    @item.activo_descripcion
+                                </td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("Details", "Activos", new { id = item.activo_id })">
+                                        <span class="glyphicon glyphicon-eye-open text-info" aria-hidden="true" title="Detalles"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>
+                                    @item.transaccion_fecha
+                                </td>
+                                <td>
+                                    @item.activo_modelo
+                                </td>
+                                <td>
+                                    @item.numero_de_placa
+                                </td>
+                                <td>
+                                    @item.activo_descripcion
+                                </td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("Details", "Activos", new { id = item.activo_id })">
+                                        <span class="glyphicon glyphicon-eye-open text-info" aria-hidden="true" title="Detalles"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

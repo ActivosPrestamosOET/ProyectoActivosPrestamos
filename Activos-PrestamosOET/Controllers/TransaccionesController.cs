@@ -21,7 +21,6 @@ namespace Activos_PrestamosOET.Controllers
             nueva_transaccion.ACTIVOID = activo_id;
             nueva_transaccion.RESPONSABLE = responsable;
 
-
             if (ModelState.IsValid)
             {
                 db.TRANSACCIONES.Add(nueva_transaccion);

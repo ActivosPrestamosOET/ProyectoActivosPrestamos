@@ -53,7 +53,10 @@
                             <ul class="dropdown-menu">
                                 <li>@Html.ActionLink("Administración de activos", "Index", "Activos")</li>
                                 <li>@Html.ActionLink("Inventario y códigos de barras", "Inventario", "Activos")</li>
-                                <li>@Html.ActionLink("Consulta por empleados", "Index", "Empleados")</li>
+                                @if (User.IsInRole("superadmin"))
+                                {
+                                    <li>@Html.ActionLink("Consulta por empleados", "Index", "Empleados")</li>
+                                }
                             </ul>
                         </li>
                         <li class="dropdown">
