@@ -46,6 +46,53 @@ namespace Activos_PrestamosOET.Controllers
             + consecutivo.ToString("D3");
         }
 
+        public List<String> traerObservaciones(String id, int cat )
+        {
+            List<String> observaciones = new List<String>();
+
+            var activos = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
+            var act = from a in activos.ACTIVOes.Where(i => i.TIPO_ACTIVOID == cat)
+                      select new
+                      {
+                          ID = a.ID,
+                      };
+
+            foreach (var i in act)
+            {
+                var observacion = from t in db.TRANSACCIONES
+                                  where t.ACTIVOID == i.ID && t.DESCRIPCION == "Devuelto de préstamo"
+                                  select new
+                                  {
+                                      OBSERVACION = t.OBSERVACIONES_RECIBO
+                                  };
+                foreach(var o in observacion)
+                {
+                    if(o != null)
+                    {
+                        observaciones.Add(o.OBSERVACION);
+                    }
+                    else
+                    {
+                        observaciones.Add("");
+                    }
+                }
+            }
+            return observaciones;
+        }
+
+        public List<String> traerIdActivos(Dictionary<String, List<List<String>>> dic)
+        {
+            List<String> listaIdActivos = new List<String>();
+            foreach (KeyValuePair<String, List<List<String>>> entrada in dic)
+            {
+                foreach (List<String> l in entrada.Value)
+                {
+                    listaIdActivos.Add(l[3]);
+                }
+            }
+            return listaIdActivos;
+        }
+
         //Requiere: vector de booleanos 
         //Modifica: lo convierte en una lista de booleanos que elimina booleanos extra
         //Retorna:  Lista de booleanos
@@ -1586,6 +1633,8 @@ namespace Activos_PrestamosOET.Controllers
             //diccionario de listas de listas
             //guardará como clave la categoría del activo y como valor una lista de listas que trae en cada una la información individual de cada activo
             var equipo_cat = new Dictionary<String, List<List<String>>>();
+
+            List<String> listaAc = listaActivos(equipo_cat);
             //consulta con las categorías solicitadas
             var categorias_sol = from p in db.PRESTAMOS
                                  from e in db.EQUIPO_SOLICITADO
@@ -1593,11 +1642,16 @@ namespace Activos_PrestamosOET.Controllers
                                  select new { CAT = e.TIPO_ACTIVO, TIPO = e.TIPOS_ACTIVOSID };
 
             //se recorren las categorías para obtener los activos específicos de esa categoría con el id del préstamo, se llama al método equipoPorCategoria
+            var observaciones = new Dictionary<String, List<String>>();
             foreach (var c in categorias_sol)
             {
                 var eq = new List<List<String>>();
+                var ob = new List<String>();
                 eq = equipoPorCategoria(c.TIPO, id);
                 equipo_cat.Add(c.CAT.ToString(), eq);
+                ob = traerObservaciones(id, c.TIPO);
+                observaciones.Add(c.CAT.ToString(), ob);
+             
             }
 
 
@@ -1623,6 +1677,7 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.EquipoPorCat = equipo_cat;
             //se desea mantener el diccionario aún después del post
             TempData["activos"] = equipo_cat;
+            TempData["observaciones"] = observaciones;
             TempData.Keep();
 
             return View(pRESTAMO);

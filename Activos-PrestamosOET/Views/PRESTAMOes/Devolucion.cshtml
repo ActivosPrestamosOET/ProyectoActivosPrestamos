@@ -223,7 +223,7 @@
                                                                 <td>@c[0] &nbsp;</td>
                                                                 <td>@c[1] &nbsp;</td>
                                                                 <td>@c[2] &nbsp;</td>
-                                                                @if (c[3] == "0")
+                                                                @if (c[4] == "0")
                                                                 {
                                                                     <td>Devuelto</td>
                                                                 }
@@ -231,7 +231,7 @@
                                                                 {
                                                                     <td>En préstamo</td>
                                                                 }
-                                                                @if (c[3] == "0")
+                                                                @if (c[4] == "0")
                                                                 {
                                                                     <td>@Html.TextBox("Notas", null, new { @class = "form-control", @disabled = "disabled" })</td>
                                                                 }
