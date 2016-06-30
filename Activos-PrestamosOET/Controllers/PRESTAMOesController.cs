@@ -1175,10 +1175,18 @@ namespace Activos_PrestamosOET.Controllers
            SelectCurso += "</select>";
            ViewBag.SelectCurso = SelectCurso;
            */
+            var idCourse = 0;
+            /*
+            if (pRESTAMO.V_COURSESCOURSES != 0)
+            {
+                var course = db.V_COURSES.SingleOrDefault(c => c.COURSES_CODE == pRESTAMO.SIGLA_CURSO);
+                idCourse = course.COURSES;
+                //prestamo.V_COURSESCOURSES = idCourse;
+            }*/
             String SelectCurso = "<select class=\"form-control\" id=\"SIGLA_CURSO\" name=\"SIGLA_CURSO\">";
             foreach (V_COURSES curso in db.V_COURSES.ToList())
             {
-                if (pRESTAMO.SIGLA_CURSO == curso.COURSES_CODE)
+                if (pRESTAMO.V_COURSESCOURSES == curso.COURSES)
                 {
                     SelectCurso += "<option value=\"" + curso.COURSES_CODE + "\" selected=\"selected\">" + curso.COURSE_NAME + "</option>";
                 }
