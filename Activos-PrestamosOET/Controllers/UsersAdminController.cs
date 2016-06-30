@@ -161,7 +161,7 @@ namespace Activos_PrestamosOET.Controllers
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     string cuerpo_del_mensaje = "Bienvenido al sistema de Activos de la Organizacicón de Estudios Tropicales. " +
-                                                "Se creó una cuenta asociada a este correo con los siguientes roles: " + string.Join(" - ", selectedRoles)+". " +
+                                                "Se creó una cuenta asociada a este correo con los siguientes roles: Préstamos -" + string.Join(" - ", selectedRoles)+". " +
                                                 "Por favor confirme su correo ingresando a este <a href=\"" + callbackUrl + "\">enlace</a>. " +
                                                 "Si no solicitó una cuenta por favor ignore este correo.";
 
@@ -240,11 +240,13 @@ namespace Activos_PrestamosOET.Controllers
                 user.Apellidos = editUser.Apellidos;
                 user.Cedula = editUser.Cedula;
                 user.EstacionID = editUser.EstacionID;
-
+                
                 var userRoles = await UserManager.GetRolesAsync(user.Id);
 
-                selectedRole = selectedRole ?? new string[] { };
+                string[] selectedRoles = selectedRole;
 
+                selectedRole = selectedRole ?? new string[] { };
+                               
                 var result = await UserManager.AddToRolesAsync(user.Id, selectedRole.Except(userRoles).ToArray<string>());
 
                 if (!result.Succeeded)
@@ -265,7 +267,7 @@ namespace Activos_PrestamosOET.Controllers
                 {
                     //enviar correo con cambios al usuario
                     string cuerpo_del_mensaje = "Este correo es para informarle que sus roles dentro del sistema de Administración de Activos fueron cambiados. " +
-                                                "Sus roles actuales son los siguientes: " + string.Join(" - ", userRoles) + ". " +
+                                                "Sus roles actuales son los siguientes: Préstamos -" + string.Join(" - ", selectedRoles) + ". " +
                                                 "Si usted no posee una cuenta en el sistema por favor ignore este correo.";
 
                     await UserManager.SendEmailAsync(user.Id, "Sus roles en el sistema han sido cambiados.", cuerpo_del_mensaje);

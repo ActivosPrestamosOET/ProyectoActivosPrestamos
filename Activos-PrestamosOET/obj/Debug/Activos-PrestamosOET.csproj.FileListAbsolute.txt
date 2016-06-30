@@ -913,7 +913,6 @@ C:\Users\carlo\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\Microso
 C:\Users\carlo\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\Microsoft.Owin.Security.Twitter.xml
 C:\Users\carlo\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\Microsoft.Owin.Security.MicrosoftAccount.xml
 C:\Users\carlo\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csproj.App.config
-C:\Users\carlo\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache
 C:\Users\carlo\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.dll
 C:\Users\carlo\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.pdb
 C:\Users\sdelv\Documents\GitHub\ProyectoActivosPrestamos\Activos-PrestamosOET\bin\ApplicationInsights.config
@@ -1259,3 +1258,4 @@ C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Act
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.dll
 C:\Users\Fabo\Documents\UCR\I Semestre 2016\Inge II\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.pdb
+C:\Users\carlo\Desktop\ProyectoActivosPrestamos\Activos-PrestamosOET\obj\Debug\Activos-PrestamosOET.csprojResolveAssemblyReference.cache

@@ -110,51 +110,79 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         [HttpPost]
-        public ActionResult GenerarPDFCodigoBarras(string [] marcados) {
+        public ActionResult GenerarPDFCodigoBarras(string [] marcados, int codigo_seleccionado = 0) {
             string nombre_archivo = "Códigos " + DateTime.Now.ToString(@"MM\/dd\/yyyy h\:mm tt");
             marcados = marcados.Where(val => val != "false").ToArray();
             Response.Clear();
             Response.ContentType = "application/pdf";
             Response.AddHeader("content-disposition", "attachment;filename=" + nombre_archivo + ".pdf");
             Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            Response.BinaryWrite(CrearPDF(marcados));
+            Response.BinaryWrite(CrearPDF(marcados, codigo_seleccionado));
             Response.End();
             return RedirectToAction("Inventario");
         }
 
-        private byte[] CrearPDF(string [] datos)
+       
+        private byte[] CrearPDF(string [] datos, int tipo)
         {
             byte[] bPDF = null;
 
             MemoryStream ms = new MemoryStream();
             Document doc = new Document(PageSize.A4, 25, 25, 25, 25);
-
             PdfWriter writer = PdfWriter.GetInstance(doc, ms);
             doc.Open();
-            PdfContentByte cb = writer.DirectContent;
-            PdfPTable table = new PdfPTable(2);
-            table.WidthPercentage = 100;
+            switch (tipo){ //Escoger tipo de PDF
+                case 1:
+                    doc.Add(CodigoQR(datos, 6));
+                    break;
+                default :
+                    doc.Add(Codigo39(datos, writer, 6));
+                    break;
+            }
+            doc.Close();
+            bPDF = ms.ToArray();
+            return bPDF;
+        }
 
+        private PdfPTable CodigoQR(string[] datos, int codigos_por_fila) {
+            PdfPTable table = new PdfPTable(codigos_por_fila);
+            table.WidthPercentage = 100;
+            //****Se agregan elementos 
+            for (int i = 0; i < datos.Length; i++)
+            {
+                BarcodeQRCode bc = new BarcodeQRCode(datos[i], 1, 1, null);
+                PdfPCell cell = new PdfPCell(table.DefaultCell);
+                cell.AddElement(new Chunk("OET -"+datos[i]));
+                cell.AddElement(bc.GetImage());
+                table.AddCell(cell);
+            }
+            table.CompleteRow();
+            return table;
+        }
+
+        private PdfPTable Codigo39(string[] datos, PdfWriter writer, int codigos_por_fila)
+        {
+            PdfPTable table = new PdfPTable(codigos_por_fila);
+            table.WidthPercentage = 100;
             //****Se agregan elementos 
             for (int i = 0; i < datos.Length; i++)
             {
                 Barcode39 bc = new Barcode39();
+                PdfContentByte cb = new PdfContentByte(writer);
                 bc.Code = datos[i];
-                bc.StartStopText = false;
-                bc.TextAlignment = Element.ALIGN_CENTER; 
-                bc.Extended = true;
                 bc.N = 3;
+                bc.X= 1;
+                bc.AltText = "OET -";
                 PdfPCell cell = new PdfPCell(table.DefaultCell);
                 cell.AddElement(bc.CreateImageWithBarcode(cb, null, null));
                 table.AddCell(cell);
             }
             table.CompleteRow();
-            doc.Add(table);
-            //*************************
-            doc.Close();
-            bPDF = ms.ToArray();
-            return bPDF;
+            return table;
         }
+
+
+
 
         // GET: Activos
         public ActionResult Index(string orden, string filtro, string busqueda, string V_PROVEEDORIDPROVEEDOR, string TIPO_ACTIVOID, string V_ANFITRIONAID, string TIPO_TRANSACCIONID, string ESTADO_ACTIVOID, string V_ESTACIONID, string fecha_antes, string fecha_despues, string usuario, string fabricante, int? pagina)
