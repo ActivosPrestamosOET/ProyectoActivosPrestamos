@@ -1175,7 +1175,7 @@ namespace Activos_PrestamosOET.Controllers
            SelectCurso += "</select>";
            ViewBag.SelectCurso = SelectCurso;
            */
-            var idCourse = 0;
+            
             /*
             if (pRESTAMO.V_COURSESCOURSES != 0)
             {
@@ -1183,19 +1183,21 @@ namespace Activos_PrestamosOET.Controllers
                 idCourse = course.COURSES;
                 //prestamo.V_COURSESCOURSES = idCourse;
             }*/
+            bool b = false;
             String SelectCurso = "<select class=\"form-control\" id=\"SIGLA_CURSO\" name=\"SIGLA_CURSO\">";
             foreach (V_COURSES curso in db.V_COURSES.ToList())
             {
                 if (pRESTAMO.V_COURSESCOURSES == curso.COURSES)
                 {
                     SelectCurso += "<option value=\"" + curso.COURSES_CODE + "\" selected=\"selected\">" + curso.COURSE_NAME + "</option>";
+                    b = true;
                 }
                 else
                 {
                     SelectCurso += "<option value=\"" + curso.COURSES_CODE + "\">" + curso.COURSE_NAME + "</option>";
                 }
             }
-            if(pRESTAMO.SIGLA_CURSO != null)
+            if(b==true)
             {
                 SelectCurso= SelectCurso + "<option value=\"\">Seleccione</option>";
             }else
@@ -1423,15 +1425,49 @@ namespace Activos_PrestamosOET.Controllers
             P.MOTIVO = p.MOTIVO;
             P.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
             P.PERIODO_USO = p.PERIODO_USO;
-            
-            P.SIGLA_CURSO = p.SIGLA_CURSO;
-            if (p.SIGLA_CURSO == null)
+
+            //P.SIGLA_CURSO = p.SIGLA_CURSO;
+            int idCurso2 = 0;
+            var idCourse = 0;
+            if (p.SIGLA_CURSO != null)
             {
-                P.FECHA_RETIRO = p.FECHA_RETIRO;
-            }else
-            {
-                P.FECHA_RETIRO = DateTime.ParseExact(Fecha_Inicio_Curso, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                var course = db.V_COURSES.SingleOrDefault(c => c.COURSES_CODE == p.SIGLA_CURSO);
+                idCourse = course.COURSES;
+                P.V_COURSESCOURSES = idCourse;
             }
+            /*if (p.SIGLA_CURSO == "")
+            {
+
+            }*/
+            if (P.V_COURSESCOURSES == p.V_COURSESCOURSES)
+            {
+                //P.FECHA_RETIRO = p.FECHA_RETIRO;
+            }
+            else
+            {
+                if (p.V_COURSESCOURSES != 0)
+                {
+                    P.FECHA_RETIRO = DateTime.ParseExact(Fecha_Inicio_Curso, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    //int rrr = Convert.ToInt32(p.SIGLA_CURSO);
+                    //var course = db.V_COURSES.SingleOrDefault(c => Convert.ToString(c.COURSES) == p.SIGLA_CURSO);
+                    //var course = db.V_COURSES.SingleOrDefault(c => c.COURSES_CODE == p.SIGLA_CURSO);
+                    //var idCourse = course.COURSES;
+                    //P.V_COURSESCOURSES = idCourse;
+                } else
+                {
+                    P.FECHA_RETIRO = p.FECHA_RETIRO;
+                    //P.V_COURSESCOURSES = 0;
+                }
+                /*
+                if (p.SIGLA_CURSO != null)
+                {
+                    if ()
+                        var course = db.V_COURSES.SingleOrDefault(c => Convert.ToString(c.COURSES) == p.SIGLA_CURSO);
+                    var idCourse = course.COURSES;
+                    P.V_COURSESCOURSES = idCourse;
+                }*/
+            }
+            
             P.SOFTWARE_REQUERIDO = p.SOFTWARE_REQUERIDO;
             P.Estado = 1;
             if (ModelState.IsValid)
