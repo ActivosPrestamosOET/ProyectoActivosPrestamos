@@ -46,7 +46,7 @@ namespace Activos_PrestamosOET.Controllers
             + consecutivo.ToString("D3");
         }
 
-        public List<String> traerObservaciones(String id, int cat )
+        public List<String> traerObservaciones(String id, int cat, long? boleta )
         {
             List<String> observaciones = new List<String>();
 
@@ -60,7 +60,7 @@ namespace Activos_PrestamosOET.Controllers
             foreach (var i in act)
             {
                 var observacion = from t in db.TRANSACCIONES
-                                  where t.ACTIVOID == i.ID && t.DESCRIPCION == "Devuelto de préstamo"
+                                  where t.ACTIVOID == i.ID && t.ESTADO == "Devuelto de préstamo" && t.NUMERO_BOLETA == boleta
                                   select new
                                   {
                                       OBSERVACION = t.OBSERVACIONES_RECIBO
@@ -71,12 +71,12 @@ namespace Activos_PrestamosOET.Controllers
                     {
                         observaciones.Add(o.OBSERVACION);
                     }
-                    else
-                    {
-                        observaciones.Add("");
-                    }
+                   
                 }
+               
             }
+            if (observaciones.Count == 0) observaciones.Add("");
+
             return observaciones;
         }
 
@@ -1748,7 +1748,7 @@ namespace Activos_PrestamosOET.Controllers
                 var ob = new List<String>();
                 eq = equipoPorCategoria(c.TIPO, id);
                 equipo_cat.Add(c.CAT.ToString(), eq);
-                ob = traerObservaciones(id, c.TIPO);
+                ob = traerObservaciones(id, c.TIPO, pRESTAMO.NUMERO_BOLETA);
                 observaciones.Add(c.CAT.ToString(), ob);
              
             }
@@ -1774,6 +1774,7 @@ namespace Activos_PrestamosOET.Controllers
             //se pasan las variables a la controladora 
             ViewBag.Equipo_Solict = equipo;
             ViewBag.EquipoPorCat = equipo_cat;
+            ViewBag.Observaciones = observaciones;
             //se desea mantener el diccionario aún después del post
             TempData["activos"] = equipo_cat;
             TempData["observaciones"] = observaciones;
@@ -1799,7 +1800,8 @@ namespace Activos_PrestamosOET.Controllers
 
             //Se recupera el diccionario después del post
             Dictionary<String, List<List<String>>> dic = (Dictionary<String, List<List<String>>>)TempData["activos"];
-
+            Dictionary<String, List<String>> observaciones = (Dictionary<String, List<String>>)TempData["observaciones"];
+            ViewBag.Observaciones = observaciones;
             List<String> idPrestados = new List<String>();
             List<String> lista = listaActivos(dic);
 

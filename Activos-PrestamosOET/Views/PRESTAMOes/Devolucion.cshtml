@@ -193,8 +193,11 @@
                                                     @if (ViewBag.EquipoPorCat != null)
                                                     {
                                                         Dictionary<String, List<List<String>>> datosActivos = ViewBag.EquipoPorCat;
+                                                        Dictionary<String, List<String>> observaciones = ViewBag.Observaciones;
+                                                        int numActivo = 0;
                                                         foreach (List<String> c in datosActivos[s[0]])
                                                         {
+                                                            String observacion = "n";//observaciones[s[0]][numActivo];
                                                             <tr>
                                                                 @if ((Model.Estado) == 5)
                                                                 {
@@ -204,20 +207,20 @@
                                                                 }
                                                                 else
                                                                 {
-                                                                    if (c[4] == "0")
-                                                                    {
+                                                                if (c[4] == "0")
+                                                                {
                                                                         <td>
-                                                                            @Html.CheckBox("activoSeleccionado", false, new { @disabled = "disabled" })
+                                                                            @Html.CheckBox("activoSeleccionado", false, new { @readonly = "readonly" })
                                                                         </td>
                                                                     }
-                                                                    else
-                                                                    {
+                                                                else
+                                                                {
                                                                         <td>
                                                                             @Html.CheckBox("activoSeleccionado", false)
                                                                         </td>
                                                                     }
 
-                                                                }
+                                                            }
 
                                                                 @*<input type="checkbox" name="activoSeleccionado" value="Seleccionado"></td>*@
                                                                 <td>@c[0] &nbsp;</td>
@@ -233,13 +236,14 @@
                                                                 }
                                                                 @if (c[4] == "0")
                                                                 {
-                                                                    <td>@Html.TextArea("Notas", null, new { @class = "form-control", @disabled = "disabled" })</td>
+                                                                    <td>@Html.TextArea("Notas", observacion, new { @class = "form-control", @readonly = "readonly" })</td>
                                                                 }
                                                                 else
                                                                 {
-                                                                    <td>@Html.TextArea("Notas", null, new { @class = "form-control" })</td>
+                                                                    <td>@Html.TextArea("Notas",null, new { @class = "form-control" })</td>
                                                                 }
                                                             </tr>
+                                                            numActivo++;
                                                         }
 
                                                     }
