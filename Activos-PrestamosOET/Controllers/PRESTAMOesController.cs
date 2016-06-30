@@ -1391,7 +1391,7 @@ namespace Activos_PrestamosOET.Controllers
                             eq.TIPO_ACTIVO = y.NOMBRE;
                             eq.CANTIDAD = temp;
                             eq.CANTIDADAPROBADA = pr.CANTIDADAPROBADA;
-                            eq.TIPOS_ACTIVOSID = pr.TIPOS_ACTIVOSID;
+                            eq.TIPOS_ACTIVOSID = y.ID;
                             db.EQUIPO_SOLICITADO.Remove(pr);
                             db.SaveChanges();
                             if (ModelState.IsValid)
