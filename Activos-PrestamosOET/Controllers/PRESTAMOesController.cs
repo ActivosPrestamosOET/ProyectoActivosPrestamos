@@ -1435,6 +1435,11 @@ namespace Activos_PrestamosOET.Controllers
                 idCourse = course.COURSES;
                 P.V_COURSESCOURSES = idCourse;
             }
+            else
+            {
+                P.V_COURSESCOURSES = 0;
+                P.FECHA_RETIRO = p.FECHA_RETIRO;
+            }
             /*if (p.SIGLA_CURSO == "")
             {
 
