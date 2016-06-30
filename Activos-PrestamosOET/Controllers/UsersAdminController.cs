@@ -91,6 +91,28 @@ namespace Activos_PrestamosOET.Controllers
             return View(usuarios.ToPagedList(num_pagina, tamano_pagina));
         }
 
+        public struct TransaccionesConActivo
+        {
+            public string activo_id;
+            public DateTime transaccion_fecha;
+            public string activo_descripcion;
+            public string numero_de_placa;
+            public string transaccion_descripcion;
+            public string activo_nuevo_estado;
+            public string activo_categoria;
+            public bool activo_desechado;
+            public TransaccionesConActivo(string id, DateTime fecha, string descripcion, string trans_desc, string placa, bool desechado, string nuevo_estado, string act_cat)
+            {
+                activo_id = id;
+                transaccion_fecha = fecha;
+                activo_descripcion = descripcion;
+                transaccion_descripcion = trans_desc;
+                numero_de_placa = placa;
+                activo_desechado = desechado;
+                activo_nuevo_estado = nuevo_estado;
+                activo_categoria = act_cat;
+            }
+        }
         //
         // GET: /Users/Details/5
         public async Task<ActionResult> Details(string id)
@@ -104,6 +126,15 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.RoleNames = await UserManager.GetRolesAsync(user.Id);
             var estaciones = db.V_ESTACION.ToList();
             ViewBag.Estacion = estaciones.Where(e => e.ID.Equals(user.EstacionID)).ToList()[0].NOMBRE;
+            List<TRANSACCION> listaTransacciones = db.TRANSACCIONES.Where(e => e.RESPONSABLE.Equals(user.Email)).ToList();
+            List<TransaccionesConActivo> transacciones_listas = new List<TransaccionesConActivo>();
+            foreach(TRANSACCION item in listaTransacciones)
+            {
+                ACTIVO activo = db.ACTIVOS.Find(item.ACTIVOID);
+                TIPOS_ACTIVOS tipo = db.TIPOS_ACTIVOS.Find(activo.TIPO_ACTIVOID);
+                transacciones_listas.Add(new TransaccionesConActivo(item.ACTIVOID, item.FECHA, activo.DESCRIPCION, item.DESCRIPCION, activo.PLACA, activo.DESECHADO, item.ESTADO, tipo.NOMBRE));
+            }
+            ViewBag.Transacciones = transacciones_listas;
 
             return View(user);
         }
