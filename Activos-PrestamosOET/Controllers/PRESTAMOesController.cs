@@ -990,14 +990,8 @@ namespace Activos_PrestamosOET.Controllers
         {
 
             ViewBag.SIGLA_CURSO = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
-            try
-            {
-                ViewBag.Mensaje = TempData["Mensaje"].ToString();
-            }
-            catch (NullReferenceException)
-            {
-                ViewBag.Mensaje = "";
-            }
+            ViewBag.MensajeError = (String)TempData["error"];
+
             List<String> categorias = new List<String>();
 
             var cat = (from ac in db.ACTIVOS
@@ -1018,9 +1012,7 @@ namespace Activos_PrestamosOET.Controllers
             return View();
         }
 
-        // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
-        // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.
-
+        
         //Requiere: PRESTAMO p, int[] Cantidad, String[] Categoria.
         // Modifica: Inserta en la base de datos el p ingresado como parametro, envia una notificacion por medio de email y redirecciona al historial.
         //Retorna: una vista
@@ -1029,26 +1021,31 @@ namespace Activos_PrestamosOET.Controllers
         //[Authorize(Roles = "Solicitar préstamos,superadmin")]
         public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,USUARIO_SOLICITA,USUARIO_APRUEBA")] PRESTAMO p, int[] Cantidad, String[] Categoria, bool asignadoACurso, String Fecha_Inicio_Curso)
         {
-            //Metemos los valores ingresados por el usuario en un nuevo prestamo
-            PRESTAMO prestamo = new PRESTAMO();
-            var allErrors = ModelState.Values.SelectMany(v => v.Errors);
-            bool noHayCantidad = true;
-            TempData["Mensaje"] = "No seleccionó ningún activo en el préstamo";
-            foreach (int i in Cantidad)
+
+            bool sinActivos = true;
+
+            for (int i = 0; i < Cantidad.Count(); i++)
             {
-                if (i > 0)
+                if (Cantidad[i] != 0)
                 {
-                    noHayCantidad = false;
-                    TempData["Mensaje"] = "";
+                    sinActivos = false;
                     break;
                 }
             }
-            if (noHayCantidad)
+
+            if (sinActivos)
             {
+                TempData["error"] = "Debe solicitar al menos un activo";
                 return RedirectToAction("Create");
             }
 
-
+            //Metemos los valores ingresados por el usuario en un nuevo prestamo
+            PRESTAMO prestamo = new PRESTAMO();
+            var allErrors = ModelState.Values.SelectMany(v => v.Errors);
+            if (Cantidad == null)
+            {
+                return RedirectToAction("Create");
+            }
             DateTime fecha;
             if (asignadoACurso)
             {
@@ -1093,25 +1090,28 @@ namespace Activos_PrestamosOET.Controllers
                 }
                 db.PRESTAMOS.Add(prestamo);
 
-                
+                //Guardamos el prestamo en la base
+                db.SaveChanges();
                 List<String> cat = (List<String>)TempData["categorias"];
 
                 //Ingresamos el equipo solicitado y hacemos la insercion en la base de datos
                 for (int i = 0; i < Cantidad.Length; i++)
                 {
                     EQUIPO_SOLICITADO equipo = new EQUIPO_SOLICITADO();
-                    if (Cantidad[i] > 0)
-                    {                    
+                    if (Cantidad[i] == 0)
+                    {
+                        continue;
+                    }
+                    else
+                    {
                         equipo.CANTIDAD = Cantidad[i];
                     }
                     equipo.TIPO_ACTIVO = cat[i];
                     equipo.TIPOS_ACTIVOSID = traerCategoria(cat[i]);
                     equipo.ID_PRESTAMO = prestamo.ID;
                     db.EQUIPO_SOLICITADO.Add(equipo);
-                   
-                   
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
 
                 //Buscamos el prestamo recien insertado en la base de datos
                 //Esto es necesario porque el numero de boleta se ingresa hasta que se crea la solicitud en base 
@@ -1369,16 +1369,19 @@ namespace Activos_PrestamosOET.Controllers
                         if (pr == null)
                         {
                             //Si no existe lo crea
-                            pr = new EQUIPO_SOLICITADO();
-                            pr.ID_PRESTAMO = id;
-                            pr.TIPO_ACTIVO = y.NOMBRE;
-                            pr.CANTIDAD = cantidad[a];
-
-                            //Lo agrega a la tabla
-                            if (ModelState.IsValid)
+                            if (cantidad[a] > 0)
                             {
-                                db.EQUIPO_SOLICITADO.Add(pr);
-                                db.SaveChanges();
+                                pr = new EQUIPO_SOLICITADO();
+                                pr.ID_PRESTAMO = id;
+                                pr.TIPO_ACTIVO = y.NOMBRE;
+                                pr.CANTIDAD = cantidad[a];
+                                pr.TIPOS_ACTIVOSID = y.ID;
+                                //Lo agrega a la tabla
+                                if (ModelState.IsValid)
+                                {
+                                    db.EQUIPO_SOLICITADO.Add(pr);
+                                    db.SaveChanges();
+                                }
                             }
                         }
                         else
@@ -1386,16 +1389,25 @@ namespace Activos_PrestamosOET.Controllers
                             //Si si existe, lo modifica y guarda los cambios
                             EQUIPO_SOLICITADO eq = new EQUIPO_SOLICITADO();
                             decimal temp = cantidad[a];
-                            noEsta = false;
-                            eq.ID_PRESTAMO = pr.ID_PRESTAMO;
-                            eq.TIPO_ACTIVO = y.NOMBRE;
-                            eq.CANTIDAD = temp;
-                            eq.CANTIDADAPROBADA = pr.CANTIDADAPROBADA;
-                            db.EQUIPO_SOLICITADO.Remove(pr);
-                            db.SaveChanges();
-                            if (ModelState.IsValid)
+                            if (temp > 0)
                             {
-                                db.EQUIPO_SOLICITADO.Add(eq);
+                                noEsta = false;
+                                eq.ID_PRESTAMO = pr.ID_PRESTAMO;
+                                eq.TIPO_ACTIVO = y.NOMBRE;
+                                eq.CANTIDAD = temp;
+                                eq.CANTIDADAPROBADA = pr.CANTIDADAPROBADA;
+                                eq.TIPOS_ACTIVOSID = y.ID;
+                                db.EQUIPO_SOLICITADO.Remove(pr);
+                                db.SaveChanges();
+                                if (ModelState.IsValid)
+                                {
+                                    db.EQUIPO_SOLICITADO.Add(eq);
+                                    db.SaveChanges();
+                                }
+                            }
+                            else
+                            {
+                                db.EQUIPO_SOLICITADO.Remove(pr);
                                 db.SaveChanges();
                             }
                         }
@@ -1404,15 +1416,19 @@ namespace Activos_PrestamosOET.Controllers
 
                 if (noEsta)
                 {
-                    //Si no se ha guardado en la tabla anteriormente lo crea y lo guarda
-                    EQUIPO_SOLICITADO pr = new EQUIPO_SOLICITADO();
-                    pr.ID_PRESTAMO = id;
-                    pr.TIPO_ACTIVO = y.NOMBRE;
-                    pr.CANTIDAD = cantidad[a];
-                    if (ModelState.IsValid)
+                    if (cantidad[a] > 0)
                     {
-                        db.EQUIPO_SOLICITADO.Add(pr);
-                        db.SaveChanges();
+                        //Si no se ha guardado en la tabla anteriormente lo crea y lo guarda
+                        EQUIPO_SOLICITADO pr = new EQUIPO_SOLICITADO();
+                        pr.ID_PRESTAMO = id;
+                        pr.TIPO_ACTIVO = y.NOMBRE;
+                        pr.TIPOS_ACTIVOSID = y.ID;
+                        pr.CANTIDAD = cantidad[a];
+                        if (ModelState.IsValid)
+                        {
+                            db.EQUIPO_SOLICITADO.Add(pr);
+                            db.SaveChanges();
+                        }
                     }
                 }
                 a++;
@@ -1449,7 +1465,10 @@ namespace Activos_PrestamosOET.Controllers
             if (p.SIGLA_CURSO != null)
             {
                 var course = db.V_COURSES.SingleOrDefault(c => c.COURSES_CODE == p.SIGLA_CURSO);
-                idCourse = course.COURSES;
+                if ((course != null))
+                {
+                    idCourse = course.COURSES;
+                }
                 P.V_COURSESCOURSES = idCourse;
             }
             else
@@ -1475,7 +1494,8 @@ namespace Activos_PrestamosOET.Controllers
                     //var course = db.V_COURSES.SingleOrDefault(c => c.COURSES_CODE == p.SIGLA_CURSO);
                     //var idCourse = course.COURSES;
                     //P.V_COURSESCOURSES = idCourse;
-                } else
+                }
+                else
                 {
                     P.FECHA_RETIRO = p.FECHA_RETIRO;
                     //P.V_COURSESCOURSES = 0;
@@ -1489,7 +1509,7 @@ namespace Activos_PrestamosOET.Controllers
                     P.V_COURSESCOURSES = idCourse;
                 }*/
             }
-            
+
             P.SOFTWARE_REQUERIDO = p.SOFTWARE_REQUERIDO;
             P.Estado = 1;
             if (ModelState.IsValid)
