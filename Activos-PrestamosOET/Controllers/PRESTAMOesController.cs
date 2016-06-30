@@ -1373,7 +1373,7 @@ namespace Activos_PrestamosOET.Controllers
                             pr.ID_PRESTAMO = id;
                             pr.TIPO_ACTIVO = y.NOMBRE;
                             pr.CANTIDAD = cantidad[a];
-
+                            pr.TIPOS_ACTIVOSID = y.ID;
                             //Lo agrega a la tabla
                             if (ModelState.IsValid)
                             {
@@ -1391,6 +1391,7 @@ namespace Activos_PrestamosOET.Controllers
                             eq.TIPO_ACTIVO = y.NOMBRE;
                             eq.CANTIDAD = temp;
                             eq.CANTIDADAPROBADA = pr.CANTIDADAPROBADA;
+                            eq.TIPOS_ACTIVOSID = pr.TIPOS_ACTIVOSID;
                             db.EQUIPO_SOLICITADO.Remove(pr);
                             db.SaveChanges();
                             if (ModelState.IsValid)
@@ -1408,6 +1409,7 @@ namespace Activos_PrestamosOET.Controllers
                     EQUIPO_SOLICITADO pr = new EQUIPO_SOLICITADO();
                     pr.ID_PRESTAMO = id;
                     pr.TIPO_ACTIVO = y.NOMBRE;
+                    pr.TIPOS_ACTIVOSID = y.ID;
                     pr.CANTIDAD = cantidad[a];
                     if (ModelState.IsValid)
                     {
@@ -1449,7 +1451,10 @@ namespace Activos_PrestamosOET.Controllers
             if (p.SIGLA_CURSO != null)
             {
                 var course = db.V_COURSES.SingleOrDefault(c => c.COURSES_CODE == p.SIGLA_CURSO);
-                idCourse = course.COURSES;
+                if ((course != null))
+                {
+                    idCourse = course.COURSES;
+                }
                 P.V_COURSESCOURSES = idCourse;
             }
             else
@@ -1475,7 +1480,8 @@ namespace Activos_PrestamosOET.Controllers
                     //var course = db.V_COURSES.SingleOrDefault(c => c.COURSES_CODE == p.SIGLA_CURSO);
                     //var idCourse = course.COURSES;
                     //P.V_COURSESCOURSES = idCourse;
-                } else
+                }
+                else
                 {
                     P.FECHA_RETIRO = p.FECHA_RETIRO;
                     //P.V_COURSESCOURSES = 0;
@@ -1489,7 +1495,7 @@ namespace Activos_PrestamosOET.Controllers
                     P.V_COURSESCOURSES = idCourse;
                 }*/
             }
-            
+
             P.SOFTWARE_REQUERIDO = p.SOFTWARE_REQUERIDO;
             P.Estado = 1;
             if (ModelState.IsValid)
