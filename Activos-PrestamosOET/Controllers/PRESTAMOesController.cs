@@ -431,6 +431,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+           
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
             // ViewBag.clear();
 
@@ -438,6 +439,10 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return HttpNotFound();
             }
+            string username = User.Identity.GetUserName();
+            var user = db.ActivosUsers.SingleOrDefault(u => u.UserName == username);
+            if (user.Id != pRESTAMO.USUARIO_SOLICITA)
+                return RedirectToAction("Historial");
             ViewBag.Estadillo = "";
             if (pRESTAMO.Estado == 1)
             {
