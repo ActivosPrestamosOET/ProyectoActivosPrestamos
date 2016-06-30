@@ -990,7 +990,14 @@ namespace Activos_PrestamosOET.Controllers
         {
 
             ViewBag.SIGLA_CURSO = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
-
+            try
+            {
+                ViewBag.Mensaje = TempData["Mensaje"].ToString();
+            }
+            catch (NullReferenceException)
+            {
+                ViewBag.Mensaje = "";
+            }
             List<String> categorias = new List<String>();
 
             var cat = (from ac in db.ACTIVOS
@@ -1025,10 +1032,23 @@ namespace Activos_PrestamosOET.Controllers
             //Metemos los valores ingresados por el usuario en un nuevo prestamo
             PRESTAMO prestamo = new PRESTAMO();
             var allErrors = ModelState.Values.SelectMany(v => v.Errors);
-            if (Cantidad == null)
+            bool noHayCantidad = true;
+            TempData["Mensaje"] = "No seleccionó ningún activo en el préstamo";
+            foreach (int i in Cantidad)
+            {
+                if (i > 0)
+                {
+                    noHayCantidad = false;
+                    TempData["Mensaje"] = "";
+                    break;
+                }
+            }
+            if (noHayCantidad)
             {
                 return RedirectToAction("Create");
             }
+
+
             DateTime fecha;
             if (asignadoACurso)
             {
@@ -1073,28 +1093,25 @@ namespace Activos_PrestamosOET.Controllers
                 }
                 db.PRESTAMOS.Add(prestamo);
 
-                //Guardamos el prestamo en la base
-                db.SaveChanges();
+                
                 List<String> cat = (List<String>)TempData["categorias"];
 
                 //Ingresamos el equipo solicitado y hacemos la insercion en la base de datos
                 for (int i = 0; i < Cantidad.Length; i++)
                 {
                     EQUIPO_SOLICITADO equipo = new EQUIPO_SOLICITADO();
-                    if (Cantidad[i] == 0)
-                    {
-                        continue;
-                    }
-                    else
-                    {
+                    if (Cantidad[i] > 0)
+                    {                    
                         equipo.CANTIDAD = Cantidad[i];
                     }
                     equipo.TIPO_ACTIVO = cat[i];
                     equipo.TIPOS_ACTIVOSID = traerCategoria(cat[i]);
                     equipo.ID_PRESTAMO = prestamo.ID;
                     db.EQUIPO_SOLICITADO.Add(equipo);
-                    db.SaveChanges();
+                   
+                   
                 }
+                db.SaveChanges();
 
                 //Buscamos el prestamo recien insertado en la base de datos
                 //Esto es necesario porque el numero de boleta se ingresa hasta que se crea la solicitud en base 
