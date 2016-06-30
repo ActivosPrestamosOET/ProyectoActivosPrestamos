@@ -151,7 +151,7 @@
             @if (ViewBag.Equipo_Solict != null)
             {
                 int modal = 0;
- 
+
                 foreach (List<String> s in ViewBag.Equipo_Solict)
                 {
                     String cat = s[0];
@@ -171,7 +171,6 @@
                                             <h4 class="modal-title" id="myModalLabel">Seleccion de Equipo</h4>
                                         </div>
                                         <div class="modal-body">
-
                                             @if (ViewBag.NoActivos != null)
                                             {
                                                 <div class="alert alert-dismissible alert-warning">
@@ -182,7 +181,6 @@
                                             <table class="table table-striped table-hover ">
                                                 <thead>
                                                     <tr>
-
                                                         <th></th>
                                                         <th>Fabricante</th>
                                                         <th>Modelo</th>
@@ -192,32 +190,58 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                         
                                                     @if (ViewBag.EquipoPorCat != null)
                                                     {
-                                                        Dictionary<String, List< List < String > > > datosActivos = ViewBag.EquipoPorCat;
-                                                        foreach(List < String > c in datosActivos[ s[0] ])
+                                                        Dictionary<String, List<List<String>>> datosActivos = ViewBag.EquipoPorCat;
+                                                        foreach (List<String> c in datosActivos[s[0]])
                                                         {
-                                                              <tr>
-                                                                <td>
-                                                                  @Html.CheckBox("activoSeleccionado", false )
-                                                                </td>
-                                                                  @*<input type="checkbox" name="activoSeleccionado" value="Seleccionado"></td>*@
+                                                            <tr>
+                                                                @if ((Model.Estado) == 5)
+                                                                {
+                                                                    <td>
+                                                                        @Html.CheckBox("activoSeleccionado", false, new { @disabled = "disabled" })
+                                                                    </td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (c[3] == "0")
+                                                                    {
+                                                                        <td>
+                                                                            @Html.CheckBox("activoSeleccionado", false, new { @disabled = "disabled" })
+                                                                        </td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td>
+                                                                            @Html.CheckBox("activoSeleccionado", false)
+                                                                        </td>
+                                                                    }
+
+                                                                }
+
+                                                                @*<input type="checkbox" name="activoSeleccionado" value="Seleccionado"></td>*@
                                                                 <td>@c[0] &nbsp;</td>
                                                                 <td>@c[1] &nbsp;</td>
                                                                 <td>@c[2] &nbsp;</td>
-                                                                  @if(c[3] == "0")
-                                                                  {
-                                                                     <td>Devuelto</td>
-                                                                  }
-                                                                  else
-                                                                  {
-                                                                     <td>En préstamo</td>
-                                                                  }
-                                                                <td>@Html.TextBox("Notas", null, new { @class = "form-control"})</td>
+                                                                @if (c[3] == "0")
+                                                                {
+                                                                    <td>Devuelto</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>En préstamo</td>
+                                                                }
+                                                                @if (c[3] == "0")
+                                                                {
+                                                                    <td>@Html.TextBox("Notas", null, new { @class = "form-control", @disabled = "disabled" })</td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>@Html.TextBox("Notas", null, new { @class = "form-control" })</td>
+                                                                }
                                                             </tr>
                                                         }
-                                                        
+
                                                     }
 
                                                 </tbody>
@@ -235,8 +259,8 @@
                         <td>@Html.CheckBox("column5_checkbox", false)</td>
                         @{ modal++; }
                     </tr>
-                }
-            }
+                                }
+                            }
         </tbody>
     </table>
 
@@ -253,11 +277,20 @@
         </div>
     </div>
 
-    <div id="Botones" class="col-md-offset-9 col-md-12">
-        <input type="submit" name="b" value="Actualizar devolución" class="btn btn-default" />
-    </div>
-
+    if (Model.Estado == 5)
+    {
+        <div id="Botones" class="col-md-offset-9 col-md-12">
+            <input type="submit" name="b" value="Actualizar devolución" class="btn btn-default" disabled="disabled" />
+        </div>
+    }
+    else
+    {
+        <div id="Botones" class="col-md-offset-9 col-md-12">
+            <input type="submit" name="b" value="Actualizar devolución" class="btn btn-default" />
+        </div>
+    }
 }
+
 
 <script>
     @for(int i=0; i< ViewBag.Equipo_Solict.Count; i++)

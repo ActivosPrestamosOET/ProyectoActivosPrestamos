@@ -15,7 +15,57 @@
         $("[id$=A3]").addClass("active");
     });
 </script>
+@if ((Model.FECHA_RETIRO >= System.DateTimeOffset.Now.Date) && ((Model.Estado == 1) || (Model.Estado == 2) || (Model.Estado == 3)))
+{
+    <div class="form-group">
+        <div class="col-md-offset-9 col-md-12">
+            @*@Html.ActionLink("Editar", "Edit", new { id = Model.ID }, new { @class = "btn btn-success" })*@
+            @*@Html.ActionLink("Cancelar solicitud", "Delete", new { id = Model.ID }, new { @class = "btn btn-danger" })*@
+        </div>
+    </div>
 
+}
+else if (Model.Estado == 6)
+{
+    <div class="form-group">
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            Esta solicitud ya no puede ser editada debido a que esta cancelada.
+        </div>
+    </div>
+}
+else if (Model.Estado == 5)
+{
+    <div class="form-group">
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            Esta solicitud ya no puede ser editada debido a que ya se cerro.
+        </div>
+    </div>
+}
+else if ((Model.FECHA_RETIRO.AddDays(Model.PERIODO_USO) >= System.DateTimeOffset.Now.Date) && (Model.Estado == 4))
+{
+    <div class="form-group">
+        <div class="col-md-offset-9 col-md-12">
+            @*@Html.ActionLink("Editar", "Edit", new { id = Model.ID }, new { @class = "btn btn-success" })*@
+        </div>
+    </div>
+        <!--  <br />
+          <br /> -->
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            Esta solicitud ya no puede ser cancelada debido a que su estado es abierto.
+        </div>
+}
+else
+{
+    <div class="form-group">
+        <div class="alert alert-dismissible alert-danger">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            Esta solicitud ya no puede ser editada ni cancelada debido a que ya esta vencida.
+        </div>
+    </div>
+}
 
 <div class="panel panel-default">
     <div class="panel-body">
@@ -70,8 +120,14 @@
                     <label class="control-label" for="inputDefault">Curso:</label>
                 </div>
                 <div class="col-md-4">
-                    <!--Html.DisplayFor(model => model.V_COURSES.COURSE_NAME)-->
-                    @ViewBag.MiCurso
+                    @if (Model.V_COURSESCOURSES != 0)
+                    {
+                        <text>@Model.V_COURSES.COURSE_NAME</text>
+                    }
+                    else
+                    {
+                        <text>No hay curso asociado</text>
+                    }
                 </div>
                 <div class="col-md-2">
                     <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.Estado):</label>
@@ -106,10 +162,10 @@
     </thead>
     <tbody>
         @if (ViewBag.Equipo_Solict != null)
-        {
-
-            foreach (List<String> s in ViewBag.Equipo_Solict)
             {
+
+                foreach (List<String> s in ViewBag.Equipo_Solict)
+                {
                 <tr>
                     <td>@s[0] &nbsp;</td>
                     <td>@s[1] &nbsp;</td>
@@ -159,7 +215,7 @@
 </div>
 
 
-@if ((Model.FECHA_RETIRO >= System.DateTimeOffset.Now.Date)&&((Model.Estado==1)|| (Model.Estado == 2) || (Model.Estado == 3)))
+@if ((Model.FECHA_RETIRO >= System.DateTimeOffset.Now.Date) && ((Model.Estado == 1) || (Model.Estado == 2) || (Model.Estado == 3)))
 {
     <div class="form-group">
         <div class="col-md-offset-9 col-md-12">
@@ -171,21 +227,21 @@
 }
 else if (Model.Estado == 6)
 {
-    <div class="form-group">
-                  <div class="alert alert-dismissible alert-danger">
-                <button type="button" class="close" data-dismiss="alert">&times;</button>
-                Esta solicitud ya no puede ser editada debido a que esta cancelada.
-            </div>
-    </div>
+    <!--   <div class="form-group">
+                     <div class="alert alert-dismissible alert-danger">
+                   <button type="button" class="close" data-dismiss="alert">&times;</button>
+                   Esta solicitud ya no puede ser editada debido a que esta cancelada.
+               </div>
+       </div>-->
 }
-else if (Model.Estado ==5)
+else if (Model.Estado == 5)
 {
-    <div class="form-group">
-        <div class="alert alert-dismissible alert-danger">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            Esta solicitud ya no puede ser editada debido a que ya se cerro.
-        </div>
-    </div>
+    <!--   <div class="form-group">
+           <div class="alert alert-dismissible alert-danger">
+               <button type="button" class="close" data-dismiss="alert">&times;</button>
+               Esta solicitud ya no puede ser editada debido a que ya se cerro.
+           </div>
+       </div> -->
 }
 else if ((Model.FECHA_RETIRO.AddDays(Model.PERIODO_USO) >= System.DateTimeOffset.Now.Date) && (Model.Estado == 4))
 {
@@ -194,21 +250,21 @@ else if ((Model.FECHA_RETIRO.AddDays(Model.PERIODO_USO) >= System.DateTimeOffset
             @Html.ActionLink("Editar", "Edit", new { id = Model.ID }, new { @class = "btn btn-success" })
         </div>
     </div>
-    <br />
-    <br />
-    <div class="alert alert-dismissible alert-danger">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        Esta solicitud ya no puede ser cancelada debido a que su estado es abierto.
-    </div>
+        <!--    <br />
+            <br />
+            <div class="alert alert-dismissible alert-danger">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                Esta solicitud ya no puede ser cancelada debido a que su estado es abierto.
+            </div> -->
 }
 else
 {
-    <div class="form-group">
-        <div class="alert alert-dismissible alert-danger">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-            Esta solicitud ya no puede ser editada ni cancelada debido a que ya esta vencida.
-        </div>
-    </div>
+    <!--    <div class="form-group">
+            <div class="alert alert-dismissible alert-danger">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                Esta solicitud ya no puede ser editada ni cancelada debido a que ya esta vencida.
+            </div>
+        </div> -->
 }
 
 

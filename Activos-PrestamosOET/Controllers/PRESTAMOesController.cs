@@ -109,14 +109,40 @@ namespace Activos_PrestamosOET.Controllers
                 equipo.Add(a.FABRICANTE);
                 equipo.Add(a.MODELO);
                 equipo.Add(a.PLACA);
-                equipo.Add(a.PRESTADO.ToString());
                 equipo.Add(a.ID);
+                equipo.Add(a.PRESTADO.ToString());
                 equipos.Add(equipo);
             }
 
             return equipos;
         }
 
+
+        protected List<String> listaActivos(Dictionary<String, List<List<String>>> dic)
+        {
+            List<String> listaActivos = new List<String>();
+            foreach (KeyValuePair<String, List<List<String>>> entrada in dic)
+            {
+                foreach (List<String> l in entrada.Value)
+                {
+                    listaActivos.Add(l[2]);
+                }
+            }
+            return listaActivos;
+        }
+
+        protected int indiceActivo(List<String> lista, String placa)
+        {
+            int indice = -1;
+            for (int i = 0; i < lista.Count; i++)
+            {
+                if (placa == lista[i])
+                {
+                    indice = i;
+                }
+            }
+            return indice;
+        }
 
         //Requiere: String con tipo de categoría. 
         //Modifica: Hace consulta para traducir el tipo en un id
@@ -149,13 +175,11 @@ namespace Activos_PrestamosOET.Controllers
             string username = User.Identity.GetUserName();
 
             var users = (from u in db.ActivosUsers select u);
-            //where u.UserName == username
-            //select u.Cedula); 
+
             var user = users.SingleOrDefault(u => u.UserName == username);
             var cedSol = user.Id;
 
             //prestamos = prestamos.Where(model => model.USUARIO_SOLICITA == cedSol);
-
 
             //se identifica si alguna columna fue seleccionada como filtro para ordenar los datos despliegados
             ViewBag.currentSort = sortOrder;
@@ -294,7 +318,6 @@ namespace Activos_PrestamosOET.Controllers
         [Authorize(Roles = "Solicitar préstamos,Aceptar préstamos,superadmin")]
         public ActionResult Historial(string CED_SOLICITA, string currentFilter, string estado, int? page)
         {
-            //CED_SOLICITA = "PITAN0126052014.085230671";
             //Para que al refrescar la pagina no se quite el filtro por estado
             ViewBag.estado = estado;
 
@@ -306,20 +329,18 @@ namespace Activos_PrestamosOET.Controllers
             //este if por mientras
             if (!string.IsNullOrEmpty(CED_SOLICITA))
             {
+                //En el historial solo deben aparecer los prestamos de la persona que esta loggeada
                 prestamos = prestamos.Where(model => model.USUARIO_SOLICITA == CED_SOLICITA);
             }
-
 
             string username = User.Identity.GetUserName();
 
             var users = (from u in db.ActivosUsers select u);
-            //where u.UserName == username
-            //select u.Cedula); 
+
             var user = users.SingleOrDefault(u => u.UserName == username);
             var cedSol = user.Id;
 
             prestamos = prestamos.Where(model => model.USUARIO_SOLICITA == cedSol);
-
 
             //Verfica el filtro de estado. Si el usuario no selecciono ningun filtro, entonces no se filtra por estado
             //pero si si selecciono el estado por el que quiere filtrar entonces, filtra por eso
@@ -395,11 +416,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 ViewBag.Estadillo = "Cancelada";
             }
-            /*string idd = generarID();
-                string username = User.Identity.GetUserName();
 
-                var users = (from u in db.ActivosUsers select u);
-                var user = users.SingleOrDefault(u => u.UserName == username);*/
             var cursos = (from u in db.V_COURSES select u);
             V_COURSES curso = cursos.SingleOrDefault(u => u.COURSES_CODE == pRESTAMO.SIGLA_CURSO);
             try
@@ -509,7 +526,6 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
-            // ViewBag.clear();
 
             if (pRESTAMO == null)
             {
@@ -548,7 +564,6 @@ namespace Activos_PrestamosOET.Controllers
                 List<String> temp = new List<String>();
                 if (x.TIPO_ACTIVO != null)
                 {
-
                     temp.Add(x.TIPO_ACTIVO.ToString());
                     //Se maneja llenar la tabla del modal
                     actPrevios = llenarTablaDetails(x.TIPOS_ACTIVOSID.ToString(), id);
@@ -578,6 +593,7 @@ namespace Activos_PrestamosOET.Controllers
                 activosPrevios.Add(actPrevios);
                 activos.Add(act);
             }
+            
             ViewBag.Activos_enPrevio = activosPrevios;
             ViewBag.Activos_enCat = activos;
             //Segmento de código para colocar colores a las cantidad de solicitudes por categoría.
@@ -652,8 +668,30 @@ namespace Activos_PrestamosOET.Controllers
                 l.Add(disp[k]);
                 k++;
             }
+            string username = User.Identity.GetUserName();
             ViewBag.Equipo_Solict = equipo;
+            var users = from u in db.ActivosUsers
+                        where u.UserName == username
+                        select u;
 
+            //select u.Cedula); 
+            var user = users.SingleOrDefault(u => u.UserName == username);
+            //User cedSol = user.Id;
+            //;
+            try
+            {
+                if (user.Id == pRESTAMO.USUARIO_SOLICITA)
+                {
+                    ViewBag.mismo = true;
+                }
+                else
+                {
+                    ViewBag.mismo = false;
+                }
+            }catch
+            {
+                ViewBag.mismo = false;
+            }
 
             return View(pRESTAMO);
         }
@@ -670,6 +708,15 @@ namespace Activos_PrestamosOET.Controllers
             //Se guarda las observaciones de aprobacion
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
             pRESTAMO.OBSERVACIONES_APROBADO = p.OBSERVACIONES_APROBADO;
+
+            //agregar quien aprueba el prestamo
+
+            string username = User.Identity.GetUserName();
+            var users = (from u in db.ActivosUsers select u);
+            var user = users.SingleOrDefault(u => u.UserName == username);
+            var cedSol = user.Id;
+            pRESTAMO.USUARIO_APRUEBA = cedSol.ToString();
+
             if (ModelState.IsValid)
             {
                 db.Entry(pRESTAMO).State = EntityState.Modified;
@@ -677,6 +724,8 @@ namespace Activos_PrestamosOET.Controllers
             }
 
             var prestamo = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
+
+
 
             var equipo_sol = prestamo.EQUIPO_SOLICITADO;
             //Si el boton de aceptar fue precionado
@@ -806,19 +855,19 @@ namespace Activos_PrestamosOET.Controllers
             {
                 case 1://Si es una solicitud nueva
                     subj = "Nueva Solicitud de Prestamo: " + p.NUMERO_BOLETA.ToString();
-                    mensajito = "Se ha realizado una solicitud de prestamo." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
+                    mensajito = "Se ha realizado una solicitud de prestamo." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puede consultar la solicitud en el siguiente link:" + link;
                     mensajito = mensajito + HTMLContent;
                     break;
 
                 case 2://Si se ha editado una solicitud
                     subj = "Edición de Prestamo: " + p.NUMERO_BOLETA.ToString();
-                    mensajito = "Se ha editado una solicitud." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
+                    mensajito = "Se ha editado una solicitud." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puede consultar la solicitud en el siguiente link:" + link;
                     mensajito = mensajito + "\n" + HTMLContent;
                     break;
 
                 case 3://Si se cancela una solicitud
                     subj = "Cancelación de Prestamo: " + p.NUMERO_BOLETA.ToString();
-                    mensajito = "Se ha cancelado una solicitud." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
+                    mensajito = "Se ha cancelado una solicitud." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puede consultar la solicitud en el siguiente link:" + link;
                     mensajito = mensajito + HTMLContent;
                     break;
             }
@@ -853,19 +902,19 @@ namespace Activos_PrestamosOET.Controllers
             {
                 case 1://Si es una solicitud nueva
                     subj = "Nueva Solicitud de Prestamo: " + p.NUMERO_BOLETA.ToString();
-                    mensajito = "Su solicitud ha sido realizada con éxito." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
+                    mensajito = "Su solicitud ha sido realizada con éxito." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puede consultar la solicitud en el siguiente link:" + link;
                     mensajito = mensajito + HTMLContent;
                     break;
 
                 case 2://Si se ha editado una solicitud
                     subj = "Edición de Prestamo: " + p.NUMERO_BOLETA.ToString();
-                    mensajito = "Su prestamo ha sido editado exitosamente." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
+                    mensajito = "Su prestamo ha sido editado exitosamente." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puede consultar la solicitud en el siguiente link:" + link;
                     mensajito = mensajito + "\n" + HTMLContent;
                     break;
 
                 case 3://Si se cancela una solicitud
                     subj = "Cancelación de Prestamo: " + p.NUMERO_BOLETA.ToString();
-                    mensajito = "Su prestamo se ha cancelado exitosamente." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puedes consultar la solicitud en el siguiente link:" + link;
+                    mensajito = "Su prestamo se ha cancelado exitosamente." + " \n " + "El numero de boleta es " + p.NUMERO_BOLETA.ToString() + ". \n " + " Puede consultar la solicitud en el siguiente link:" + link;
                     mensajito = mensajito + HTMLContent;
                     break;
             }
@@ -915,8 +964,8 @@ namespace Activos_PrestamosOET.Controllers
         //Retorna: una vista
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Solicitar préstamos,Aceptar préstamos,superadmin")]
-        public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,USUARIO_SOLICITA,USUARIO_APRUEBA")] PRESTAMO p, int[] Cantidad, String[] Categoria)
+        //[Authorize(Roles = "Solicitar préstamos,superadmin")]
+        public ActionResult Create([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,SIGLA_CURSO,Estado,USUARIO_SOLICITA,USUARIO_APRUEBA")] PRESTAMO p, int[] Cantidad, String[] Categoria, bool asignadoACurso, String Fecha_Inicio_Curso)
         {
             //Metemos los valores ingresados por el usuario en un nuevo prestamo
             PRESTAMO prestamo = new PRESTAMO();
@@ -925,15 +974,26 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return RedirectToAction("Create");
             }
+            DateTime fecha;
+            if (asignadoACurso)
+            {
+                ModelState["FECHA_RETIRO"].Errors.Clear();
+                fecha = DateTime.ParseExact(Fecha_Inicio_Curso, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
+            else
+            {
+                fecha = p.FECHA_RETIRO;
+            }
 
             if (ModelState.IsValid)
             {
                 string idd = generarID();
                 string username = User.Identity.GetUserName();
 
-                var users = (from u in db.ActivosUsers select u);
-                //where u.UserName == username
-                //select u.Cedula); 
+                var users = from u in db.ActivosUsers
+                            where u.UserName == username
+                            select u;
+
                 var user = users.SingleOrDefault(u => u.UserName == username);
                 var cedSol = user.Id;
                 prestamo.ID = idd;
@@ -946,10 +1006,16 @@ namespace Activos_PrestamosOET.Controllers
                 prestamo.SIGLA_CURSO = p.SIGLA_CURSO;
                 prestamo.USUARIO_APRUEBA = p.USUARIO_APRUEBA;
                 prestamo.USUARIO_SOLICITA = cedSol.ToString();
-                prestamo.FECHA_RETIRO = p.FECHA_RETIRO;
-                prestamo.FECHA_SOLICITUD = System.DateTimeOffset.Now.Date;//SELECT SYSDATE FROM DUAL
+                prestamo.FECHA_RETIRO = fecha;
+                prestamo.FECHA_SOLICITUD = System.DateTimeOffset.Now.Date;
                 prestamo.SOFTWARE_REQUERIDO = p.SOFTWARE_REQUERIDO;
                 prestamo.Estado = 1;
+                if (p.SIGLA_CURSO != null)
+                {
+                    var course = db.V_COURSES.SingleOrDefault(c => c.COURSES_CODE == p.SIGLA_CURSO);
+                    var idCourse = course.COURSES;
+                    prestamo.V_COURSESCOURSES = idCourse;
+                }
                 db.PRESTAMOS.Add(prestamo);
 
                 //Guardamos el prestamo en la base
@@ -1024,9 +1090,60 @@ namespace Activos_PrestamosOET.Controllers
 
             //Buscamos los cursos de en la base de datos
             //ViewBag.Cursos = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
-            ViewBag.SIGLA_CURSO = new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
+            //String SelectCurso = "<select class=\"form-control\" id=\"SIGLA_CURSO\" name=\"SIGLA_CURSO\">";
+            /* if (pRESTAMO.SIGLA_CURSO != null)
+             {*/
+            /*
+           SelectList Cursos = new SelectList(db.V_COURSES.ToList());//new SelectList(db.V_COURSES, "COURSES_CODE", "COURSE_NAME");
+           bool seleccionadoNull = false;
 
-            ViewBag.CursoSeleccionado = pRESTAMO.SIGLA_CURSO;
+           foreach (V_COURSES curso in db.V_COURSES.ToList())
+           {
+               if (pRESTAMO.SIGLA_CURSO == curso.COURSES_CODE)
+               {
+                   SelectCurso += "<option value=\"" + curso.COURSES_CODE + "\" selected=\"selected\">" + curso.COURSE_NAME + "</option>";
+                   seleccionadoNull = true;
+               }
+               else
+               {
+                   SelectCurso += "<option value=\"" + curso.COURSES_CODE + "\">" + curso.COURSE_NAME + "</option>";
+               }
+           }
+           if (!seleccionadoNull)
+           {
+               SelectCurso += "<option value=\"\">Seleccione</option>";
+           }
+           else
+           {
+               SelectCurso += "<option value=\"" + "\" selected=\"selected\">Seleccione</option>";
+           }
+           SelectCurso += "</select>";
+           ViewBag.SelectCurso = SelectCurso;
+           */
+            String SelectCurso = "<select class=\"form-control\" id=\"SIGLA_CURSO\" name=\"SIGLA_CURSO\">";
+            foreach (V_COURSES curso in db.V_COURSES.ToList())
+            {
+                if (pRESTAMO.SIGLA_CURSO == curso.COURSES_CODE)
+                {
+                    SelectCurso += "<option value=\"" + curso.COURSES_CODE + "\" selected=\"selected\">" + curso.COURSE_NAME + "</option>";
+                }
+                else
+                {
+                    SelectCurso += "<option value=\"" + curso.COURSES_CODE + "\">" + curso.COURSE_NAME + "</option>";
+                }
+            }
+            if(pRESTAMO.SIGLA_CURSO != null)
+            {
+                SelectCurso= SelectCurso + "<option value=\"\">Seleccione</option>";
+            }else
+            {
+                SelectCurso += "<option value=null selected=\"selected\">Seleccione</option>";
+                //SelectCurso += "<option value=\"" + "\" selected=\"selected\">Seleccione</option>";
+            }
+            SelectCurso += "</select>";
+
+            ViewBag.SelectCurso = SelectCurso;
+            //SelectList cursosDDL = new SelectList(db.V_COURSES);
 
             //Determina el estado de la solicitud para desplegarlo en la pantalla mas adelante
             ViewBag.Estadillo = "";
@@ -1137,7 +1254,7 @@ namespace Activos_PrestamosOET.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Solicitar préstamos,Aceptar préstamos,superadmin")]
-        public ActionResult Edit([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p, string id, int[] cantidad, string b)
+        public ActionResult Edit([Bind(Include = "ID,NUMERO_BOLETA,MOTIVO,FECHA_SOLICITUD,FECHA_RETIRO,PERIODO_USO,SOFTWARE_REQUERIDO,OBSERVACIONES_SOLICITANTE,OBSERVACIONES_APROBADO,OBSERVACIONES_RECIBIDO,CEDULA_USUARIO,SIGLA_CURSO")] PRESTAMO p, string id, int[] cantidad, string b, String Fecha_Inicio_Curso)
         {
             //Busca el prestamo en la base de datos
             PRESTAMO P = db.PRESTAMOS.Find(id);
@@ -1243,8 +1360,15 @@ namespace Activos_PrestamosOET.Controllers
             P.MOTIVO = p.MOTIVO;
             P.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
             P.PERIODO_USO = p.PERIODO_USO;
+            
             P.SIGLA_CURSO = p.SIGLA_CURSO;
-            P.FECHA_RETIRO = p.FECHA_RETIRO;
+            if (p.SIGLA_CURSO == null)
+            {
+                P.FECHA_RETIRO = p.FECHA_RETIRO;
+            }else
+            {
+                P.FECHA_RETIRO = DateTime.ParseExact(Fecha_Inicio_Curso, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            }
             P.SOFTWARE_REQUERIDO = p.SOFTWARE_REQUERIDO;
             P.Estado = 1;
             if (ModelState.IsValid)
@@ -1513,7 +1637,7 @@ namespace Activos_PrestamosOET.Controllers
         //Retorna: Vista de Devolucion con la información de los modales actualizados.
         [HttpPost]
         [Authorize(Roles = "Aceptar préstamos,superadmin")]
-        public ActionResult Devolucion(string ID, bool[] column5_checkbox, bool column5_checkAll, string b, string OBSERVACIONES_APROBADO, bool[] activoSeleccionado)
+        public ActionResult Devolucion(string ID, bool[] column5_checkbox, bool column5_checkAll, string b, string OBSERVACIONES_APROBADO, bool[] activoSeleccionado, String[] Notas)
         {
             //Se recupera al préstamo y se le actualiza el campo de observaciones_aprobado
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(ID);
@@ -1523,12 +1647,14 @@ namespace Activos_PrestamosOET.Controllers
             Dictionary<String, List<List<String>>> dic = (Dictionary<String, List<List<String>>>)TempData["activos"];
 
             List<String> idPrestados = new List<String>();
+            List<String> lista = listaActivos(dic);
+
             //se guardan los ids de los activos del préstamo
             foreach (KeyValuePair<String, List<List<String>>> entrada in dic)
             {
                 foreach (List<String> l in entrada.Value)
                 {
-                    idPrestados.Add(l[4]);
+                    idPrestados.Add(l[3]);
                 }
             }
 
@@ -1559,6 +1685,8 @@ namespace Activos_PrestamosOET.Controllers
                             if (x.TIPO_ACTIVOID == y.TIPOS_ACTIVOSID)
                             {
                                 x.ESTADO_PRESTADO = 0;
+                                int indice = indiceActivo(lista, x.PLACA);
+                                new TransaccionesController().CreatePrestamo(User.Identity.GetUserName(), "Devuelto de préstamo", "Se devuelve activo en prestamo", x.ID, unchecked((int)prestamo.NUMERO_BOLETA), pRESTAMO.FECHA_RETIRO, DateTime.Now.Date, Notas[indice], pRESTAMO.USUARIO_SOLICITA);
                             }
                         }
                     }
@@ -1583,9 +1711,11 @@ namespace Activos_PrestamosOET.Controllers
                             {
                                 String id = l[3];
                                 ACTIVO act = db.ACTIVOS.Find(id);
+                                int indice = indiceActivo(lista, act.PLACA);
                                 act.ESTADO_PRESTADO = 0;
                                 db.Entry(act).State = EntityState.Modified;
                                 db.SaveChanges();
+                                new TransaccionesController().CreatePrestamo(User.Identity.GetUserName(), "Devuelto de préstamo", "Se devuelve activo en prestamo", act.ID, unchecked((int)prestamo.NUMERO_BOLETA), pRESTAMO.FECHA_RETIRO, DateTime.Now.Date, Notas[indice], pRESTAMO.USUARIO_SOLICITA);
                             }
 
                         }
@@ -1602,7 +1732,11 @@ namespace Activos_PrestamosOET.Controllers
                         String id = idPrestados[i];
                         ACTIVO act = db.ACTIVOS.Find(id);
                         if (devolucionActivos[i])
+                        {
                             act.ESTADO_PRESTADO = 0;
+                            int indice = indiceActivo(lista, act.PLACA);
+                            new TransaccionesController().CreatePrestamo(User.Identity.GetUserName(), "Devuelto de préstamo", "Se devuelve activo en prestamo", act.ID, unchecked((int)prestamo.NUMERO_BOLETA), pRESTAMO.FECHA_RETIRO, DateTime.Now.Date, Notas[indice], pRESTAMO.USUARIO_SOLICITA);
+                        }
                         else
                         {
                             //act.ESTADO_PRESTADO = ;
@@ -1747,6 +1881,8 @@ namespace Activos_PrestamosOET.Controllers
                         db.Entry(activo).State = EntityState.Modified;
                         db.Entry(prestamo).State = EntityState.Modified;
                         db.SaveChanges();
+
+                        new TransaccionesController().CreatePrestamo(User.Identity.GetUserName(), "Asignado en Préstamo", "Sale asignado a un préstamo", activo.ID, unchecked((int)prestamo.NUMERO_BOLETA), prestamo.FECHA_RETIRO, prestamo.FECHA_RETIRO.AddDays(prestamo.PERIODO_USO), "", prestamo.USUARIO_SOLICITA);
                     }
                     else
                     {
@@ -1861,6 +1997,28 @@ namespace Activos_PrestamosOET.Controllers
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
  
             return View(pRESTAMO);
+        }
+
+        public ActionResult obtenerFechasCurso(string idCurso)
+        {
+            var fechas = from c in db.V_COURSES
+                         where idCurso == c.COURSES_CODE
+                         select new { Fecha_Inicio = c.START_DATE, Fecha_Fin = c.END_DATE };
+            //hay que cambiar obviamente a las fechas, cuando se actualice el modelo
+            List<String> listaDatos = new List<string>();
+
+            foreach (var v in fechas)
+            {
+                //String inicio = v.Fecha_Inicio.ToString("MM/dd/yyyy"); ;
+                String inicio = ((DateTime)v.Fecha_Inicio).ToString("dd/MM/yyyy");
+                String fin = ((DateTime)v.Fecha_Fin).ToString("dd/MM/yyyy");
+
+                double dias = (((DateTime)v.Fecha_Fin) - ((DateTime)v.Fecha_Inicio)).TotalDays;
+                listaDatos.Add(inicio);
+                listaDatos.Add(fin);
+                listaDatos.Add(dias.ToString());
+            }
+            return Json(listaDatos);
         }
     }
 }

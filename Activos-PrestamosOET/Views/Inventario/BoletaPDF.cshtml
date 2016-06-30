@@ -9,74 +9,99 @@
     <br />
     <div class="container">
         <div class="row">
-			@foreach (var item in Model)
-			{
-				<table style="width:80%">
-					<tr>
-						<td><b>Fabricante: </b>
-						@{if (item.FABRICANTE == null){
-							<text>No especificado</text>
-						} else {
-							<text>@item.FABRICANTE</text>
-						}}
-						</td>
-					</tr>
-					<tr>
-						<td><b>Modelo: </b>
-						@{if (item.MODELO == null) {
-							<text>No especificado</text>
-						} else {
-							<text>@item.MODELO</text>
-						}}
-						</td>
-					</tr>
-					<tr>
-						<td><b>Placa: </b>
-						@{if (item.PLACA == null) {
+		<table class="table" style="margin-top:20px">
+			<thead>
+				<tr>
+					<th>Fabricante</th>
+					<th>Modelo</th>
+					<th>Placa</th>
+					<th>Tipo</th>
+					<th>Descripciones</th>
+					<th>Prestado A</th>
+					<th>Prestado Hasta</th>
+					<th>Curso</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (var item in Model)
+				{
+				<tr>
+					<td>
+						@{if (item.FABRICANTE == null)
+							{
+								<text>No especificado</text>
+							}
+							else
+							{
+								<text>@item.FABRICANTE</text>
+							}}
+					</td>
+					<td>
+						@{if (item.MODELO == null)
+							{
+								<text>No especificado</text>
+							}
+							else
+							{
+								<text>@item.MODELO</text>
+							}}
+					</td>
+					<td>
+						@{if (item.PLACA == null)
+							{
+								<text>No especificada</text>
+							}
+							else
+							{
+								<text>@item.PLACA</text>
+							}}
+					</td>
+					<td>
+						@{if (item.TIPOS_ACTIVOS == null)
+							{
+								<text>No especificado</text>
+							}
+							else
+							{
+								<text>@item.TIPOS_ACTIVOS.NOMBRE</text>
+							}}
+					</td>
+					<td>
+						@{if (item.DESCRIPCION == null)
+						{
 							<text>No especificada</text>
-						} else {
-							<text>@item.PLACA</text>
-						}}
-						</td>
-					</tr>
-					<tr>
-						<td><b>Tipo: </b>
-						@{if (item.TIPOS_ACTIVOS == null) {
-							<text>No especificado</text>
-						} else {
-							<text>@item.TIPOS_ACTIVOS.NOMBRE</text>
-						}}
-						</td>
-					</tr>
-					<tr>
-						<td><b>Descripcion: </b>
-						@{if (item.DESCRIPCION == null){
-							<text>No especificada</text>
-						} else {
+						}
+						else
+						{
 							<text>@item.DESCRIPCION</text>
 						}}
-						</td>
-					</tr>
-					<tr>
-					@{ if (item.PRESTAMOes.Count == 0)
-					{
-						<td><b>Prestado a: </b>No prestado</td>
-						<td><b>Prestado hasta: </b>No prestado</td>
-					}
-					else
-					{
-						foreach (var x in item.PRESTAMOes)
+					</td>
+						@{ if (item.ESTADO_PRESTADO == 0)
 						{
-							<td><b>Prestado a: </b><text>@x.ActivosUser.Nombre</text></td>
-							<td><b>Prestado hasta: </b><text>@x.FECHA_RETIRO</text></td>
+							<td><text>No prestado</text></td>
+							<td>No prestado</td>
+							<td>No prestado a curso</td>
 						}
-					}
-					}
-					</tr>
-				</table>
-				<br />
-				<br />
-			}
+						else
+						{
+							<td>@item.PRESTAMOes.Last().ActivosUser.Nombre</td>
+							<td>@item.PRESTAMOes.Last().FECHA_RETIRO</td>
+							if (@item.PRESTAMOes.Last().V_COURSESCOURSES != 0)
+							{
+								<td>@item.PRESTAMOes.Last().V_COURSES.COURSE_NAME</td>
+							}
+							else
+							{
+								<td>No prestado a curso</td>
+							}
+						}
+						}
+				</tr>
+				}
+			</tbody>
+		</table>
+		<br />
+		<br />
         </div>
     </div>
 </div>

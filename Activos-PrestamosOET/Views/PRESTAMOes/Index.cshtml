@@ -54,6 +54,7 @@ $(document).ready(function(){
 
 @using (Html.BeginForm("Index", "PRESTAMOes", FormMethod.Get))
 {
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="form-group">
@@ -83,9 +84,10 @@ $(document).ready(function(){
                   "text",
                    0), new { @class = "form-control" })
                     </div>
-                <label class="col-lg-2 control-label p" for="inputDefault">Numero de Boleta </label>
+                <label class="col-lg-2 control-label p" for="inputDefault">Número de Boleta </label>
                 <div class="col-lg-3">
-                    @Html.TextBox("numeroBoleta", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+                   @Html.TextBox("numeroBoleta", ViewBag.CurrentFilter as string, new { @class = "form-control", @type="number", @min = 0, @max = 10000000, @placeholder="Digite sólo números"})                   
+                  
                 </div>
                
                 </div>    
@@ -126,10 +128,10 @@ $(document).ready(function(){
             @Html.ActionLink("Estado", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.ActionLink("Estado", "Index", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            <text>Detalles</text>
         </th>
         <th>
-            @Html.ActionLink("Devolución", "Devolucion", new { sortOrder = ViewBag.NameSortParm, currentFilter = ViewBag.CurrentFilter })
+            <text>Devolución</text>
         </th>
 
         <th></th>
@@ -194,7 +196,7 @@ $(document).ready(function(){
 
                   
                     <td>
-                        <text>Pre-aceptada</text>
+                        <text>Aceptada</text>
                     </td>
                     <td>
                         @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })

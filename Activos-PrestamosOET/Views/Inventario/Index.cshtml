@@ -193,26 +193,32 @@
                                     else
                                     {
                                         <text>@item.DESCRIPCION</text>
-                                    }}
+                                    }
+                                  }
                             </td>
-                            @{ if (item.PRESTAMOes.Count == 0)
+                            @{ if (item.ESTADO_PRESTADO == 0)
                                 {
                                     <td><text>No prestado</text></td>
                                     <td>No prestado</td>
+                                    <td>No prestado a curso</td>
                                 }
                                 else
                                 {
-                                    foreach (var x in item.PRESTAMOes)
+                                    
+                                        <td>@item.PRESTAMOes.Last().ActivosUser.Nombre</td>
+                                        <td>@item.PRESTAMOes.Last().FECHA_RETIRO</td>
+                                    if (@item.PRESTAMOes.Last().V_COURSESCOURSES != 0)
                                     {
-                                        <td>@x.ActivosUser.Nombre</td>
-                                        <td>@x.FECHA_RETIRO</td>
-                                        break;
+                                        <td>@item.PRESTAMOes.Last().V_COURSES.COURSE_NAME</td>
                                     }
+                                    else
+                                    {
+                                        <td>No prestado a curso</td>
+                                    }
+
                                 }
-                            }
-                            <td>
-                                <!--item.DESCRIPCION.V_COURSES.COURSE_NAME-->
-                            </td>
+
+                                }
                             <td>
                                 @Html.ActionLink("Detalles", "Details", new { id = @item.PLACA }, new { @class = "btn btn-default" })
                             </td>
