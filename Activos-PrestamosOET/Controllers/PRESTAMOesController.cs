@@ -1369,16 +1369,19 @@ namespace Activos_PrestamosOET.Controllers
                         if (pr == null)
                         {
                             //Si no existe lo crea
-                            pr = new EQUIPO_SOLICITADO();
-                            pr.ID_PRESTAMO = id;
-                            pr.TIPO_ACTIVO = y.NOMBRE;
-                            pr.CANTIDAD = cantidad[a];
-                            pr.TIPOS_ACTIVOSID = y.ID;
-                            //Lo agrega a la tabla
-                            if (ModelState.IsValid)
+                            if (cantidad[a] > 0)
                             {
-                                db.EQUIPO_SOLICITADO.Add(pr);
-                                db.SaveChanges();
+                                pr = new EQUIPO_SOLICITADO();
+                                pr.ID_PRESTAMO = id;
+                                pr.TIPO_ACTIVO = y.NOMBRE;
+                                pr.CANTIDAD = cantidad[a];
+                                pr.TIPOS_ACTIVOSID = y.ID;
+                                //Lo agrega a la tabla
+                                if (ModelState.IsValid)
+                                {
+                                    db.EQUIPO_SOLICITADO.Add(pr);
+                                    db.SaveChanges();
+                                }
                             }
                         }
                         else
@@ -1386,17 +1389,25 @@ namespace Activos_PrestamosOET.Controllers
                             //Si si existe, lo modifica y guarda los cambios
                             EQUIPO_SOLICITADO eq = new EQUIPO_SOLICITADO();
                             decimal temp = cantidad[a];
-                            noEsta = false;
-                            eq.ID_PRESTAMO = pr.ID_PRESTAMO;
-                            eq.TIPO_ACTIVO = y.NOMBRE;
-                            eq.CANTIDAD = temp;
-                            eq.CANTIDADAPROBADA = pr.CANTIDADAPROBADA;
-                            eq.TIPOS_ACTIVOSID = y.ID;
-                            db.EQUIPO_SOLICITADO.Remove(pr);
-                            db.SaveChanges();
-                            if (ModelState.IsValid)
+                            if (temp > 0)
                             {
-                                db.EQUIPO_SOLICITADO.Add(eq);
+                                noEsta = false;
+                                eq.ID_PRESTAMO = pr.ID_PRESTAMO;
+                                eq.TIPO_ACTIVO = y.NOMBRE;
+                                eq.CANTIDAD = temp;
+                                eq.CANTIDADAPROBADA = pr.CANTIDADAPROBADA;
+                                eq.TIPOS_ACTIVOSID = y.ID;
+                                db.EQUIPO_SOLICITADO.Remove(pr);
+                                db.SaveChanges();
+                                if (ModelState.IsValid)
+                                {
+                                    db.EQUIPO_SOLICITADO.Add(eq);
+                                    db.SaveChanges();
+                                }
+                            }
+                            else
+                            {
+                                db.EQUIPO_SOLICITADO.Remove(pr);
                                 db.SaveChanges();
                             }
                         }
@@ -1405,16 +1416,19 @@ namespace Activos_PrestamosOET.Controllers
 
                 if (noEsta)
                 {
-                    //Si no se ha guardado en la tabla anteriormente lo crea y lo guarda
-                    EQUIPO_SOLICITADO pr = new EQUIPO_SOLICITADO();
-                    pr.ID_PRESTAMO = id;
-                    pr.TIPO_ACTIVO = y.NOMBRE;
-                    pr.TIPOS_ACTIVOSID = y.ID;
-                    pr.CANTIDAD = cantidad[a];
-                    if (ModelState.IsValid)
+                    if (cantidad[a] > 0)
                     {
-                        db.EQUIPO_SOLICITADO.Add(pr);
-                        db.SaveChanges();
+                        //Si no se ha guardado en la tabla anteriormente lo crea y lo guarda
+                        EQUIPO_SOLICITADO pr = new EQUIPO_SOLICITADO();
+                        pr.ID_PRESTAMO = id;
+                        pr.TIPO_ACTIVO = y.NOMBRE;
+                        pr.TIPOS_ACTIVOSID = y.ID;
+                        pr.CANTIDAD = cantidad[a];
+                        if (ModelState.IsValid)
+                        {
+                            db.EQUIPO_SOLICITADO.Add(pr);
+                            db.SaveChanges();
+                        }
                     }
                 }
                 a++;
