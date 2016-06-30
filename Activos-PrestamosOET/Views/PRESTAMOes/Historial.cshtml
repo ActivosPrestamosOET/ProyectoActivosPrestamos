@@ -115,7 +115,7 @@ $(document).ready(function(){
                         @item.FECHA_RETIRO.AddDays(item.PERIODO_USO).ToShortDateString()
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Estado)
+                        <text>Pendiente</text>
                     </td>
                     <td>
                         @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
@@ -137,7 +137,7 @@ $(document).ready(function(){
                             @item.FECHA_RETIRO.AddDays(item.PERIODO_USO).ToShortDateString()
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Estado)
+                            <text>Aceptada</text>
                         </td>
                         <td>
                             @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
@@ -159,7 +159,7 @@ $(document).ready(function(){
                             @item.FECHA_RETIRO.AddDays(item.PERIODO_USO).ToShortDateString()
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Estado)
+                            <text>Denegada</text>
                         </td>
                         <td>
                             @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
@@ -181,7 +181,7 @@ $(document).ready(function(){
                             @item.FECHA_RETIRO.AddDays(item.PERIODO_USO).ToShortDateString()
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Estado)
+                            <text>Abierta</text>
                         </td>
                         <td>
                             @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
@@ -203,7 +203,7 @@ $(document).ready(function(){
                             @item.FECHA_RETIRO.AddDays(item.PERIODO_USO).ToShortDateString()
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Estado)
+                            <text>Cerrada</text>
                         </td>
                         <td>
                             @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
@@ -225,7 +225,7 @@ $(document).ready(function(){
                             @item.FECHA_RETIRO.AddDays(item.PERIODO_USO).ToShortDateString()
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.Estado)
+                            <text>Cancelada</text>
                         </td>
                         <td>
                             @Html.ActionLink("Detalles", "Detalles", new { id = item.ID }, new { @class = "btn btn-default" })
