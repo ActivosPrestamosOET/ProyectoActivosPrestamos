@@ -1485,13 +1485,13 @@ namespace Activos_PrestamosOET.Controllers
             {
 
             }*/
-            if (P.V_COURSESCOURSES == p.V_COURSESCOURSES)
+            if ((P.V_COURSESCOURSES == p.V_COURSESCOURSES)&&(P.V_COURSESCOURSES != 0))
             {
                 //P.FECHA_RETIRO = p.FECHA_RETIRO;
             }
             else
             {
-                if (p.V_COURSESCOURSES != 0)
+                if (P.V_COURSESCOURSES != 0)
                 {
                     P.FECHA_RETIRO = DateTime.ParseExact(Fecha_Inicio_Curso, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     //int rrr = Convert.ToInt32(p.SIGLA_CURSO);
