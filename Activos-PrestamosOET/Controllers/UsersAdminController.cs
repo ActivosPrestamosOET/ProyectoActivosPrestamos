@@ -91,6 +91,28 @@ namespace Activos_PrestamosOET.Controllers
             return View(usuarios.ToPagedList(num_pagina, tamano_pagina));
         }
 
+        public struct TransaccionesConActivo
+        {
+            public string activo_id;
+            public DateTime transaccion_fecha;
+            public string activo_descripcion;
+            public string numero_de_placa;
+            public string transaccion_descripcion;
+            public string activo_nuevo_estado;
+            public string activo_categoria;
+            public bool activo_desechado;
+            public TransaccionesConActivo(string id, DateTime fecha, string descripcion, string trans_desc, string placa, bool desechado, string nuevo_estado, string act_cat)
+            {
+                activo_id = id;
+                transaccion_fecha = fecha;
+                activo_descripcion = descripcion;
+                transaccion_descripcion = trans_desc;
+                numero_de_placa = placa;
+                activo_desechado = desechado;
+                activo_nuevo_estado = nuevo_estado;
+                activo_categoria = act_cat;
+            }
+        }
         //
         // GET: /Users/Details/5
         public async Task<ActionResult> Details(string id)
@@ -104,6 +126,15 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.RoleNames = await UserManager.GetRolesAsync(user.Id);
             var estaciones = db.V_ESTACION.ToList();
             ViewBag.Estacion = estaciones.Where(e => e.ID.Equals(user.EstacionID)).ToList()[0].NOMBRE;
+            List<TRANSACCION> listaTransacciones = db.TRANSACCIONES.Where(e => e.RESPONSABLE.Equals(user.Email)).ToList();
+            List<TransaccionesConActivo> transacciones_listas = new List<TransaccionesConActivo>();
+            foreach(TRANSACCION item in listaTransacciones)
+            {
+                ACTIVO activo = db.ACTIVOS.Find(item.ACTIVOID);
+                TIPOS_ACTIVOS tipo = db.TIPOS_ACTIVOS.Find(activo.TIPO_ACTIVOID);
+                transacciones_listas.Add(new TransaccionesConActivo(item.ACTIVOID, item.FECHA, activo.DESCRIPCION, item.DESCRIPCION, activo.PLACA, activo.DESECHADO, item.ESTADO, tipo.NOMBRE));
+            }
+            ViewBag.Transacciones = transacciones_listas;
 
             return View(user);
         }
@@ -161,7 +192,7 @@ namespace Activos_PrestamosOET.Controllers
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     string cuerpo_del_mensaje = "Bienvenido al sistema de Activos de la Organizacicón de Estudios Tropicales. " +
-                                                "Se creó una cuenta asociada a este correo con los siguientes roles: " + string.Join(" - ", selectedRoles)+". " +
+                                                "Se creó una cuenta asociada a este correo con los siguientes roles: Préstamos -" + string.Join(" - ", selectedRoles)+". " +
                                                 "Por favor confirme su correo ingresando a este <a href=\"" + callbackUrl + "\">enlace</a>. " +
                                                 "Si no solicitó una cuenta por favor ignore este correo.";
 
@@ -243,6 +274,8 @@ namespace Activos_PrestamosOET.Controllers
 
                 var userRoles = await UserManager.GetRolesAsync(user.Id);
 
+                string[] selectedRoles = selectedRole;
+
                 selectedRole = selectedRole ?? new string[] { };
 
                 var result = await UserManager.AddToRolesAsync(user.Id, selectedRole.Except(userRoles).ToArray<string>());
@@ -265,7 +298,7 @@ namespace Activos_PrestamosOET.Controllers
                 {
                     //enviar correo con cambios al usuario
                     string cuerpo_del_mensaje = "Este correo es para informarle que sus roles dentro del sistema de Administración de Activos fueron cambiados. " +
-                                                "Sus roles actuales son los siguientes: " + string.Join(" - ", userRoles) + ". " +
+                                                "Sus roles actuales son los siguientes: Préstamos -" + string.Join(" - ", selectedRoles) + ". " +
                                                 "Si usted no posee una cuenta en el sistema por favor ignore este correo.";
 
                     await UserManager.SendEmailAsync(user.Id, "Sus roles en el sistema han sido cambiados.", cuerpo_del_mensaje);

@@ -82,3 +82,99 @@
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>
+                            Fecha
+                        </th>
+                        <th>
+                            Categoría de activo
+                        </th>
+                        <th>
+                            Número de placa
+                        </th>
+                        <th>
+                            Descripción del activo
+                        </th>
+                        <th>
+                            Nuevo estado
+                        </th>
+                        <th>
+                            Descripción de la transacción
+                        </th>
+                        <th class="text-center">
+                            Ver
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Transacciones)
+                    {
+                        <!--activo_desechado = desechado;-->
+                        if (item.activo_desechado)
+                        {
+                            <tr class="danger">
+                                <td>
+                                    @item.transaccion_fecha
+                                </td>
+                                <td>
+                                    @item.activo_categoria
+                                </td>
+                                <td>
+                                    @item.numero_de_placa
+                                </td>
+                                <td>
+                                    @item.activo_descripcion
+                                </td>
+                                <td>
+                                    @item.activo_nuevo_estado
+                                </td>
+                                <td>
+                                    @item.transaccion_descripcion
+                                </td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("Details", "Activos", new { id = item.activo_id })">
+                                        <span class="glyphicon glyphicon-eye-open text-info" aria-hidden="true" title="Ver activo"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>
+                                    @item.transaccion_fecha
+                                </td>
+                                <td>
+                                    @item.activo_categoria
+                                </td>
+                                <td>
+                                    @item.numero_de_placa
+                                </td>
+                                <td>
+                                    @item.activo_descripcion
+                                </td>
+                                <td>
+                                    @item.activo_nuevo_estado
+                                </td>
+                                <td>
+                                    @item.transaccion_descripcion
+                                </td>
+                                <td class="text-center">
+                                    <a href="@Url.Action("Details", "Activos", new { id = item.activo_id })">
+                                        <span class="glyphicon glyphicon-eye-open text-info" aria-hidden="true" title="Ver activo"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
