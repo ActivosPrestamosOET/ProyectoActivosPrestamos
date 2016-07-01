@@ -1848,6 +1848,8 @@ namespace Activos_PrestamosOET.Controllers
                     }
                     //Al devolverse todos los activos, el estado del préstamo pasa a ser "Cerrado"
                     pRESTAMO.Estado = 5;
+                    return RedirectToAction("Index");
+
                     // return RedirectToAction("Details", new { id = ID });
                 }
                 else if (hayFilaEntera(column5_checkbox))//Revisa si hay algún check para devolver todos los activos de una sola categoría
@@ -1902,7 +1904,9 @@ namespace Activos_PrestamosOET.Controllers
                         db.SaveChanges();
                     }
 
-                    if (todos) { pRESTAMO.Estado = 5; }
+                    if (todos) { pRESTAMO.Estado = 5;
+                        return RedirectToAction("Index");
+                    }
                 }
 
                 // if (column5_checkAll) { pRESTAMO.Estado = 5; }
