@@ -46,7 +46,7 @@ namespace Activos_PrestamosOET.Controllers
             + consecutivo.ToString("D3");
         }
 
-        public List<String> traerObservaciones(String id, int cat )
+        public List<String> traerObservaciones(String id, int cat, long? boleta )
         {
             List<String> observaciones = new List<String>();
 
@@ -60,7 +60,7 @@ namespace Activos_PrestamosOET.Controllers
             foreach (var i in act)
             {
                 var observacion = from t in db.TRANSACCIONES
-                                  where t.ACTIVOID == i.ID && t.DESCRIPCION == "Devuelto de préstamo"
+                                  where t.ACTIVOID == i.ID && t.ESTADO == "Devuelto de préstamo" && t.NUMERO_BOLETA == boleta
                                   select new
                                   {
                                       OBSERVACION = t.OBSERVACIONES_RECIBO
@@ -71,12 +71,12 @@ namespace Activos_PrestamosOET.Controllers
                     {
                         observaciones.Add(o.OBSERVACION);
                     }
-                    else
-                    {
-                        observaciones.Add("");
-                    }
+                   
                 }
+               
             }
+            if (observaciones.Count == 0) observaciones.Add("");
+
             return observaciones;
         }
 
@@ -431,6 +431,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+           
             PRESTAMO pRESTAMO = db.PRESTAMOS.Find(id);
             // ViewBag.clear();
 
@@ -438,6 +439,10 @@ namespace Activos_PrestamosOET.Controllers
             {
                 return HttpNotFound();
             }
+            string username = User.Identity.GetUserName();
+            var user = db.ActivosUsers.SingleOrDefault(u => u.UserName == username);
+            if (user.Id != pRESTAMO.USUARIO_SOLICITA)
+                return RedirectToAction("Historial");
             ViewBag.Estadillo = "";
             if (pRESTAMO.Estado == 1)
             {
@@ -714,9 +719,9 @@ namespace Activos_PrestamosOET.Controllers
             {
                 try
                 {
-                l.Add(disp[k]);
-                k++;
-            }
+                    l.Add(disp[k]);
+                    k++;
+                }
                 catch (ArgumentOutOfRangeException e)
                 {
                     l.Add("d");
@@ -1012,7 +1017,7 @@ namespace Activos_PrestamosOET.Controllers
             return View();
         }
 
-
+        
         //Requiere: PRESTAMO p, int[] Cantidad, String[] Categoria.
         // Modifica: Inserta en la base de datos el p ingresado como parametro, envia una notificacion por medio de email y redirecciona al historial.
         //Retorna: una vista
@@ -1371,18 +1376,18 @@ namespace Activos_PrestamosOET.Controllers
                             //Si no existe lo crea
                             if (cantidad[a] > 0)
                             {
-                            pr = new EQUIPO_SOLICITADO();
-                            pr.ID_PRESTAMO = id;
-                            pr.TIPO_ACTIVO = y.NOMBRE;
-                            pr.CANTIDAD = cantidad[a];
+                                pr = new EQUIPO_SOLICITADO();
+                                pr.ID_PRESTAMO = id;
+                                pr.TIPO_ACTIVO = y.NOMBRE;
+                                pr.CANTIDAD = cantidad[a];
                                 pr.TIPOS_ACTIVOSID = y.ID;
-                            //Lo agrega a la tabla
-                            if (ModelState.IsValid)
-                            {
-                                db.EQUIPO_SOLICITADO.Add(pr);
-                                db.SaveChanges();
+                                //Lo agrega a la tabla
+                                if (ModelState.IsValid)
+                                {
+                                    db.EQUIPO_SOLICITADO.Add(pr);
+                                    db.SaveChanges();
+                                }
                             }
-                        }
                         }
                         else
                         {
@@ -1391,20 +1396,20 @@ namespace Activos_PrestamosOET.Controllers
                             decimal temp = cantidad[a];
                             if (temp > 0)
                             {
-                            noEsta = false;
-                            eq.ID_PRESTAMO = pr.ID_PRESTAMO;
-                            eq.TIPO_ACTIVO = y.NOMBRE;
-                            eq.CANTIDAD = temp;
-                            eq.CANTIDADAPROBADA = pr.CANTIDADAPROBADA;
+                                noEsta = false;
+                                eq.ID_PRESTAMO = pr.ID_PRESTAMO;
+                                eq.TIPO_ACTIVO = y.NOMBRE;
+                                eq.CANTIDAD = temp;
+                                eq.CANTIDADAPROBADA = pr.CANTIDADAPROBADA;
                                 eq.TIPOS_ACTIVOSID = y.ID;
-                            db.EQUIPO_SOLICITADO.Remove(pr);
-                            db.SaveChanges();
-                            if (ModelState.IsValid)
-                            {
-                                db.EQUIPO_SOLICITADO.Add(eq);
+                                db.EQUIPO_SOLICITADO.Remove(pr);
                                 db.SaveChanges();
+                                if (ModelState.IsValid)
+                                {
+                                    db.EQUIPO_SOLICITADO.Add(eq);
+                                    db.SaveChanges();
+                                }
                             }
-                        }
                             else
                             {
                                 db.EQUIPO_SOLICITADO.Remove(pr);
@@ -1418,18 +1423,18 @@ namespace Activos_PrestamosOET.Controllers
                 {
                     if (cantidad[a] > 0)
                     {
-                    //Si no se ha guardado en la tabla anteriormente lo crea y lo guarda
-                    EQUIPO_SOLICITADO pr = new EQUIPO_SOLICITADO();
-                    pr.ID_PRESTAMO = id;
-                    pr.TIPO_ACTIVO = y.NOMBRE;
+                        //Si no se ha guardado en la tabla anteriormente lo crea y lo guarda
+                        EQUIPO_SOLICITADO pr = new EQUIPO_SOLICITADO();
+                        pr.ID_PRESTAMO = id;
+                        pr.TIPO_ACTIVO = y.NOMBRE;
                         pr.TIPOS_ACTIVOSID = y.ID;
-                    pr.CANTIDAD = cantidad[a];
-                    if (ModelState.IsValid)
-                    {
-                        db.EQUIPO_SOLICITADO.Add(pr);
-                        db.SaveChanges();
+                        pr.CANTIDAD = cantidad[a];
+                        if (ModelState.IsValid)
+                        {
+                            db.EQUIPO_SOLICITADO.Add(pr);
+                            db.SaveChanges();
+                        }
                     }
-                }
                 }
                 a++;
             }
@@ -1458,7 +1463,7 @@ namespace Activos_PrestamosOET.Controllers
             P.MOTIVO = p.MOTIVO;
             P.OBSERVACIONES_SOLICITANTE = p.OBSERVACIONES_SOLICITANTE;
             P.PERIODO_USO = p.PERIODO_USO;
-            
+
             //P.SIGLA_CURSO = p.SIGLA_CURSO;
             int idCurso2 = 0;
             var idCourse = 0;
@@ -1480,15 +1485,15 @@ namespace Activos_PrestamosOET.Controllers
             {
 
             }*/
-            if (P.V_COURSESCOURSES == p.V_COURSESCOURSES)
+            if ((P.V_COURSESCOURSES == p.V_COURSESCOURSES)&&(P.V_COURSESCOURSES != 0))
             {
                 //P.FECHA_RETIRO = p.FECHA_RETIRO;
             }
             else
             {
-                if (p.V_COURSESCOURSES != 0)
-            {
-                P.FECHA_RETIRO = DateTime.ParseExact(Fecha_Inicio_Curso, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                if (P.V_COURSESCOURSES != 0)
+                {
+                    P.FECHA_RETIRO = DateTime.ParseExact(Fecha_Inicio_Curso, "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     //int rrr = Convert.ToInt32(p.SIGLA_CURSO);
                     //var course = db.V_COURSES.SingleOrDefault(c => Convert.ToString(c.COURSES) == p.SIGLA_CURSO);
                     //var course = db.V_COURSES.SingleOrDefault(c => c.COURSES_CODE == p.SIGLA_CURSO);
@@ -1743,7 +1748,7 @@ namespace Activos_PrestamosOET.Controllers
                 var ob = new List<String>();
                 eq = equipoPorCategoria(c.TIPO, id);
                 equipo_cat.Add(c.CAT.ToString(), eq);
-                ob = traerObservaciones(id, c.TIPO);
+                ob = traerObservaciones(id, c.TIPO, pRESTAMO.NUMERO_BOLETA);
                 observaciones.Add(c.CAT.ToString(), ob);
              
             }
@@ -1769,6 +1774,7 @@ namespace Activos_PrestamosOET.Controllers
             //se pasan las variables a la controladora 
             ViewBag.Equipo_Solict = equipo;
             ViewBag.EquipoPorCat = equipo_cat;
+            ViewBag.Observaciones = observaciones;
             //se desea mantener el diccionario aún después del post
             TempData["activos"] = equipo_cat;
             TempData["observaciones"] = observaciones;
@@ -1794,7 +1800,8 @@ namespace Activos_PrestamosOET.Controllers
 
             //Se recupera el diccionario después del post
             Dictionary<String, List<List<String>>> dic = (Dictionary<String, List<List<String>>>)TempData["activos"];
-
+            Dictionary<String, List<String>> observaciones = (Dictionary<String, List<String>>)TempData["observaciones"];
+            ViewBag.Observaciones = observaciones;
             List<String> idPrestados = new List<String>();
             List<String> lista = listaActivos(dic);
 
@@ -1841,6 +1848,8 @@ namespace Activos_PrestamosOET.Controllers
                     }
                     //Al devolverse todos los activos, el estado del préstamo pasa a ser "Cerrado"
                     pRESTAMO.Estado = 5;
+                    return RedirectToAction("Index");
+
                     // return RedirectToAction("Details", new { id = ID });
                 }
                 else if (hayFilaEntera(column5_checkbox))//Revisa si hay algún check para devolver todos los activos de una sola categoría
@@ -1895,7 +1904,9 @@ namespace Activos_PrestamosOET.Controllers
                         db.SaveChanges();
                     }
 
-                    if (todos) { pRESTAMO.Estado = 5; }
+                    if (todos) { pRESTAMO.Estado = 5;
+                        return RedirectToAction("Index");
+                    }
                 }
 
                 // if (column5_checkAll) { pRESTAMO.Estado = 5; }
