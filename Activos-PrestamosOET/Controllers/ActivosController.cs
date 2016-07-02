@@ -152,7 +152,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 BarcodeQRCode bc = new BarcodeQRCode(datos[i], 1, 1, null);
                 PdfPCell cell = new PdfPCell(table.DefaultCell);
-                cell.AddElement(new Chunk("OET -"+datos[i]));
+                cell.AddElement(new Chunk("OET - "+datos[i]));
                 cell.AddElement(bc.GetImage());
                 table.AddCell(cell);
             }
@@ -172,7 +172,7 @@ namespace Activos_PrestamosOET.Controllers
                 bc.Code = datos[i];
                 bc.N = 3;
                 bc.X= 1;
-                bc.AltText = "OET -";
+                bc.AltText = "OET - "+ datos[i].ToString();
                 PdfPCell cell = new PdfPCell(table.DefaultCell);
                 cell.AddElement(bc.CreateImageWithBarcode(cb, null, null));
                 table.AddCell(cell);
