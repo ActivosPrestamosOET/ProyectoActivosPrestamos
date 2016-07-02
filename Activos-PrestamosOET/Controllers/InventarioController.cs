@@ -27,12 +27,10 @@ namespace Local.Controllers
         // Requiere: N/A.
         // Modifica: muestra la información al ingresar a la página de Inventario inicialmente.
         // Regresa: vista con la tabla de los datos acerca del Inventario.
-        [Authorize(Roles = "Aceptar préstamos,superadmin")]
         public ActionResult Index(int? page)
         {
             llenarTablaInventario();
-            var temp = db.ACTIVOS.Where(x => x.PRESTABLE == true).Include(p => p.PRESTAMOes);            
-            //prestamos = prestamos.Include(c => c.)
+            var temp = db.ACTIVOS.Where(x => x.PRESTABLE == true);
             temp = temp.OrderBy(s => s.FABRICANTE);
             int pageSize = 4;
             int pageNumber = (page ?? 1);
@@ -44,7 +42,6 @@ namespace Local.Controllers
         // Modifica: muestra después de seleccionado algún botón, los resultados correspondientes, mostrando las tablas que corresponden.
         // Regresa: vista con las tablas cargadas que corresponden.
         [HttpPost]
-        [Authorize(Roles = "Aceptar préstamos,superadmin")]
         public ActionResult Index(String dropdownCategoria, String submit, String datepicker, String datepicker1, string b, int? page)
         {
             if (!string.IsNullOrEmpty(submit) && submit.Equals("Buscar"))
@@ -181,7 +178,6 @@ namespace Local.Controllers
 
         //-----------------------------------------------------------------------------------------------------------
         [HttpGet]
-        [Authorize(Roles = "Aceptar préstamos,superadmin")]
         public ActionResult Details(string id)
         {
             if (id == null)
@@ -192,7 +188,7 @@ namespace Local.Controllers
 
             return View(activo);
         }
-        [Authorize(Roles = "Aceptar préstamos,superadmin")]
+
         public ActionResult DescargarHistorial(string id)
         {
             var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
@@ -200,7 +196,7 @@ namespace Local.Controllers
                  return RedirectToAction("Details", new { id = id });
 
         }
-        [Authorize(Roles = "Aceptar préstamos,superadmin")]
+
         public ActionResult DetailsPDF(string id)
         {
             if (id == null)
@@ -267,14 +263,14 @@ namespace Local.Controllers
                 foreach (var x in activo.TRANSACCIONES)
                 {
 
-                    if (x.ACTIVOID == activo.ID && x.NUMERO_BOLETA == item.NUMERO_BOLETA && x.ESTADO == "Devuelto de préstamo")
+                    if (x.ACTIVOID == activo.ID && x.NUMERO_BOLETA == item.NUMERO_BOLETA)
                     {
                         dr["Observaciones al devolver"] = x.OBSERVACIONES_RECIBO;
 
                     }
                     else if (x == null)
                     {
-                        dr["Observaciones al devolver"] = "N/A";
+                        dr["Observaciones al devolver"] = "No ha sido prestado";
                     }
 
                 }
@@ -329,7 +325,7 @@ namespace Local.Controllers
 
         public ActionResult PDFReporte() {
             var temp = db.ACTIVOS.Where(x => x.PRESTABLE == true).ToList();
-            DownloadPDF("BoletaPDF", temp, "ReporteHistorial");
+            DownloadPDF("BoletaPDF", temp, "BoletaSoliciud");
             return RedirectToAction("Inventario");
         }
 
@@ -353,7 +349,6 @@ namespace Local.Controllers
             dt.Columns.Add(new DataColumn("Descripcion", Type.GetType("System.String")));
             dt.Columns.Add(new DataColumn("Prestado_a", Type.GetType("System.String")));
             dt.Columns.Add(new DataColumn("Prestado_hasta", Type.GetType("System.String")));
-            dt.Columns.Add(new DataColumn("Curso", Type.GetType("System.String")));
 
             foreach (var item in temp)
             {
@@ -398,23 +393,17 @@ namespace Local.Controllers
                 {
                     dr["Descripcion"] = item.DESCRIPCION;
                 }
-                if (item.ESTADO_PRESTADO == 0)
+                foreach (var x in item.PRESTAMOes)
                 {
-                    dr["Prestado_a"]= "No prestado";
-                    dr["Prestado_hasta"] = "No prestado";
-                    dr["Curso"] = "No prestado";
-                }
-                else
-                {
-                    dr["Prestado_a"] = item.PRESTAMOes.Last().ActivosUser.Nombre;
-                    dr["Prestado_hasta"] = item.PRESTAMOes.Last().FECHA_RETIRO;
-                    if (@item.PRESTAMOes.Last().V_COURSESCOURSES != 0)
+                    if (x == null)
                     {
-                        dr["Curso"] = item.PRESTAMOes.Last().V_COURSES.COURSE_NAME;
+                        dr["Prestado_a"] = "No ha sido prestado";
+                        dr["Prestado_hasta"] = "No ha sido prestado";
                     }
                     else
                     {
-                        dr["Curso"] = "No se prestó a un curso";
+                        dr["Prestado_a"] = x.ActivosUser.Nombre;
+                        dr["Prestado_hasta"] = x.FECHA_RETIRO;
                     }
                 }
                 dt.Rows.Add(dr);
