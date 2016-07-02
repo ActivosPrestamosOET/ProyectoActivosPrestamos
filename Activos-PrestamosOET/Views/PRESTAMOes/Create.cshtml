@@ -1,5 +1,14 @@
 ﻿@model Activos_PrestamosOET.Models.PRESTAMO
 
+@if (ViewBag.MensajeError != null)
+{
+    <div class="alert alert-dismissible alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        @ViewBag.MensajeError
+    </div>
+}
+
+
 @{
     ViewBag.Title = "Nueva solicitud de préstamo";
 }
@@ -76,8 +85,6 @@
 {
     @Html.AntiForgeryToken()
 
-
-
     <div class="form-horizontal">
 
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -109,7 +116,7 @@
                 </div>
                 <div class="col-md-4">
                     @Html.DropDownList("SIGLA_CURSO", null, "Sin Curso", htmlAttributes: new { @class = "form-control" })
-                    @Html.CheckBox("asignadoACurso", false, new { @style = "display: inline" })
+                    @Html.CheckBox("asignadoACurso", false, new { @style = "display: none" })
                 </div>
                 <div class="col-md-2">
                     <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.PERIODO_USO):*</label>
@@ -118,19 +125,15 @@
                     @Html.EditorFor(model => model.PERIODO_USO, new { htmlAttributes = new { @min = 0, @class = "form-control", @placeholder = "Esta en días." } })
                     @Html.ValidationMessageFor(model => model.PERIODO_USO, "", new { @class = "text-danger" })
                 </div>
-                <br />
-                <br />
-                <div class="col-md-2">
-                    <label id="etiquetaFecha" class="control-label" for="inputDefault">Fin de préstamo</label>
+                <br/>
+                <br/>
+                <div class="col-lg-offset-6 col-md-2">
+                    <label id="etiquetaFecha" class="control-label" for="inputDefault">Fin de préstamo:</label>
                 </div>
                 <div class="col-md-4">
                     @Html.TextBox("Fecha_Fin_Prestamo", null, new { @class = "form-control", @readonly = "readonly" })
                 </div>
-                <div class="col-md-2">
-                </div>
-                <div class="col-md-4">
-                </div>
-                </div>
+             </div>
         </div>
 
         <div class="form-group">
@@ -145,17 +148,17 @@
                     </th>
                 </tr>
                 @{
-                    ViewData["categorias"] = (List<String>)TempData["categorias"];
+                    ViewData["categorias"]  = (List<String>)TempData["categorias"];
                     List<String> categorias = (List<String>)ViewData["categorias"];
                 }
                 @foreach (String cat in categorias)
-                    {
+                {
                     <tr>
                         <td>
                             @Html.Label("Categoria", @cat)
                         </td>
                         <td>
-                            @Html.TextBox("Cantidad", null, new { @class = "form-control", @type = "number", @min = "0", @value = 0 })
+                            @Html.TextBox("Cantidad", null, new { @class = "form-control", @type = "number", @min = "0", @Value = "0" })
                             @*<input type="number" class="form-control" name="points" min="0" value="0">*@
                         </td>
                     </tr>

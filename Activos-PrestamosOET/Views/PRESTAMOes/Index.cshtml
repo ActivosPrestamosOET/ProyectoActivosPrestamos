@@ -166,7 +166,9 @@ $(document).ready(function(){
                     </td>
 
                     <td>
-                        @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
+                           <a href="@Url.Action("Details", new { id = item.ID })">
+                                <span class="glyphicon glyphicon-eye-open text-info" aria-hidden="true" title="Detalles"></span>
+                            </a>
                     </td>
                     <td>
                         <text>No disponible</text>
@@ -199,7 +201,9 @@ $(document).ready(function(){
                         <text>Aceptada</text>
                     </td>
                     <td>
-                        @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
+                        <a href="@Url.Action("Details", new { id = item.ID })">
+                            <span class="glyphicon glyphicon-eye-open text-info" aria-hidden="true" title="Detalles"></span>
+                        </a>
                     </td>
                     <td>
                         <text>No disponible</text>
@@ -232,7 +236,9 @@ $(document).ready(function(){
                         <text>Denegada</text>
                     </td>
                     <td>
-                        @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
+                        <a href="@Url.Action("Details", new { id = item.ID })">
+                            <span class="glyphicon glyphicon-eye-open text-info" aria-hidden="true" title="Detalles"></span>
+                        </a>
                     </td>
                     <td>
                         <text>No disponible</text>
@@ -265,7 +271,9 @@ $(document).ready(function(){
                         <text>Abierta</text>
                     </td>
                     <td>
-                        @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
+                        <a href="@Url.Action("Details", new { id = item.ID })">
+                            <span class="glyphicon glyphicon-eye-open text-info" aria-hidden="true" title="Detalles"></span>
+                        </a>
                     </td>
                     <td>
                         @Html.ActionLink("Devolver", "Devolucion", new { id = item.ID }, new { @class = "btn btn-default" })
@@ -298,7 +306,9 @@ $(document).ready(function(){
                         <text>Cerrada</text>
                     </td>
                     <td>
-                        @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
+                        <a href="@Url.Action("Details", new { id = item.ID })">
+                            <span class="glyphicon glyphicon-eye-open text-info" aria-hidden="true" title="Detalles"></span>
+                        </a>
                     </td>
                     <td>
                         <text>No disponible</text>
@@ -329,7 +339,9 @@ $(document).ready(function(){
                         <text>Cancelada</text>
                     </td>
                     <td>
-                        @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-default" })
+                        <a href="@Url.Action("Details", new { id = item.ID })">
+                            <span class="glyphicon glyphicon-eye-open text-info" aria-hidden="true" title="Detalles"></span>
+                        </a>
                     </td>
                     <td>
                         <text>No disponible</text>
