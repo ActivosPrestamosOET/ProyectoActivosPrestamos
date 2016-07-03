@@ -6,7 +6,7 @@
 }
 <div class="row">
     <div class="col-xs-12">
-        <h2>Activos disponibles en el sistema</h2>
+        <h2>Administración de activos</h2>
         <hr />
     </div>
 </div>
@@ -256,3 +256,10 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $("#activos").addClass("active");
+    </script>
+}
