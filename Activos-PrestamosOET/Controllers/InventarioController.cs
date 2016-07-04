@@ -250,7 +250,7 @@ namespace Local.Controllers
                 }
                 else
                 {
-                    dr["Fecha de Retiro"] = item.FECHA_RETIRO;
+                    dr["Fecha de Retiro"] = item.FECHA_RETIRO.ToShortDateString();
                 }
                 if (item.FECHA_RETIRO == null)
                 {
@@ -389,7 +389,7 @@ namespace Local.Controllers
                     else
                     {
                         dr["Prestado_a"] = x.ActivosUser.Nombre;
-                        dr["Prestado_hasta"] = x.FECHA_RETIRO;
+                        dr["Prestado_hasta"] = x.FECHA_RETIRO.ToShortDateString();
                     }
                 }
                 dt.Rows.Add(dr);
