@@ -88,7 +88,7 @@ namespace Activos_PrestamosOET.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "Nombre de usuario o contraseña incorrectos.");
                     return View(model);
             }
         }
@@ -131,7 +131,7 @@ namespace Activos_PrestamosOET.Controllers
                     return View("Lockout");
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid code.");
+                    ModelState.AddModelError("", "Código inválido.");
                     return View(model);
             }
         }
