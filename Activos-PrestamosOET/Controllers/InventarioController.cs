@@ -309,12 +309,18 @@ namespace Local.Controllers
 
         }
 
+        //Requiere: N/A
+        //Modifica: permite llamar el metodo que crea el PDF para ser bajado.
+        //Regresa: vista de Inventario, una vez creado y bajado el Reporte en PDF.
         public ActionResult PDFReporte() {
             var temp = db.ACTIVOS.Where(x => x.PRESTABLE == true).ToList();
             DownloadPDF("BoletaPDF", temp, "BoletaSoliciud");
             return RedirectToAction("Inventario");
         }
 
+        //Requiere: N/A
+        //Modifica: constituye la vista que se convertira en PDF
+        //Regresa: vista con el contenido del PDF
         public ActionResult BoletaPDF()
         {
             var temp = db.ACTIVOS.Where(x => x.PRESTABLE == true).ToList();
@@ -322,6 +328,9 @@ namespace Local.Controllers
             return View(temp);
         }
         
+        //Requere: N/A
+        //Modifica: crea el Excel a ser descargado,con la informacion dentro de un gridview, en un excel
+        //Regresa: vista con el Excel descargado
         public ActionResult ExportToExcel()
         {
             var temp = db.ACTIVOS.Where(x => x.PRESTABLE == true).ToList();
