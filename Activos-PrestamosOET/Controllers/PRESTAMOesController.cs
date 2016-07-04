@@ -46,55 +46,55 @@ namespace Activos_PrestamosOET.Controllers
             + consecutivo.ToString("D3");
         }
 
+
+        //Requiere: el id del prestamo, categoría y número de boleta del préstamo
+        //Modifica: Se encarga de recuperar de la tabla de transacciones las observaciones efectuadas para cada activo devuelto de ese préstamo 
+        //Regresa: la lista de observaciones de devolución de cada activo de la categoría especificada del préstamo especificado
         public List<String> traerObservaciones(String id, int cat, long? boleta)
         {
             List<String> observaciones = new List<String>();
 
+            //obtiene todos los activos del préstamo
             var activos = db.PRESTAMOS.Include(i => i.ACTIVOes).SingleOrDefault(h => h.ID == id);
+            //obtiene el id de todos los activos que pertenecen a la categoría específica
             var act = from a in activos.ACTIVOes.Where(i => i.TIPO_ACTIVOID == cat)
                       select new
                       {
                           ID = a.ID,
                       };
 
+            //Recorre los ids y recupera la observación que se hizo al devolverlos, si es que han sido devueltos
+            //de lo contrario no debería encontrar ninguna observación sino que debería obtener la hilera ""
             foreach (var i in act)
             {
                 var observacion = from t in db.TRANSACCIONES
                                   where t.ACTIVOID == i.ID && t.ESTADO == "Devuelto de préstamo" && t.NUMERO_BOLETA == boleta
                                   select t.OBSERVACIONES_RECIBO;
 
-
+                //si consulta observación devuelve nulo es que aún no ha habido transacciones de devolución con ese
+                //activo por lo que la hilera deberá ser ""
                 if (observacion == null || observacion.Count() == 0)
                 {
                     observaciones.Add("");
                 }
                 else
-                {
+                {   //En caso de si lograr recuperar algo pasan 2 casos
                     foreach (var o in observacion)
                     {
+                        //El caso de que si encuentre una observación por lo que la agregará a lista de observaciones
+                        //de esa categoría de activo
                         if (o != null)
                             observaciones.Add(o.ToString());
-                        else
+                        else //en caso de que observacion recupere algo nulo, se agrega esta línea para que devuelva "" tambien
                             observaciones.Add("");
+                        //Nota: no se logró averiguar porque a veces observacion no era nulo directamente, sino que obtenía valores nulos por dentro
+                        //por eso se agrega "" en ambos casos
                     }
                 }
                
             }
-
+            //Finalmente devuelve la lista de observaciones de cada activo de la categoría
             return observaciones;
-        }
-
-        public List<String> traerIdActivos(Dictionary<String, List<List<String>>> dic)
-        {
-            List<String> listaIdActivos = new List<String>();
-            foreach (KeyValuePair<String, List<List<String>>> entrada in dic)
-            {
-                foreach (List<String> l in entrada.Value)
-                {
-                    listaIdActivos.Add(l[3]);
-                }
-            }
-            return listaIdActivos;
         }
 
         //Requiere: vector de booleanos 
@@ -168,7 +168,9 @@ namespace Activos_PrestamosOET.Controllers
             return equipos;
         }
 
-
+        //Requiere: diccionario con lista de listas de hileras con datos de activos
+        //Modifica:  Recorre el diccionario e ingresa las placas de todos los activos dentro de él en un lista de hileras
+        //Retorna: Devuelve la lista de placas de los activos
         protected List<String> listaActivos(Dictionary<String, List<List<String>>> dic)
         {
             List<String> listaActivos = new List<String>();
@@ -182,6 +184,9 @@ namespace Activos_PrestamosOET.Controllers
             return listaActivos;
         }
 
+        //Requiere: lista con las placas de los activos del préstamo y placa de un activo
+        //Modifica:  Recorre dicha lista y se fija si placa es igual al elemento de la lista para recuperar la posicion de placa dentro de la lista
+        //Retorna: Devuelve la posición de placa dentro de lista
         protected int indiceActivo(List<String> lista, String placa)
         {
             int indice = -1;
@@ -1808,7 +1813,6 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.Observaciones = observaciones;
             List<String> idPrestados = new List<String>();
             List<String> lista = listaActivos(dic);
-            List<bool> devueltos = new List<bool>();
             //se guardan los ids de los activos del préstamo
             foreach (KeyValuePair<String, List<List<String>>> entrada in dic)
             {
@@ -1939,31 +1943,6 @@ namespace Activos_PrestamosOET.Controllers
                 }
 
             }
-
-
-            //var lista = db.PRESTAMOS.Include(i => i.EQUIPO_SOLICITADO).SingleOrDefault(h => h.ID == ID);
-            //ViewBag.Nombre = lista.USUARIO.NOMBRE;
-            ///*  -------------------------------------------------------------------------------------------  */
-            //var equipo = new List<List<String>>();
-            //foreach (var x in equipo_sol)
-            //{
-            //    if (prestamo.ID == ID)
-            //    {
-            //        if (prestamo.ID == x.ID_PRESTAMO)
-            //        {
-            //            List<String> temp = new List<String>();
-            //            if (x.TIPO_ACTIVO != null) { temp.Add(x.TIPO_ACTIVO.ToString()); } else { temp.Add(""); }
-            //            if (x.CANTIDAD != 0) { temp.Add(x.CANTIDAD.ToString()); } else { temp.Add(""); }
-            //            if (x.CANTIDADAPROBADA != 0) { temp.Add(x.CANTIDADAPROBADA.ToString()); } else { temp.Add(""); }
-            //            equipo.Add(temp);
-            //        }
-            //    }
-            //}
-            //ViewBag.Equipo_Solict = equipo;
-
-            /*  -------------------------------------------------------------------------------------------  */
-
-            //
             return RedirectToAction("Devolucion", new { id = ID });
         }
 
@@ -2171,6 +2150,9 @@ namespace Activos_PrestamosOET.Controllers
             return View(pRESTAMO);
         }
 
+        //Requiere: el id del curso 
+        //Modifica: Consulta en base de datos asincrónicamente para obtener las fechas del curso seleccionado
+        //Regresa: lista con fechas y número de días de diferencia
         public ActionResult obtenerFechasCurso(string idCurso)
         {
             var fechas = from c in db.V_COURSES
