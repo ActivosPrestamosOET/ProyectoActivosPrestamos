@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Collections.Generic;
 
 namespace UnitTestProject1.Controllers
 {
@@ -83,6 +84,49 @@ namespace UnitTestProject1.Controllers
             Boolean funciono = wait.Until(ExpectedConditions.TitleContains("Index"));
             Assert.IsTrue(funciono);
              
+        }
+
+        [TestMethod]
+        public void BorrarActivoTest()
+        {
+            LoginSetup();
+
+            //primero tengo que ir al index
+            this.ChromeDriver.Navigate().GoToUrl(this.GetAbsoluteUrl("/Activos"));
+            WebDriverWait wait = new WebDriverWait(this.ChromeDriver, TimeSpan.FromSeconds(10));
+            Boolean funciono = wait.Until(ExpectedConditions.TitleContains("Index"));
+
+            //ahora tengo que buscar el activo que cree anteriormente
+            //agarro la tabla
+            IWebElement tabla = this.ChromeDriver.FindElement(By.ClassName("table"));
+
+            //agarro todas las filas
+            IList<IWebElement> filas = tabla.FindElements(By.XPath("tbody/tr"));
+            IList<IWebElement> data;
+            IWebElement link = null;
+            foreach(var row in filas)
+            {
+                data = row.FindElements(By.TagName("td"));
+
+                System.Diagnostics.Debug.Print(data[4].Text);
+                if (data[4].Text.Equals("Prueba Selenium"))
+                {
+                    link = data[8].FindElement(By.TagName("a"));
+                    System.Diagnostics.Debug.Print(link.GetAttribute("href"));
+                    
+                    break;
+                }
+            }
+            //encontre el link, dele click
+            //Assert.IsNotNull(link);
+            link.Click();
+            wait = new WebDriverWait(this.ChromeDriver, TimeSpan.FromSeconds(10));
+            wait.Until(ExpectedConditions.TitleContains("Borrado"));
+            this.ChromeDriver.FindElementByCssSelector("[class*='btn-default']").Click();
+
+            wait = new WebDriverWait(this.ChromeDriver, TimeSpan.FromSeconds(10));
+            funciono = wait.Until(ExpectedConditions.TitleContains("Index"));
+            Assert.IsTrue(funciono);
         }
     }
 }
