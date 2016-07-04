@@ -176,7 +176,9 @@ namespace Local.Controllers
             llenarTablaInventario();
         }
 
-        //-----------------------------------------------------------------------------------------------------------
+        //Requiere: Recibe la placa del activo que se está consultando.
+        // Modifica: Maneja el details view, la cual es la vista de consulta del tracking de un activo en particular.
+        //Retorna: Devuelve un información necesaria para el despliegue de la vista como: nombre de solicitante, numero de boleta, observaciones al devolver, etc.
         [HttpGet]
         public ActionResult Details(string id)
         {
@@ -197,6 +199,9 @@ namespace Local.Controllers
 
         }
 
+        // Requiere: la placa del activo seleccionado desde la interfaz del historial
+        // Modifica: Crea la vista de DetailsPDF. El usuario no va a ver esta vista, si no que es para despues convertirla en un string y poder crear el PDF del tracking del activo.
+        // Regresa: N/A.
         public ActionResult DetailsPDF(string id)
         {
             if (id == null)
@@ -211,6 +216,9 @@ namespace Local.Controllers
 
         }
 
+        // Requiere: la placa del activo seleccionado desde la interfaz del historial
+        // Modifica: permite hacer la busqueda del tracking del activo para poder convertirlo a excel.
+        // Regresa: N/A.
         public ActionResult ExportarExcel(string id)
         {
             var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
@@ -242,7 +250,7 @@ namespace Local.Controllers
                 }
                 else
                 {
-                    dr["Fecha de Retiro"] = item.FECHA_RETIRO;
+                    dr["Fecha de Retiro"] = item.FECHA_RETIRO.ToShortDateString();
                 }
                 if (item.FECHA_RETIRO == null)
                 {
@@ -298,37 +306,21 @@ namespace Local.Controllers
             Response.End();
 
             return View(temp);
-            /*    public ActionResult ExportarExcel(string id)
-            {
-            GridView gv = new GridView();
-            var activo = db.ACTIVOS.Include(p => p.PRESTAMOes).Include(p => p.TRANSACCIONES).SingleOrDefault(m => m.PLACA == id);
-            gv.DataSource = activo.PRESTAMOes;
-            gv.DataBind();
-            Response.ClearContent();
-            Response.Buffer = true;
-            Response.AddHeader("content-disposition", "attachment; filename=HistorialActivo.xls");
-            Response.ContentType = "application/ms-excel";
-            Response.Charset = "";
-            StringWriter sw = new StringWriter();
-            HtmlTextWriter htw = new HtmlTextWriter(sw);
-            gv.RenderControl(htw);
-            Response.Output.Write(sw.ToString());
-            Response.Flush();
-            Response.End();
 
-            return View(activo);
-            }
-            */
         }
 
-
-
+        //Requiere: N/A
+        //Modifica: permite llamar el metodo que crea el PDF para ser bajado.
+        //Regresa: vista de Inventario, una vez creado y bajado el Reporte en PDF.
         public ActionResult PDFReporte() {
             var temp = db.ACTIVOS.Where(x => x.PRESTABLE == true).ToList();
             DownloadPDF("BoletaPDF", temp, "BoletaSoliciud");
             return RedirectToAction("Inventario");
         }
 
+        //Requiere: N/A
+        //Modifica: constituye la vista que se convertira en PDF
+        //Regresa: vista con el contenido del PDF
         public ActionResult BoletaPDF()
         {
             var temp = db.ACTIVOS.Where(x => x.PRESTABLE == true).ToList();
@@ -336,6 +328,9 @@ namespace Local.Controllers
             return View(temp);
         }
         
+        //Requere: N/A
+        //Modifica: crea el Excel a ser descargado,con la informacion dentro de un gridview, en un excel
+        //Regresa: vista con el Excel descargado
         public ActionResult ExportToExcel()
         {
             var temp = db.ACTIVOS.Where(x => x.PRESTABLE == true).ToList();
@@ -403,7 +398,7 @@ namespace Local.Controllers
                     else
                     {
                         dr["Prestado_a"] = x.ActivosUser.Nombre;
-                        dr["Prestado_hasta"] = x.FECHA_RETIRO;
+                        dr["Prestado_hasta"] = x.FECHA_RETIRO.ToShortDateString();
                     }
                 }
                 dt.Rows.Add(dr);
