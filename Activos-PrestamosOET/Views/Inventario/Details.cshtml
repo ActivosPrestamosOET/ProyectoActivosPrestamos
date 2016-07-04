@@ -71,7 +71,7 @@
                     @Html.DisplayFor(modelItem => item.NUMERO_BOLETA)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.FECHA_RETIRO)
+                    <text>@item.FECHA_RETIRO.ToShortDateString()</text>
                 </td>
                 <td>
                     @item.FECHA_RETIRO.AddDays(item.PERIODO_USO).ToShortDateString()
