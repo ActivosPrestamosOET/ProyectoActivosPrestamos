@@ -46,7 +46,7 @@ namespace Activos_PrestamosOET.Controllers
             + consecutivo.ToString("D3");
         }
 
-        public List<String> traerObservaciones(String id, int cat, long? boleta )
+        public List<String> traerObservaciones(String id, int cat, long? boleta)
         {
             List<String> observaciones = new List<String>();
 
@@ -61,21 +61,25 @@ namespace Activos_PrestamosOET.Controllers
             {
                 var observacion = from t in db.TRANSACCIONES
                                   where t.ACTIVOID == i.ID && t.ESTADO == "Devuelto de préstamo" && t.NUMERO_BOLETA == boleta
-                                  select new
-                                  {
-                                      OBSERVACION = t.OBSERVACIONES_RECIBO
-                                  };
-                foreach(var o in observacion)
+                                  select t.OBSERVACIONES_RECIBO;
+
+
+                if (observacion == null || observacion.Count() == 0)
                 {
-                    if(o != null)
+                    observaciones.Add("");
+                }
+                else
+                {
+                    foreach (var o in observacion)
                     {
-                        observaciones.Add(o.OBSERVACION);
+                        if (o != null)
+                            observaciones.Add(o.ToString());
+                        else
+                            observaciones.Add("");
                     }
-                   
                 }
                
             }
-            if (observaciones.Count == 0) observaciones.Add("");
 
             return observaciones;
         }
@@ -1804,7 +1808,7 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.Observaciones = observaciones;
             List<String> idPrestados = new List<String>();
             List<String> lista = listaActivos(dic);
-
+            List<bool> devueltos = new List<bool>();
             //se guardan los ids de los activos del préstamo
             foreach (KeyValuePair<String, List<List<String>>> entrada in dic)
             {
@@ -1870,10 +1874,13 @@ namespace Activos_PrestamosOET.Controllers
                                 String id = l[3];
                                 ACTIVO act = db.ACTIVOS.Find(id);
                                 int indice = indiceActivo(lista, act.PLACA);
-                                act.ESTADO_PRESTADO = 0;
+                                if (act.ESTADO_ACTIVOID != 0)
+                                {
+                                    act.ESTADO_PRESTADO = 0;
+                                    new TransaccionesController().CreatePrestamo(User.Identity.GetUserName(), "Devuelto de préstamo", "Se devuelve activo en prestamo", act.ID, unchecked((int)prestamo.NUMERO_BOLETA), pRESTAMO.FECHA_RETIRO, DateTime.Now.Date, Notas[indice], pRESTAMO.USUARIO_SOLICITA);
+                                }
                                 db.Entry(act).State = EntityState.Modified;
                                 db.SaveChanges();
-                                new TransaccionesController().CreatePrestamo(User.Identity.GetUserName(), "Devuelto de préstamo", "Se devuelve activo en prestamo", act.ID, unchecked((int)prestamo.NUMERO_BOLETA), pRESTAMO.FECHA_RETIRO, DateTime.Now.Date, Notas[indice], pRESTAMO.USUARIO_SOLICITA);
                             }
 
                         }
@@ -1891,9 +1898,12 @@ namespace Activos_PrestamosOET.Controllers
                         ACTIVO act = db.ACTIVOS.Find(id);
                         if (devolucionActivos[i])
                         {
-                            act.ESTADO_PRESTADO = 0;
                             int indice = indiceActivo(lista, act.PLACA);
-                            new TransaccionesController().CreatePrestamo(User.Identity.GetUserName(), "Devuelto de préstamo", "Se devuelve activo en prestamo", act.ID, unchecked((int)prestamo.NUMERO_BOLETA), pRESTAMO.FECHA_RETIRO, DateTime.Now.Date, Notas[indice], pRESTAMO.USUARIO_SOLICITA);
+                            if (act.ESTADO_ACTIVOID != 0)
+                            {
+                                act.ESTADO_PRESTADO = 0;
+                                new TransaccionesController().CreatePrestamo(User.Identity.GetUserName(), "Devuelto de préstamo", "Se devuelve activo en prestamo", act.ID, unchecked((int)prestamo.NUMERO_BOLETA), pRESTAMO.FECHA_RETIRO, DateTime.Now.Date, Notas[indice], pRESTAMO.USUARIO_SOLICITA);
+                            }
                         }
                         else
                         {
@@ -1904,7 +1914,9 @@ namespace Activos_PrestamosOET.Controllers
                         db.SaveChanges();
                     }
 
-                    if (todos) { pRESTAMO.Estado = 5;
+                    if (todos)
+                    {
+                        pRESTAMO.Estado = 5;
                         return RedirectToAction("Index");
                     }
                 }
