@@ -136,6 +136,7 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
+        $("#activos").addClass("active");
         $(".seleccionado").change(function () {
             var numberOfChecked = $('input:checkbox:checked').length;
             if (numberOfChecked > 0) {

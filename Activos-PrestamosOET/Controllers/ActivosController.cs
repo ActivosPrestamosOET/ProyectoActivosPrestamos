@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Net.Mail;
 using SendGrid;
 using System.Web;
 using System.Web.Mvc;
@@ -12,7 +10,6 @@ using Activos_PrestamosOET.Models;
 using PagedList;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using System.Web.Services;
 using System.Configuration;
 using iTextSharp.text.pdf;
 using iTextSharp.text;
@@ -49,14 +46,6 @@ namespace Activos_PrestamosOET.Controllers
         // GET: Inventario
         public ActionResult Inventario(string orden, int? pagina, string busqueda)
         {
-            /*Response.Clear();
-            Response.ContentType = "application/pdf";
-            Response.AddHeader("content-disposition", "attachment;filename=oo.pdf");
-            Response.Cache.SetCacheability(HttpCacheability.NoCache);
-            string[] datos = { "1653284", "16532845", "1653287", "1953284" };
-            Response.BinaryWrite(CrearPDF(datos));
-            Response.End();*/
-
             ViewBag.OrdenActual = orden;
             ViewBag.Compania = String.IsNullOrEmpty(orden) ? "compania_desc" : "";
             ViewBag.Estacion = (orden == "estacion_asc") ? "estacion_desc" : "estacion_asc";
@@ -109,8 +98,10 @@ namespace Activos_PrestamosOET.Controllers
             return View(aCTIVOS.ToPagedList(num_pagina, tamano_pagina));
         }
 
+        // POST que genera un PDF con codigos de barras
         [HttpPost]
-        public ActionResult GenerarPDFCodigoBarras(string [] marcados, int codigo_seleccionado = 0) {
+        public ActionResult GenerarPDFCodigoBarras(string[] marcados, int codigo_seleccionado = 0)
+        {
             string nombre_archivo = "Códigos " + DateTime.Now.ToString(@"MM\/dd\/yyyy h\:mm tt");
             marcados = marcados.Where(val => val != "false").ToArray();
             Response.Clear();
@@ -122,8 +113,10 @@ namespace Activos_PrestamosOET.Controllers
             return RedirectToAction("Inventario");
         }
 
-       
-        private byte[] CrearPDF(string [] datos, int tipo)
+        /**
+         * Metodo que se encarga de generar un PDF ya sean con codigos QR o de Barras dependiendo de lo que haya elegido el usuario.
+         **/
+        private byte[] CrearPDF(string[] datos, int tipo)
         {
             byte[] bPDF = null;
 
@@ -131,11 +124,12 @@ namespace Activos_PrestamosOET.Controllers
             Document doc = new Document(PageSize.A4, 25, 25, 25, 25);
             PdfWriter writer = PdfWriter.GetInstance(doc, ms);
             doc.Open();
-            switch (tipo){ //Escoger tipo de PDF
+            switch (tipo)
+            { //Escoger tipo de PDF
                 case 1:
                     doc.Add(CodigoQR(datos, 6));
                     break;
-                default :
+                default:
                     doc.Add(Codigo39(datos, writer, 6));
                     break;
             }
@@ -144,7 +138,11 @@ namespace Activos_PrestamosOET.Controllers
             return bPDF;
         }
 
-        private PdfPTable CodigoQR(string[] datos, int codigos_por_fila) {
+        /**
+         * Metodo que genera un PDF con codigos QR
+         * **/
+        private PdfPTable CodigoQR(string[] datos, int codigos_por_fila)
+        {
             PdfPTable table = new PdfPTable(codigos_por_fila);
             table.WidthPercentage = 100;
             //****Se agregan elementos 
@@ -152,7 +150,7 @@ namespace Activos_PrestamosOET.Controllers
             {
                 BarcodeQRCode bc = new BarcodeQRCode(datos[i], 1, 1, null);
                 PdfPCell cell = new PdfPCell(table.DefaultCell);
-                cell.AddElement(new Chunk("OET -"+datos[i]));
+                cell.AddElement(new Chunk("OET - " + datos[i]));
                 cell.AddElement(bc.GetImage());
                 table.AddCell(cell);
             }
@@ -160,6 +158,9 @@ namespace Activos_PrestamosOET.Controllers
             return table;
         }
 
+        /**
+         * Metodo que genera un PDF con codigos de barras.
+         * **/
         private PdfPTable Codigo39(string[] datos, PdfWriter writer, int codigos_por_fila)
         {
             PdfPTable table = new PdfPTable(codigos_por_fila);
@@ -171,8 +172,8 @@ namespace Activos_PrestamosOET.Controllers
                 PdfContentByte cb = new PdfContentByte(writer);
                 bc.Code = datos[i];
                 bc.N = 3;
-                bc.X= 1;
-                bc.AltText = "OET -";
+                bc.X = 1;
+                bc.AltText = "OET - " + datos[i].ToString();
                 PdfPCell cell = new PdfPCell(table.DefaultCell);
                 cell.AddElement(bc.CreateImageWithBarcode(cb, null, null));
                 table.AddCell(cell);
@@ -417,44 +418,53 @@ namespace Activos_PrestamosOET.Controllers
                 original.ESTADO_ACTIVOID = aCTIVO.ESTADO_ACTIVOID;
                 // si no se cambio el comentario, dejar el original
                 original.COMENTARIO = aCTIVO.COMENTARIO == null ? original.COMENTARIO : aCTIVO.COMENTARIO;
-                // Si el activo se pone como asignado (estado = 3), agregar id de empleado encargado, id de estacion de epleado y centro de costo
-                if (aCTIVO.ESTADO_ACTIVOID == 3)
+                // Si el activo se pone como asignado, agregar id de empleado encargado, id de estacion de epleado y centro de costo
+                int id_estado_asignado = db.ESTADOS_ACTIVOS.Where(ea => ea.NOMBRE.Equals("Asignado")).ToList()[0].ID; // Se busca el identificador del estado Asignado
+                if (aCTIVO.ESTADO_ACTIVOID == id_estado_asignado)
                 {
                     original.V_EMPLEADOSIDEMPLEADO = aCTIVO.V_EMPLEADOSIDEMPLEADO;
                     // Al activo se le asigna la estacion del empleado encargado, para que siempre este correcta y no dependa de la correctitud del filtro de empleados por estacion.
                     original.V_ESTACIONID = (db.V_EMPLEADOS.ToList().Where(ea => ea.IDEMPLEADO == aCTIVO.V_EMPLEADOSIDEMPLEADO)).ToList()[0].ESTACION_ID;
                     original.CENTRO_DE_COSTOId = aCTIVO.CENTRO_DE_COSTOId;
 
-                    var empleado = db.V_EMPLEADOS.Find(aCTIVO.V_EMPLEADOSIDEMPLEADO);                    
+                    var empleado = db.V_EMPLEADOS.Find(aCTIVO.V_EMPLEADOSIDEMPLEADO);
 
                     if (empleado.EMAIL.Contains("@"))
                     {
                         var mensaje_correo = new SendGridMessage();
-                        mensaje_correo.From = new System.Net.Mail.MailAddress("andresbejar@gmail.com", "Admin");
+                        mensaje_correo.From = new System.Net.Mail.MailAddress("andresbejar@gmail.com", "Admin"); // CAMBIAR CON EL CORREO DESDE EL QUE SE VAN A ENVIAR LOS MENSAJES
                         List<String> destinatarios = new List<string>
                         {
                             //@""+empleado.NOMBRE+" <"+empleado.EMAIL+">",
-                            @"Jose Urena <jpurena14@hotmail.com>"
+                            @"Jose Urena <jpurena14@hotmail.com>" // PARA ESTABLECER EL CORREO DONDE SE ENVIA LA INFORMACION, ELIMINAR ESTA LINEA Y DESCOMENTAR LA LINEA SUPERIOR.
                         };
 
                         mensaje_correo.AddTo(destinatarios);
-                        mensaje_correo.Subject = "Activo asignado a su cuenta de OET.";                                                
+                        mensaje_correo.Subject = "Activo asignado a su cuenta de OET.";
                         mensaje_correo.Html += "<h2>La OET le informa</h2><br />";
-                        mensaje_correo.Html += "A través de este correo la OET desea informarle que un nuevo activo ha sido asignado a su nombre."+"<br />" + "<br />";
-                        mensaje_correo.Html += "A continuación se enlistan las características del activo: "+"<br />" + "<br />" + "<br />";
-                        mensaje_correo.Html += "Descripción: " + original.DESCRIPCION+"<br />" + "<br />";
+                        mensaje_correo.Html += "A través de este correo la OET desea informarle que un nuevo activo ha sido asignado a su nombre." + "<br />" + "<br />";
+                        mensaje_correo.Html += "A continuación se enlistan las características del activo: " + "<br />" + "<br />" + "<br />";
+                        mensaje_correo.Html += "Descripción: " + original.DESCRIPCION + "<br />" + "<br />";
                         mensaje_correo.Html += "Número de placa: " + original.PLACA + "<br />" + "<br />";
                         mensaje_correo.Html += "Inicio del servicio: " + original.INICIO_SERVICIO + "<br />" + "<br />";
                         mensaje_correo.Html += "Comentarios: " + original.COMENTARIO + "<br />";
-                        
+
                         var credentials = new NetworkCredential(ConfigurationManager.AppSettings["mailAccount"], ConfigurationManager.AppSettings["mailPassword"]);
-                        var transportWeb = new SendGrid.Web(credentials);                        
+                        var transportWeb = new SendGrid.Web(credentials);
                         transportWeb.DeliverAsync(mensaje_correo);
                     }
 
 
 
                 }
+                else
+                {
+                    // Si no se asigna entonces se le quita la estacion, el centro de costo y el empleado responsable
+                    original.V_ESTACIONID = "";
+                    original.CENTRO_DE_COSTOId = null;
+                    original.V_EMPLEADOSIDEMPLEADO = "";
+                }
+
                 db.SaveChanges();
 
                 var consulta_proveedor = db.V_PROVEEDOR.ToList().Where(ea => ea.IDPROVEEDOR == original.V_PROVEEDORIDPROVEEDOR);
@@ -464,8 +474,8 @@ namespace Activos_PrestamosOET.Controllers
                 var consulta_transaccion = db.TIPOS_TRANSACCIONES.ToList().Where(ea => ea.ID == original.TIPO_TRANSACCIONID);
                 var transaccion = consulta_transaccion.ToList()[0].NOMBRE;
 
-                // Si el activo se pone como asignado (estado = 3), se agrega id del responsable a la bitacora.
-                if(aCTIVO.ESTADO_ACTIVOID == 3)
+                // Si el activo se pone como asignado, se agrega id del responsable a la bitacora.
+                if (aCTIVO.ESTADO_ACTIVOID == id_estado_asignado)
                 {
                     controladora_transaccion.CreateWithResponsible(User.Identity.GetUserName(), original.ESTADOS_ACTIVOS.NOMBRE, original.descripcion(proveedor, transaccion, anfitriona), original.ID, aCTIVO.V_EMPLEADOSIDEMPLEADO);
                 }
@@ -473,7 +483,7 @@ namespace Activos_PrestamosOET.Controllers
                 {
                     controladora_transaccion.Create(User.Identity.GetUserName(), original.ESTADOS_ACTIVOS.NOMBRE, original.descripcion(proveedor, transaccion, anfitriona), original.ID);
                 }
-                                
+
                 return RedirectToAction("Index");
             }
             ViewBag.V_EMPLEADOSIDEMPLEADO = new SelectList(db.V_EMPLEADOS.Where(emp => emp.ESTADO.Equals(1) && emp.EMAIL.Contains("@")).OrderBy(emp => emp.NOMBRE), "IDEMPLEADO", "NOMBRE", aCTIVO.V_EMPLEADOSIDEMPLEADO);

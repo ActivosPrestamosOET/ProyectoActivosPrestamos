@@ -73,3 +73,10 @@
         @Html.PagedListPager(Model, pagina => Url.Action("Index", new { pagina, orden = ViewBag.OrdenActual }))
     </div>
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $("#activos").addClass("active");
+    </script>
+}

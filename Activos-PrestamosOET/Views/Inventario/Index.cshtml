@@ -206,7 +206,7 @@
                                 {
                                     
                                         <td>@item.PRESTAMOes.Last().ActivosUser.Nombre</td>
-                                        <td>@item.PRESTAMOes.Last().FECHA_RETIRO</td>
+                                        <td>@item.PRESTAMOes.Last().FECHA_RETIRO.ToShortDateString()</td>
                                     if (@item.PRESTAMOes.Last().V_COURSESCOURSES != 0)
                                     {
                                         <td>@item.PRESTAMOes.Last().V_COURSES.COURSE_NAME</td>

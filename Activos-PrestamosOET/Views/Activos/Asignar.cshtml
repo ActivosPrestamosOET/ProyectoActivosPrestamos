@@ -128,6 +128,9 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
+
+        $("#activos").addClass("active");
+
         $(function () {
             $('#info-asignacion').css('display', ($('#ESTADO_ACTIVOID option:selected').text() == 'Asignado') ? 'block' : 'none');
             $('#ESTADO_ACTIVOID').on('change', function () {
