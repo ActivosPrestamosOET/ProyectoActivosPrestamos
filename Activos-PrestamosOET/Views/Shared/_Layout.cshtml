@@ -78,7 +78,7 @@
                         </li>
                         if (User.IsInRole("superadmin"))
                         {
-                            <li class="dropdown">
+                            <li class="dropdown" id="opciones_avanzadas">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opciones avanzadas <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li>@Html.ActionLink("Administración de usuarios", "Index", "UsersAdmin")</li>
