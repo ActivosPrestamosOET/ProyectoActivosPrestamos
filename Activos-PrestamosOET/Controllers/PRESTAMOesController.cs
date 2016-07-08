@@ -882,7 +882,7 @@ namespace Activos_PrestamosOET.Controllers
             var myMessage = new SendGrid.SendGridMessage();
             myMessage.AddTo(to);
             myMessage.From = new System.Net.Mail.MailAddress(
-                                "andresbejar@gmail.com", "Admin");
+                                "message.ots@tropicalstudies.org", "Admin");
             myMessage.Subject = subj;
             myMessage.Text = mensaje;
             myMessage.Html = mensaje;
