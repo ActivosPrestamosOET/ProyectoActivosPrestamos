@@ -255,7 +255,7 @@ namespace Activos_PrestamosOET.Controllers
         // POST: /Users/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Email,Id,Nombre,Apellidos,Cedula,EstacionID")] EditUserViewModel editUser, params string[] selectedRole)
+        public async Task<ActionResult> Edit([Bind(Include = "Email,Id,Nombre,Apellidos,Cedula,EstacionID")] EditUserViewModel editUser, params string[] SelectedRoles)
         {
             if (ModelState.IsValid)
             {
@@ -274,18 +274,18 @@ namespace Activos_PrestamosOET.Controllers
 
                 var userRoles = await UserManager.GetRolesAsync(user.Id);
 
-                string[] selectedRoles = selectedRole;
+                string[] selectedRoles = SelectedRoles;
 
-                selectedRole = selectedRole ?? new string[] { };
+                SelectedRoles = SelectedRoles ?? new string[] { };
 
-                var result = await UserManager.AddToRolesAsync(user.Id, selectedRole.Except(userRoles).ToArray<string>());
+                var result = await UserManager.AddToRolesAsync(user.Id, SelectedRoles.Except(userRoles).ToArray<string>());
 
                 if (!result.Succeeded)
                 {
                     ModelState.AddModelError("", result.Errors.First());
                     return View();
                 }
-                result = await UserManager.RemoveFromRolesAsync(user.Id, userRoles.Except(selectedRole).ToArray<string>());
+                result = await UserManager.RemoveFromRolesAsync(user.Id, userRoles.Except(SelectedRoles).ToArray<string>());
 
                 if (!result.Succeeded)
                 {
@@ -294,7 +294,7 @@ namespace Activos_PrestamosOET.Controllers
                 }
 
                 //Si los roles asignados cambiaron
-                if (selectedRole.Length != userRoles.Count)
+                if (SelectedRoles.Length != userRoles.Count)
                 {
                     //enviar correo con cambios al usuario
                     string cuerpo_del_mensaje = "Este correo es para informarle que sus roles dentro del sistema de Administración de Activos fueron cambiados. " +
