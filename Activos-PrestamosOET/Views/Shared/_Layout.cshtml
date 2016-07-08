@@ -78,7 +78,7 @@
                         </li>
                         if (User.IsInRole("superadmin"))
                         {
-                            <li class="dropdown">
+                            <li class="dropdown" id="opciones_avanzadas">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Opciones avanzadas <span class="caret"></span></a>
                                 <ul class="dropdown-menu">
                                     <li>@Html.ActionLink("Administración de usuarios", "Index", "UsersAdmin")</li>
@@ -108,7 +108,7 @@
                 <footer>
                     <div class="row">
                         <div class="col-xs-12">
-                            <h6 class="text-center"><a href="#">Contáctenos</a> | OET &copy; Copyright @DateTime.Now.Year - Todos los derechos reservados. </h6>
+                            <h6 class="text-center"><a href="mailto:contacts.admin@oet.ac.cr">Contáctenos</a> | OET &copy; Copyright @DateTime.Now.Year - Todos los derechos reservados. </h6>
                         </div>
                     </div>
                     <div class="row">

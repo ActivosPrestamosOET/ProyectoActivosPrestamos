@@ -83,7 +83,7 @@ else
                 </div>
                 <div class="col-md-4">
                     <!--Html.DisplayFor(model => model.FECHA_SOLICITUD)-->
-                    @Html.DisplayFor(model => model.FECHA_SOLICITUD)
+                    <text>@Model.FECHA_SOLICITUD.ToShortDateString()</text>
                 </div>
 
                 <br />
@@ -98,7 +98,7 @@ else
                     <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_RETIRO):</label>
                 </div>
                 <div class="col-md-4">
-                    @Html.DisplayFor(model => model.FECHA_RETIRO)
+                    <text>@Model.FECHA_RETIRO.ToShortDateString()</text>                    
                 </div>
                 <br />
                 <br />
