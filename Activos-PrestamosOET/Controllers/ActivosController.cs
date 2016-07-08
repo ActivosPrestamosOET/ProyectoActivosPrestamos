@@ -43,6 +43,7 @@ namespace Activos_PrestamosOET.Controllers
             this.UserManager = userManager;
         }
 
+        [Authorize(Roles = "Ingresar activos, Desechar activos, Editar activos, Aceptar préstamos, superadmin")]
         // GET: Inventario
         public ActionResult Inventario(string orden, int? pagina, string busqueda)
         {
@@ -186,6 +187,7 @@ namespace Activos_PrestamosOET.Controllers
 
 
         // GET: Activos
+        [Authorize(Roles = "Ingresar activos, Desechar activos, Editar activos, Aceptar préstamos, superadmin")]
         public ActionResult Index(string orden, string filtro, string busqueda, string V_PROVEEDORIDPROVEEDOR, string TIPO_ACTIVOID, string V_ANFITRIONAID, string TIPO_TRANSACCIONID, string ESTADO_ACTIVOID, string V_ESTACIONID, string fecha_antes, string fecha_despues, string usuario, string fabricante, int? pagina)
         {
 
@@ -282,7 +284,7 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: Activos/Details/5
-
+        [Authorize(Roles = "Ingresar activos, Desechar activos, Editar activos, Aceptar préstamos, superadmin")]
         public ActionResult Details(string id, bool reparaciones = false)
         {
             if (id == null)
@@ -305,7 +307,7 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: Activos/Create
-        [Authorize(Roles = "Ingresar Activos, superadmin")] //OJO
+        [Authorize(Roles = "Ingresar activos, superadmin")] //OJO
         public ActionResult Create()
         {
             ViewBag.INGRESADO_POR = User.Identity.Name;
@@ -324,7 +326,7 @@ namespace Activos_PrestamosOET.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Ingresar Activos, superadmin")]
+        [Authorize(Roles = "Ingresar activos, superadmin")]
         public ActionResult Create([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_EMPLEADOSIDEMPLEADO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId,PLACA,ESTADO_PRESTADO")] ACTIVO aCTIVO)
         {
 
@@ -375,7 +377,7 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: Activos/Asignar/7
-        [Authorize(Roles = "Ingresar Activos, superadmin")]
+        [Authorize(Roles = "Ingresar activos, superadmin")]
         public ActionResult Asignar(string id)
         {
             if (id == null)
@@ -404,7 +406,7 @@ namespace Activos_PrestamosOET.Controllers
         // POST: Activos/Asignar/7
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Ingresar Activos, superadmin")]
+        [Authorize(Roles = "Ingresar activos, superadmin")]
         public ActionResult Asignar([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_EMPLEADOSIDEMPLEADO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId,PLACA,ESTADO_PRESTADO")] ACTIVO aCTIVO)
         {
 
@@ -432,7 +434,7 @@ namespace Activos_PrestamosOET.Controllers
                     if (empleado.EMAIL.Contains("@"))
                     {
                         var mensaje_correo = new SendGridMessage();
-                        mensaje_correo.From = new System.Net.Mail.MailAddress("andresbejar@gmail.com", "Admin"); // CAMBIAR CON EL CORREO DESDE EL QUE SE VAN A ENVIAR LOS MENSAJES
+                        mensaje_correo.From = new System.Net.Mail.MailAddress("message.ots@tropicalstudies.org", "Admin"); // CAMBIAR CON EL CORREO DESDE EL QUE SE VAN A ENVIAR LOS MENSAJES
                         List<String> destinatarios = new List<string>
                         {
                             //@""+empleado.NOMBRE+" <"+empleado.EMAIL+">",
@@ -494,7 +496,7 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: Activos/Edit/5
-        [Authorize(Roles = "Editar Activos, superadmin")]
+        [Authorize(Roles = "Editar activos, superadmin")]
         public ActionResult Edit(string id)
         {
             if (id == null)
@@ -520,7 +522,7 @@ namespace Activos_PrestamosOET.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Editar Activos, superadmin")]
+        [Authorize(Roles = "Editar activos, superadmin")]
         public ActionResult Edit([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_EMPLEADOSIDEMPLEADO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId,PLACA,ESTADO_PRESTADO")] ACTIVO aCTIVO)
         {
             var original = db.ACTIVOS.Find(aCTIVO.ID);
