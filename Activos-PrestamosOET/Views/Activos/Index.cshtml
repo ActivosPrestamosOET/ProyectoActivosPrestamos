@@ -205,10 +205,10 @@
                                     @Html.DisplayFor(modelItem => item.DESCRIPCION)
                                 </td>
 
-                                @if (User.IsInRole("superadmin") || User.IsInRole("Ingresar activos"))
+                                @if (User.IsInRole("superadmin") || User.IsInRole("Editar activos") || User.IsInRole("Ingresar activos"))
                                 {
                                     <td class="text-center">
-                                        <a href="@Url.Action("Asignar", new {id= item.ID})">
+                                        <a href="@Url.Action("Asignar", new { id = item.ID })">
                                             <span class="glyphicon glyphicon-share-alt" style="color:#7bc143" aria-hidden="true" title="Cambiar estado"></span>
                                         </a>
                                     </td>
@@ -251,9 +251,12 @@
             <small><span class="text-muted">Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) de @Model.PageCount</span></small>
             @Html.PagedListPager(Model, pagina => Url.Action("Index", new { pagina, orden = ViewBag.OrdenActual, filtro = ViewBag.FiltroActual }))
         </div>
-        <div class="pull-right">
-            @Html.ActionLink("Crear un nuevo activo", "Create", new object { }, new { @class = "btn btn-default" })
-        </div>
+        @if (User.IsInRole("superadmin") || User.IsInRole("Ingresar activos"))
+        {
+            <div class="pull-right">
+                @Html.ActionLink("Crear un nuevo activo", "Create", new object { }, new { @class = "btn btn-default" })
+            </div>
+        }
     </div>
 </div>
 
