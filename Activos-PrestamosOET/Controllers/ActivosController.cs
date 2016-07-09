@@ -377,7 +377,7 @@ namespace Activos_PrestamosOET.Controllers
         }
 
         // GET: Activos/Asignar/7
-        [Authorize(Roles = "Ingresar activos, superadmin")]
+        [Authorize(Roles = "Ingresar activos, superadmin, Editar activos")]
         public ActionResult Asignar(string id)
         {
             if (id == null)
@@ -406,7 +406,7 @@ namespace Activos_PrestamosOET.Controllers
         // POST: Activos/Asignar/7
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Ingresar activos, superadmin")]
+        [Authorize(Roles = "Ingresar activos, superadmin. Editar activos")]
         public ActionResult Asignar([Bind(Include = "ID,NUMERO_SERIE,FECHA_COMPRA,INICIO_SERVICIO,FECHA_INGRESO,FABRICANTE,PRECIO,DESCRIPCION,EXENTO,PRESTABLE,TIPO_CAPITAL,INGRESADO_POR,NUMERO_DOCUMENTO,NUMERO_LOTE,TIPO_TRANSACCIONID,ESTADO_ACTIVOID,TIPO_ACTIVOID,COMENTARIO,DESECHADO,MODELO,V_EMPLEADOSIDEMPLEADO,V_ESTACIONID,V_ANFITRIONAID,V_PROVEEDORIDPROVEEDOR,V_MONEDAID,CENTRO_DE_COSTOId,PLACA,ESTADO_PRESTADO")] ACTIVO aCTIVO)
         {
 
@@ -437,8 +437,8 @@ namespace Activos_PrestamosOET.Controllers
                         mensaje_correo.From = new System.Net.Mail.MailAddress("message.ots@tropicalstudies.org", "Admin"); // CAMBIAR CON EL CORREO DESDE EL QUE SE VAN A ENVIAR LOS MENSAJES
                         List<String> destinatarios = new List<string>
                         {
-                            //@""+empleado.NOMBRE+" <"+empleado.EMAIL+">",
-                            @"Jose Urena <jpurena14@hotmail.com>" // PARA ESTABLECER EL CORREO DONDE SE ENVIA LA INFORMACION, ELIMINAR ESTA LINEA Y DESCOMENTAR LA LINEA SUPERIOR.
+                            @""+empleado.NOMBRE+" <"+empleado.EMAIL+">"
+                            //@"Jose Urena <jpurena14@hotmail.com>" // PARA ESTABLECER EL CORREO DONDE SE ENVIA LA INFORMACION, ELIMINAR ESTA LINEA Y DESCOMENTAR LA LINEA SUPERIOR.
                         };
 
                         mensaje_correo.AddTo(destinatarios);
