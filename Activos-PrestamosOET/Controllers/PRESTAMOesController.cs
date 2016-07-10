@@ -1813,6 +1813,10 @@ namespace Activos_PrestamosOET.Controllers
             ViewBag.Observaciones = observaciones;
             List<String> idPrestados = new List<String>();
             List<String> lista = listaActivos(dic);
+
+            //Lista que guardará las placas de todos los activos de un préstamo.
+            //Se usará para revisar si el activo al final está devuelto o no.
+            Dictionary<String, bool> listaDevueltos = new Dictionary<String, bool> ();
             //se guardan los ids de los activos del préstamo
             foreach (KeyValuePair<String, List<List<String>>> entrada in dic)
             {
@@ -1822,7 +1826,7 @@ namespace Activos_PrestamosOET.Controllers
                 }
             }
 
-            //guarda cambios efectuados en base.
+            //guarda cambios efectuados en base
             if (ModelState.IsValid)
             {
                 db.Entry(pRESTAMO).State = EntityState.Modified;
@@ -1856,46 +1860,48 @@ namespace Activos_PrestamosOET.Controllers
                     }
                     //Al devolverse todos los activos, el estado del préstamo pasa a ser "Cerrado"
                     pRESTAMO.Estado = 5;
+                    db.SaveChanges();
                     return RedirectToAction("Index");
 
                     // return RedirectToAction("Details", new { id = ID });
                 }
-                else if (hayFilaEntera(column5_checkbox))//Revisa si hay algún check para devolver todos los activos de una sola categoría
+                else 
                 {
-                    int cont = 0;
-                    //corrige el array de booleanos recuperado
-                    List<bool> devolverCheck = corregirVectorBool(column5_checkbox);
-
-                    foreach (var y in equipo_sol)
+                    bool todos = true;
+                    if (hayFilaEntera(column5_checkbox))//Revisa si hay algún check para devolver todos los activos de una sola categoría
                     {
-                        bool t = devolverCheck[cont];
-                        if (t)
-                        { //si fueron todos seleccionados en esa fila, de ese tipo entonces se marca como devuelto cada activo
+                        int cont = 0;
+                        //corrige el array de booleanos recuperado
+                        List<bool> devolverCheck = corregirVectorBool(column5_checkbox);
 
-                            String cat = dic.Keys.ElementAt(cont);
-                            foreach (List<String> l in dic[cat])
-                            {
-                                String id = l[3];
-                                ACTIVO act = db.ACTIVOS.Find(id);
-                                int indice = indiceActivo(lista, act.PLACA);
-                                if (act.ESTADO_ACTIVOID != 0)
+                        foreach (var y in equipo_sol)
+                        {
+                            bool t = devolverCheck[cont];
+                            if (t)
+                            { //si fueron todos seleccionados en esa fila, de ese tipo entonces se marca como devuelto cada activo
+
+                                String cat = dic.Keys.ElementAt(cont);
+                                foreach (List<String> l in dic[cat])
                                 {
-                                    act.ESTADO_PRESTADO = 0;
-                                    new TransaccionesController().CreatePrestamo(User.Identity.GetUserName(), "Devuelto de préstamo", "Se devuelve activo en prestamo", act.ID, unchecked((int)prestamo.NUMERO_BOLETA), pRESTAMO.FECHA_RETIRO, DateTime.Now.Date, Notas[indice], pRESTAMO.USUARIO_SOLICITA);
+                                    String id = l[3];
+                                    ACTIVO act = db.ACTIVOS.Find(id);
+                                    int indice = indiceActivo(lista, act.PLACA);
+                                    if (act.ESTADO_PRESTADO != 0)
+                                    {
+                                        act.ESTADO_PRESTADO = 0;
+                                        new TransaccionesController().CreatePrestamo(User.Identity.GetUserName(), "Devuelto de préstamo", "Se devuelve activo en prestamo", act.ID, unchecked((int)prestamo.NUMERO_BOLETA), pRESTAMO.FECHA_RETIRO, DateTime.Now.Date, Notas[indice], pRESTAMO.USUARIO_SOLICITA);
+                                    }
+                                    db.Entry(act).State = EntityState.Modified;
+                                    db.SaveChanges();
                                 }
-                                db.Entry(act).State = EntityState.Modified;
-                                db.SaveChanges();
-                            }
 
+                            }
+                            cont++;
                         }
-                        cont++;
                     }
-                }
-                else //Si no se devolvieron todos ni una categoría entera, entonces se procesan las devoluciones individuales
-                {
+
                     //corrige el vector de booleanos recuperado
                     List<bool> devolucionActivos = corregirVectorBool(activoSeleccionado);
-                    bool todos = true;
                     for (int i = 0; i < idPrestados.Count(); i++)
                     {
                         String id = idPrestados[i];
@@ -1903,16 +1909,16 @@ namespace Activos_PrestamosOET.Controllers
                         if (devolucionActivos[i])
                         {
                             int indice = indiceActivo(lista, act.PLACA);
-                            if (act.ESTADO_ACTIVOID != 0)
+                            if (act.ESTADO_PRESTADO != 0)
                             {
                                 act.ESTADO_PRESTADO = 0;
                                 new TransaccionesController().CreatePrestamo(User.Identity.GetUserName(), "Devuelto de préstamo", "Se devuelve activo en prestamo", act.ID, unchecked((int)prestamo.NUMERO_BOLETA), pRESTAMO.FECHA_RETIRO, DateTime.Now.Date, Notas[indice], pRESTAMO.USUARIO_SOLICITA);
                             }
                         }
-                        else
-                        {
-                            //act.ESTADO_PRESTADO = ;
-                            todos = false;
+                        else if (act.ESTADO_PRESTADO != 0)
+                        {                         
+                            
+                                todos = false;
                         }
                         db.Entry(act).State = EntityState.Modified;
                         db.SaveChanges();
@@ -1921,11 +1927,10 @@ namespace Activos_PrestamosOET.Controllers
                     if (todos)
                     {
                         pRESTAMO.Estado = 5;
+                        db.SaveChanges();
                         return RedirectToAction("Index");
                     }
                 }
-
-                // if (column5_checkAll) { pRESTAMO.Estado = 5; }
 
                 if (ModelState.IsValid)
                 {
