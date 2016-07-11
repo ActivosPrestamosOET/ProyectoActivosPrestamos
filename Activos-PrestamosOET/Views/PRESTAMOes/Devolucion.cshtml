@@ -52,7 +52,7 @@
                     <label class="control-label" for="inputDefault">Solicitante:</label>
                 </div>
                 <div class="col-md-4">
-                    @ViewBag.Nombre
+                    @Html.DisplayFor(model => model.ActivosUser.Nombre) @Html.DisplayFor(model => model.ActivosUser.Apellidos)
                 </div>
                 <div class="col-md-2">
                     <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.FECHA_RETIRO):</label>
@@ -116,7 +116,14 @@
                     <label class="control-label" for="inputDefault">@Html.DisplayNameFor(model => model.SIGLA_CURSO):</label>
                 </div>
                 <div class="col-md-4">
-                    <!--Html.DisplayFor(model => model.V_COURSES.COURSE_NAME)-->
+                    @if (Model.V_COURSESCOURSES != 0)
+                    {
+                        <text>@Model.V_COURSES.COURSE_NAME</text>
+                    }
+                    else
+                    {
+                        <text>No hay curso asociado</text>
+                    }
                 </div>
 
                 <br />

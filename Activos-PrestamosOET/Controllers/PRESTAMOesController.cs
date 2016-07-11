@@ -1712,25 +1712,6 @@ namespace Activos_PrestamosOET.Controllers
                 return HttpNotFound();
             }
 
-            //consulta que ingresa a una lista la información general del préstamo, incluyendo nombre del usuario
-            //que lo solicitó y su cédula
-            var lista = from o in db.PRESTAMOS
-                        from o2 in db.ActivosUsers
-                        where o.ID == id
-                        select new { Prestamo = o, CEDULA = o2.Cedula, USUARIO = o2.Nombre };
-
-            //
-            foreach (var m in lista)
-            {
-                if (m.Prestamo.ID == id)
-                {
-                    if (m.Prestamo.USUARIO_SOLICITA == m.CEDULA)
-                    {
-                        var t = new Tuple<string>(m.USUARIO);
-                        ViewBag.Nombre = t.Item1;
-                    }
-                }
-            }
             /*  -------------------------------------------------------------------------------------------  */
             //consulta con la información de las categorías solicitadas por préstamo, el número de activos por categoría y el número de activos aprobado
             var equipo_sol = from o in db.PRESTAMOS
